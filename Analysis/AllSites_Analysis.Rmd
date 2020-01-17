@@ -43,7 +43,7 @@ elkhorn_data_rel <- elkhorn_data %>%
   mutate(sumintercept = sum(intercepts),
          relcov = intercepts/sumintercept)
 
-mcLserp_data <- read.csv("mcLserp_data.csv") %>%
+mcLserp_data <- read.csv("mclserp_data.csv") %>%
    rename(species.name = Species_Name)
 mcLserp_data <- mcLserp_data %>%
   filter(species.name != "Bare",
@@ -340,89 +340,6 @@ ggplot(turnover_means, aes(x = Site, y = meanturn, color = Site)) +
 ```
 
 
-# rate of change
-
-```{r changerate, echo=FALSE}
-swan.changerate <- rate_change_interval(swan_data_rel,
-                                        time.var = "year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "rep") %>%
-  mutate(site = "Swanton")
-
-jasp.changerate <- rate_change_interval(jasper_data,
-                                        time.var = "year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "trtrep") %>%
-  mutate(site = "Jasper")
-
-
-McLSerp.changerate <- rate_change_interval(mcLserp_byquad,
-                                        time.var = "Year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "plot") %>%
-  mutate(site = "McL Serp")
-
-
-
-elk.changerate <- rate_change_interval(elkhorn_data_rel,
-                                        time.var = "year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "rep") %>%
-  mutate(site = "Elkhorn")
-
-
-
-ang.changerate <- rate_change_interval(ang_data_rel,
-                                        time.var = "year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "plot")  %>%
-  mutate(site = "Angelo")
-
-
-
-
-all.changerate <- full_join (jasp.changerate, elk.changerate)
-all.changerate <- full_join (all.changerate, swan.changerate)
-all.changerate <- full_join (all.changerate, McLSerp.changerate)
-all.changerate <- full_join (all.changerate, ang.changerate) 
-
-all.changerate <- all.changerate %>%
-  mutate(timesqrt = sqrt(interval))
-
-ggplot(all.changerate, aes(x = timesqrt, y = distance, color = site)) +
-  geom_point() +
-  labs(title = "All sites - Rate of community change over time",
-       x = "Time interval (number of years \n between two dates in dataset)",
-       y = "Distance (euclidean distance between \n all intervals of y length in dataset)") +
-   geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
-
-all.changerate <- all.changerate %>%
-  group_by(interval, site, timesqrt) %>%
-  summarize(meanchange = mean(distance),
-            sechange = std.error(distance))
-
-ggplot(all.changerate, aes(x = interval, y = meanchange, color = site)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = meanchange-sechange, ymax = meanchange+sechange)) +
-  labs(title = "All sites - Rate of community change over time",
-       x = "Time interval (number of years \n between two dates in dataset)",
-       y = "Distance (euclidean distance between \n all intervals of y length in dataset)")
-
-ggplot(all.changerate, aes(x = timesqrt, y = meanchange, color = site)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = meanchange-sechange, ymax = meanchange+sechange)) +
-  labs(title = "All sites - Rate of community change over time",
-       x = "Square Root of Time interval (years)",
-       y = "Distance (euclidean distance between \n all intervals of y length in dataset)")
-
-
-```
-
 # CTI
 
 ```{r code storage, eval=FALSE}
@@ -458,7 +375,6 @@ ucsc_CTI_means <- ucsc_CTI_means %>%
    select(year, site, meanCTI, seCTI, meanCPI, seCPI)
  write.csv(all.CTI, "allsites_CTI.csv")
 ```
-
 
 
 ```{r CTI}
