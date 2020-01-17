@@ -1,0 +1,377 @@
+---
+title: "PRISM"
+author: "Josie Lesage"
+date: "1/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(vegan)
+library(lme4)
+
+## CTI + PRISM
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+library(prism)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+library(reshape2)
+library(stringr)
+library(psych)
+
+```
+
+# PRISM DATA
+
+## Background
+
+The goal of this markdown doc is to download PRISM data via the 'prism' R package. 
+
+To do this, we'll need some GPS points for the plots in my studies...  
+
+Jasper ridge: 37.406855, -122.223305
+Elkhorn slough: 36.868095, -121.740360
+McLaughlin Reserve: 38.869529, -122.419575
+
+
+Here's a neat webpage to help me get the correct data out of prism!
+https://rpubs.com/collnell/get_prism
+
+
+## Data Download
+First, we download all of the data from PRISM. This is based on the rpubs docs by (Shannon Carter)[https://rpubs.com/shannon_carter/471278] and (Colleen N.)[https://rpubs.com/collnell/get_prism].
+```{r Prism data download, eval=FALSE}
+options(prism.path = "/prism")
+get_prism_monthlys(type = "ppt", years = 1982:2019, mon = 1:12, keepZip = F)
+get_prism_monthlys(type = "tmean", years = 1982:2019, mon = 1:12, keepZip = F)
+get_prism_monthlys(type = "tmin", years = 1982:2019, mon = 1:12, keepZip = F)
+get_prism_monthlys(type = "tmax", years = 1982:2019, mon = 1:12, keepZip = F)
+
+# Stack all of the prism raster data
+climate_data <- ls_prism_data() %>% prism_stack(.)
+
+# Get proj from raster stack
+climate_crs <- climate_data@crs@projargs
+
+```
+
+After downloading all of the PRISM raster data, we need to extract the data for our specific sites. We can do this by associating the site name with a lat/long and extracting from the raster.  
+
+We begin by making a dataframe with the lat/long, then convert that to match the PRISM format.
+
+```{r create site lat/long} 
+sites <- data.frame(site = c("Jasper", "Elkhorn", "McL Ann", "McL Serp", "UCSC", "Swanton", "Angelo", "Carrizo"),
+                    Lat = c(37.406855, 36.868095, 38.869529, 38.869529, 36.988252, 37.070389, 39.738936, 35.114272),
+                    Long = c (-122.223305, -121.740360, -122.419575, -122.419575, -122.051716, -122.250000, -123.630758, -119.773864))
+
+# Convert these locations to format that can be matched to Prism climate data
+coordinates(sites) <- c('Long', 'Lat')
+proj4string(sites) <- CRS(climate_crs)
+
+```
+
+Then, we extract the data. 
+
+
+```{r extract climate data, eval = false}
+# Extract the  extracted from the raster stack for those sites 
+climate_site_raw <- data.frame(coordinates(sites), 
+                   sites$site, 
+                   raster::extract(climate_data, sites))
+
+```
+
+```{r reshape climate from raster}
+# Reshape data. Col 1:3 are lat, long, and site ID. Col 4:ncol are climate data
+# Column headers include date and climate type info
+climate_site <- climate_site_raw %>% 
+  gather(date, value, 4:ncol(climate_site_raw))
+
+climate_site$date <- gsub('PRISM_', '', climate_site$date) %>% 
+  gsub('provisional_4kmM3_', '', .) %>% 
+  gsub('provisional_4kmM2_', '', .) %>%
+  gsub('stable_4kmM3_', '', .) %>% 
+  gsub('stable_4kmM2_', '', .) %>%
+  gsub('_bil', '', .)
+
+# Split header into type (precipitation or temperature), year, and month
+climate_site <- separate(climate_site, 'date', 
+                 into = c('type', 'YearMonth'), 
+                 sep = '_')
+climate_site <- separate(climate_site, 'YearMonth',
+                 into = c('year', 'month'),
+                 sep = 4)
+
+# Reshape data-- make a separate column for temperature and precipitation
+climate_site <- unique(climate_site)
+climate_site <- climate_site %>% 
+  spread(type, value) %>%
+  rename(site = sites.site) %>%
+  mutate(Year1 = year,
+         Month1 = month) %>%
+  unite(Year1, Month1, col = "date", sep = "-")
+
+climate_site$date <- lubridate::ymd(climate_site$date, truncated = 1L)
+climate_site_wtryr <- climate_site %>% 
+  mutate(date1 = date,
+         wateryr = wtr_yr(date1)) %>%
+  group_by(site, wateryr) %>%
+  summarise(precip = sum(ppt),
+            tmean = mean(tmean),
+            tmin = mean(tmin),
+            tmax = mean(tmax)) %>%
+  rename(year = wateryr) %>%
+  filter(year != 2020)
+
+
+# Make year and month numeric variables
+climate_site$year  <- as.numeric(climate_site$year)
+climate_site_wtryr$year  <- as.numeric(climate_site_wtryr$year)
+```
+
+```{r plots}
+ggplot(climate_site, aes(x = site, y = tmean)) +
+  geom_boxplot()  +
+  geom_jitter(aes(color = month)) +
+  labs(x = "site",
+       y = "mean monthly temp, 1982-2019")
+
+ggplot(climate_site, aes(x = site, y = ppt)) +
+  geom_boxplot()  +
+  geom_jitter(aes(color = month))+
+  labs(x = "site",
+       y = "mean monthly precip, 1982-2019")
+
+ggplot(climate_site) +
+  geom_jitter(aes(x = site, y = tmax), color = "red") +
+  geom_jitter(aes(x = site, y = tmin), color = "blue") +
+  labs(x = "site",
+       y = "monthly mean and min temps, 1982-2019")
+```
+
+We're also interested in seeing how climate may or may not have changed over time - so we will generate annual summaries.
+
+```{r annual climate change}
+
+ggplot(climate_site_wtryr_win) +
+  geom_point(aes(x = year, y = tmean, color = site), shape = 1) +
+    stat_smooth(aes(x = year, y = tmean, color = site), method = "lm", se = F, size =  1) +
+  geom_point(aes(x = year, y = tmax, color = site), shape = 2) +
+    stat_smooth(aes(x = year, y = tmax, color = site), method = "lm", se = F, size =  1) +
+  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
+    stat_smooth(aes(x = year, y = tmin, color = site), method = "lm", se = F, size =  1)
+
+ggplot(climate_site_wtryr) +
+  geom_point(aes(x = year, y = tmean, color = site), shape = 1) +
+  geom_line(aes(x = year, y = tmean, color = site)) +
+  geom_point(aes(x = year, y = tmax, color = site), shape = 2) +
+  geom_line(aes(x = year, y = tmax, color = site)) +
+  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
+  geom_line(aes(x = year, y = tmin, color = site))
+
+climate_site_wtryr_win <- climate_site %>% 
+  filter(month == 12 | month == 01 | month == 02) %>%
+  mutate(date1 = date,
+         wateryr = wtr_yr(date1)) %>%
+  group_by(site, wateryr) %>%
+  summarise(precip = sum(ppt),
+            tmean = mean(tmean),
+            tmin = mean(tmin),
+            tmax = mean(tmax)) %>%
+  rename(year = wateryr) %>%
+  filter(year != 2020)
+
+climate_site_wtryr_sum <- climate_site %>% 
+  filter(month == 06) %>%
+  mutate(date1 = date,
+         wateryr = wtr_yr(date1)) %>%
+  group_by(site, wateryr) %>%
+  summarise(precip = sum(ppt),
+            tmean = mean(tmean),
+            tmin = mean(tmin),
+            tmax = mean(tmax)) %>%
+  rename(year = wateryr) 
+
+ggplot(climate_site_wtryr_win) +
+  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
+  geom_line(aes(x = year, y = tmin, color = site)) +
+  labs(title = "Winter")
+
+
+ggplot(climate_site_wtryr) +
+  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
+  geom_line(aes(x = year, y = tmin, color = site)) +
+  labs(title = "Year")
+
+
+ggplot(climate_site_wtryr) +
+  geom_point(aes(x = year, y = precip, color = site), shape = 1) +
+  geom_line(aes(x = year, y = precip, color = site))
+
+```
+
+
+# CTI DATA
+```{r CTI import}
+
+McLAnn_CTI_rep <- McLAnn_CTI %>%
+  rename(rep = plot,
+         year = Year) %>%
+  mutate(site = "McL Ann")
+
+mcLserp_CTI_rep <- mcLserp_CTI %>%
+  rename(rep = plot,
+         year = Year) %>%
+  mutate(site = "McL Serp")
+
+elk_CTI_rep <- elk_CTI %>%
+  mutate(site = "Elkhorn")
+
+jasp_CTI_rep <- jasp_CTI %>%
+  rename(rep = trtrep) %>%
+  mutate(site = "Jasper")
+
+ucsc_CTI_rep <- ucsc_CTI %>%
+  mutate(site = "UCSC")
+
+swan_CTI_rep <- swan_CTI %>%
+  mutate(site = "Swanton")
+
+car_CTI_rep <- car_CTI %>%
+  rename(plot = Plot) %>%
+  mutate(site = "Carrizo")
+
+ang_CTI_rep <- ang_CTI %>%
+  mutate(site = "Angelo")
+
+
+sub.cti <- full_join(mcLserp_CTI_rep, McLAnn_CTI_rep)
+sub.cti <- full_join(sub.cti, elk_CTI_rep)
+sub.cti <- full_join(sub.cti, jasp_CTI_rep)
+sub.cti <- full_join(sub.cti, ucsc_CTI_rep)
+sub.cti <- full_join(sub.cti, swan_CTI_rep)
+sub.cti <- full_join(sub.cti, car_CTI_rep)
+sub.cti <- full_join(sub.cti, ang_CTI_rep)
+
+```
+
+# COMBINE DATA
+The goal now is to combine the CTI and PRISM data into a single dataset that I can use to make graphs/analysis.
+
+However, because we only have a few sites at this time, I should filter everything down. 
+
+```{r combine datasets}
+prism.cti <- left_join(sub.cti, climate_site_wtryr, by = c("year", "site"))
+
+```
+
+```{r explore combo}
+
+prism.cti.cor <- prism.cti %>%
+  select(year, precip, tmean, CPI, CTI)
+pairs.panels(prism.cti.cor, scale=TRUE)
+pairs(prism.cti.cor)
+
+ggplot(prism.cti) +
+  geom_point(aes(x = precip, y = CTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = precip, y = CTI, color = site)) +
+  labs(title = "Precipitation and CTI", x = "Precipitation (mm)", y = "CTI")
+
+ggplot(prism.cti) +
+  geom_point(aes(x = precip, y = CPI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = precip, y = CPI, color = site)) +
+  labs(title = "Precipitation and CPI", x = "Precipitation (mm)", y = "CPI")
+
+ggplot(prism.cti) +
+  geom_point(aes(x = tmin, y = CTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmin, y = CTI)) +
+  geom_point(aes(x = tmean, y = CTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmean, y = CTI)) +
+  geom_point(aes(x = tmax, y = CTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmax, y = CTI)) +
+  labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
+
+ggplot(prism.cti) +
+  geom_point(aes(x = tmin, y = CPI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmin, y = CPI)) +
+  geom_point(aes(x = tmax, y = CPI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmax, y = CPI)) +
+  labs(title = "Temperature and CPI", x = "Temperature (C)", y = "CPI")
+
+ggplot(prism.cti) +
+  geom_point(aes(x = tmin, y = CTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmin, y = CTI, color = site)) +
+  labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
+
+```
+
+```{r means of CTI and temp}
+
+prism.cti.means <- prism.cti %>%
+  group_by(site) %>%
+  summarise(mCTI = mean(CTI),
+            seCTI = std.error(CTI),
+            mCPI = mean(CPI),
+            seCPI = std.error(CPI),
+            mtmin = mean(tmin),
+            setmin = std.error(tmin),
+            mtmax = mean(tmax),
+            setmax = std.error(tmax),
+            mtmean = mean(tmean),
+            setmean = std.error(tmean))
+
+ggplot(prism.cti.means) +
+  geom_point(aes(x = mtmin, y = mCTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmin, y = mCTI)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmin, y = mCTI, color = site)) +
+  geom_point(aes(x = mtmean, y = mCTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmean, y = mCTI)) +
+  geom_point(aes(x = mtmax, y = mCTI, color = site)) +
+  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmax, y = mCTI)) +
+  labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
+
+```
+
+
+
+```{r summarize to annual data}
+
+sum.prism.cti <- prism.cti %>%
+  group_by(year, site) %>%
+  summarise(CTI = mean(CTI),
+            seCTI = std.error(CTI),
+            CPI = mean(CPI),
+            seCPI = std.error(CPI),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin),
+            precip = mean(precip))
+
+ggplot(sum.prism.cti) +
+  geom_line(aes(x = year, y = CPI, color = site)) +
+  geom_line(aes(x = year, y = precip), color = "blue")
+
+ggplot(sum.prism.cti) +
+  geom_line(aes(x = year, y = CTI, color = site)) +
+  geom_line(aes(x = year, y = tmax), color = "red") +
+  geom_line(aes(x = year, y = tmin), color = "orange") +
+  geom_line(aes(x = year, y = tmean), color = "blue") 
+
+```
+
+
+# ANALYSIS
+

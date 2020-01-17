@@ -1,0 +1,510 @@
+---
+title: "Combining Analyses for Lab Meeting"
+author: "Josie Lesage"
+date: "12/7/2019"
+output: html_document
+---
+
+# Setup and data import
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(vegan)
+library(lme4)
+
+## CTI analysis
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+
+```
+
+```{r data import and prep, echo=FALSE}
+elkhorn_data <- read.csv("elkhorn_data.csv")
+elkhorn_data <- elkhorn_data %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground")
+elkhorn_data_rel <- elkhorn_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+mcLserp_data <- read.csv("mcLserp_data.csv") %>%
+   rename(species.name = Species_Name)
+mcLserp_data <- mcLserp_data %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown forb")
+mcLserp_byquad <- mcLserp_data %>%
+  group_by(Site, Year, plot, species.name) %>%
+  summarise(Cover = sum(Cover)) %>%
+  ungroup() %>%
+  group_by(plot, Year) %>%
+  mutate(sumcov = sum(Cover),
+         relcov = Cover/sumcov)
+
+jasper_data <- read.csv("jasper_data.csv")
+jasper_data <- jasper_data %>%
+  filter(cover > 0) %>%
+  group_by(trtrep, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov)
+
+swan_data <- read.csv("swanton_data.csv")
+swan_data <- swan_data %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground")
+swan_data_rel <- swan_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+angelo_data <- read.csv("angelo_data.csv")
+ang_data_rel <- angelo_data %>%
+  select(year, plot, species.name, cover) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov)
+
+McLAnn_data <- read.csv("mclann_data.csv") %>%
+   rename(species.name = Species_Name)
+McLAnn_data <- McLAnn_data %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown grass",
+         species.name != "Unknown forb")
+McLAnn_byquad <- McLAnn_data %>%
+  group_by(Site, Year, plot, species.name) %>%
+  summarise(Cover = sum(Cover)) %>%
+  ungroup() %>%
+  group_by(plot, Year) %>%
+  mutate(sumcov = sum(Cover),
+         relcov = Cover/sumcov)
+
+car_data <- read.csv("carrizo_data.csv") %>%
+    rename(species.name = Species.Name)
+car_data <- car_data %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss")
+car_data_rel <- car_data %>%
+  select(year, Plot, species.name, Intercepts) %>%
+  distinct(year, Plot, species.name, .keep_all = TRUE) %>%
+  group_by(Plot, year) %>%
+  mutate(sumintercept = sum(Intercepts),
+         relcov = Intercepts/sumintercept)
+
+ucsc_data <- read.csv("ucsc_data.csv")
+ucsc_data <- ucsc_data %>%
+  filter(species.name != "Thatch",
+         species.name != "Bare ground")
+ucsc_data_rel <- ucsc_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+
+```
+
+# Species richness over time
+
+```{r richness, echo = FALSE}
+
+elk_rich_means <- elkhorn_data %>%
+  group_by(year, rep) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "Elkhorn")
+
+
+jasp_rich_means <- jasper_data %>%
+  group_by(year, trtrep) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "Jasper")
+
+swan_rich_means <- swan_data %>%
+  group_by(year, rep) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "Swanton")
+
+mcLserp_rich_means <- mcLserp_byquad %>%
+  group_by(Year, plot) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(Year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "McL Serp",
+         year = Year)
+
+McLAnn_rich_means <- McLAnn_byquad %>%
+  group_by(Year, plot) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(Year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "McL Ann",
+         year = Year)
+
+ang_rich_means <- angelo_data %>%
+  group_by(year, plot) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "Angelo")
+
+car_rich_means <- car_data_rel %>%
+  group_by(year, Plot) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "Carrizo")
+
+ucsc_rich_means <- ucsc_data %>%
+  group_by(year, rep) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(Site = "UCSC")
+
+
+all.rich <- full_join(mcLserp_rich_means, swan_rich_means)
+all.rich <- full_join(all.rich, elk_rich_means)
+all.rich <- full_join(all.rich, jasp_rich_means)
+all.rich <- full_join(all.rich, ang_rich_means)
+all.rich <- full_join(all.rich, McLAnn_rich_means)
+all.rich <- full_join(all.rich, car_rich_means)
+all.rich <- full_join(all.rich, ucsc_rich_means)
+
+ggplot(all.rich, aes(x = year, y = meanrich, color = Site)) +
+  geom_line() +
+  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
+  labs(title = "All sites - Richness change",
+       x = "Year",
+       y = "Richness (# spp.)")
+
+ggplot(all.rich, aes(x = year, y = meanrich, color = Site)) +
+  geom_point() +
+      labs(title = "All sites - Species Richness over time",
+       x = "Year",
+       y = "Species Richness") +
+  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
+  facet_wrap(~Site, ncol = 2, scales = "free") +
+  theme(legend.position = "none")
+
+```
+
+
+# Grouped Turnover Graph
+```{r turnover, echo=FALSE}
+elk_turnover <- turnover(df = elkhorn_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "rep")
+
+elk_turn_means <- elk_turnover %>%
+#  group_by(year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "Elkhorn")
+
+mcLserp_turnover <- turnover(df = mcLserp_byquad,
+                          time.var = "Year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "plot")
+McLserp_turn_means <- mcLserp_turnover %>%
+#  group_by(Year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "McL Serp")
+#         year = Year) 
+
+McLAnn_turnover <- turnover(df = McLAnn_byquad,
+                          time.var = "Year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "plot")
+McLAnn_turn_means <- McLAnn_turnover %>%
+#  group_by(Year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "McL Ann")
+#         year = Year)
+
+
+jasp_turnover <- turnover(df = jasper_data,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "cover",
+                          replicate.var = "trtrep")
+jasp_turn_means <- jasp_turnover %>%
+#  group_by(year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "Jasper")
+
+swan_turnover <- turnover(df = swan_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "rep")
+
+swan_turn_means <- swan_turnover %>%
+#  group_by(year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "Swanton")
+
+ucsc_turnover <- turnover(df = ucsc_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "rep") 
+ucsc_turn_means <- ucsc_turnover %>%
+#  group_by(year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "UCSC")
+
+
+ang_turnover <- turnover(df = ang_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "plot")
+ang_turn_means <- ang_turnover %>%
+#  group_by(year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total)) %>%
+  mutate(Site = "Angelo")
+
+
+turnover_means <- full_join(elk_turn_means, McLserp_turn_means)
+turnover_means <- full_join (turnover_means, jasp_turn_means)
+turnover_means <- full_join (turnover_means, swan_turn_means)
+turnover_means <- full_join (turnover_means, ang_turn_means)
+turnover_means <- full_join (turnover_means, ucsc_turn_means)
+turnover_means <- full_join (turnover_means, McLAnn_turn_means)
+
+ggplot(turnover_means, aes(x = Site, y = meanturn, color = Site)) +
+  geom_line() +
+  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+  labs(title = "All sites - Community Turnover",
+       x = "Year",
+       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+
+#ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
+#  geom_line() +
+#  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+#  labs(title = "All sites - Community Turnover",
+#       x = "Year",
+#       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+
+#ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
+#  geom_line() +
+#  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+#  labs(title = "All sites - Community Turnover",
+#       x = "Year",
+#       y = "Turnover (# spp. lost+gained / total # spp.)")
+
+```
+
+
+# rate of change
+
+```{r changerate, echo=FALSE}
+swan.changerate <- rate_change_interval(swan_data_rel,
+                                        time.var = "year",
+                                        species.var = "species.name",
+                                        abundance.var = "relcov",
+                                        replicate.var = "rep") %>%
+  mutate(site = "Swanton")
+
+jasp.changerate <- rate_change_interval(jasper_data,
+                                        time.var = "year",
+                                        species.var = "species.name",
+                                        abundance.var = "relcov",
+                                        replicate.var = "trtrep") %>%
+  mutate(site = "Jasper")
+
+
+McLSerp.changerate <- rate_change_interval(mcLserp_byquad,
+                                        time.var = "Year",
+                                        species.var = "species.name",
+                                        abundance.var = "relcov",
+                                        replicate.var = "plot") %>%
+  mutate(site = "McL Serp")
+
+
+
+elk.changerate <- rate_change_interval(elkhorn_data_rel,
+                                        time.var = "year",
+                                        species.var = "species.name",
+                                        abundance.var = "relcov",
+                                        replicate.var = "rep") %>%
+  mutate(site = "Elkhorn")
+
+
+
+ang.changerate <- rate_change_interval(ang_data_rel,
+                                        time.var = "year",
+                                        species.var = "species.name",
+                                        abundance.var = "relcov",
+                                        replicate.var = "plot")  %>%
+  mutate(site = "Angelo")
+
+
+
+
+all.changerate <- full_join (jasp.changerate, elk.changerate)
+all.changerate <- full_join (all.changerate, swan.changerate)
+all.changerate <- full_join (all.changerate, McLSerp.changerate)
+all.changerate <- full_join (all.changerate, ang.changerate) 
+
+all.changerate <- all.changerate %>%
+  mutate(timesqrt = sqrt(interval))
+
+ggplot(all.changerate, aes(x = timesqrt, y = distance, color = site)) +
+  geom_point() +
+  labs(title = "All sites - Rate of community change over time",
+       x = "Time interval (number of years \n between two dates in dataset)",
+       y = "Distance (euclidean distance between \n all intervals of y length in dataset)") +
+   geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
+
+all.changerate <- all.changerate %>%
+  group_by(interval, site, timesqrt) %>%
+  summarize(meanchange = mean(distance),
+            sechange = std.error(distance))
+
+ggplot(all.changerate, aes(x = interval, y = meanchange, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanchange-sechange, ymax = meanchange+sechange)) +
+  labs(title = "All sites - Rate of community change over time",
+       x = "Time interval (number of years \n between two dates in dataset)",
+       y = "Distance (euclidean distance between \n all intervals of y length in dataset)")
+
+ggplot(all.changerate, aes(x = timesqrt, y = meanchange, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanchange-sechange, ymax = meanchange+sechange)) +
+  labs(title = "All sites - Rate of community change over time",
+       x = "Square Root of Time interval (years)",
+       y = "Distance (euclidean distance between \n all intervals of y length in dataset)")
+
+
+```
+
+# CTI
+
+```{r code storage, eval=FALSE}
+car_CTI_means <- car_CTI_means %>%
+   mutate(site = "Carrizo")
+jasp_CTI_means <- jasp_CTI_means %>%
+   mutate(site = "Jasper")
+mcLserp_CTI_means <- mcLserp_CTI_means %>%
+   mutate(site = "McL Serp",
+          year = Year)
+ang_CTI_means <- ang_CTI_means %>%
+   mutate(site = "Angelo")
+elk_CTI_means <- elk_CTI_means %>%
+   mutate(site = "Elkhorn")
+swan_CTI_means <- swan_CTI_means %>%
+   mutate(site = "Swanton")
+McLAnn_CTI_means <- McLAnn_CTI_means %>%
+   mutate(site = "McL Ann",
+          year = Year)
+ucsc_CTI_means <- ucsc_CTI_means %>%
+   mutate(site = "UCSC")
+ 
+
+ all.CTI <- full_join(car_CTI_means, jasp_CTI_means)
+ all.CTI <- full_join(all.CTI, mcLserp_CTI_means)
+ all.CTI <- full_join(all.CTI, ang_CTI_means)
+ all.CTI <- full_join(all.CTI, elk_CTI_means)
+ all.CTI <- full_join(all.CTI, swan_CTI_means)
+ all.CTI <- full_join(all.CTI, McLAnn_CTI_means)
+ all.CTI <- full_join(all.CTI, ucsc_CTI_means)
+
+ all.CTI <- all.CTI %>%
+   select(year, site, meanCTI, seCTI, meanCPI, seCPI)
+ write.csv(all.CTI, "allsites_CTI.csv")
+```
+
+
+
+```{r CTI}
+
+all.CTI <- read.csv("allsites_CTI.csv")
+
+
+ggplot(all.CTI, aes(x=year, y=meanCTI, color = site)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI), width=0.2) +
+    labs(title = "All sites - Community Temperature Index over time",
+       x = "Year",
+       y = "Community Temperature Index") +
+  stat_smooth(method = "lm", se = F, size =  1)
+
+ggplot(all.CTI, aes(x=year, y=meanCTI, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI), width=0.2) +
+      labs(title = "All sites - Community Temperature Index over time",
+       x = "Year",
+       y = "Community Temperature Index") +
+  facet_wrap(~site, ncol = 2, scales = "free") +
+  theme(legend.position = "none") +
+  stat_smooth(method = "lm", se = F, size =  1)
+
+ggplot(all.CTI, aes(x=year, y=meanCPI, color = site)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2) +
+      labs(title = "All sites - Community Precipitation Index over time",
+       x = "Year",
+       y = "Community Precipitation Index") +
+  stat_smooth(method = "lm", se = F, size =  1)
+
+ggplot(all.CTI, aes(x=year, y=meanCPI, color = site)) +
+  geom_point() +
+      labs(title = "All sites - Community Precipitation Index over time",
+       x = "Year",
+       y = "Community Precipitation Index") +
+  geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2) +
+  facet_wrap(~site, ncol = 2, scales = "free") +
+  theme(legend.position = "none") +
+  stat_smooth(method = "lm", se = F, size =  1)
+
+# code for adding a flat line
+#  stat_smooth(method = "lm", se = F, size =  1)
+
+```
