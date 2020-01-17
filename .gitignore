@@ -6,6 +6,9 @@
 wc2-5
 wc10
 prism
+analysis/wc2-5
+analysis/wc10
+analysis/prism
 
 # History files
 .Rhistory
