@@ -2,6 +2,11 @@
 # Edit at https://www.gitignore.io/?templates=r
 
 ### R ###
+# Directories
+wc2-5
+wc10
+prism
+
 # History files
 .Rhistory
 .Rapp.history
