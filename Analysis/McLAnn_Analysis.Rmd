@@ -79,8 +79,6 @@ McLAnn_byquad <- McLAnn_data %>%
 ```
 
 **Note:** there are instances of "Species sp." in the dataset. I am not sure if I should remove this one hit, or leave it be. 
-## WEATHER DATA
-
 
 # Community Poisson GLM
 
@@ -109,13 +107,6 @@ ggplot(McLAnn_rich, aes(x = Year, y = rich)) +
 
 ```
 
-```{r Richness GLMM, dependson="Rich explore", cache = TRUE}
-rich_glm <- glm(rich ~ year, ucsc_rich, family = poisson)
-
-summary(rich_glm)
-
-```
-
 
 # Community turnover - annual +/-
 To answer who joins and who leaves each year, we need to calculate the species in the starting year, then see how many are added and how many leave. We'll do this with Lauren Hallet's (hopefully awesome) codyn package - which has a function for turnover.
@@ -141,17 +132,6 @@ ggplot(McLAnn_turn_means, aes(x = Year, y = meanturn)) +
 
 ```
 
-```{r rate of change with codyn}
-McLAnn.changerate <- rate_change_interval(McLAnn_byquad,
-                                        time.var = "Year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "plot")
-
-ggplot(McLAnn.changerate, aes(interval, distance, color = plot)) + 
-  geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
-
-```
 
 # Gathering & cleaning occurance data
 

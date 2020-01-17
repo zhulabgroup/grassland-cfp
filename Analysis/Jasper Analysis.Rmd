@@ -76,60 +76,6 @@ cat(format_delim(jasper_list, delim = ""))
 There are a total of 33 species in the Jasper Ridge dataset.  
 *Note:* There are two "species" in this dataset that are missing species information (Brodaeia and Trifolium) which I need to determine what I will do with. I can remove them, potentially, or collect data for all Trifolium and Broadaeia in the state. 
 
-# WEATHER DATA
-```{r wy function, echo=FALSE}
-wtr_yr <- function(dates, start_month=10) {
-  # Convert dates into POSIXlt
-  dates.posix = as.POSIXlt(dates)
-  # Year offset
-  offset = ifelse(dates.posix$mon >= start_month - 1, 1, 0)
-  # Water year
-  adj.year = dates.posix$year + 1900 + offset
-  # Return the water year
-  adj.year}
-```
-
-We'll grab the climate data we downloaded from PRISM.
-
-```{r monthly weather summaries}
-jaspw_sum <- climate_site %>%
-  filter(sites.site == "Jasper") %>%
-  mutate(Year1 = year,
-         Month1 = month) %>%
-  unite(Year1, Month1, col = "date", sep = "-")
-
-jaspw_sum$date <- lubridate::ymd(jaspw_sum$date, truncated = 1L)
-
-jaspw_sum <- jaspw_sum %>%
-  mutate(date1 = date,
-         wateryr = wtr_yr(date1))
-
-ggplot(jaspw_sum, aes(x = date, y = ppt)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Date", y = "Precipitation (mm)")
-
-jaspw_year <- jaspw_sum %>%
-  group_by(wateryr) %>%
-  summarise(precip = sum(ppt),
-            tmean = mean(tmean)) %>%
-  rename(year = wateryr) 
-
-ggplot(jaspw_year, aes(x = year, y = precip)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Date", y = "Precipitation (mm)")
-
-jaspw_wint <- jaspw_sum %>%
-  filter(month == "11" | month == "12" | month == "01" | month == "02" ) %>%
-  group_by(wateryr) %>%
-  summarise(precip = sum(ppt),
-            tmean = mean(tmean)) %>%
-  rename(year = wateryr) 
-
-ggplot(jaspw_wint, aes(x = year, y = precip)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Date", y = "Precipitation (mm)")
-
-```
 
 # Community Poisson GLM
 
@@ -195,19 +141,6 @@ ggplot(jasp_turn_means, aes(x = year, y = meanturn)) +
        y = "Turnover (# spp. lost+gained / total # spp.)")
 
 ```
-
-```{r rate of change with codyn}
-jasp.changerate <- rate_change_interval(jasper_data,
-                                        time.var = "year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "trtrep")
-
-ggplot(jasp.changerate, aes(interval, distance, color = trtrep)) + 
-  geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
-
-```
-
 
 
 

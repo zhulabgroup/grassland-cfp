@@ -72,78 +72,8 @@ ang_data_rel <- angelo_data %>%
 
 **Note:** there is one species just labeled "Trifolium spp." in the dataset.
 
-## WEATHER DATA
-```{r import and wy function, echo=FALSE}
-jasp_weather <- read.csv("Jasper-Analysis_files/jaspweather.csv")
-
-wtr_yr <- function(dates, start_month=10) {
-  # Convert dates into POSIXlt
-  dates.posix = as.POSIXlt(dates)
-  # Year offset
-  offset = ifelse(dates.posix$mon >= start_month - 1, 1, 0)
-  # Water year
-  adj.year = dates.posix$year + 1900 + offset
-  # Return the water year
-  adj.year}
-```
-
-```{r monthly weather summaries}
-jaspw_sum <- jasp_weather %>%
-  separate(DATE, into = c("Year", "Month", "Day")) %>%
-  mutate(Year1 = Year,
-         Month1 = Month,
-         Day1 = Day) %>%
-  unite(Year1, Month1, Day1, col = "DATE", sep = "-") %>%
-  select(STATION, NAME, DATE, Year, Month, Day, PRCP, TMAX, TMIN) %>%
-  mutate(PRCP_in = PRCP,
-         PRCP = 25.4*(PRCP_in),
-         wateryr = wtr_yr(DATE))
-
-summary(jaspw_sum)
-# 601 missing values/11626 total values
-
-
-jaspw_month <- jaspw_sum %>%
-  group_by(Year, wateryr, Month) %>%
-  summarise(precip = sum(PRCP, na.rm = TRUE),
-         TMAX = mean(TMAX, na.rm = TRUE),
-         TMIN = mean(TMIN, na.rm = TRUE)) %>% 
-  mutate(year2 = Year,
-         month2 = Month) %>% 
-  unite(year2, month2, col = "date", sep = "-")
-
-
-ggplot(jaspw_month, aes(x = date, y = precip)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Date", y = "Precipitation (mm)")
-
-jaspw_wint <- jaspw_month %>%
-  filter(Month == "11" | Month == "12" | Month == "01" | Month == "0.2") %>%
-  group_by(wateryr) %>%
-  summarise(precip = sum(precip),
-            TMAX = mean(TMAX),
-            TMIN = mean(TMIN))
-
-ggplot(jaspw_wint, aes(x = wateryr, y = precip)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Water year", y = "Winter (Nov-Feb) Precipitation (mm)")
-
-jaspw_year <- jaspw_sum %>%
-  group_by(wateryr) %>%
-  summarise(precip = sum(PRCP, na.rm = TRUE),
-         TMAX = mean(TMAX, na.rm = TRUE),
-         TMIN = mean(TMIN, na.rm = TRUE))
-  
-ggplot(jaspw_year, aes(x = wateryr, y = precip)) +
-  geom_bar(stat = "identity") +
-  labs(x = "Water year", y = "Precipitation (mm)")
-
-
-
-```
 
 # Community Poisson GLM
-
 **Look at chapter 14 of the Mixed Models book.**
 
 Before running our analysis, we should check the means and variance for the response variable over different predictor variables. 
@@ -162,13 +92,6 @@ ang_rich <- angelo_data %>%
 
 ggplot(ang_rich_means, aes(x = year, y = meanrich)) +
   geom_line() 
-
-```
-
-```{r Richness GLMM, dependson="Rich explore", cache = TRUE}
-rich_glm <- glm(rich ~ year, elk_rich, family = poisson)
-
-summary(rich_glm)
 
 ```
 
@@ -196,19 +119,6 @@ ggplot(ang_turn_means, aes(x = year, y = meanturn)) +
        y = "Turnover (# spp. lost+gained / total # spp.)")
 
 ```
-
-```{r rate of change with codyn}
-ang.changerate <- rate_change_interval(ang_data_rel,
-                                        time.var = "year",
-                                        species.var = "species.name",
-                                        abundance.var = "relcov",
-                                        replicate.var = "plot")
-
-ggplot(ang.changerate, aes(interval, distance, color = plot)) + 
-  geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
-
-```
-
 
 
 # Gathering & cleaning occurance data
@@ -481,6 +391,5 @@ ggplot(ang_CTI_means, aes(x=year, y=meanCTI)) +
 ggplot(ang_CTI_means, aes(x=year, y=meanCPI)) +
   geom_point() +
   geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2)
-
 
 ```

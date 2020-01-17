@@ -79,8 +79,6 @@ mcLserp_byquad <- mcLserp_data %>%
 ```
 
 
-## WEATHER DATA
-
 # Community Poisson GLM
 
 **Look at chapter 14 of the Mixed Models book.**
@@ -105,14 +103,6 @@ ggplot(mcLserp_rich_means, aes(x = Year, y = meanrich)) +
 
 ```
 
-```{r Richness GLMM, dependson="Rich explore", cache = TRUE}
-rich_glm <- glm(rich ~ year, elk_rich, family = poisson)
-
-summary(rich_glm)
-
-```
-
-
 # Community turnover - annual +/-
 To answer who joins and who leaves each year, we need to calculate the species in the starting year, then see how many are added and how many leave. We'll do this with Lauren Hallet's (hopefully awesome) codyn package - which has a function for turnover.
 
@@ -134,18 +124,6 @@ ggplot(McLserp_turn_means, aes(x = Year, y = meanturn)) +
   labs(title = "McL Serp - Community Turnover (n = 38)",
        x = "Year",
        y = "Turnover (# spp. lost+gained / total # spp.)")
-```
-
-```{r rate of change with codyn}
-McLSerp.changerate <- rate_change_interval(mcLserp_byquad,
-                                        time.var = "Year",
-                                        species.var = "species.name",
-                                        abundance.var = "Cover",
-                                        replicate.var = "plot")
-
-ggplot(McLSerp.changerate, aes(interval, distance, color = plot)) + 
-  geom_point() + theme_bw() + stat_smooth(method = "lm", se = F, size = 2)
-
 ```
 
 
