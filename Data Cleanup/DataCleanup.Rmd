@@ -202,7 +202,7 @@ Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl an
 Note that most of the code in the cleanup process was written before transitioning to R markdown and GitHub. 
 
 ```{r Importing Elkhorn, warning=FALSE, echo=FALSE}
-setwd("C:/Users/zeven_000/Desktop/UCSC/2019 - (2) Spring/LTD Chapter/Elkhorn/Old Data")
+setwd("HollData")
 
 elkspp <- read.csv("ElkhornSpecies.csv")
 elkspp$species.code <- tolower(elkspp$species.code)
@@ -680,7 +680,7 @@ remove(Elk_Richness)
 These data were collected from Jasper Ridge from 1983 to 2015.  
 
 ```{r Jasper Data Import & Clean, include=FALSE}
-setwd("C:/Users/zeven_000/Desktop/UCSC/2019 - (2) Spring/LTD Chapter/Jasper")
+setwd("Jasper")
 Jasper_Veg <- read.csv("JR_cover_forJosie.csv") %>%
   select(-X) %>%
   spread(key = species, value = cover) %>%
