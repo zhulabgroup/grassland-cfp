@@ -752,7 +752,7 @@ remove(jasper_spp_check)
 Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrats. Data is richness only from 2000-2005, but full community data 2006-2014. 
 
 ```{r McLaughlin Importing and Cleaning Data, include = FALSE}
-setwd("C:/Users/zeven_000/Desktop/UCSC/2019 - (3) Summer/LTD Chapter/McLaughlin")
+setwd("McLaughlin")
 
 ## importing the data
 McLAnn <- read.csv("Core_Community_Data2019.csv")
@@ -841,7 +841,7 @@ remove(McLAnn)
 These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern Californa. These data are for 38 plots that were measured using 1m^2^ quadrats. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
 
 ```{r Import and Clean McL Serpentine, include = FALSE}
-setwd("C:/Users/zeven_000/Desktop/UCSC/2019 - (3) Summer/LTD Chapter/McLaughlin")
+setwd("McLaughlin")
 
 ## importing the data
 McLSerp <- read.csv("Core_Community_Data2019.csv")
