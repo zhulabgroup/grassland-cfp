@@ -686,7 +686,7 @@ Jasper_Veg <- read.csv("JR_cover_forJosie.csv") %>%
   spread(key = species, value = cover) %>%
   replace(is.na(.), 0) %>%
   gather("aghe":"vumi", key = species, value = cover) %>%
-  group_by(trtrep, year, species) %>%
+  group_by(uniqueID, year, species) %>%
   summarize(cover = mean(cover))
 
 JR_spp <- read.csv("JR_speciesnames2.csv")
@@ -694,7 +694,7 @@ JR_spp <- read.csv("JR_speciesnames2.csv")
 Jasper <- left_join(Jasper_Veg, JR_spp, by = "species")
 
 Jasper_species <- Jasper %>%
-  select("trtrep", "year", "species.name", "cover", "guild") %>%
+  select("uniqueID", "year", "species.name", "cover", "guild") %>%
   mutate(site = "Jasper") %>%
   filter(cover > 0)
 

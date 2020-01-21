@@ -31,9 +31,10 @@ library(tidyverse)
 
 ```
 
-```{r data import and prep, echo=FALSE}
+```{r com data import and prep, echo=FALSE}
 elkhorn_data <- read.csv("elkhorn_data.csv")
 elkhorn_data <- elkhorn_data %>%
+  select(-X) %>%
   filter(species.name != "Moss",
          species.name != "Thatch",
          species.name != "Bare ground")
@@ -44,6 +45,7 @@ elkhorn_data_rel <- elkhorn_data %>%
          relcov = intercepts/sumintercept)
 
 mcLserp_data <- read.csv("mclserp_data.csv") %>%
+  select(-X) %>%
    rename(species.name = Species_Name)
 mcLserp_data <- mcLserp_data %>%
   filter(species.name != "Bare",
@@ -51,6 +53,7 @@ mcLserp_data <- mcLserp_data %>%
          species.name != "Unknown forb")
 mcLserp_byquad <- mcLserp_data %>%
   group_by(Site, Year, plot, species.name) %>%
+  select(-X) %>%
   summarise(Cover = sum(Cover)) %>%
   ungroup() %>%
   group_by(plot, Year) %>%
@@ -59,6 +62,7 @@ mcLserp_byquad <- mcLserp_data %>%
 
 jasper_data <- read.csv("jasper_data.csv")
 jasper_data <- jasper_data %>%
+  select(-X) %>%
   filter(cover > 0) %>%
   group_by(trtrep, year) %>%
   mutate(sumcov = sum(cover),
@@ -66,6 +70,7 @@ jasper_data <- jasper_data %>%
 
 swan_data <- read.csv("swanton_data.csv")
 swan_data <- swan_data %>%
+  select(-X) %>%
   filter(species.name != "Moss",
          species.name != "Thatch",
          species.name != "Bare ground")
@@ -77,6 +82,7 @@ swan_data_rel <- swan_data %>%
 
 angelo_data <- read.csv("angelo_data.csv")
 ang_data_rel <- angelo_data %>%
+  select(-X) %>%
   select(year, plot, species.name, cover) %>%
   group_by(plot, year) %>%
   mutate(sumcov = sum(cover),
@@ -85,6 +91,7 @@ ang_data_rel <- angelo_data %>%
 McLAnn_data <- read.csv("mclann_data.csv") %>%
    rename(species.name = Species_Name)
 McLAnn_data <- McLAnn_data %>%
+  select(-X) %>%
   filter(species.name != "Bare",
          species.name != "Rock",
          species.name != "Unknown grass",
@@ -100,6 +107,7 @@ McLAnn_byquad <- McLAnn_data %>%
 car_data <- read.csv("carrizo_data.csv") %>%
     rename(species.name = Species.Name)
 car_data <- car_data %>%
+  select(-X) %>%
   filter(species.name != "litter",
          species.name != "bare",
          species.name != "hole",
@@ -113,6 +121,7 @@ car_data_rel <- car_data %>%
 
 ucsc_data <- read.csv("ucsc_data.csv")
 ucsc_data <- ucsc_data %>%
+  select(-X) %>%
   filter(species.name != "Thatch",
          species.name != "Bare ground")
 ucsc_data_rel <- ucsc_data %>%
@@ -124,7 +133,28 @@ ucsc_data_rel <- ucsc_data %>%
 
 ```
 
+```{r prism data import and prep, echo = FALSE}
+weather <- read.csv("PRISM_data.csv") %>%
+  select(-X)
+
+wtryr_weather <- read.csv("PRISM_wtryr_data.csv") %>%
+  select(-X)
+
+```
+
+
+
 # Species richness over time
+
+```{r richness/area calcs}
+elkhorn_data <- elkhorn_data %>% 
+  mutate(plot.size = "1") %>% group_by(year) %>%
+  mutate(no.plots = n_distinct(rep))
+
+
+```
+
+
 
 ```{r richness, echo = FALSE}
 
@@ -135,7 +165,6 @@ elk_rich_means <- elkhorn_data %>%
   summarise(meanrich = mean(rich),
             serich = (std.error(rich))) %>%
   mutate(Site = "Elkhorn")
-
 
 jasp_rich_means <- jasper_data %>%
   group_by(year, trtrep) %>%
@@ -204,14 +233,36 @@ all.rich <- full_join(all.rich, McLAnn_rich_means)
 all.rich <- full_join(all.rich, car_rich_means)
 all.rich <- full_join(all.rich, ucsc_rich_means)
 
-ggplot(all.rich, aes(x = year, y = meanrich, color = Site)) +
+all.rich <- all.rich %>%
+  rename(site = Site) %>%
+  select(-Year)
+
+all_rich_weather <- left_join(all.rich, wtryr_weather, by = c("year", "site"))
+
+all_rich_means <- all_rich_weather %>%
+  group_by(site) %>%
+  summarise(serich = std.error(meanrich),
+            meanrich = mean(meanrich),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin))
+  
+ggplot(all.rich, aes(x = year, y = meanrich, color = site)) +
   geom_line() +
   geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "All sites - Richness change",
        x = "Year",
        y = "Richness (# spp.)")
 
-ggplot(all.rich, aes(x = year, y = meanrich, color = Site)) +
+ggplot(all_rich_means, aes(x = precip, y = meanrich, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
+  labs(title = "All sites - Richness change",
+       x = "Precipitation",
+       y = "Richness (# spp.)")
+
+ggplot(all.rich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
       labs(title = "All sites - Species Richness over time",
        x = "Year",
@@ -224,120 +275,131 @@ ggplot(all.rich, aes(x = year, y = meanrich, color = Site)) +
 
 
 # Grouped Turnover Graph
+
 ```{r turnover, echo=FALSE}
-elk_turnover <- turnover(df = elkhorn_data_rel,
-                          time.var = "year",
-                          species.var = "species.name",
-                          abundance.var = "relcov",
-                          replicate.var = "rep")
-
-elk_turn_means <- elk_turnover %>%
-#  group_by(year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "Elkhorn")
-
-mcLserp_turnover <- turnover(df = mcLserp_byquad,
-                          time.var = "Year",
-                          species.var = "species.name",
-                          abundance.var = "relcov",
-                          replicate.var = "plot")
-McLserp_turn_means <- mcLserp_turnover %>%
-#  group_by(Year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "McL Serp")
-#         year = Year) 
-
-McLAnn_turnover <- turnover(df = McLAnn_byquad,
-                          time.var = "Year",
-                          species.var = "species.name",
-                          abundance.var = "relcov",
-                          replicate.var = "plot")
-McLAnn_turn_means <- McLAnn_turnover %>%
-#  group_by(Year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "McL Ann")
-#         year = Year)
-
-
-jasp_turnover <- turnover(df = jasper_data,
-                          time.var = "year",
-                          species.var = "species.name",
-                          abundance.var = "cover",
-                          replicate.var = "trtrep")
-jasp_turn_means <- jasp_turnover %>%
-#  group_by(year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "Jasper")
-
-swan_turnover <- turnover(df = swan_data_rel,
-                          time.var = "year",
-                          species.var = "species.name",
-                          abundance.var = "relcov",
-                          replicate.var = "rep")
-
-swan_turn_means <- swan_turnover %>%
-#  group_by(year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "Swanton")
-
-ucsc_turnover <- turnover(df = ucsc_data_rel,
-                          time.var = "year",
-                          species.var = "species.name",
-                          abundance.var = "relcov",
-                          replicate.var = "rep") 
-ucsc_turn_means <- ucsc_turnover %>%
-#  group_by(year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "UCSC")
-
+## missing Carrizo because that data isn't taken in the same plots every year
 
 ang_turnover <- turnover(df = ang_data_rel,
                           time.var = "year",
                           species.var = "species.name",
                           abundance.var = "relcov",
-                          replicate.var = "plot")
-ang_turn_means <- ang_turnover %>%
-#  group_by(year) %>%
-  summarise(meanturn = mean(total),
-            seturn = std.error(total)) %>%
-  mutate(Site = "Angelo")
+                          replicate.var = "plot") %>%
+  mutate(site = "Angelo")
 
+elk_turnover <- turnover(df = elkhorn_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "rep") %>%
+  mutate(site = "Elkhorn") %>%
+  rename(plot = rep)
 
-turnover_means <- full_join(elk_turn_means, McLserp_turn_means)
-turnover_means <- full_join (turnover_means, jasp_turn_means)
-turnover_means <- full_join (turnover_means, swan_turn_means)
-turnover_means <- full_join (turnover_means, ang_turn_means)
-turnover_means <- full_join (turnover_means, ucsc_turn_means)
-turnover_means <- full_join (turnover_means, McLAnn_turn_means)
+ucsc_turnover <- turnover(df = ucsc_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "rep") %>%
+  mutate(site = "UCSC") %>%
+  rename(plot = rep)
 
-ggplot(turnover_means, aes(x = Site, y = meanturn, color = Site)) +
-  geom_line() +
-  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+swan_turnover <- turnover(df = swan_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "rep") %>%
+  mutate(site = "Swanton") %>%
+  rename(plot = rep)
+
+jasp_turnover <- turnover(df = jasper_data,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "cover",
+                          replicate.var = "trtrep") %>%
+  mutate(site = "Jasper") %>%
+  rename(plot = trtrep)
+
+McLAnn_turnover <- turnover(df = McLAnn_byquad,
+                          time.var = "Year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "plot") %>%
+  mutate(site = "McL Ann",
+         year = Year)
+
+mcLserp_turnover <- turnover(df = mcLserp_byquad,
+                          time.var = "Year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "plot") %>%
+  mutate(site = "McL Serp",
+         year = Year)
+
+all_turnover <- full_join(ang_turnover, elk_turnover)
+all_turnover <- full_join(all_turnover, ucsc_turnover)
+all_turnover <- full_join(all_turnover, swan_turnover)
+all_turnover <- full_join(all_turnover, jasp_turnover)
+all_turnover <- full_join(all_turnover, mcLserp_turnover)
+all_turnover <- full_join(all_turnover, McLAnn_turnover)
+
+all_turnover <- all_turnover %>%
+  rename(turnover = total) %>%
+  select(-Year)
+
+all_turn_weather <- left_join(all_turnover, wtryr_weather, by = c("year", "site"))
+
+all_turn_means <- all_turn_weather %>%
+  group_by(site) %>%
+  summarise(meanturn = mean(turnover),
+            seturn = std.error(turnover),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin))
+
+```
+
+```{r turnover graphs, echo = FALSE}
+ggplot(all_turn_weather, aes(x = year, y = turnover, color = site)) +
+  geom_point() +
   labs(title = "All sites - Community Turnover",
        x = "Year",
        y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
 
-#ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
+ggplot(all_turn_weather, aes(x = precip, y = turnover, color = site)) +
+  geom_point() +
+  labs(title = "All sites - Community Turnover",
+       x = "Precipitation",
+       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+
+ggplot(all_turn_means, aes(x = precip, y = meanturn, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+  labs(title = "All sites - Community Turnover",
+       x = "Mean water-year precipitation (mm) during study years",
+       y = "Turnover (# spp. lost + gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+
+ggplot(all_turn_means, aes(x = tmean, y = meanturn, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+  labs(title = "All sites - Community Turnover",
+       x = "Mean temperature during study years",
+       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+
+# ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
 #  geom_line() +
 #  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
 #  labs(title = "All sites - Community Turnover",
 #       x = "Year",
 #       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
 
-#ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
+# ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
 #  geom_line() +
 #  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
 #  labs(title = "All sites - Community Turnover",
 #       x = "Year",
 #       y = "Turnover (# spp. lost+gained / total # spp.)")
-
 ```
+
 
 
 # CTI
@@ -424,3 +486,7 @@ ggplot(all.CTI, aes(x=year, y=meanCPI, color = site)) +
 #  stat_smooth(method = "lm", se = F, size =  1)
 
 ```
+
+
+# Analysis - GLMMs
+
