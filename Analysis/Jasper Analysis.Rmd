@@ -583,3 +583,15 @@ ggplot(jasp_wcti_means, aes(x = lagprecip, y = meanCPI)) +
 ```
 
 
+### Saving CTI .csv
+
+```{r CTI csv}
+
+jasp_CTI <- jasp_CTI %>%
+  rename(plot = trtrep) %>%
+  mutate(Site = "Jasper")
+write.csv(jasp_CTI, "Jasper_CTI.csv")
+
+```
+
+

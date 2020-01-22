@@ -10,19 +10,7 @@ output: html_document
 ## community analysis
 library(codyn)
 library(MASS)
-library(vegan)
 library(lme4)
-
-## CTI analysis
-library(CoordinateCleaner)
-library(countrycode)
-library(mapr)
-library(maptools)
-library(raster)
-library(rgbif)
-library(scrubr)
-library(sp)
-library(spocc)
 
 ## misc/both/other
 library(oz)
@@ -31,7 +19,7 @@ library(tidyverse)
 
 ```
 
-```{r com data import and prep, echo=FALSE}
+```{r com data import, echo=FALSE}
 elkhorn_data <- read.csv("elkhorn_data.csv")
 elkhorn_data <- elkhorn_data %>%
   select(-X) %>%
@@ -85,7 +73,7 @@ swan_data_rel <- swan_data %>%
          relcov = intercepts/sumintercept)
 
 angelo_data <- read.csv("angelo_data.csv") %>%
-  select(-X, -X.1)  %>%
+  select(-X)  %>%
   mutate(site = "Angelo")
 ang_data_rel <- angelo_data %>%
   select(year, plot, species.name, cover) %>%
@@ -141,6 +129,7 @@ ucsc_data_rel <- ucsc_data %>%
 
 
 ```
+
 
 ```{r prism data import and prep, echo = FALSE}
 weather <- read.csv("PRISM_data.csv") %>%
@@ -238,7 +227,8 @@ jasp_gcover <- jasper_data %>%
             serich = (std.error(rich))) %>%
   mutate(site = "Jasper")
 
-McLAnn_grich_means <- McLAnn_data %>%
+McLAnn_gcover <- McLAnn_data %>%
+  filter(Cover > 0) %>%
   group_by(year, plot, guild) %>%
   summarise(cover = sum(Cover)) %>% ungroup() %>%
   group_by(year, plot) %>%
@@ -259,6 +249,7 @@ McLAnn_grich_means <- McLAnn_data %>%
   mutate(site = "McL Ann")
 
 mcLserp_gcover <- mcLserp_data %>%
+  filter(Cover > 0) %>%
   group_by(year, plot, guild) %>%
   summarise(cover = sum(Cover)) %>% ungroup() %>%
   group_by(year, plot) %>%
@@ -266,7 +257,7 @@ mcLserp_gcover <- mcLserp_data %>%
          relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
   spread(guild, relcov) %>%
   replace(is.na(.), 0) %>%
-  add_column(NAGr = 0) %>% add_column(NPGr = 0) %>% 
+  add_column(NAGr = 0) %>% add_column(NPGr = 0) %>% add_column(EPG = 0) %>% 
   mutate(NatAnns = (NAF+NAG+NAGr),
          ExoAnns = (EAF+EAG),
          ExoPers = (EPF+EPG),
@@ -319,9 +310,49 @@ ucsc_gcover <- ucsc_data %>%
             serich = (std.error(rich))) %>%
   mutate(site = "UCSC")
 
+all.gcov <- full_join(mcLserp_gcover, swan_gcover)
+all.gcov <- full_join(all.gcov, elk_gcover)
+all.gcov <- full_join(all.gcov, jasp_gcover)
+all.gcov <- full_join(all.gcov, ang_gcover)
+all.gcov <- full_join(all.gcov, McLAnn_gcover)
+all.gcov <- full_join(all.gcov, car_gcover)
+all.gcov <- full_join(all.gcov, ucsc_gcover)
+
+all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
+
+all_gcov_means <- all_gcov %>%
+  group_by(site, guild, year) %>%
+  summarise(serich = std.error(meanrich),
+            meanrich = mean(meanrich),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin))
+  
 
 ```
 
+```{r tidy gcover workspace, include=FALSE}
+remove(mcLserp_gcover, swan_gcover, elk_gcover, jasp_gcover, ang_gcover, McLAnn_gcover, car_gcover, ucsc_gcover)
+```
+
+```{r guild cover graphs}
+
+ggplot(all_gcov_means, aes(x = year, y = meanrich, color = site)) +
+  geom_line() +
+  labs(title = "",
+       x = "Year",
+       y = "Relative cover") +
+  facet_grid(~guild) 
+
+ggplot(all_gcov_means, aes(x = precip, y = meanrich, color = site)) +
+  geom_line() +
+  labs(title = "",
+       x = "Precip",
+       y = "Relative cover") +
+  facet_grid(~guild) 
+
+```
 
 
 # Species richness over time
@@ -494,22 +525,6 @@ ggplot(all_grich_means, aes(x = year, y = meanrich, color = site)) +
        y = "Richness (# spp.)") +
   facet_grid(~guild)
 
-ggplot(all_rich_means, aes(x = precip, y = meanrich, color = site)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
-  labs(title = "All sites - Richness change",
-       x = "Precipitation",
-       y = "Richness (# spp.)")
-
-ggplot(all.rich, aes(x = year, y = meanrich, color = site)) +
-  geom_point() +
-      labs(title = "All sites - Species Richness over time",
-       x = "Year",
-       y = "Species Richness") +
-  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
-  facet_wrap(~site, ncol = 2, scales = "free") +
-  theme(legend.position = "none")
-
 ```
 
 
@@ -591,7 +606,6 @@ all.rich <- full_join(all.rich, car_rich_means)
 all.rich <- full_join(all.rich, ucsc_rich_means)
 
 all.rich <- all.rich %>%
-  rename(site = Site) %>%
   select(-Year)
 
 all_rich_weather <- left_join(all.rich, wtryr_weather, by = c("year", "site"))
@@ -631,7 +645,7 @@ ggplot(all.rich, aes(x = year, y = meanrich, color = site)) +
 ```
 
 
-```{r richness/area eval = FALSE}
+```{r richness per area, eval = FALSE}
 elk_richarea <- elkhorn_data %>% 
   mutate(plot.size = 4) %>% group_by(year) %>%
   mutate(no.plots = n_distinct(rep),
@@ -723,17 +737,9 @@ all.richarea.means <- all.richarea.weather %>%
 ggplot(all.richarea.means, aes(x = precip, y = meanrich, color = site)) +
   geom_line() +
   geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
-  labs(title = "All sites - Richness change",
+  labs(title = "",
        x = "Precipitation",
        y = "Richness (# spp/m^2)")
-
-ggplot(all_rich_means, aes(x = precip, y = meanrich, color = site)) +
-  geom_point() +
-  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
-  labs(title = "All sites - Richness change",
-       x = "Precipitation",
-       y = "Richness (# spp.)")
-
 
 ```
 
@@ -868,7 +874,7 @@ ggplot(all_turn_means, aes(x = tmean, y = meanturn, color = site)) +
 
 # CTI
 
-```{r code storage, eval=FALSE}
+```{r old code storage, eval=FALSE}
 car_CTI_means <- car_CTI_means %>%
    mutate(site = "Carrizo")
 jasp_CTI_means <- jasp_CTI_means %>%
@@ -900,11 +906,8 @@ ucsc_CTI_means <- ucsc_CTI_means %>%
  all.CTI <- all.CTI %>%
    select(year, site, meanCTI, seCTI, meanCPI, seCPI)
  write.csv(all.CTI, "allsites_CTI.csv")
-```
-
-
-```{r CTI}
-
+ 
+ 
 all.CTI <- read.csv("allsites_CTI.csv")
 
 
@@ -951,6 +954,91 @@ ggplot(all.CTI, aes(x=year, y=meanCPI, color = site)) +
 
 ```
 
+```{r CTI import and prep}
+setwd("CTI Data")
+ang_cti <- read.csv("Angelo_CTI.csv")
+car_cti <- read.csv("Carrizo_CTI.csv") %>%
+  rename(site = Site)
+elk_cti <- read.csv("Elkhorn_CTI.csv") %>%
+  rename(site = Site)
+jasp_cti <- read.csv("Jasper_CTI.csv") %>%
+  rename(site = Site)
+McLAnn_cti <- read.csv("McLAnn_CTI.csv")  %>%
+  rename(site = Site)
+mcLserp_cti <- read.csv("McLSerp_CTI.csv") %>%
+  rename(site = Site)
+Swan_cti <- read.csv("Swanton_CTI.csv")  %>%
+  rename(site = Site)
+UCSC_cti <- read.csv("UCSC_CTI.csv")  %>%
+  rename(site = Site)
 
-# Analysis - GLMMs
+all.CTI <- full_join(ang_cti, car_cti)
+all.CTI <- full_join(all.CTI, elk_cti)
+all.CTI <- full_join(all.CTI, jasp_cti)
+all.CTI <- full_join(all.CTI, McLAnn_cti)
+all.CTI <- full_join(all.CTI, mcLserp_cti)
+all.CTI <- full_join(all.CTI, Swan_cti)
+all.CTI <- full_join(all.CTI, UCSC_cti)
+
+all.CTI <- all.CTI %>%
+  select(-X, -hotTI, -ColdTI)
+
+all.CTI <- left_join(all.CTI, wtryr_weather, by = c("year", "site")) %>%
+  filter(year >= 1999)
+```
+
+```{r cti graph}
+ggplot(all.CTI, aes(x=year, y=CTI)) +
+  geom_boxplot(aes(group = year)) +
+      labs(title = "All sites - Community Temperature Index over time",
+       x = "Year",
+       y = "Community Temperature Index") +
+  facet_wrap(~site, nrow=2) 
+
+ggplot(all.CTI, aes(x=year, y=CTI)) +
+  geom_boxplot(aes(group = year)) +
+      labs(title = "All sites - Community Temperature Index over time",
+       x = "Year",
+       y = "Community Temperature Index") +
+  stat_smooth(method = "lm", se = F, size =  1)
+  
+
+ggplot(all.CTI, aes(x=year, y=CPI)) +
+  geom_boxplot(aes(group = year)) +
+      labs(title = "All sites - Community Precipitation Index over time",
+       x = "Year",
+       y = "Community Precipitation Index") +
+  facet_wrap(~site, nrow=2) 
+
+
+```
+
+
+## Analysis of CTI
+
+In our CTI model, we expect the following:  
+* Response variables (one at a time)
++ CTI
++ CPI
+
+* Fixed Effects
++ Time/Year
++ Climate factors?
+
+* Random Effects
++ Site
++ Plot within site
+
+```{r explore CTI}
+hist(all.CTI$CTI)
+
+cti.lm <- lmer(CTI ~ year + (1 | site) + (1 | site:plot), data = all.CTI)
+summary(cti.lm)
+
+boxplot(CTI ~ year, data = all.CTI)
+boxplot(CTI ~ site, data = all.CTI)
+
+
+```
+
 

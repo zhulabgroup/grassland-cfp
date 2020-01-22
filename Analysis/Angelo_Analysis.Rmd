@@ -393,3 +393,13 @@ ggplot(ang_CTI_means, aes(x=year, y=meanCPI)) +
   geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2)
 
 ```
+
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+write.csv(ang_CTI, "Angelo_CTI.csv")
+
+```
+

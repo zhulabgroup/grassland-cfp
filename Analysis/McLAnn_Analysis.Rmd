@@ -658,3 +658,15 @@ ggplot(McLAnn_CTI_means, aes(x=Year, y=meanCPI)) +
 
 
 ```
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+
+McLAnn_CTI <- McLAnn_CTI %>%
+  rename(year = Year) %>%
+  mutate(Site = "McL Ann")
+write.csv(McLAnn_CTI, "McLAnn_CTI.csv")
+
+```
