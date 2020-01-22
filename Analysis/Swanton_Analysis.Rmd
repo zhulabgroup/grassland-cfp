@@ -434,3 +434,16 @@ ggplot(swan_CTI_means, aes(x=year, y=meanCPI)) +
 
 
 ```
+
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+
+swan_CTI <- swan_CTI %>%
+  rename(plot = rep) %>%
+  mutate(Site = "Swanton")
+write.csv(swan_CTI, "Swanton_CTI.csv")
+
+```

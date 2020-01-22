@@ -480,3 +480,16 @@ elk_CTI_means <- elk_CTI %>%
    geom_point() +
    geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2)
 ```
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+
+elk_CTI <- elk_CTI %>%
+  rename(plot = rep) %>%
+  mutate(Site = "Elkhorn")
+write.csv(elk_CTI, "Elkhorn_CTI.csv")
+
+```
+
