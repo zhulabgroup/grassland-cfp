@@ -11,7 +11,10 @@ output: html_document
 library(codyn)
 library(MASS)
 library(lme4)
+<<<<<<< HEAD
 library(nlme)
+=======
+>>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
 
 ## misc/both/other
 library(oz)
@@ -320,6 +323,7 @@ all.gcov <- full_join(all.gcov, car_gcover)
 all.gcov <- full_join(all.gcov, ucsc_gcover)
 
 all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
+<<<<<<< HEAD
 
 all_gcov_means <- all_gcov %>%
   group_by(site, guild, year) %>%
@@ -333,6 +337,21 @@ all_gcov_means <- all_gcov %>%
 
 ```
 
+=======
+
+all_gcov_means <- all_gcov %>%
+  group_by(site, guild, year) %>%
+  summarise(serich = std.error(meanrich),
+            meanrich = mean(meanrich),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin))
+  
+
+```
+
+>>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
 ```{r tidy gcover workspace, include=FALSE}
 remove(mcLserp_gcover, swan_gcover, elk_gcover, jasp_gcover, ang_gcover, McLAnn_gcover, car_gcover, ucsc_gcover)
 ```
@@ -1030,6 +1049,7 @@ In our CTI model, we expect the following:
 + Site
 + Plot within site
 
+<<<<<<< HEAD
 I am using 
 
 ```{r explore CTI}
@@ -1041,6 +1061,12 @@ cti.lm <- nlme::lme(CTI ~ year + precip + tmin,
                     # correlation=corCAR1(form=~cYear|Site)
 )
 
+=======
+```{r explore CTI}
+hist(all.CTI$CTI)
+
+cti.lm <- lmer(CTI ~ year + (1 | site) + (1 | site:plot), data = all.CTI)
+>>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
 summary(cti.lm)
 
 boxplot(CTI ~ year, data = all.CTI)
