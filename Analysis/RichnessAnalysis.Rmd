@@ -20,11 +20,12 @@ library(plotrix)
 library(tidyverse)
 
 
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r com data import, echo=FALSE}
-elkhorn_data <- read.csv("elkhorn_data.csv")
+elkhorn_data <- read.csv("Analysis/ComData/elkhorn_data.csv")
 elkhorn_data <- elkhorn_data %>%
   select(-X) %>%
   filter(species.name != "Moss",
@@ -691,6 +692,13 @@ grid.arrange(
 
 ## Guild-richness analysis
 
+This represents changes in overall richness and native vs. exotic richness over time. Because these sites all are measured in different ways, and I'm not particularly interested in measuring the differences between them, I will run separate analyses for each site. 
+
+```{r Richness glmm}
+
+glmer(Diversity ~ ppt.winter.s + (Year.s|Site), family = "poisson", data = DiversityFunc[DiversityFunc$FuncGroup == "Native Annuals",])
+
+```
 
 
 
