@@ -11,10 +11,8 @@ output: html_document
 library(codyn)
 library(MASS)
 library(lme4)
-<<<<<<< HEAD
 library(nlme)
-=======
->>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
+
 
 ## misc/both/other
 library(oz)
@@ -323,7 +321,6 @@ all.gcov <- full_join(all.gcov, car_gcover)
 all.gcov <- full_join(all.gcov, ucsc_gcover)
 
 all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
-<<<<<<< HEAD
 
 all_gcov_means <- all_gcov %>%
   group_by(site, guild, year) %>%
@@ -337,27 +334,12 @@ all_gcov_means <- all_gcov %>%
 
 ```
 
-=======
 
-all_gcov_means <- all_gcov %>%
-  group_by(site, guild, year) %>%
-  summarise(serich = std.error(meanrich),
-            meanrich = mean(meanrich),
-            precip = mean(precip),
-            tmean = mean(tmean),
-            tmax = mean(tmax),
-            tmin = mean(tmin))
-  
-
-```
-
->>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
 ```{r tidy gcover workspace, include=FALSE}
 remove(mcLserp_gcover, swan_gcover, elk_gcover, jasp_gcover, ang_gcover, McLAnn_gcover, car_gcover, ucsc_gcover)
 ```
 
 ```{r guild cover graphs}
-
 ggplot(all_gcov_means, aes(x = year, y = meanrich, color = site)) +
   geom_line() +
   labs(title = "",
@@ -895,39 +877,6 @@ ggplot(all_turn_means, aes(x = tmean, y = meanturn, color = site)) +
 # CTI
 
 ```{r old code storage, eval=FALSE}
-car_CTI_means <- car_CTI_means %>%
-   mutate(site = "Carrizo")
-jasp_CTI_means <- jasp_CTI_means %>%
-   mutate(site = "Jasper")
-mcLserp_CTI_means <- mcLserp_CTI_means %>%
-   mutate(site = "McL Serp",
-          year = Year)
-ang_CTI_means <- ang_CTI_means %>%
-   mutate(site = "Angelo")
-elk_CTI_means <- elk_CTI_means %>%
-   mutate(site = "Elkhorn")
-swan_CTI_means <- swan_CTI_means %>%
-   mutate(site = "Swanton")
-McLAnn_CTI_means <- McLAnn_CTI_means %>%
-   mutate(site = "McL Ann",
-          year = Year)
-ucsc_CTI_means <- ucsc_CTI_means %>%
-   mutate(site = "UCSC")
- 
-
- all.CTI <- full_join(car_CTI_means, jasp_CTI_means)
- all.CTI <- full_join(all.CTI, mcLserp_CTI_means)
- all.CTI <- full_join(all.CTI, ang_CTI_means)
- all.CTI <- full_join(all.CTI, elk_CTI_means)
- all.CTI <- full_join(all.CTI, swan_CTI_means)
- all.CTI <- full_join(all.CTI, McLAnn_CTI_means)
- all.CTI <- full_join(all.CTI, ucsc_CTI_means)
-
- all.CTI <- all.CTI %>%
-   select(year, site, meanCTI, seCTI, meanCPI, seCPI)
- write.csv(all.CTI, "allsites_CTI.csv")
- 
- 
 all.CTI <- read.csv("allsites_CTI.csv")
 
 
@@ -1029,8 +978,6 @@ ggplot(all.CTI, aes(x=year, y=CPI)) +
        x = "Year",
        y = "Community Precipitation Index") +
   facet_wrap(~site, nrow=2) 
-
-
 ```
 
 
@@ -1049,25 +996,28 @@ In our CTI model, we expect the following:
 + Site
 + Plot within site
 
-<<<<<<< HEAD
-I am using 
+
 
 ```{r explore CTI}
 hist(all.CTI$CTI)
 
-cti.lm <- nlme::lme(CTI ~ year + precip + tmin,
-                    data = all.CTI, method = "REML",
+cti.lm.ang <- nlme::lme(CTI ~ year + precip + tmin,
+                    data = all.CTI[all.CTI$site == "Angelo",], method = "REML",
                     random =  ~ 1 | site/plot,
                     # correlation=corCAR1(form=~cYear|Site)
 )
 
-=======
-```{r explore CTI}
-hist(all.CTI$CTI)
+summary(cti.lm.ang)
 
-cti.lm <- lmer(CTI ~ year + (1 | site) + (1 | site:plot), data = all.CTI)
->>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
-summary(cti.lm)
+cti.lm.ang <- nlme::lme(CTI ~ precip + tmin,
+                    data = all.CTI[all.CTI$site == "Angelo",], method = "REML",
+                    random =  ~ 1 | site/plot,
+                    # correlation=corCAR1(form=~cYear|Site)
+)
+
+summary(cti.lm.ang)
+
+
 
 boxplot(CTI ~ year, data = all.CTI)
 boxplot(CTI ~ site, data = all.CTI)
