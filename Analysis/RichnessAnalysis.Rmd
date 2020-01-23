@@ -392,8 +392,12 @@ graph.all.rich <- ggplot(g.all.grich, aes(x = year, y = meanrich, color = site))
        y = "Richness") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.y = element_blank()) +
+        axis.title.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
   scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
   facet_grid(~site)
 
 graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site)) +
@@ -404,8 +408,12 @@ graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site))
        y = "Richness") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.y = element_blank()) +
-  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0))+
+        axis.title.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
   facet_grid(~site)
 
 graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site)) +
@@ -415,17 +423,22 @@ graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site))
        x = "Year",
        y = "Richness")  +  
   theme_classic() +
-  theme(axis.title.y = element_blank()) +
+  theme(legend.position = "bottom",
+        axis.title.y = element_blank(),
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
   scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
   facet_grid(~site)
 
-graph.rich.leg <- g_legend(nat.rich)
+graph.rich.leg <- g_legend(graph.nat.rich)
 
 grid.arrange(graph.all.rich,
              graph.nat.rich + theme(legend.position = "none"), 
              graph.exo.rich, 
              graph.rich.leg, 
-             nrow = 2)
+             nrow = 4)
 ```
 
 ### Analysis
@@ -485,8 +498,111 @@ ucsc.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = uc
 summary(ucsc.all.rich.glm)
 ```
 
+```{r native richness glmms, echo = FALSE}
 
+all.nat.grich <- all.grich %>% filter(guild == "Nat")
 
+# Angelo
+ang.all.rich <- all.nat.grich %>% filter(site == "Angelo")
+ang.all.rich$year <- scale(ang.all.rich$year)
+ang.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = ang.all.rich)
+summary(ang.all.rich.glm)
+
+# Carrizo
+car.all.rich <- all.nat.grich %>% filter(site == "Carrizo")
+car.all.rich$year <- scale(car.all.rich$year)
+car.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = car.all.rich)
+summary(car.all.rich.glm)
+
+# Elkhorn
+elk.all.rich <- all.nat.grich %>% filter(site == "Elkhorn")
+elk.all.rich$year <- scale(elk.all.rich$year)
+elk.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = elk.all.rich)
+summary(elk.all.rich.glm)
+
+# Jasper
+jasp.all.rich <- all.nat.grich %>% filter(site == "Jasper")
+jasp.all.rich$year <- scale(jasp.all.rich$year)
+jasp.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = jasp.all.rich)
+summary(jasp.all.rich.glm)
+
+# McL Ann
+mcLann.all.rich <- all.nat.grich %>% filter(site == "McL Ann")
+mcLann.all.rich$year <- scale(mcLann.all.rich$year)
+mcLann.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = mcLann.all.rich)
+summary(mcLann.all.rich.glm)
+
+# McL Serp
+mcLserp.all.rich <- all.nat.grich %>% filter(site == "McL Serp")
+mcLserp.all.rich$year <- scale(mcLserp.all.rich$year)
+mcLserp.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = mcLserp.all.rich)
+summary(mcLserp.all.rich.glm)
+
+# Swanton
+swan.all.rich <- all.nat.grich %>% filter(site == "Swanton")
+swan.all.rich$year <- scale(swan.all.rich$year)
+swan.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = swan.all.rich)
+summary(swan.all.rich.glm)
+
+# UCSC
+ucsc.all.rich <- all.nat.grich %>% filter(site == "UCSC")
+ucsc.all.rich$year <- scale(ucsc.all.rich$year)
+ucsc.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = ucsc.all.rich)
+summary(ucsc.all.rich.glm)
+```
+
+```{r exotic richness glmms, echo = FALSE}
+
+all.exo.grich <- all.grich %>% filter(guild == "Exo")
+
+# Angelo
+ang.all.rich <- all.exo.grich %>% filter(site == "Angelo")
+ang.all.rich$year <- scale(ang.all.rich$year)
+ang.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = ang.all.rich)
+summary(ang.all.rich.glm)
+
+# Carrizo
+car.all.rich <- all.exo.grich %>% filter(site == "Carrizo")
+car.all.rich$year <- scale(car.all.rich$year)
+car.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = car.all.rich)
+summary(car.all.rich.glm)
+
+# Elkhorn
+elk.all.rich <- all.exo.grich %>% filter(site == "Elkhorn")
+elk.all.rich$year <- scale(elk.all.rich$year)
+elk.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = elk.all.rich)
+summary(elk.all.rich.glm)
+
+# Jasper
+jasp.all.rich <- all.exo.grich %>% filter(site == "Jasper")
+jasp.all.rich$year <- scale(jasp.all.rich$year)
+jasp.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = jasp.all.rich)
+summary(jasp.all.rich.glm)
+
+# McL Ann
+mcLann.all.rich <- all.exo.grich %>% filter(site == "McL Ann")
+mcLann.all.rich$year <- scale(mcLann.all.rich$year)
+mcLann.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = mcLann.all.rich)
+summary(mcLann.all.rich.glm)
+
+# McL Serp
+mcLserp.all.rich <- all.exo.grich %>% filter(site == "McL Serp")
+mcLserp.all.rich$year <- scale(mcLserp.all.rich$year)
+mcLserp.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = mcLserp.all.rich)
+summary(mcLserp.all.rich.glm)
+
+# Swanton
+swan.all.rich <- all.exo.grich %>% filter(site == "Swanton")
+swan.all.rich$year <- scale(swan.all.rich$year)
+swan.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = swan.all.rich)
+summary(swan.all.rich.glm)
+
+# UCSC
+ucsc.all.rich <- all.exo.grich %>% filter(site == "UCSC")
+ucsc.all.rich$year <- scale(ucsc.all.rich$year)
+ucsc.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = ucsc.all.rich)
+summary(ucsc.all.rich.glm)
+```
 ## Relative richness of different guilds
 
 ```{r relative richness}
