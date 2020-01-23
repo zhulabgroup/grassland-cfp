@@ -1049,8 +1049,8 @@ In our CTI model, we expect the following:
 + Site
 + Plot within site
 
-<<<<<<< HEAD
-I am using 
+
+This is following [Ben Bolker's worked GLMM page](https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html) as a guide on how to do these analyses.
 
 ```{r explore CTI}
 hist(all.CTI$CTI)
@@ -1061,17 +1061,13 @@ cti.lm <- nlme::lme(CTI ~ year + precip + tmin,
                     # correlation=corCAR1(form=~cYear|Site)
 )
 
-=======
-```{r explore CTI}
+
 hist(all.CTI$CTI)
 
-cti.lm <- lmer(CTI ~ year + (1 | site) + (1 | site:plot), data = all.CTI)
->>>>>>> ee1bdbf0219d7d085588a03ec426a34a3421b5a7
 summary(cti.lm)
 
 boxplot(CTI ~ year, data = all.CTI)
 boxplot(CTI ~ site, data = all.CTI)
-
 
 ```
 
