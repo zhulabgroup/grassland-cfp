@@ -375,7 +375,7 @@ remove(McLAnn_grich)
 remove(car_grich)
 remove(ucsc_grich)
 ```
-
+### Graphs
 ```{r guild rich graphs}
 ggplot(all.grich.means, aes(x = year, y = meanrich, color = site)) +
   geom_line() +
@@ -418,6 +418,18 @@ nat.rich <- ggplot(exo.grich, aes(x = year, y = meanrich, color = site)) +
     facet_wrap(~site, nrow = 1)
 ```
 
+### Analysis
+
+This represents changes in overall richness and native vs. exotic richness over time. Because these sites all are measured in different ways, and I'm not particularly interested in measuring the differences between them, I will run separate analyses for each site. 
+
+```{r Richness glmm}
+
+glmer(Diversity ~ ppt.winter.s + (Year.s|Site), family = "poisson", data = DiversityFunc[DiversityFunc$FuncGroup == "Native Annuals",])
+
+```
+
+
+
 ## Relative richness of different guilds
 
 ```{r relative richness}
@@ -440,7 +452,7 @@ ang_grich <- angelo_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -465,7 +477,7 @@ car_grich <- car_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -489,7 +501,7 @@ elk_grich <- elkhorn_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -515,7 +527,7 @@ jasp_grich <- jasper_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -539,7 +551,7 @@ McLAnn_grich <- McLAnn_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -563,7 +575,7 @@ mcLserp_grich <- mcLserp_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -588,7 +600,7 @@ swan_grich <- swan_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -612,7 +624,7 @@ ucsc_grich <- ucsc_data %>%
          NatPers = (NPF+NPG+NPGr+NPS+NPT),
          all = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
   ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relrich") %>%
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', "all", key = "guild", value = "relrich") %>%
   group_by(year, guild) %>%
   summarise(meanrelrich = mean(relrich),
             serelrich = (std.error(relrich))) %>%
@@ -690,16 +702,6 @@ grid.arrange(
        x = "Year",
        y = "Relative Richness") +
     facet_wrap(~site, nrow = 1))
-```
-
-## Guild-richness analysis
-
-This represents changes in overall richness and native vs. exotic richness over time. Because these sites all are measured in different ways, and I'm not particularly interested in measuring the differences between them, I will run separate analyses for each site. 
-
-```{r Richness glmm}
-
-glmer(Diversity ~ ppt.winter.s + (Year.s|Site), family = "poisson", data = DiversityFunc[DiversityFunc$FuncGroup == "Native Annuals",])
-
 ```
 
 
