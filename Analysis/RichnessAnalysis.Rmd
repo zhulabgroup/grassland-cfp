@@ -373,8 +373,9 @@ guild.grich <- all.grich.means %>% filter(guild == "Exo" | guild == "Nat" | guil
 
 grid.arrange(
   ggplot(guild.grich) +
-  geom_point(aes(x = year, y = meanrich, color = guild)) +
-  geom_line(aes(x = year, y = meanrich, color = guild)) +
+    geom_point(aes(x = year, y = meanrich, color = guild)) +
+    geom_line(aes(x = year, y = meanrich, color = guild)) +
+    geom_errorbar(aes(x = year, ymin = meanrich-serich, ymax = meanrich+serich, color = guild)) +
     labs(title = "Richness of native and exotic species in 8 CA grasslands",
        x = "Year",
        y = "Richness") +
@@ -384,25 +385,25 @@ g.all.grich <- all.grich.means %>% filter(guild == "all")
 g.exo.grich <- all.grich.means %>% filter(guild == "Exo")
 g.nat.grich <- all.grich.means %>% filter(guild == "Nat")
 
-graph.all.rich <- ggplot(g.all.grich, aes(x = year, y = meanrich, color = site)) +
+(graph.all.rich <- ggplot(g.all.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
-    geom_line() +
+  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Total richness",
        x = "Year",
        y = "Richness") +
   theme_classic() +
-  theme(legend.position = "none",
+  theme(legend.position = "bottom",
         axis.title.y = element_blank(),
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
   scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
-  facet_grid(~site)
+  facet_grid(~site))
 
-graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site)) +
+(graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
-    geom_line() +
+  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Exotic richness",
        x = "Year",
        y = "Richness") +
@@ -412,30 +413,30 @@ graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site))
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0,15), breaks = seq(0,15,5), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
-  facet_grid(~site)
+  facet_grid(~site))
 
-graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site)) +
+(graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
-    geom_line() +
+  geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Native richness",
        x = "Year",
        y = "Richness")  +  
   theme_classic() +
-  theme(legend.position = "bottom",
+  theme(legend.position = "none",
         axis.title.y = element_blank(),
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  scale_y_continuous(limits = c(0,30), breaks = seq(0,30,5), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
-  facet_grid(~site)
+  facet_grid(~site))
 
-graph.rich.leg <- g_legend(graph.nat.rich)
+graph.rich.leg <- g_legend(graph.all.rich)
 
-grid.arrange(graph.all.rich,
-             graph.nat.rich + theme(legend.position = "none"), 
+grid.arrange(graph.all.rich + theme(legend.position = "none"),
+             graph.nat.rich, 
              graph.exo.rich, 
              graph.rich.leg, 
              nrow = 4)
