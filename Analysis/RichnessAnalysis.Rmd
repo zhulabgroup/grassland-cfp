@@ -1,0 +1,359 @@
+---
+title: "Richness_Analysis"
+author: "Josie Lesage"
+date: "1/23/2020"
+output: html_document
+---
+
+# Setup and data import
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(lme4)
+library(nlme)
+
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r com data import, echo=FALSE}
+elkhorn_data <- read.csv("elkhorn_data.csv")
+elkhorn_data <- elkhorn_data %>%
+  select(-X) %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Elkhorn")
+elkhorn_data_rel <- elkhorn_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+mcLserp_data <- read.csv("mclserp_data.csv") %>%
+  select(-X) %>%
+   rename(species.name = Species_Name)
+mcLserp_data <- mcLserp_data %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Serp",
+         year = Year)
+mcLserp_byquad <- mcLserp_data %>%
+  group_by(Site, Year, plot, species.name) %>%
+  summarise(Cover = sum(Cover)) %>%
+  ungroup() %>%
+  group_by(plot, Year) %>%
+  mutate(sumcov = sum(Cover),
+         relcov = Cover/sumcov)
+
+jasper_data <- read.csv("jasper_data.csv")
+jasper_data <- jasper_data %>%
+  select(-X) %>%
+  filter(cover > 0) %>%
+  group_by(uniqueID, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>%
+  mutate(site = "Jasper")
+
+swan_data <- read.csv("swanton_data.csv")
+swan_data <- swan_data %>%
+  select(-X) %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Swanton")
+swan_data_rel <- swan_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+angelo_data <- read.csv("angelo_data.csv") %>%
+  select(-X)  %>%
+  mutate(site = "Angelo")
+ang_data_rel <- angelo_data %>%
+  select(year, plot, species.name, cover) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov)
+
+McLAnn_data <- read.csv("mclann_data.csv") %>%
+   rename(species.name = Species_Name)
+McLAnn_data <- McLAnn_data %>%
+  select(-X) %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown grass",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Ann",
+         year = Year)
+McLAnn_byquad <- McLAnn_data %>%
+  group_by(Site, Year, plot, species.name) %>%
+  summarise(Cover = sum(Cover)) %>%
+  ungroup() %>%
+  group_by(plot, Year) %>%
+  mutate(sumcov = sum(Cover),
+         relcov = Cover/sumcov)
+
+car_data <- read.csv("carrizo_data.csv") %>%
+    rename(species.name = Species.Name)
+car_data <- car_data %>%
+  select(-X) %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss") %>%
+  mutate(site = "Carrizo")
+car_data_rel <- car_data %>%
+  select(year, Plot, species.name, Intercepts) %>%
+  distinct(year, Plot, species.name, .keep_all = TRUE) %>%
+  group_by(Plot, year) %>%
+  mutate(sumintercept = sum(Intercepts),
+         relcov = Intercepts/sumintercept)
+
+ucsc_data <- read.csv("ucsc_data.csv")
+ucsc_data <- ucsc_data %>%
+  select(-X) %>%
+  filter(species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "UCSC")
+ucsc_data_rel <- ucsc_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+
+```
+
+```{r prism data import and prep, echo = FALSE}
+weather <- read.csv("PRISM_data.csv") %>%
+  select(-X)
+
+wtryr_weather <- read.csv("PRISM_wtryr_data.csv") %>%
+  select(-X)
+
+```
+
+
+# Changes in guild-level cover over time
+
+```{r converting species level cover to guild level cover}
+ang_gcover <- angelo_data %>%
+  group_by(year, plot, guild) %>%
+  summarise(cover = sum(cover)) %>% ungroup() %>%
+  group_by(year, plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAG = 0) %>% add_column(NAGr = 0) %>% add_column(EPG = 0) %>%
+  add_column(NPGr = 0) %>% add_column(NPS = 0) %>% add_column(NPT = 0) %>%
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "relcov") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(relcov),
+            serich = (std.error(relcov))) %>%
+  mutate(site = "Angelo")
+
+car_gcover <- car_data %>%
+  group_by(year, Plot, guild) %>%
+  summarise(cover = sum(Intercepts)) %>% ungroup() %>%
+  group_by(year, Plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(Plot, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAGr = 0) %>% add_column(EPG = 0) %>% add_column(NPGr = 0) %>%
+  add_column(NPS = 0) %>% add_column(NPT = 0) %>%
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "Carrizo")
+
+elk_gcover <- elkhorn_data %>%
+  group_by(year, rep, guild) %>%
+  summarise(cover = sum(intercepts)) %>% ungroup() %>%
+  group_by(year, rep) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(rep, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAF = 0) %>% add_column(NAG = 0) %>% add_column(NPS = 0) %>% add_column(NPT = 0) %>%
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "Elkhorn")
+
+jasp_gcover <- jasper_data %>%
+  group_by(year, uniqueID, guild) %>%
+  summarise(cover = sum(cover)) %>% ungroup() %>%
+  group_by(year, uniqueID) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(uniqueID, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>% 
+  add_column(NAGr = 0) %>%  add_column(EAF = 0) %>% add_column(EPF = 0) %>%
+  add_column(EPG = 0) %>%  add_column(NPGr = 0) %>% add_column(NPS = 0) %>%
+  add_column(NPT = 0) %>%
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "Jasper")
+
+McLAnn_gcover <- McLAnn_data %>%
+  filter(Cover > 0) %>%
+  group_by(year, plot, guild) %>%
+  summarise(cover = sum(Cover)) %>% ungroup() %>%
+  group_by(year, plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAGr = 0) %>% add_column(NPGr = 0) %>% 
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "McL Ann")
+
+mcLserp_gcover <- mcLserp_data %>%
+  filter(Cover > 0) %>%
+  group_by(year, plot, guild) %>%
+  summarise(cover = sum(Cover)) %>% ungroup() %>%
+  group_by(year, plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAGr = 0) %>% add_column(NPGr = 0) %>% add_column(EPG = 0) %>% 
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "McL Serp")
+
+swan_gcover <- swan_data %>%
+  group_by(year, rep, guild) %>%
+  summarise(cover = sum(intercepts)) %>% ungroup() %>%
+  group_by(year, rep) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(rep, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAF = 0) %>% add_column(NAG = 0) %>% add_column(EPG = 0) %>% 
+  add_column(NPGr = 0) %>% add_column(NPS = 0) %>% add_column(NPT = 0) %>%
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "Swanton")
+
+ucsc_gcover <- ucsc_data %>%
+  group_by(year, rep, guild) %>%
+  summarise(cover = sum(intercepts)) %>% ungroup() %>%
+  group_by(year, rep) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(rep, year, relcov, guild)  %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  add_column(NAF = 0) %>% add_column(NAG = 0) %>% add_column(NPS = 0) %>% add_column(NPT = 0) %>%
+  mutate(NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT)) %>%
+  ungroup() %>% 
+  gather('NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', key = "guild", value = "rich") %>%
+  group_by(year, guild) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich))) %>%
+  mutate(site = "UCSC")
+
+all.gcov <- full_join(mcLserp_gcover, swan_gcover)
+all.gcov <- full_join(all.gcov, elk_gcover)
+all.gcov <- full_join(all.gcov, jasp_gcover)
+all.gcov <- full_join(all.gcov, ang_gcover)
+all.gcov <- full_join(all.gcov, McLAnn_gcover)
+all.gcov <- full_join(all.gcov, car_gcover)
+all.gcov <- full_join(all.gcov, ucsc_gcover)
+
+all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
+
+all_gcov_means <- all_gcov %>%
+  group_by(site, guild, year) %>%
+  summarise(serich = std.error(meanrich),
+            meanrich = mean(meanrich),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin))
+  
+
+```
+
+
+```{r tidy gcover workspace, include=FALSE}
+remove(mcLserp_gcover, swan_gcover, elk_gcover, jasp_gcover, ang_gcover, McLAnn_gcover, car_gcover, ucsc_gcover)
+```
+
+```{r guild cover graphs}
+ggplot(all_gcov_means, aes(x = year, y = meanrich, color = site)) +
+  geom_line() +
+  labs(title = "",
+       x = "Year",
+       y = "Relative cover") +
+  facet_grid(~guild) 
+
+ggplot(all_gcov_means, aes(x = precip, y = meanrich, color = site)) +
+  geom_line() +
+  labs(title = "",
+       x = "Precip",
+       y = "Relative cover") +
+  facet_grid(~guild) 
+
+```
