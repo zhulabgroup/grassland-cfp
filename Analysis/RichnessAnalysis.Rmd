@@ -18,6 +18,7 @@ library(nlme)
 library(oz)
 library(plotrix)
 library(tidyverse)
+library(gridExtra)
 
 
 
@@ -25,6 +26,31 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r com data import, echo=FALSE}
+angelo_data <- read.csv("Analysis/ComData/angelo_data.csv") %>%
+  select(-X)  %>%
+  mutate(site = "Angelo")
+ang_data_rel <- angelo_data %>%
+  select(year, plot, species.name, cover) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov)
+
+car_data <- read.csv("Analysis/ComData/carrizo_data.csv") %>%
+    rename(species.name = Species.Name)
+car_data <- car_data %>%
+  select(-X) %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss") %>%
+  mutate(site = "Carrizo")
+car_data_rel <- car_data %>%
+  select(year, Plot, species.name, Intercepts) %>%
+  distinct(year, Plot, species.name, .keep_all = TRUE) %>%
+  group_by(Plot, year) %>%
+  mutate(sumintercept = sum(Intercepts),
+         relcov = Intercepts/sumintercept)
+
 elkhorn_data <- read.csv("Analysis/ComData/elkhorn_data.csv")
 elkhorn_data <- elkhorn_data %>%
   select(-X) %>%
@@ -38,24 +64,7 @@ elkhorn_data_rel <- elkhorn_data %>%
   mutate(sumintercept = sum(intercepts),
          relcov = intercepts/sumintercept)
 
-mcLserp_data <- read.csv("mclserp_data.csv") %>%
-  select(-X) %>%
-   rename(species.name = Species_Name)
-mcLserp_data <- mcLserp_data %>%
-  filter(species.name != "Bare",
-         species.name != "Rock",
-         species.name != "Unknown forb") %>%
-  mutate(site = "McL Serp",
-         year = Year)
-mcLserp_byquad <- mcLserp_data %>%
-  group_by(Site, Year, plot, species.name) %>%
-  summarise(Cover = sum(Cover)) %>%
-  ungroup() %>%
-  group_by(plot, Year) %>%
-  mutate(sumcov = sum(Cover),
-         relcov = Cover/sumcov)
-
-jasper_data <- read.csv("jasper_data.csv")
+jasper_data <- read.csv("Analysis/ComData/jasper_data.csv")
 jasper_data <- jasper_data %>%
   select(-X) %>%
   filter(cover > 0) %>%
@@ -64,29 +73,7 @@ jasper_data <- jasper_data %>%
          relcov = cover/sumcov) %>%
   mutate(site = "Jasper")
 
-swan_data <- read.csv("swanton_data.csv")
-swan_data <- swan_data %>%
-  select(-X) %>%
-  filter(species.name != "Moss",
-         species.name != "Thatch",
-         species.name != "Bare ground") %>%
-  mutate(site = "Swanton")
-swan_data_rel <- swan_data %>%
-  select(year, rep, species.name, intercepts) %>%
-  group_by(rep, year) %>%
-  mutate(sumintercept = sum(intercepts),
-         relcov = intercepts/sumintercept)
-
-angelo_data <- read.csv("angelo_data.csv") %>%
-  select(-X)  %>%
-  mutate(site = "Angelo")
-ang_data_rel <- angelo_data %>%
-  select(year, plot, species.name, cover) %>%
-  group_by(plot, year) %>%
-  mutate(sumcov = sum(cover),
-         relcov = cover/sumcov)
-
-McLAnn_data <- read.csv("mclann_data.csv") %>%
+McLAnn_data <- read.csv("Analysis/ComData/mclann_data.csv") %>%
    rename(species.name = Species_Name)
 McLAnn_data <- McLAnn_data %>%
   select(-X) %>%
@@ -104,23 +91,38 @@ McLAnn_byquad <- McLAnn_data %>%
   mutate(sumcov = sum(Cover),
          relcov = Cover/sumcov)
 
-car_data <- read.csv("carrizo_data.csv") %>%
-    rename(species.name = Species.Name)
-car_data <- car_data %>%
+mcLserp_data <- read.csv("Analysis/ComData/mclserp_data.csv") %>%
   select(-X) %>%
-  filter(species.name != "litter",
-         species.name != "bare",
-         species.name != "hole",
-         species.name != "moss") %>%
-  mutate(site = "Carrizo")
-car_data_rel <- car_data %>%
-  select(year, Plot, species.name, Intercepts) %>%
-  distinct(year, Plot, species.name, .keep_all = TRUE) %>%
-  group_by(Plot, year) %>%
-  mutate(sumintercept = sum(Intercepts),
-         relcov = Intercepts/sumintercept)
+   rename(species.name = Species_Name)
+mcLserp_data <- mcLserp_data %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Serp",
+         year = Year)
+mcLserp_byquad <- mcLserp_data %>%
+  group_by(Site, Year, plot, species.name) %>%
+  summarise(Cover = sum(Cover)) %>%
+  ungroup() %>%
+  group_by(plot, Year) %>%
+  mutate(sumcov = sum(Cover),
+         relcov = Cover/sumcov)
 
-ucsc_data <- read.csv("ucsc_data.csv")
+swan_data <- read.csv("Analysis/ComData/swanton_data.csv")
+swan_data <- swan_data %>%
+  select(-X) %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Swanton")
+swan_data_rel <- swan_data %>%
+  select(year, rep, species.name, intercepts) %>%
+  group_by(rep, year) %>%
+  mutate(sumintercept = sum(intercepts),
+         relcov = intercepts/sumintercept)
+
+
+ucsc_data <- read.csv("Analysis/ComData/ucsc_data.csv")
 ucsc_data <- ucsc_data %>%
   select(-X) %>%
   filter(species.name != "Thatch",
@@ -136,9 +138,9 @@ ucsc_data_rel <- ucsc_data %>%
 ```
 
 ```{r prism data import and prep, echo = FALSE}
-weather <- read.csv("PRISM_data.csv") %>%
+weather <- read.csv("Analysis/ClimData/PRISM_data.csv") %>%
   select(-X)
-wtryr_weather <- read.csv("PRISM_wtryr_data.csv") %>%
+wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv") %>%
   select(-X)
 ```
 
