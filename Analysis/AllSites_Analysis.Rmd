@@ -18,7 +18,16 @@ library(nlme)
 library(oz)
 library(plotrix)
 library(tidyverse)
+library(gridExtra)
 
+
+# to rip legends out of figures
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+} 
 ```
 
 ```{r com data import, echo=FALSE}
@@ -787,49 +796,43 @@ elk_turnover <- turnover(df = elkhorn_data_rel,
                           time.var = "year",
                           species.var = "species.name",
                           abundance.var = "relcov",
-                          replicate.var = "rep") %>%
-  mutate(site = "Elkhorn") %>%
-  rename(plot = rep)
+                          replicate.var = "plot") %>%
+  mutate(site = "Elkhorn") 
 
 ucsc_turnover <- turnover(df = ucsc_data_rel,
                           time.var = "year",
                           species.var = "species.name",
                           abundance.var = "relcov",
-                          replicate.var = "rep") %>%
-  mutate(site = "UCSC") %>%
-  rename(plot = rep)
+                          replicate.var = "plot") %>%
+  mutate(site = "UCSC")
 
 swan_turnover <- turnover(df = swan_data_rel,
                           time.var = "year",
                           species.var = "species.name",
                           abundance.var = "relcov",
-                          replicate.var = "rep") %>%
-  mutate(site = "Swanton") %>%
-  rename(plot = rep)
+                          replicate.var = "plot") %>%
+  mutate(site = "Swanton") 
 
 jasp_turnover <- turnover(df = jasper_data,
                           time.var = "year",
                           species.var = "species.name",
-                          abundance.var = "cover",
-                          replicate.var = "uniqueID") %>%
-  mutate(site = "Jasper") %>%
-  rename(plot = uniqueID)
+                          abundance.var = "relcov",
+                          replicate.var = "plot") %>%
+  mutate(site = "Jasper") 
 
 McLAnn_turnover <- turnover(df = McLAnn_byquad,
-                          time.var = "Year",
+                          time.var = "year",
                           species.var = "species.name",
                           abundance.var = "relcov",
                           replicate.var = "plot") %>%
-  mutate(site = "McL Ann",
-         year = Year)
+  mutate(site = "McL Ann")
 
 mcLserp_turnover <- turnover(df = mcLserp_byquad,
-                          time.var = "Year",
+                          time.var = "year",
                           species.var = "species.name",
                           abundance.var = "relcov",
                           replicate.var = "plot") %>%
-  mutate(site = "McL Serp",
-         year = Year)
+  mutate(site = "McL Serp")
 
 all_turnover <- full_join(ang_turnover, elk_turnover)
 all_turnover <- full_join(all_turnover, ucsc_turnover)
@@ -839,8 +842,7 @@ all_turnover <- full_join(all_turnover, mcLserp_turnover)
 all_turnover <- full_join(all_turnover, McLAnn_turnover)
 
 all_turnover <- all_turnover %>%
-  rename(turnover = total) %>%
-  select(-Year)
+  rename(turnover = total) 
 
 all_turn_weather <- left_join(all_turnover, wtryr_weather, by = c("year", "site"))
 
@@ -862,25 +864,43 @@ ggplot(all_turn_weather, aes(x = year, y = turnover, color = site)) +
        x = "Year",
        y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
 
-ggplot(all_turn_weather, aes(x = precip, y = turnover, color = site)) +
-  geom_point() +
-  labs(title = "All sites - Community Turnover",
-       x = "Precipitation",
-       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
-
-ggplot(all_turn_means, aes(x = precip, y = meanturn, color = site)) +
+graph_turn <- ggplot(all_turn_means, aes(x = site, y = meanturn, color = site)) +
   geom_point() +
   geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
-  labs(title = "All sites - Community Turnover",
-       x = "Mean water-year precipitation (mm) during study years",
-       y = "Turnover (# spp. lost + gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+  labs(title = "Community turnover by site",
+     x = "Mean water-year precipitation (mm) during study years",
+     y = "Turnover)") +
+  theme_classic() +
+  theme(legend.position = "none") +
+  stat_smooth(method = "lm", se = F, size =  1)
 
-ggplot(all_turn_means, aes(x = tmean, y = meanturn, color = site)) +
+graph_precip_turn <- ggplot(all_turn_means, aes(x = precip, y = meanturn, color = site)) +
   geom_point() +
   geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
-  labs(title = "All sites - Community Turnover",
-       x = "Mean temperature during study years",
-       y = "Turnover (# spp. lost+gained / total # spp.)") + stat_smooth(method = "lm", se = F, size =  1)
+  labs(title = "Community turnover by water year precip",
+     x = "Mean water-year precipitation (mm) during study years",
+     y = "Turnover)") +
+  theme_classic() +
+  theme(legend.position = "none") +
+  stat_smooth(method = "lm", se = F, size =  1)
+
+graph_temp_turn <- ggplot(all_turn_means, aes(x = tmin, y = meanturn, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+  labs(title = "Community turnover by min. temp",
+     x = "Minimum annual temperature during study years",
+     y = "Turnover") + 
+  theme_classic() +
+  theme(legend.position = "bottom") +
+  stat_smooth(method = "lm", se = F, size =  1)
+
+turn_leg <- g_legend(temp_turn)
+
+grid.arrange(graph_turn, 
+             graph_precip_turn,
+             graph_temp_turn + theme(legend.position = "none"), 
+             turn_leg, 
+             nrow = 4)
 
 # ggplot(turnover_means, aes(x = year, y = meanturn, color = Site)) +
 #  geom_line() +
