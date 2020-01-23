@@ -23,6 +23,14 @@ library(gridExtra)
 
 
 knitr::opts_chunk$set(echo = TRUE)
+
+# to rip legends out of figures
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+} 
 ```
 
 ```{r com data import, echo=FALSE}
@@ -334,8 +342,8 @@ all.grich <- left_join(all.grich, wtryr_weather, by = c("year", "site"))
 
 all.grich.means <- all.grich %>%
   group_by(site, guild, year) %>%
-  summarise(serich = std.error(serich),
-            meanrich = mean(meanrich),
+  summarise(serich = std.error(rich),
+            meanrich = mean(rich),
             precip = mean(precip),
             tmean = mean(tmean),
             tmax = mean(tmax),
@@ -361,7 +369,6 @@ ggplot(all.grich.means, aes(x = year, y = meanrich, color = site)) +
        y = "Richness") +
   facet_grid(~guild) 
 
-
 guild.grich <- all.grich.means %>% filter(guild == "Exo" | guild == "Nat" | guild == "all")
 
 grid.arrange(
@@ -373,40 +380,109 @@ grid.arrange(
        y = "Richness") +
     facet_wrap(~site, nrow = 1))
 
+g.all.grich <- all.grich.means %>% filter(guild == "all")
+g.exo.grich <- all.grich.means %>% filter(guild == "Exo")
+g.nat.grich <- all.grich.means %>% filter(guild == "Nat")
 
-
-exo.grich <- all.grich.means %>% filter(guild == "Exo")
-nat.grich <- all.grich.means %>% filter(guild == "Nat")
-
-exo.rich <- ggplot(nat.grich, aes(x = year, y = meanrich, color = site)) +
+graph.all.rich <- ggplot(g.all.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
     geom_line() +
-  labs(title = "Native species richness",
+  labs(title = "Total richness",
        x = "Year",
        y = "Richness") +
-    facet_wrap(~site, nrow = 1)
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.title.y = element_blank()) +
+  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  facet_grid(~site)
 
-nat.rich <- ggplot(exo.grich, aes(x = year, y = meanrich, color = site)) +
+graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
     geom_line() +
-  labs(title = "Exotic species richness",
+  labs(title = "Exotic richness",
        x = "Year",
        y = "Richness") +
-    facet_wrap(~site, nrow = 1)
+  theme_classic() +
+  theme(legend.position = "none",
+        axis.title.y = element_blank()) +
+  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0))+
+  facet_grid(~site)
+
+graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site)) +
+  geom_point() +
+    geom_line() +
+  labs(title = "Native richness",
+       x = "Year",
+       y = "Richness")  +  
+  theme_classic() +
+  theme(axis.title.y = element_blank()) +
+  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
+  facet_grid(~site)
+
+graph.rich.leg <- g_legend(nat.rich)
+
+grid.arrange(graph.all.rich,
+             graph.nat.rich + theme(legend.position = "none"), 
+             graph.exo.rich, 
+             graph.rich.leg, 
+             nrow = 2)
 ```
 
 ### Analysis
 
 This represents changes in overall richness and native vs. exotic richness over time. Because these sites all are measured in different ways, and I'm not particularly interested in measuring the differences between them, I will run separate analyses for each site. 
 
-```{r Richness glmms, echo = FALSE}
+```{r overall richness glmms, echo = FALSE}
+
+all.all.grich <- all.grich %>% filter(guild == "all")
 
 # Angelo
+ang.all.rich <- all.all.grich %>% filter(site == "Angelo")
+ang.all.rich$year <- scale(ang.all.rich$year)
+ang.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = ang.all.rich)
+summary(ang.all.rich.glm)
+
+# Carrizo
+car.all.rich <- all.all.grich %>% filter(site == "Carrizo")
+car.all.rich$year <- scale(car.all.rich$year)
+car.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = car.all.rich)
+summary(car.all.rich.glm)
+
+# Elkhorn
+elk.all.rich <- all.all.grich %>% filter(site == "Elkhorn")
+elk.all.rich$year <- scale(elk.all.rich$year)
+elk.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = elk.all.rich)
+summary(elk.all.rich.glm)
+
+# Jasper
+jasp.all.rich <- all.all.grich %>% filter(site == "Jasper")
+jasp.all.rich$year <- scale(jasp.all.rich$year)
+jasp.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = jasp.all.rich)
+summary(jasp.all.rich.glm)
 
 # McL Ann
-mcLann.rich <- 
-glmer(Diversity ~ ppt.winter.s + (Year.s|Site), family = "poisson", data = DiversityFunc[DiversityFunc$FuncGroup == "Native Annuals",])
+mcLann.all.rich <- all.all.grich %>% filter(site == "McL Ann")
+mcLann.all.rich$year <- scale(mcLann.all.rich$year)
+mcLann.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = mcLann.all.rich)
+summary(mcLann.all.rich.glm)
 
+# McL Serp
+mcLserp.all.rich <- all.all.grich %>% filter(site == "McL Serp")
+mcLserp.all.rich$year <- scale(mcLserp.all.rich$year)
+mcLserp.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = mcLserp.all.rich)
+summary(mcLserp.all.rich.glm)
+
+# Swanton
+swan.all.rich <- all.all.grich %>% filter(site == "Swanton")
+swan.all.rich$year <- scale(swan.all.rich$year)
+swan.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = swan.all.rich)
+summary(swan.all.rich.glm)
+
+# UCSC
+ucsc.all.rich <- all.all.grich %>% filter(site == "UCSC")
+ucsc.all.rich$year <- scale(ucsc.all.rich$year)
+ucsc.all.rich.glm <- glmer(rich ~ year + (1|plot), family = "poisson", data = ucsc.all.rich)
+summary(ucsc.all.rich.glm)
 ```
 
 
