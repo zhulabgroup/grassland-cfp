@@ -1076,6 +1076,8 @@ all.gcov <- full_join(all.gcov, ucsc_gcover)
 
 all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
 
+
+
 all_gcov <- left_join(all_gcov, all.CTI, by = c("site", "year"))
 
 all_gcov_means <- all_gcov %>%
@@ -1087,7 +1089,9 @@ all_gcov_means <- all_gcov %>%
             tmax = mean(tmax.y),
             tmin = mean(tmin.y),
             mean.CTI = mean(CTI),
-            se.CTI = std.error(CTI))
+            se.CTI = std.error(CTI),
+            mean.CPI = mean(CPI),
+            se.CPI = std.error(CPI))
 ```
 
 ```{r tidy gcover workspace, include=FALSE}
@@ -1114,18 +1118,31 @@ exo.gcov <- all_gcov_means %>% filter(guild == "Exo")
 nat.gcov <- all_gcov_means %>% filter(guild == "Nat")
 
 spp.gcov <- full_join(exo.gcov, nat.gcov)
-ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CTI, color = site)) +
+
+grid.arrange(ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CTI, color = site)) +
   geom_point() +
   geom_line() +
   labs(title = "",
        x = "Relative native cover",
        y = "CTI") +
   theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text = element_blank()) +
+  scale_x_continuous(limits = c(0,1), expand = c(0.05,0)) +
+  facet_grid(~guild),
+ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CPI, color = site)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "",
+       x = "Relative native cover",
+       y = "CPI") +
+  theme_bw() +
   theme(legend.position = "bottom",
         strip.background = element_blank(),
         strip.text = element_blank()) +
   scale_x_continuous(limits = c(0,1), expand = c(0.05,0)) +
-  facet_grid(~guild)
+  facet_grid(~guild))
 
 
 
