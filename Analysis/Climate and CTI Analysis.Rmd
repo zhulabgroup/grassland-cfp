@@ -10,8 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r data import}
-climate_site <- read.csv("PRISM_data.csv")
-climate_site_wtryr <- read.csv("PRISM_wtryr_data.csv")
+climate_site <- read.csv("Analysis/ClimData/PRISM_data.csv")
+climate_site_wtryr <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv")
 ```
 
 
