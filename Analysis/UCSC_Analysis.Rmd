@@ -446,3 +446,18 @@ ggplot(ucsc_CTI_means, aes(x=year, y=meanCPI)) +
 
 
 ```
+
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+
+ucsc_CTI <- ucsc_CTI %>%
+  rename(plot = rep) %>%
+  mutate(Site = "UCSC")
+write.csv(ucsc_CTI, "UCSC_CTI.csv")
+
+```
+
+

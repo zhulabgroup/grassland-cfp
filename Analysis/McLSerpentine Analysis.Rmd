@@ -780,3 +780,15 @@ ggplot(mcLserp_CTI_means, aes(x=Year, y=meanCPI)) +
 
 ```
 
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+
+mcLserp_CTI <- mcLserp_CTI %>%
+  rename(year = Year) %>%
+  mutate(Site = "McL Serp")
+write.csv(mcLserp_CTI, "McLSerp_CTI.csv")
+
+```

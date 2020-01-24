@@ -169,6 +169,8 @@ ang_species_data <- occ(query = ang_species_list, from = "gbif", has_coords = TR
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 
+write_rds(ang_species_data, "AngeloSpData.rds")
+
 ## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
 ## we should use the scrubr version of the function in the future
 ang_species_data <- fixnames(ang_species_data, how = "query")
@@ -393,3 +395,13 @@ ggplot(ang_CTI_means, aes(x=year, y=meanCPI)) +
   geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2)
 
 ```
+
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+write.csv(ang_CTI, "Angelo_CTI.csv")
+
+```
+
