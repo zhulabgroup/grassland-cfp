@@ -7,6 +7,40 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+## community analysis
+library(codyn)
+library(MASS)
+library(lme4)
+library(nlme)
+
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+library(gridExtra)
+
+# to rip legends out of figures
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+} 
+
+# converts the year into the water year based on month
+wtr_yr <- function(dates, start_month=10) {
+  # Convert dates into POSIXlt
+  dates.posix = as.POSIXlt(dates)
+  # Year offset
+  offset = ifelse(dates.posix$mon >= start_month - 1, 1, 0)
+  # Water year
+  adj.year = dates.posix$year + 1900 + offset
+  # Return the water year
+  adj.year
+}
+
 ```
 
 ```{r data import}
@@ -32,12 +66,41 @@ ggplot(climate_site) +
   geom_jitter(aes(x = site, y = tmax), color = "red") +
   geom_jitter(aes(x = site, y = tmin), color = "blue") +
   labs(x = "site",
-       y = "monthly mean and min temps, 1982-2019")
+       y = "monthly min and max temps, 1982-2019")
 ```
 
 We're also interested in seeing how climate may or may not have changed over time - so we will generate annual summaries.
 
-```{r annual climate change}
+```{r annual climate}
+ggplot(climate_site_wtryr) +
+  geom_point(aes(x = year, y = tmin*800, color = site), shape = 3) +
+  geom_line(aes(x = year, y = tmin*800, color = site)) +
+  geom_bar(aes(x = year, y = precip, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  scale_y_continuous(sec.axis = sec_axis(~./800, name = "Avg. min. temperature (C)")) +
+  scale_x_continuous(limits = c(1982, 2020), breaks = seq(1982, 2019, 10), expand = c(0,0)) +
+  labs(title = "Site-level Climate Data 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  facet_grid(~site)
+
+(graph.clim.data <-ggplot(climate_site_wtryr) +
+  geom_point(aes(x = year, y = tmin*750, color = site), shape = 3) +
+  geom_line(aes(x = year, y = tmin*750, color = site)) +
+  geom_bar(aes(x = year, y = precip, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  scale_y_continuous(sec.axis = sec_axis(~./750, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, nrow = 1))
+
 climate_site_wtryr_win <- climate_site %>% 
   filter(month == 12 | month == 01 | month == 02) %>%
   mutate(date1 = date,
@@ -50,32 +113,15 @@ climate_site_wtryr_win <- climate_site %>%
   rename(year = wateryr) %>%
   filter(year != 2020)
 
-climate_site_wtryr_sum <- climate_site %>% 
-  filter(month == 06) %>%
-  mutate(date1 = date,
-         wateryr = wtr_yr(date1)) %>%
-  group_by(site, wateryr) %>%
-  summarise(precip = sum(ppt),
-            tmean = mean(tmean),
-            tmin = mean(tmin),
-            tmax = mean(tmax)) %>%
-  rename(year = wateryr) 
-
 ggplot(climate_site_wtryr_win) +
   geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
   geom_line(aes(x = year, y = tmin, color = site)) +
   labs(title = "Winter")
 
-
 ggplot(climate_site_wtryr) +
   geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
   geom_line(aes(x = year, y = tmin, color = site)) +
   labs(title = "Year")
-
-
-ggplot(climate_site_wtryr) +
-  geom_point(aes(x = year, y = precip, color = site), shape = 1) +
-  geom_line(aes(x = year, y = precip, color = site))
 
 ggplot(climate_site_wtryr_win) +
   geom_point(aes(x = year, y = tmean, color = site), shape = 1) +
@@ -96,48 +142,39 @@ ggplot(climate_site_wtryr) +
 ```
 
 
-# CTI DATA
-```{r CTI import}
-McLAnn_CTI_rep <- McLAnn_CTI %>%
-  rename(rep = plot,
-         year = Year) %>%
-  mutate(site = "McL Ann")
-
-mcLserp_CTI_rep <- mcLserp_CTI %>%
-  rename(rep = plot,
-         year = Year) %>%
-  mutate(site = "McL Serp")
-
-elk_CTI_rep <- elk_CTI %>%
-  mutate(site = "Elkhorn")
-
-jasp_CTI_rep <- jasp_CTI %>%
-  rename(rep = trtrep) %>%
-  mutate(site = "Jasper")
-
-ucsc_CTI_rep <- ucsc_CTI %>%
-  mutate(site = "UCSC")
-
-swan_CTI_rep <- swan_CTI %>%
-  mutate(site = "Swanton")
-
-car_CTI_rep <- car_CTI %>%
-  rename(plot = Plot) %>%
-  mutate(site = "Carrizo")
-
-ang_CTI_rep <- ang_CTI %>%
-  mutate(site = "Angelo")
 
 
-sub.cti <- full_join(mcLserp_CTI_rep, McLAnn_CTI_rep)
-sub.cti <- full_join(sub.cti, elk_CTI_rep)
-sub.cti <- full_join(sub.cti, jasp_CTI_rep)
-sub.cti <- full_join(sub.cti, ucsc_CTI_rep)
-sub.cti <- full_join(sub.cti, swan_CTI_rep)
-sub.cti <- full_join(sub.cti, car_CTI_rep)
-sub.cti <- full_join(sub.cti, ang_CTI_rep)
+```{r CTI import and prep, cache = TRUE}
+ang_cti <- read.csv("Analysis/CTI Data/Angelo_CTI.csv")
+car_cti <- read.csv("Analysis/CTI Data/Carrizo_CTI.csv") %>%
+  rename(site = Site)
+elk_cti <- read.csv("Analysis/CTI Data/Elkhorn_CTI.csv") %>%
+  rename(site = Site)
+jasp_cti <- read.csv("Analysis/CTI Data/Jasper_CTI.csv") %>%
+  rename(site = Site)
+McLAnn_cti <- read.csv("Analysis/CTI Data/McLAnn_CTI.csv")  %>%
+  rename(site = Site)
+mcLserp_cti <- read.csv("Analysis/CTI Data/McLSerp_CTI.csv") %>%
+  rename(site = Site)
+Swan_cti <- read.csv("Analysis/CTI Data/Swanton_CTI.csv")  %>%
+  rename(site = Site)
+UCSC_cti <- read.csv("Analysis/CTI Data/UCSC_CTI.csv")  %>%
+  rename(site = Site)
 
+all.CTI <- full_join(ang_cti, car_cti)
+all.CTI <- full_join(all.CTI, elk_cti)
+all.CTI <- full_join(all.CTI, jasp_cti)
+all.CTI <- full_join(all.CTI, McLAnn_cti)
+all.CTI <- full_join(all.CTI, mcLserp_cti)
+all.CTI <- full_join(all.CTI, Swan_cti)
+all.CTI <- full_join(all.CTI, UCSC_cti)
+
+all.CTI <- all.CTI %>%
+  select(-X, -hotTI, -ColdTI)
+
+all.CTI <- left_join(all.CTI, climate_site_wtryr, by = c("year", "site"))
 ```
+
 
 # COMBINE DATA
 The goal now is to combine the CTI and PRISM data into a single dataset that I can use to make graphs/analysis.
@@ -186,6 +223,98 @@ ggplot(prism.cti) +
   labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
 
 ```
+
+```{r climate and CTI on same graph}
+all.CTI.means <- all.CTI %>%
+  group_by(site, year) %>%
+  summarise(mean.tmin = mean(tmin),
+            mean.ppt = mean(precip),
+            mean.CTI = mean(CTI),
+            se.CTI = std.error(CTI),
+            mean.CPI = mean(CPI),
+            se.CPI = std.error(CPI))
+
+(graph.clim.data <-ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
+  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
+  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  geom_point(aes(x = year, y = mean.CTI*400, fill = site), shape = 5, color = "grey") +
+  geom_line(aes(x = year, y = mean.CTI*400, color = site)) +
+  geom_point(aes(x = year, y = mean.CPI*3, fill = site), shape = 7, color = "black") +
+  geom_line(aes(x = year, y = mean.CPI*3, color = site)) +
+  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, scales = "free", nrow = 2))
+
+
+(graph.clim.data <-ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.CPI*700, color = site), shape = 5) +
+  geom_line(aes(x = year, y = mean.CPI*700, color = site)) +
+  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
+  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
+  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, scales = "free", nrow = 2))
+
+(graph.clim.data <-ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
+  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
+  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, nrow = 1))
+
+graph.CTI <- ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.CTI, color = site), shape = 5) +
+  geom_line(aes(x = year, y = mean.CTI, color = site)) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Site-level Climate Data 1982-2019",
+       y = "Community Temperature Index",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_grid(~site)
+
+graph.clim.leg <- g_legend(graph.CTI)
+
+grid.arrange(graph.clim.data + theme(legend.position = "none"), 
+             graph.CTI + theme(legend.position = "none"),
+             graph.clim.leg,
+             nrow = 3)
+
+
+
+```
+
 
 ```{r means of CTI and temp}
 
