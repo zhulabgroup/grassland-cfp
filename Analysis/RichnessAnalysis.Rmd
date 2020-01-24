@@ -379,14 +379,15 @@ grid.arrange(
     labs(title = "Richness of native and exotic species in 8 CA grasslands",
        x = "Year",
        y = "Richness") +
-    facet_wrap(~site, nrow = 1))
+    facet_wrap(~site, nrow = 1, scales = "free"))
 
 g.all.grich <- all.grich.means %>% filter(guild == "all")
 g.exo.grich <- all.grich.means %>% filter(guild == "Exo")
 g.nat.grich <- all.grich.means %>% filter(guild == "Nat")
 
 (graph.all.rich <- ggplot(g.all.grich, aes(x = year, y = meanrich, color = site)) +
-  geom_point() +
+    geom_point() +
+    geom_line() +
   geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Total richness",
        x = "Year",
@@ -397,12 +398,12 @@ g.nat.grich <- all.grich.means %>% filter(guild == "Nat")
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  scale_y_continuous(limits = c(0,35), breaks = seq(0,35,5), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
-  facet_grid(~site))
+    facet_wrap(~site, nrow = 2, scales = "free"))
 
 (graph.exo.rich <- ggplot(g.exo.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
+    geom_line() +
   geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Exotic richness",
        x = "Year",
@@ -413,12 +414,12 @@ g.nat.grich <- all.grich.means %>% filter(guild == "Nat")
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  scale_y_continuous(limits = c(0,15), breaks = seq(0,15,5), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
-  facet_grid(~site))
+    facet_wrap(~site, nrow = 2, scales = "free"))
 
 (graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site)) +
   geom_point() +
+    geom_line() +
   geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Native richness",
        x = "Year",
@@ -429,9 +430,8 @@ g.nat.grich <- all.grich.means %>% filter(guild == "Nat")
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  scale_y_continuous(limits = c(0,30), breaks = seq(0,30,5), expand = c(0, 0)) +
   scale_x_continuous(limits = c(1980,2020), breaks = seq(1980,2020,20), expand = c(0, 0)) +
-  facet_grid(~site))
+    facet_wrap(~site, nrow = 2, scales = "free"))
 
 graph.rich.leg <- g_legend(graph.all.rich)
 
@@ -907,11 +907,11 @@ ang_gcover <- angelo_data %>%
   mutate(site = "Angelo")
 
 car_gcover <- car_data %>%
-  group_by(year, Plot, guild) %>%
+  group_by(year, plot, guild) %>%
   summarise(cover = sum(Intercepts)) %>% ungroup() %>%
-  group_by(year, Plot) %>%
+  group_by(year, plot) %>%
   mutate(sumcov = sum(cover),
-         relcov = cover/sumcov) %>% select(Plot, year, relcov, guild)  %>%
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
   spread(guild, relcov) %>%
   replace(is.na(.), 0) %>%
   add_column(NAGr = 0) %>% add_column(EPG = 0) %>% add_column(NPGr = 0) %>%
@@ -930,11 +930,11 @@ car_gcover <- car_data %>%
   mutate(site = "Carrizo")
 
 elk_gcover <- elkhorn_data %>%
-  group_by(year, rep, guild) %>%
+ group_by(year, plot, guild) %>%
   summarise(cover = sum(intercepts)) %>% ungroup() %>%
-  group_by(year, rep) %>%
+  group_by(year, plot) %>%
   mutate(sumcov = sum(cover),
-         relcov = cover/sumcov) %>% select(rep, year, relcov, guild)  %>%
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
   spread(guild, relcov) %>%
   replace(is.na(.), 0) %>%
   add_column(NAF = 0) %>% add_column(NAG = 0) %>% add_column(NPS = 0) %>% add_column(NPT = 0) %>%
@@ -952,13 +952,13 @@ elk_gcover <- elkhorn_data %>%
   mutate(site = "Elkhorn")
 
 jasp_gcover <- jasper_data %>%
-  group_by(year, uniqueID, guild) %>%
+ group_by(year, plot, guild) %>%
   summarise(cover = sum(cover)) %>% ungroup() %>%
-  group_by(year, uniqueID) %>%
+  group_by(year, plot) %>%
   mutate(sumcov = sum(cover),
-         relcov = cover/sumcov) %>% select(uniqueID, year, relcov, guild)  %>%
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
   spread(guild, relcov) %>%
-  replace(is.na(.), 0) %>% 
+  replace(is.na(.), 0) %>%
   add_column(NAGr = 0) %>%  add_column(EAF = 0) %>% add_column(EPF = 0) %>%
   add_column(EPG = 0) %>%  add_column(NPGr = 0) %>% add_column(NPS = 0) %>%
   add_column(NPT = 0) %>%
@@ -1022,11 +1022,11 @@ mcLserp_gcover <- mcLserp_data %>%
   mutate(site = "McL Serp")
 
 swan_gcover <- swan_data %>%
-  group_by(year, rep, guild) %>%
+  group_by(year, plot, guild) %>%
   summarise(cover = sum(intercepts)) %>% ungroup() %>%
-  group_by(year, rep) %>%
+  group_by(year, plot) %>%
   mutate(sumcov = sum(cover),
-         relcov = cover/sumcov) %>% select(rep, year, relcov, guild)  %>%
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
   spread(guild, relcov) %>%
   replace(is.na(.), 0) %>%
   add_column(NAF = 0) %>% add_column(NAG = 0) %>% add_column(EPG = 0) %>% 
@@ -1045,11 +1045,11 @@ swan_gcover <- swan_data %>%
   mutate(site = "Swanton")
 
 ucsc_gcover <- ucsc_data %>%
-  group_by(year, rep, guild) %>%
+  group_by(year, plot, guild) %>%
   summarise(cover = sum(intercepts)) %>% ungroup() %>%
-  group_by(year, rep) %>%
+  group_by(year, plot) %>%
   mutate(sumcov = sum(cover),
-         relcov = cover/sumcov) %>% select(rep, year, relcov, guild)  %>%
+         relcov = cover/sumcov) %>% select(plot, year, relcov, guild)  %>%
   spread(guild, relcov) %>%
   replace(is.na(.), 0) %>%
   add_column(NAF = 0) %>% add_column(NAG = 0) %>% add_column(NPS = 0) %>% add_column(NPT = 0) %>%
@@ -1076,14 +1076,18 @@ all.gcov <- full_join(all.gcov, ucsc_gcover)
 
 all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
 
+all_gcov <- left_join(all_gcov, all.CTI, by = c("site", "year"))
+
 all_gcov_means <- all_gcov %>%
   group_by(site, guild, year) %>%
   summarise(serelcov = std.error(meancov),
             meanrelcov = mean(meancov),
-            precip = mean(precip),
-            tmean = mean(tmean),
-            tmax = mean(tmax),
-            tmin = mean(tmin))
+            precip = mean(precip.y),
+            tmean = mean(tmean.y),
+            tmax = mean(tmax.y),
+            tmin = mean(tmin.y),
+            mean.CTI = mean(CTI),
+            se.CTI = std.error(CTI))
 ```
 
 ```{r tidy gcover workspace, include=FALSE}
@@ -1098,8 +1102,32 @@ ggplot(all_gcov_means, aes(x = year, y = meanrelcov, color = site)) +
        y = "Relative cover") +
   facet_grid(~guild) 
 
+ggplot(all_gcov_means, aes(x = meanrelcov, y = mean.CTI, color = site)) +
+  geom_line() +
+  labs(title = "",
+       x = "Year",
+       y = "Relative cover") +
+  facet_grid(~guild) 
+
+
 exo.gcov <- all_gcov_means %>% filter(guild == "Exo")
 nat.gcov <- all_gcov_means %>% filter(guild == "Nat")
+
+spp.gcov <- full_join(exo.gcov, nat.gcov)
+ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CTI, color = site)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "",
+       x = "Relative native cover",
+       y = "CTI") +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text = element_blank()) +
+  scale_x_continuous(limits = c(0,1), expand = c(0.05,0)) +
+  facet_grid(~guild)
+
+
 
 grid.arrange(
   ggplot(nat.gcov, aes(x = year, y = meanrelcov, color = site)) +
