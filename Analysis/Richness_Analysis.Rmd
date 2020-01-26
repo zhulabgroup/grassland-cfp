@@ -33,7 +33,7 @@ g_legend <- function(a.gplot){
 } 
 ```
 
-```{r com data import, echo=FALSE}
+```{r com data import, echo=FALSE, message=FALSE}
 angelo_data <- read.csv("Analysis/ComData/angelo_data.csv") %>%
   select(-X)  %>%
   mutate(site = "Angelo") 
