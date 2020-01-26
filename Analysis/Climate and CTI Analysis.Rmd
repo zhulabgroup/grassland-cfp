@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = '../') 
 
 ## community analysis
 library(codyn)
@@ -43,108 +44,10 @@ wtr_yr <- function(dates, start_month=10) {
 
 ```
 
-```{r data import}
+```{r data import, echo = FALSE}
 climate_site <- read.csv("Analysis/ClimData/PRISM_data.csv")
 climate_site_wtryr <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv")
-```
 
-
-```{r plots}
-ggplot(climate_site, aes(x = site, y = tmean)) +
-  geom_boxplot()  +
-  geom_jitter(aes(color = month)) +
-  labs(x = "site",
-       y = "mean monthly temp, 1982-2019")
-
-ggplot(climate_site, aes(x = site, y = ppt)) +
-  geom_boxplot()  +
-  geom_jitter(aes(color = month))+
-  labs(x = "site",
-       y = "mean monthly precip, 1982-2019")
-
-ggplot(climate_site) +
-  geom_jitter(aes(x = site, y = tmax), color = "red") +
-  geom_jitter(aes(x = site, y = tmin), color = "blue") +
-  labs(x = "site",
-       y = "monthly min and max temps, 1982-2019")
-```
-
-We're also interested in seeing how climate may or may not have changed over time - so we will generate annual summaries.
-
-```{r annual climate}
-ggplot(climate_site_wtryr) +
-  geom_point(aes(x = year, y = tmin*800, color = site), shape = 3) +
-  geom_line(aes(x = year, y = tmin*800, color = site)) +
-  geom_bar(aes(x = year, y = precip, color = site, fill = site), 
-           stat = "identity", position = "dodge") +
-  scale_y_continuous(sec.axis = sec_axis(~./800, name = "Avg. min. temperature (C)")) +
-  scale_x_continuous(limits = c(1982, 2020), breaks = seq(1982, 2019, 10), expand = c(0,0)) +
-  labs(title = "Site-level Climate Data 1982-2019",
-       y = "Water Year Precipitation (mm)",
-       x = "Year") +
-  facet_grid(~site)
-
-(graph.clim.data <-ggplot(climate_site_wtryr) +
-  geom_point(aes(x = year, y = tmin*750, color = site), shape = 3) +
-  geom_line(aes(x = year, y = tmin*750, color = site)) +
-  geom_bar(aes(x = year, y = precip, color = site, fill = site), 
-           stat = "identity", position = "dodge") +
-  scale_y_continuous(sec.axis = sec_axis(~./750, name = "Temperature (C)")) +
-  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
-  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
-       y = "Water Year Precipitation (mm)",
-       x = "Year") +
-  theme_bw() +
-  theme(legend.position = "none",
-        strip.background = element_blank(),
-        strip.text.x = element_blank(),
-        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  facet_wrap(~site, nrow = 1))
-
-climate_site_wtryr_win <- climate_site %>% 
-  filter(month == 12 | month == 01 | month == 02) %>%
-  mutate(date1 = date,
-         wateryr = wtr_yr(date1)) %>%
-  group_by(site, wateryr) %>%
-  summarise(precip = sum(ppt),
-            tmean = mean(tmean),
-            tmin = mean(tmin),
-            tmax = mean(tmax)) %>%
-  rename(year = wateryr) %>%
-  filter(year != 2020)
-
-ggplot(climate_site_wtryr_win) +
-  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
-  geom_line(aes(x = year, y = tmin, color = site)) +
-  labs(title = "Winter")
-
-ggplot(climate_site_wtryr) +
-  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
-  geom_line(aes(x = year, y = tmin, color = site)) +
-  labs(title = "Year")
-
-ggplot(climate_site_wtryr_win) +
-  geom_point(aes(x = year, y = tmean, color = site), shape = 1) +
-    stat_smooth(aes(x = year, y = tmean, color = site), method = "lm", se = F, size =  1) +
-  geom_point(aes(x = year, y = tmax, color = site), shape = 2) +
-    stat_smooth(aes(x = year, y = tmax, color = site), method = "lm", se = F, size =  1) +
-  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
-    stat_smooth(aes(x = year, y = tmin, color = site), method = "lm", se = F, size =  1)
-
-ggplot(climate_site_wtryr) +
-  geom_point(aes(x = year, y = tmean, color = site), shape = 1) +
-  geom_line(aes(x = year, y = tmean, color = site)) +
-  geom_point(aes(x = year, y = tmax, color = site), shape = 2) +
-  geom_line(aes(x = year, y = tmax, color = site)) +
-  geom_point(aes(x = year, y = tmin, color = site), shape = 3) +
-  geom_line(aes(x = year, y = tmin, color = site))
-
-```
-
-
-
-
-```{r CTI import and prep, cache = TRUE}
 ang_cti <- read.csv("Analysis/CTI Data/Angelo_CTI.csv")
 car_cti <- read.csv("Analysis/CTI Data/Carrizo_CTI.csv") %>%
   rename(site = Site)
@@ -172,113 +75,43 @@ all.CTI <- full_join(all.CTI, UCSC_cti)
 all.CTI <- all.CTI %>%
   select(-X, -hotTI, -ColdTI)
 
-all.CTI <- left_join(all.CTI, climate_site_wtryr, by = c("year", "site"))
+all.CTI.wtryr <- left_join(all.CTI, climate_site_wtryr, by = c("year", "site"))
+all.CTI.clim <- left_join(all.CTI, climate_site, by = c("year", "site"))
+```
+# Introduction
+
+These data were downloaded in another markdown file ("PRISM.rmd"). They represent the interpolated climate data at all sites for which I have community composition datasets.  
+
+To begin, we can take a look at the monthly precipitation at each site, and compare their annual min and max temps.
+
+```{r plots, echo = FALSE}
+ggplot(all.CTI.clim, aes(x = site, y = tmean)) +
+  geom_boxplot()  +
+  geom_jitter(aes(color = month)) +
+  labs(x = "site",
+       y = "mean monthly temp, 1982-2019",
+       title = "Mean monthly temps at all sites")
+
+ggplot(all.CTI.clim) +
+  geom_jitter(aes(x = site, y = tmax), color = "red") +
+  geom_jitter(aes(x = site, y = tmin), color = "blue") +
+  labs(x = "site",
+       y = "monthly min and max temps, 1982-2019",
+       title = "Comparison of min and max temps at all sites")
 ```
 
+Things look good - the warmest sites look warmest, and the wettest look wettest. The rain appears to be falling when logic says it would.  
+We're also interested in seeing how climate may or may not have changed over time - so we will generate annual summaries.  
 
-# COMBINE DATA
-The goal now is to combine the CTI and PRISM data into a single dataset that I can use to make graphs/analysis.
+The lines are temperature, and the bars are precip. Thi graph shows the data by water year (oct-sep):  
 
-```{r combine datasets}
-prism.cti <- left_join(sub.cti, climate_site_wtryr, by = c("year", "site"))
-
-```
-
-```{r explore combo}
-
-prism.cti.cor <- prism.cti %>%
-  select(year, precip, tmean, CPI, CTI)
-pairs.panels(prism.cti.cor, scale=TRUE)
-pairs(prism.cti.cor)
-
-ggplot(prism.cti) +
-  geom_point(aes(x = precip, y = CTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = precip, y = CTI, color = site)) +
-  labs(title = "Precipitation and CTI", x = "Precipitation (mm)", y = "CTI")
-
-ggplot(prism.cti) +
-  geom_point(aes(x = precip, y = CPI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = precip, y = CPI, color = site)) +
-  labs(title = "Precipitation and CPI", x = "Precipitation (mm)", y = "CPI")
-
-ggplot(prism.cti) +
-  geom_point(aes(x = tmin, y = CTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmin, y = CTI)) +
-  geom_point(aes(x = tmean, y = CTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmean, y = CTI)) +
-  geom_point(aes(x = tmax, y = CTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmax, y = CTI)) +
-  labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
-
-ggplot(prism.cti) +
-  geom_point(aes(x = tmin, y = CPI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmin, y = CPI)) +
-  geom_point(aes(x = tmax, y = CPI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmax, y = CPI)) +
-  labs(title = "Temperature and CPI", x = "Temperature (C)", y = "CPI")
-
-ggplot(prism.cti) +
-  geom_point(aes(x = tmin, y = CTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = tmin, y = CTI, color = site)) +
-  labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
-
-```
-
-```{r climate and CTI on same graph}
-all.CTI.means <- all.CTI %>%
-  group_by(site, year) %>%
-  summarise(mean.tmin = mean(tmin),
-            mean.ppt = mean(precip),
-            mean.CTI = mean(CTI),
-            se.CTI = std.error(CTI),
-            mean.CPI = mean(CPI),
-            se.CPI = std.error(CPI))
-
-(graph.clim.data <-ggplot(all.CTI.means) +
-  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
-  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
-  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+```{r annual climate, echo = FALSE}
+ggplot(all.CTI.wtryr) +
+  geom_point(aes(x = year, y = tmin*750, color = site), shape = 3) +
+  geom_line(aes(x = year, y = tmin*750, color = site)) +
+  geom_bar(aes(x = year, y = precip, color = site, fill = site), 
            stat = "identity", position = "dodge") +
-  geom_point(aes(x = year, y = mean.CTI*400, fill = site), shape = 5, color = "grey") +
-  geom_line(aes(x = year, y = mean.CTI*400, color = site)) +
-  geom_point(aes(x = year, y = mean.CPI*3, fill = site), shape = 7, color = "black") +
-  geom_line(aes(x = year, y = mean.CPI*3, color = site)) +
-  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
-  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
-  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
-       y = "Water Year Precipitation (mm)",
-       x = "Year") +
-  theme_bw() +
-  theme(legend.position = "none",
-        strip.background = element_blank(),
-        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  facet_wrap(~site, scales = "free", nrow = 2))
-
-
-(graph.clim.data <-ggplot(all.CTI.means) +
-  geom_point(aes(x = year, y = mean.CPI*700, color = site), shape = 5) +
-  geom_line(aes(x = year, y = mean.CPI*700, color = site)) +
-  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
-  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
-  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
-           stat = "identity", position = "dodge") +
-  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
-  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
-  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
-       y = "Water Year Precipitation (mm)",
-       x = "Year") +
-  theme_bw() +
-  theme(legend.position = "none",
-        strip.background = element_blank(),
-        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  facet_wrap(~site, scales = "free", nrow = 2))
-
-(graph.clim.data <-ggplot(all.CTI.means) +
-  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
-  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
-  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
-           stat = "identity", position = "dodge") +
-  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
+  scale_y_continuous(sec.axis = sec_axis(~./750, name = "Temperature (C)")) +
   scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
   labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
        y = "Water Year Precipitation (mm)",
@@ -288,85 +121,93 @@ all.CTI.means <- all.CTI %>%
         strip.background = element_blank(),
         strip.text.x = element_blank(),
         axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  facet_wrap(~site, nrow = 1))
-
-graph.CTI <- ggplot(all.CTI.means) +
-  geom_point(aes(x = year, y = mean.CTI, color = site), shape = 5) +
-  geom_line(aes(x = year, y = mean.CTI, color = site)) +
-  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
-  labs(title = "Site-level Climate Data 1982-2019",
-       y = "Community Temperature Index",
-       x = "Year") +
-  theme_bw() +
-  theme(legend.position = "bottom",
-        strip.background = element_blank(),
-        strip.text.x = element_blank(),
-        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
-  facet_grid(~site)
-
-graph.clim.leg <- g_legend(graph.CTI)
-
-grid.arrange(graph.clim.data + theme(legend.position = "none"), 
-             graph.CTI + theme(legend.position = "none"),
-             graph.clim.leg,
-             nrow = 3)
-
-
-
+  facet_wrap(~site, nrow = 1)
 ```
 
-
-```{r means of CTI and temp}
-
-prism.cti.means <- prism.cti %>%
-  group_by(site) %>%
-  summarise(mCTI = mean(CTI),
-            seCTI = std.error(CTI),
-            mCPI = mean(CPI),
-            seCPI = std.error(CPI),
-            mtmin = mean(tmin),
-            setmin = std.error(tmin),
-            mtmax = mean(tmax),
-            setmax = std.error(tmax),
-            mtmean = mean(tmean),
-            setmean = std.error(tmean))
-
-ggplot(prism.cti.means) +
-  geom_point(aes(x = mtmin, y = mCTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmin, y = mCTI)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmin, y = mCTI, color = site)) +
-  geom_point(aes(x = mtmean, y = mCTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmean, y = mCTI)) +
-  geom_point(aes(x = mtmax, y = mCTI, color = site)) +
-  stat_smooth(method = "lm", se = F, size = 1, aes(x = mtmax, y = mCTI)) +
-  labs(title = "Temperature and CTI", x = "Temperature (C)", y = "CTI")
-
-```
-
-
-
-```{r summarize to annual data}
-sum.prism.cti <- prism.cti %>%
-  group_by(year, site) %>%
-  summarise(CTI = mean(CTI),
-            seCTI = std.error(CTI),
-            CPI = mean(CPI),
-            seCPI = std.error(CPI),
-            tmean = mean(tmean),
-            tmax = mean(tmax),
-            tmin = mean(tmin),
-            precip = mean(precip))
-
-ggplot(sum.prism.cti) +
-  geom_line(aes(x = year, y = CPI, color = site)) +
-  geom_line(aes(x = year, y = precip), color = "blue")
-
-ggplot(sum.prism.cti) +
-  geom_line(aes(x = year, y = CTI, color = site)) +
-  geom_line(aes(x = year, y = tmax), color = "red") +
-  geom_line(aes(x = year, y = tmin), color = "orange") +
-  geom_line(aes(x = year, y = tmean), color = "blue") 
-
-```
 
 # ANALYSIS
+In order to have legs to stand on, we must take a look at the weather history at these sites - this means determining whether there have been directional trends in temperature or precipitation over time.  
+One thing to note is that we should only look at the data over the years in which we have community composition data.  
+
+First, let's take a look at the change in precipitation over time, since I think that is less likely to be significant for our focal years. Then, we'll look at our temp. data.  
+
+```{r ppt prep, echo = FALSE}
+# this is a quick piece of code to ensure that there's only one datapoint per year per site
+all.CTI.wtryr <- all.CTI.wtryr %>%
+  group_by(year, site) %>%
+  summarise(precip = mean(precip),
+            tmax = mean(tmax),
+            tmin = mean(tmin),
+            tmean = mean(tmean))
+```
+
+### Overall water year precip
+```{r precip models}
+# angelo
+ang.ppt <- all.CTI.wtryr %>% filter(site == "Angelo")
+hist(ang.ppt$precip)
+ang.ppt.lm <- lm(precip ~ year,
+                    data = ang.ppt)
+summary(ang.ppt.lm)
+ggplot(ang.ppt, aes(x = year, y = precip)) + geom_line()
+
+# carrizo
+car.ppt <- all.CTI.wtryr %>% filter(site == "Carrizo")
+hist(car.ppt$precip)
+car.ppt.lm <- lm(precip ~ year,
+                    data = car.ppt)
+summary(car.ppt.lm)
+ggplot(car.ppt, aes(x = year, y = precip)) + geom_line()
+
+# elkhorn
+elk.ppt <- all.CTI.wtryr %>% filter(site == "Elkhorn")
+hist(elk.ppt$precip)
+elk.ppt.lm <- lm(precip ~ year,
+                    data = elk.ppt)
+summary(elk.ppt.lm)
+ggplot(elk.ppt, aes(x = year, y = precip)) + geom_line()
+
+# jasper
+jasp.ppt <- all.CTI.wtryr %>% filter(site == "Jasper")
+hist(jasp.ppt$precip)
+jasp.ppt.lm <- lm(precip ~ year,
+                    data = jasp.ppt)
+summary(jasp.ppt.lm)
+ggplot(jasp.ppt, aes(x = year, y = precip)) + geom_line()
+
+# mcL ann
+mcLann.ppt <- all.CTI.wtryr %>% filter(site == "McL Ann")
+hist(mcLann.ppt$precip)
+mcLann.ppt.lm <- lm(precip ~ year,
+                    data = mcLann.ppt)
+summary(mcLann.ppt.lm)
+ggplot(mcLann.ppt, aes(x = year, y = precip)) + geom_line()
+
+# mcL serp
+mcLserp.ppt <- all.CTI.wtryr %>% filter(site == "McL Serp")
+hist(mcLserp.ppt$precip)
+mcLserp.ppt.lm <- lm(precip ~ year,
+                    data = mcLserp.ppt)
+summary(mcLserp.ppt.lm)
+ggplot(mcLserp.ppt, aes(x = year, y = precip)) + geom_line()
+
+# swanton
+swan.ppt <- all.CTI.wtryr %>% filter(site == "Swanton")
+hist(swan.ppt$precip)
+swan.ppt.lm <- lm(precip ~ year,
+                    data = swan.ppt)
+summary(swan.ppt.lm)
+ggplot(swan.ppt, aes(x = year, y = precip)) + geom_line()
+
+
+# ucsc
+ucsc.ppt <- all.CTI.wtryr %>% filter(site == "UCSC")
+hist(ucsc.ppt$precip)
+ucsc.ppt.lm <- lm(precip ~ year,
+                    data = ucsc.ppt)
+summary(ucsc.ppt.lm)
+ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
+
+```
+
+### Wintertime precip
