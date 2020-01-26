@@ -6,9 +6,10 @@
 wc2-5
 wc10
 prism
-analysis/wc2-5
-analysis/wc10
-analysis/prism
+Analysis/wc2-5
+Analysis/wc10
+Analysis/prism
+Analysis/ClimData/prism
 
 # History files
 .Rhistory
