@@ -227,3 +227,95 @@ grid.arrange(plot(cti.lm,type=c("p","smooth")),
 
 ```
 
+
+## Extra graphs?
+```{r climate and CTI on same graph}
+all.CTI.means <- all.CTI %>%
+  group_by(site, year) %>%
+  summarise(mean.tmin = mean(tmin),
+            mean.ppt = mean(precip),
+            mean.CTI = mean(CTI),
+            se.CTI = std.error(CTI),
+            mean.CPI = mean(CPI),
+            se.CPI = std.error(CPI))
+
+(graph.clim.data <-ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
+  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
+  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  geom_point(aes(x = year, y = mean.CTI*400, fill = site), shape = 5, color = "grey") +
+  geom_line(aes(x = year, y = mean.CTI*400, color = site)) +
+  geom_point(aes(x = year, y = mean.CPI*3, fill = site), shape = 7, color = "black") +
+  geom_line(aes(x = year, y = mean.CPI*3, color = site)) +
+  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, scales = "free", nrow = 2))
+
+
+(graph.clim.data <-ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.CPI*700, color = site), shape = 5) +
+  geom_line(aes(x = year, y = mean.CPI*700, color = site)) +
+  geom_point(aes(x = year, y = mean.tmin*700, color = site), shape = 3) +
+  geom_line(aes(x = year, y = mean.tmin*700, color = site)) +
+  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+           stat = "identity", position = "dodge") +
+  scale_y_continuous(sec.axis = sec_axis(~./700, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, scales = "free", nrow = 2))
+
+(graph.clim.data <-ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.tmin*70, color = site), shape = 3) +
+  geom_line(aes(x = year, y = mean.tmin*70, color = site)) +
+  geom_bar(aes(x = year, y = mean.ppt, color = site, fill = site), 
+           stat = "identity", position = "dodge", alpha = 0.5) +
+  scale_y_continuous(sec.axis = sec_axis(~./70, name = "Temperature (C)")) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Climate and CTI data for CA grasslands, 1982-2019",
+       y = "Water Year Precipitation (mm)",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_wrap(~site, nrow = 1))
+
+graph.CTI <- ggplot(all.CTI.means) +
+  geom_point(aes(x = year, y = mean.CTI, color = site), shape = 5) +
+  geom_line(aes(x = year, y = mean.CTI, color = site)) +
+  scale_x_continuous(limits = c(1980, 2020), breaks = seq(1980, 2020, 10), expand = c(0,0)) +
+  labs(title = "Site-level Climate Data 1982-2019",
+       y = "Community Temperature Index",
+       x = "Year") +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+  facet_grid(~site)
+
+graph.clim.leg <- g_legend(graph.CTI)
+
+grid.arrange(graph.clim.data + theme(legend.position = "none"), 
+             graph.CTI + theme(legend.position = "none"),
+             graph.clim.leg,
+             nrow = 3)
+
+
+
+```

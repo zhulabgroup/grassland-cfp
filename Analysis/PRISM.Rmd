@@ -6,6 +6,8 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '../') 
+
 ## community analysis
 library(codyn)
 library(MASS)
@@ -54,7 +56,7 @@ https://rpubs.com/collnell/get_prism
 ## Data Download
 First, we download all of the data from PRISM. This is based on the rpubs docs by (Shannon Carter)[https://rpubs.com/shannon_carter/471278] and (Colleen N.)[https://rpubs.com/collnell/get_prism].
 ```{r Prism data download, eval=FALSE}
-options(prism.path = "/prism")
+options(prism.path = "Analysis/ClimData/prism")
 get_prism_monthlys(type = "ppt", years = 1982:2019, mon = 1:12, keepZip = F)
 get_prism_monthlys(type = "tmean", years = 1982:2019, mon = 1:12, keepZip = F)
 get_prism_monthlys(type = "tmin", years = 1982:2019, mon = 1:12, keepZip = F)
@@ -143,8 +145,8 @@ climate_site_wtryr$year  <- as.numeric(climate_site_wtryr$year)
 
 ```{r writing our csv files}
 
-write.csv(climate_site, "PRISM_data.csv")
-write.csv(climate_site_wtryr, "PRISM_wtryr_data.csv")
+write.csv(climate_site, "Analysis/ClimData/PRISM_data.csv")
+write.csv(climate_site_wtryr, "Analysis/ClimData/PRISM_wtryr_data.csv")
 
 ```
 
