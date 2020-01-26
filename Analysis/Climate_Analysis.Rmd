@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_knit$set(root.dir = '../') 
 
-## community analysis
+## analysis
 library(codyn)
 library(MASS)
 library(lme4)
@@ -44,7 +44,7 @@ wtr_yr <- function(dates, start_month=10) {
 
 ```
 
-```{r data import, echo = FALSE}
+```{r data import, echo = FALSE, message = FALSE, warning = FALSE}
 climate_site <- read.csv("Analysis/ClimData/PRISM_data.csv")
 climate_site_wtryr <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv")
 
@@ -73,12 +73,12 @@ all.CTI <- full_join(all.CTI, Swan_cti)
 all.CTI <- full_join(all.CTI, UCSC_cti)
 
 all.CTI <- all.CTI %>%
-  select(-X, -hotTI, -ColdTI)
+  dplyr::select(-X, -hotTI, -ColdTI)
 
 all.CTI.wtryr <- left_join(all.CTI, climate_site_wtryr, by = c("year", "site"))
 all.CTI.clim <- left_join(all.CTI, climate_site, by = c("year", "site"))
 ```
-# Introduction
+# INTRODUCTION
 
 These data were downloaded in another markdown file ("PRISM.rmd"). They represent the interpolated climate data at all sites for which I have community composition datasets.  
 
@@ -100,7 +100,7 @@ ggplot(all.CTI.clim) +
        title = "Comparison of min and max temps at all sites")
 ```
 
-Things look good - the warmest sites look warmest, and the wettest look wettest. The rain appears to be falling when logic says it would.  
+Things look good - the warmest sites look warmest, and the wettest look wettest. The rain appears to be falling when logic says it would. The extra points on Carrizo and McL are due to the number of plots - this isn't summarized by plots yet.  
 We're also interested in seeing how climate may or may not have changed over time - so we will generate annual summaries.  
 
 The lines are temperature, and the bars are precip. Thi graph shows the data by water year (oct-sep):  
@@ -129,8 +129,12 @@ ggplot(all.CTI.wtryr) +
 In order to have legs to stand on, we must take a look at the weather history at these sites - this means determining whether there have been directional trends in temperature or precipitation over time.  
 One thing to note is that we should only look at the data over the years in which we have community composition data.  
 
+
+## Precipitation Analysis
 First, let's take a look at the change in precipitation over time, since I think that is less likely to be significant for our focal years. Then, we'll look at our temp. data.  
 
+
+### Overall water year precip
 ```{r ppt prep, echo = FALSE}
 # this is a quick piece of code to ensure that there's only one datapoint per year per site
 all.CTI.wtryr <- all.CTI.wtryr %>%
@@ -141,7 +145,7 @@ all.CTI.wtryr <- all.CTI.wtryr %>%
             tmean = mean(tmean))
 ```
 
-### Overall water year precip
+
 ```{r precip models}
 # angelo
 ang.ppt <- all.CTI.wtryr %>% filter(site == "Angelo")
@@ -211,3 +215,145 @@ ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
 ```
 
 ### Wintertime precip
+So, there's pretty clearly no change in overall annual precip. However, never one to give up, I'll also check the wintertime precip (which Dr. Harrison has found is important in her models).
+
+```{r create wintertime ppt object}
+# this code to reduces us to 1 data point per year per site, and gives only wintertime ppt
+win.ppt <- climate_site %>%
+  dplyr::select(-X) %>%
+  filter(month == 12 | month == 1 | month == 2) %>%
+  mutate(wyear = wtr_yr(date)) 
+win.ppt <- left_join(all.CTI, win.ppt) %>%
+  group_by(wyear, site, plot) %>%
+  summarise(precip = sum(ppt)) %>%
+  group_by(wyear, site) %>%
+  summarise(wprecip = mean(precip)) %>%
+  rename(year = wyear,
+         precip = wprecip)
+```
+
+```{r winter precip models}
+# angelo
+ang.ppt <- win.ppt %>% filter(site == "Angelo")
+ang.ppt.lm <- lm(precip ~ year,
+                    data = ang.ppt)
+summary(ang.ppt.lm)
+ggplot(ang.ppt, aes(x = year, y = precip)) + geom_line()
+
+# carrizo
+car.ppt <- win.ppt %>% filter(site == "Carrizo")
+car.ppt.lm <- lm(precip ~ year,
+                    data = car.ppt)
+summary(car.ppt.lm)
+ggplot(car.ppt, aes(x = year, y = precip)) + geom_line()
+
+# elkhorn
+elk.ppt <- win.ppt %>% filter(site == "Elkhorn")
+elk.ppt.lm <- lm(precip ~ year,
+                    data = elk.ppt)
+summary(elk.ppt.lm)
+ggplot(elk.ppt, aes(x = year, y = precip)) + geom_line()
+
+# jasper
+jasp.ppt <- win.ppt %>% filter(site == "Jasper")
+jasp.ppt.lm <- lm(precip ~ year,
+                    data = jasp.ppt)
+summary(jasp.ppt.lm)
+ggplot(jasp.ppt, aes(x = year, y = precip)) + geom_line()
+
+# mcL ann
+mcLann.ppt <- win.ppt %>% filter(site == "McL Ann")
+mcLann.ppt.lm <- lm(precip ~ year,
+                    data = mcLann.ppt)
+summary(mcLann.ppt.lm)
+ggplot(mcLann.ppt, aes(x = year, y = precip)) + geom_line()
+
+# mcL serp
+mcLserp.ppt <- win.ppt %>% filter(site == "McL Serp")
+mcLserp.ppt.lm <- lm(precip ~ year,
+                    data = mcLserp.ppt)
+summary(mcLserp.ppt.lm)
+ggplot(mcLserp.ppt, aes(x = year, y = precip)) + geom_line()
+
+# swanton
+swan.ppt <- win.ppt %>% filter(site == "Swanton")
+swan.ppt.lm <- lm(precip ~ year,
+                    data = swan.ppt)
+summary(swan.ppt.lm)
+ggplot(swan.ppt, aes(x = year, y = precip)) + geom_line()
+
+
+# ucsc
+ucsc.ppt <- win.ppt %>% filter(site == "UCSC")
+ucsc.ppt.lm <- lm(precip ~ year,
+                    data = ucsc.ppt)
+summary(ucsc.ppt.lm)
+ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
+
+```
+
+Welp -- nothing looks significant here! Onto temperature.  
+
+## Temperature Analysis
+With nothing looking significant on our precip analyses, it's  time to see if the minimum temperature is changing over time.  
+
+```{r min temp models}
+# angelo
+ang.tmin <- all.CTI.wtryr %>% filter(site == "Angelo")
+ang.tmin.lm <- lm(tmin ~ year,
+                    data = ang.tmin)
+summary(ang.tmin.lm)
+ggplot(ang.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# carrizo
+car.tmin <- all.CTI.wtryr %>% filter(site == "Carrizo")
+car.tmin.lm <- lm(tmin ~ year,
+                    data = car.tmin)
+summary(car.tmin.lm)
+ggplot(car.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# elkhorn
+elk.tmin <- all.CTI.wtryr %>% filter(site == "Elkhorn")
+elk.tmin.lm <- lm(tmin ~ year,
+                    data = elk.tmin)
+summary(elk.tmin.lm)
+ggplot(elk.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# jasper
+jasp.tmin <- all.CTI.wtryr %>% filter(site == "Jasper")
+jasp.tmin.lm <- lm(tmin ~ year,
+                    data = jasp.tmin)
+summary(jasp.tmin.lm)
+ggplot(jasp.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# mcL ann
+mcLann.tmin <- all.CTI.wtryr %>% filter(site == "McL Ann")
+mcLann.tmin.lm <- lm(tmin ~ year,
+                    data = mcLann.tmin)
+summary(mcLann.tmin.lm)
+ggplot(mcLann.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# mcL serp
+mcLserp.tmin <- all.CTI.wtryr %>% filter(site == "McL Serp")
+mcLserp.tmin.lm <- lm(tmin ~ year,
+                    data = mcLserp.tmin)
+summary(mcLserp.tmin.lm)
+ggplot(mcLserp.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# swanton
+swan.tmin <- all.CTI.wtryr %>% filter(site == "Swanton")
+swan.tmin.lm <- lm(tmin ~ year,
+                    data = swan.tmin)
+summary(swan.tmin.lm)
+ggplot(swan.tmin, aes(x = year, y = tmin)) + geom_line()
+
+
+# ucsc
+ucsc.tmin <- all.CTI.wtryr %>% filter(site == "UCSC")
+ucsc.tmin.lm <- lm(tmin ~ year,
+                    data = ucsc.tmin)
+summary(ucsc.tmin.lm)
+ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
+
+```
+
