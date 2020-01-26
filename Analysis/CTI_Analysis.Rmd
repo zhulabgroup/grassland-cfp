@@ -230,7 +230,7 @@ grid.arrange(plot(cti.lm,type=c("p","smooth")),
 
 ## Extra graphs?
 ```{r climate and CTI on same graph}
-all.CTI.means <- prism.cti %>%
+all.CTI.means <- all.CTI %>%
   group_by(site, year) %>%
   summarise(mean.tmin = mean(tmin),
             mean.ppt = mean(precip),
