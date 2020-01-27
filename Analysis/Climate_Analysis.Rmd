@@ -214,10 +214,26 @@ ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
 
 ```
 
+
+```{r wateryear ppt graphs, echo = FALSE}
+ggplot(all.CTI.wtryr, aes(x = year, y = precip, color = site)) +
+  geom_point(shape = 3) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Precip (mm)",
+       title = "Water year precip at all sites") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text = element_blank()) +
+  facet_wrap(~site, scales = "free", nrow = 2)
+```
+
+
 ### Wintertime precip
 So, there's pretty clearly no change in overall annual precip. However, never one to give up, I'll also check the wintertime precip (which Dr. Harrison has found is important in her models).
 
-```{r create wintertime ppt object}
+```{r create wintertime ppt object, include = FALSE}
 # this code to reduces us to 1 data point per year per site, and gives only wintertime ppt
 win.ppt <- climate_site %>%
   dplyr::select(-X) %>%
@@ -292,6 +308,22 @@ ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
 
 ```
 
+```{r wateryear ppt graphs, echo = FALSE}
+ggplot(win.ppt, aes(x = year, y = precip, color = site)) +
+  geom_point(shape = 3) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Precip (mm)",
+       title = "Winter precip at all sites") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text = element_blank()) +
+  facet_wrap(~site, scales = "free", nrow = 2)
+```
+
+
+
 Welp -- nothing looks significant here! Onto temperature.  
 
 ## Temperature Analysis
@@ -355,5 +387,113 @@ ucsc.tmin.lm <- lm(tmin ~ year,
 summary(ucsc.tmin.lm)
 ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
 
+```
+
+
+```{r overall tmin graphs, echo = FALSE}
+ggplot(all.CTI.wtryr, aes(x = year, y = tmin, color = site)) +
+  geom_point(shape = 3) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Temperature (C)",
+       title = "Annual minimum temperature at all sites") +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.background = element_blank(),
+        strip.text = element_blank()) +
+  facet_wrap(~site, scales = "free", nrow = 2)
+```
+
+
+
+### Wintertime min. temp
+Next, let's take a look at the minimum wintertime temperature (which I suspect may be important in cueing germination)
+
+```{r create wintertime tmin object, include = FALSE}
+# this code to reduces us to 1 data point per year per site, and gives only wintertime ppt
+win.tmin <- climate_site %>%
+  dplyr::select(-X) %>%
+  filter(month == 12 | month == 1 | month == 2) %>%
+  mutate(wyear = wtr_yr(date)) 
+win.tmin <- left_join(all.CTI, win.tmin) %>%
+  group_by(wyear, site, plot) %>%
+  summarise(tmin = mean(tmin)) %>%
+  group_by(wyear, site) %>%
+  summarise(tmin = mean(tmin)) %>%
+  rename(year = wyear)
+```
+
+```{r winter tmin models}
+# angelo
+ang.tmin <- win.tmin %>% filter(site == "Angelo")
+ang.tmin.lm <- lm(tmin ~ year,
+                    data = ang.tmin)
+summary(ang.tmin.lm)
+ggplot(ang.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# carrizo
+car.tmin <- win.tmin %>% filter(site == "Carrizo")
+car.tmin.lm <- lm(tmin ~ year,
+                    data = car.tmin)
+summary(car.tmin.lm)
+ggplot(car.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# elkhorn
+elk.tmin <- win.tmin %>% filter(site == "Elkhorn")
+elk.tmin.lm <- lm(tmin ~ year,
+                    data = elk.tmin)
+summary(elk.tmin.lm)
+ggplot(elk.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# jasper
+jasp.tmin <- win.tmin %>% filter(site == "Jasper")
+jasp.tmin.lm <- lm(tmin ~ year,
+                    data = jasp.tmin)
+summary(jasp.tmin.lm)
+ggplot(jasp.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# mcL ann
+mcLann.tmin <- win.tmin %>% filter(site == "McL Ann")
+mcLann.tmin.lm <- lm(tmin ~ year,
+                    data = mcLann.tmin)
+summary(mcLann.tmin.lm)
+ggplot(mcLann.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# mcL serp
+mcLserp.tmin <- win.tmin %>% filter(site == "McL Serp")
+mcLserp.tmin.lm <- lm(tmin ~ year,
+                    data = mcLserp.tmin)
+summary(mcLserp.tmin.lm)
+ggplot(mcLserp.tmin, aes(x = year, y = tmin)) + geom_line()
+
+# swanton
+swan.tmin <- win.tmin %>% filter(site == "Swanton")
+swan.tmin.lm <- lm(tmin ~ year,
+                    data = swan.tmin)
+summary(swan.tmin.lm)
+ggplot(swan.tmin, aes(x = year, y = tmin)) + geom_line()
+
+
+# ucsc
+ucsc.tmin <- win.tmin %>% filter(site == "UCSC")
+ucsc.tmin.lm <- lm(tmin ~ year,
+                    data = ucsc.tmin)
+summary(ucsc.tmin.lm)
+ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
+
+```
+
+```{r winter tmin graphs, echo = FALSE}
+ggplot(win.tmin, aes(x = year, y = tmin, color = site)) +
+  geom_point(shape = 3) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Temperature (C)",
+       title = "Wintertime minimum temperature at all sites") +
+  theme_bw() +
+  theme(legend.position = "left",
+        strip.background = element_blank(),
+        strip.text = element_blank()) +
+  facet_wrap(~site, scales = "free", nrow = 2)
 ```
 
