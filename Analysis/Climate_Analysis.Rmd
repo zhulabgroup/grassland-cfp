@@ -72,8 +72,12 @@ all.CTI <- full_join(all.CTI, mcLserp_cti)
 all.CTI <- full_join(all.CTI, Swan_cti)
 all.CTI <- full_join(all.CTI, UCSC_cti)
 
+
+all.CTI$site <- as.factor(all.CTI$site)
+
 all.CTI <- all.CTI %>%
-  dplyr::select(-X, -hotTI, -ColdTI)
+  dplyr::select(-X, -hotTI, -ColdTI) %>%
+  mutate(site2 = factor(site, levels=c("Angelo", "Swanton", "UCSC", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Carrizo")))
 
 all.CTI.wtryr <- left_join(all.CTI, climate_site_wtryr, by = c("year", "site"))
 all.CTI.clim <- left_join(all.CTI, climate_site, by = c("year", "site"))
@@ -84,8 +88,16 @@ These data were downloaded in another markdown file ("PRISM.rmd"). They represen
 
 To begin, we can take a look at the monthly precipitation at each site, and compare their annual min and max temps.
 
+```{r avg temp}
+avg.temp <- all.CTI.clim %>%
+  group_by(site) %>%
+  summarize(avgtmin = mean(tmin),
+            avgtmean = mean(tmean))
+```
+
+
 ```{r plots, echo = FALSE}
-ggplot(all.CTI.clim, aes(x = site, y = tmean)) +
+ggplot(all.CTI.clim, aes(x = site2, y = tmean)) +
   geom_boxplot()  +
   geom_jitter(aes(color = month)) +
   labs(x = "site",
@@ -93,8 +105,8 @@ ggplot(all.CTI.clim, aes(x = site, y = tmean)) +
        title = "Mean monthly temps at all sites")
 
 ggplot(all.CTI.clim) +
-  geom_jitter(aes(x = site, y = tmax), color = "red") +
-  geom_jitter(aes(x = site, y = tmin), color = "blue") +
+  geom_jitter(aes(x = site2, y = tmax), color = "red") +
+  geom_jitter(aes(x = site2, y = tmin), color = "blue") +
   labs(x = "site",
        y = "monthly min and max temps, 1982-2019",
        title = "Comparison of min and max temps at all sites")
@@ -138,7 +150,7 @@ First, let's take a look at the change in precipitation over time, since I think
 ```{r ppt prep, echo = FALSE}
 # this is a quick piece of code to ensure that there's only one datapoint per year per site
 all.CTI.wtryr <- all.CTI.wtryr %>%
-  group_by(year, site) %>%
+  group_by(year, site, site2) %>%
   summarise(precip = mean(precip),
             tmax = mean(tmax),
             tmin = mean(tmin),
@@ -216,17 +228,25 @@ ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
 
 
 ```{r wateryear ppt graphs, echo = FALSE}
-ggplot(all.CTI.wtryr, aes(x = year, y = precip, color = site)) +
+## creating significance df
+wyppt.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
+                        sig = c("Yes", "No", "No", "No", "No", "No", "No", "No"))
+
+wyppt <- left_join(all.CTI.wtryr, wyppt.sig)
+
+#graph
+ggplot(wyppt, aes(x = year, y = precip, color = site2)) +
   geom_point(shape = 3) +
-  geom_line() +
+  geom_line(aes(linetype = sig)) +
   labs(x = "Year",
        y = "Precip (mm)",
-       title = "Water year precip at all sites") +
+       title = "Water year precipitation") +
   theme_bw() +
-  theme(legend.position = "none",
+  theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text = element_blank()) +
-  facet_wrap(~site, scales = "free", nrow = 2)
+  scale_linetype_manual(values=c("dashed", "solid"))+
+  facet_wrap(~site2, scales = "free", nrow = 2)
 ```
 
 
@@ -308,8 +328,8 @@ ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
 
 ```
 
-```{r wateryear ppt graphs, echo = FALSE}
-ggplot(win.ppt, aes(x = year, y = precip, color = site)) +
+```{r winter ppt graphs, echo = FALSE}
+ggplot(win.ppt, aes(x = year, y = precip, color = site2)) +
   geom_point(shape = 3) +
   geom_line() +
   labs(x = "Year",
@@ -319,7 +339,7 @@ ggplot(win.ppt, aes(x = year, y = precip, color = site)) +
   theme(legend.position = "none",
         strip.background = element_blank(),
         strip.text = element_blank()) +
-  facet_wrap(~site, scales = "free", nrow = 2)
+  facet_wrap(~site2, scales = "free", nrow = 2)
 ```
 
 
@@ -327,6 +347,7 @@ ggplot(win.ppt, aes(x = year, y = precip, color = site)) +
 Welp -- nothing looks significant here! Onto temperature.  
 
 ## Temperature Analysis
+### Overall yearly Tmin
 With nothing looking significant on our precip analyses, it's  time to see if the minimum temperature is changing over time.  
 
 ```{r min temp models}
@@ -391,17 +412,26 @@ ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
 
 
 ```{r overall tmin graphs, echo = FALSE}
-ggplot(all.CTI.wtryr, aes(x = year, y = tmin, color = site)) +
+## creating significance df
+wytmin.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
+                        sig = c("No", "Yes", "Almost", "Yes", "Yes", "Yes", "No", "No"))
+  
+
+wytmin <- left_join(all.CTI.wtryr, wytmin.sig)
+
+#graph
+ggplot(wytmin, aes(x = year, y = tmin, color = site2)) +
   geom_point(shape = 3) +
-  geom_line() +
+  geom_line(aes(linetype = sig)) +
   labs(x = "Year",
-       y = "Temperature (C)",
-       title = "Annual minimum temperature at all sites") +
+       y = "Minimum temperature (C)",
+       title = "Minimum temperature") +
   theme_bw() +
-  theme(legend.position = "none",
+  theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text = element_blank()) +
-  facet_wrap(~site, scales = "free", nrow = 2)
+  scale_linetype_manual(values=c( "dashed", "dotted", "solid"))+
+  facet_wrap(~site2, scales = "free", nrow = 2)
 ```
 
 
@@ -484,7 +514,7 @@ ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
 ```
 
 ```{r winter tmin graphs, echo = FALSE}
-ggplot(win.tmin, aes(x = year, y = tmin, color = site)) +
+ggplot(win.tmin, aes(x = year, y = tmin, color = site2)) +
   geom_point(shape = 3) +
   geom_line() +
   labs(x = "Year",
@@ -494,6 +524,8 @@ ggplot(win.tmin, aes(x = year, y = tmin, color = site)) +
   theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text = element_blank()) +
-  facet_wrap(~site, scales = "free", nrow = 2)
+  facet_wrap(~site2, scales = "free", nrow = 2)
 ```
+
+
 
