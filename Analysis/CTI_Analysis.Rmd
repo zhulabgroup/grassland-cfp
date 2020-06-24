@@ -20,7 +20,17 @@ library(plotrix)
 library(tidyverse)
 library(gridExtra)
 
+theme_set(theme_bw())
+
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+knitr::opts_knit$set(root.dir = '../') 
+
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+}
 ```
 
 ```{r prism data import and prep, echo = FALSE}
@@ -59,19 +69,21 @@ all.CTI <- full_join(all.CTI, Swan_cti)
 all.CTI <- full_join(all.CTI, UCSC_cti)
 
 all.CTI <- all.CTI %>%
-  select(-X, -hotTI, -ColdTI)
+  dplyr::select(-X, -hotTI, -ColdTI) %>%
+  mutate(site2 = factor(site, levels=c("Angelo", "Swanton", "UCSC", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Carrizo")))
+
 
 all.CTI <- left_join(all.CTI, wtryr_weather, by = c("year", "site"))
 ```
 
 ```{r cti graph}
-ggplot(all.CTI, aes(x=year, y=CTI, color = site)) +
+ggplot(all.CTI, aes(x=year, y=CTI, color = site2)) +
   geom_boxplot(aes(group = year)) +
       labs(title = "All sites - Community Temperature Index over time",
        x = "Year",
        y = "Community Temperature Index") +
   theme(legend.position = "bottom") +
-  facet_wrap(~site, nrow=2) 
+  facet_wrap(~site2, nrow=2) 
 
 ggplot(all.CTI, aes(x=year, y=CTI, color = site)) +
   geom_boxplot(aes(group = year)) +
@@ -227,11 +239,47 @@ grid.arrange(plot(cti.lm,type=c("p","smooth")),
 
 ```
 
+## Exit talk graphs
+```{r exit talk graphs}
+# calculating means and SEs
+all.CTI.means <- all.CTI %>%
+  group_by(site, year, site2) %>%
+  summarise(mean.tmin = mean(tmin),
+            mean.ppt = mean(precip),
+            mean.CTI = mean(CTI),
+            se.CTI = std.error(CTI),
+            mean.CPI = mean(CPI),
+            se.CPI = std.error(CPI))
+
+# adding sig info
+CTI.means.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
+                        sig = c("Yes", "Yes", "Yes", "Yes", "Yes", "No", "No", "Yes"))
+all.CTI.means <- left_join(all.CTI.means, CTI.means.sig)
+
+# 
+ggplot(all.CTI.means, aes(x=year, y=mean.CTI, color = site2)) +
+  geom_point() +
+  geom_line(aes(linetype = sig)) +
+  geom_errorbar(aes(x = year, ymin = mean.CTI-se.CTI, ymax = mean.CTI+se.CTI)) +
+  labs(title = "Community Temperature Index",
+       x = "Year",
+       y = "Community Temperature Index (C)") +
+  theme(legend.position = "left",
+        strip.background = element_blank(),
+        strip.text.x = element_blank(),
+        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
+        text = element_text(size = 14)) +
+  scale_linetype_manual(values=c("dotted", "solid")) +
+  facet_wrap(~site2, scales = "free", nrow = 2)
+
+```
+
+
 
 ## Extra graphs?
 ```{r climate and CTI on same graph}
 all.CTI.means <- all.CTI %>%
-  group_by(site, year) %>%
+  group_by(site, year, site2) %>%
   summarise(mean.tmin = mean(tmin),
             mean.ppt = mean(precip),
             mean.CTI = mean(CTI),

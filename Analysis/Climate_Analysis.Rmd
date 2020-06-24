@@ -244,7 +244,9 @@ ggplot(wyppt, aes(x = year, y = precip, color = site2)) +
   theme_bw() +
   theme(legend.position = "left",
         strip.background = element_blank(),
-        strip.text = element_blank()) +
+        strip.text = element_blank(),
+        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
+        text = element_text(size = 14)) +
   scale_linetype_manual(values=c("dashed", "solid"))+
   facet_wrap(~site2, scales = "free", nrow = 2)
 ```
@@ -429,7 +431,9 @@ ggplot(wytmin, aes(x = year, y = tmin, color = site2)) +
   theme_bw() +
   theme(legend.position = "left",
         strip.background = element_blank(),
-        strip.text = element_blank()) +
+        strip.text = element_blank(),
+        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
+        text = element_text(size = 14)) +
   scale_linetype_manual(values=c( "dashed", "dotted", "solid"))+
   facet_wrap(~site2, scales = "free", nrow = 2)
 ```
@@ -446,7 +450,7 @@ win.tmin <- climate_site %>%
   filter(month == 12 | month == 1 | month == 2) %>%
   mutate(wyear = wtr_yr(date)) 
 win.tmin <- left_join(all.CTI, win.tmin) %>%
-  group_by(wyear, site, plot) %>%
+  group_by(wyear, site, plot, site2) %>%
   summarise(tmin = mean(tmin)) %>%
   group_by(wyear, site) %>%
   summarise(tmin = mean(tmin)) %>%
@@ -527,5 +531,37 @@ ggplot(win.tmin, aes(x = year, y = tmin, color = site2)) +
   facet_wrap(~site2, scales = "free", nrow = 2)
 ```
 
+## lab meeting plots
 
+```{r lab graphs}
+
+## creating significance df
+wytmin.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
+                        sig = c("No", "Yes", "Almost", "Yes", "Yes", "Yes", "No", "No"))
+  
+
+wytmin <- left_join(all.CTI.wtryr, wytmin.sig)
+
+
+## creating significance df
+wyppt.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
+                        wyptt.sig = c("Yes", "No", "No", "No", "No", "No", "No", "No"))
+
+wytmin <- left_join(wytmin, wyppt.sig) 
+wytmin <- wytmin %>%
+dplyr::select(site, year, site2, wyptt.sig, sig, precip, tmin) %>%
+  gather(precip:tmin, key = "var", value = "value")
+
+#graph
+ggplot(wytmin) +
+  geom_point(aes(x = year, y = value, color = site2), shape = 3) +
+  geom_line(aes(x = year, y = value, color = site2, linetype = sig)) +
+  labs(x = "Year") +
+  theme_bw() +
+  theme(legend.position = "left",
+        strip.background = element_blank(),
+        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45)) +
+  scale_linetype_manual(values=c("dashed", "dotted", "solid")) +
+  facet_wrap(site2~var, scales = "free", nrow = 2)
+```
 

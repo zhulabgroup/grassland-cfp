@@ -21,7 +21,6 @@ library(gridExtra)
 
 theme_set(theme_bw())
 
-
 knitr::opts_knit$set(root.dir = '../') 
 knitr::opts_chunk$set(echo = TRUE)
 
@@ -396,7 +395,8 @@ g.all.grich <- left_join(g.all.grich, all.grich.sig)
   theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text.x = element_blank(),
-        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45)) +
+        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
+        text = element_text(size = 14)) +
   scale_linetype_manual(values=c("dotted", "solid")) +
   facet_wrap(~site2, scales = "free", nrow = 2))
 
@@ -408,19 +408,18 @@ nat.grich.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "
                         sig = c("Yes", "No", "Yes", "No", "Yes", "Yes", "No", "Yes"))
 g.nat.grich <- left_join(g.nat.grich, nat.grich.sig)
 
-(graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site)) +
+(graph.nat.rich <- ggplot(g.nat.grich, aes(x = year, y = meanrich, color = site2)) +
     geom_point() +
     geom_line(aes(linetype = sig)) +
   geom_errorbar(aes(ymin = meanrich-serich, ymax = meanrich+serich)) +
   labs(title = "Native species richness",
        x = "Year",
        y = "Richness")  +  
-  theme_classic() +
-  theme(legend.position = "none",
-        axis.title.y = element_blank(),
+  theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text.x = element_blank(),
-        axis.text.x = element_text(hjust = 0.5, vjust = 0.5, angle = 90)) +
+        axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
+        text = element_text(size = 14)) +
   scale_linetype_manual(values=c("dotted", "solid")) +
   facet_wrap(~site2, scales = "free", nrow = 2))
 
@@ -1092,19 +1091,51 @@ all.gcov <- full_join(all.gcov, car_gcover)
 all.gcov <- full_join(all.gcov, ucsc_gcover)
 
 all_gcov <- left_join(all.gcov, wtryr_weather, by = c("year", "site")) 
+```
 
 
+```{r CTI import and prep, cache = TRUE}
+ang_cti <- read.csv("Analysis/CTI Data/Angelo_CTI.csv")
+car_cti <- read.csv("Analysis/CTI Data/Carrizo_CTI.csv") %>%
+  rename(site = Site)
+elk_cti <- read.csv("Analysis/CTI Data/Elkhorn_CTI.csv") %>%
+  rename(site = Site)
+jasp_cti <- read.csv("Analysis/CTI Data/Jasper_CTI.csv") %>%
+  rename(site = Site)
+McLAnn_cti <- read.csv("Analysis/CTI Data/McLAnn_CTI.csv")  %>%
+  rename(site = Site)
+mcLserp_cti <- read.csv("Analysis/CTI Data/McLSerp_CTI.csv") %>%
+  rename(site = Site)
+Swan_cti <- read.csv("Analysis/CTI Data/Swanton_CTI.csv")  %>%
+  rename(site = Site)
+UCSC_cti <- read.csv("Analysis/CTI Data/UCSC_CTI.csv")  %>%
+  rename(site = Site)
 
+all.CTI <- full_join(ang_cti, car_cti)
+all.CTI <- full_join(all.CTI, elk_cti)
+all.CTI <- full_join(all.CTI, jasp_cti)
+all.CTI <- full_join(all.CTI, McLAnn_cti)
+all.CTI <- full_join(all.CTI, mcLserp_cti)
+all.CTI <- full_join(all.CTI, Swan_cti)
+all.CTI <- full_join(all.CTI, UCSC_cti)
+
+all.CTI <- all.CTI %>%
+  dplyr::select(-X, -hotTI, -ColdTI) %>%
+  mutate(site2 = factor(site, levels=c("Angelo", "Swanton", "UCSC", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Carrizo")))
+```
+
+
+```{r cover + CTI}
 all_gcov <- left_join(all_gcov, all.CTI, by = c("site", "year"))
 
 all_gcov_means <- all_gcov %>%
   group_by(site, guild, year) %>%
   summarise(serelcov = std.error(meancov),
             meanrelcov = mean(meancov),
-            precip = mean(precip.y),
-            tmean = mean(tmean.y),
-            tmax = mean(tmax.y),
-            tmin = mean(tmin.y),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin),
             mean.CTI = mean(CTI),
             se.CTI = std.error(CTI),
             mean.CPI = mean(CPI),
@@ -1133,12 +1164,11 @@ ggplot(all_gcov_means, aes(x = meanrelcov, y = mean.CTI, color = site)) +
 
 exo.gcov <- all_gcov_means %>% filter(guild == "Exo")
 nat.gcov <- all_gcov_means %>% filter(guild == "Nat")
-
 spp.gcov <- full_join(exo.gcov, nat.gcov)
 
-grid.arrange(ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CTI, color = site)) +
+## graphs of native cover and cti/cpi
+nat.cti.graph <- ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CTI, color = site)) +
   geom_point() +
-  geom_line() +
   labs(title = "",
        x = "Relative native cover",
        y = "CTI") +
@@ -1147,33 +1177,43 @@ grid.arrange(ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CTI, color = site)) +
         strip.background = element_blank(),
         strip.text = element_blank()) +
   scale_x_continuous(limits = c(0,1), expand = c(0.05,0)) +
-  facet_grid(~guild),
-ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CPI, color = site)) +
+  stat_smooth(method = "lm", se = F, size =  1) +
+  facet_grid(~guild)
+  
+nat.cpi.graph <- ggplot(nat.gcov, aes(x = meanrelcov, y = mean.CPI, color = site)) +
   geom_point() +
-  geom_line() +
   labs(title = "",
        x = "Relative native cover",
        y = "CPI") +
   theme_bw() +
-  theme(legend.position = "bottom",
+  theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text = element_blank()) +
   scale_x_continuous(limits = c(0,1), expand = c(0.05,0)) +
-  facet_grid(~guild))
+  stat_smooth(method = "lm", se = F, size =  1) +
+  facet_grid(~guild)
+
+cov.ct.leg <- g_legend(nat.cpi.graph)
+
+grid.arrange(nat.cti.graph, 
+             nat.cpi.graph + theme(legend.position = "none"),
+             cov.ct.leg,
+             nrow = 1)
+  
 
 
-
+## relative guild cover over time
 grid.arrange(
   ggplot(nat.gcov, aes(x = year, y = meanrelcov, color = site)) +
   geom_point() +
     geom_line() +
-  labs(title = "",
+  labs(title = "Native",
        x = "Year",
        y = "Relative cover"),
   ggplot(exo.gcov, aes(x = year, y = meanrelcov, color = site)) +
   geom_point() +
     geom_line() +
-  labs(title = "",
+  labs(title = "Exotic",
        x = "Year",
        y = "Relative cover"))
 ```
