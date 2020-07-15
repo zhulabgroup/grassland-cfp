@@ -3,10 +3,6 @@ title: "Data Cleanup"
 output: word_document
 ---
 
-In case of problems with connecting to GitHub:
-rm -f .git/index
-git rest
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
@@ -37,20 +33,19 @@ angelo_data <- Angelo %>%
   mutate(site = "Angelo") %>%
   filter(guild != "Bare",
            guild != "Moss",
-           guild != "Litter")
-
-## checking species and guilds match up
-Angelo_spp_check <- angelo_data  %>%
-  group_by(species.name, guild) %>%
-  summarise(mean = mean(cover))
-
+           guild != "Litter") %>%
+  mutate(site = "Angelo") %>%
+  mutate(species.name = fct_recode(species.name, 
+                                   'Brodiaea elegans' = 'Broadia elegans ',
+                                   'Convolvulus arvensis' = 'Convulvus arvensis ',
+                                   'Torilis arvensis' = 'Torrilis arvensis ',
+                                   'Aira caryophyllea' = 'Aira caryophellea '))
 
 unique(angelo_data$species.name)
 unique(angelo_data$guild)
 
 remove(Angelo)
 remove(Angelo_spp)
-remove(Angelo_spp_check)
 ```
 
 
@@ -92,26 +87,52 @@ carrizo_data <- carrizo_data %>%
   filter(!is.na(Intercepts),
          Intercepts > 0,
          !is.na(guild)) %>%
-  mutate(Site = "Carrizo")
+  mutate(site = "Carrizo")
 
 unique(carrizo_data$Species.Name)
 unique(carrizo_data$guild)
 
 
-## checking species and guilds match up
-Carrizo_spp_check <- carrizo_data  %>%
-  group_by(Species.Name, guild) %>%
-  summarise(mean = mean(Intercepts))
-
-## There are a small number of unidentified species (*remember to check the number of NA guilds*), so I have simply omitted them from the dataset. 
+## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset. 
 
 ## Removing extra carrizo objects
 remove(carrizo)
 remove(carrizo_extras)
 remove(carrizo_forms)
 remove(carrizo_spp)
-remove(Carrizo_spp_check)
-remove(carrizo_rich)
+
+
+# fixing species name spellings/parentheticals
+carrizo_data <- carrizo_data %>%
+    rename(species.name = Species.Name) %>%
+    mutate(species.name = fct_recode(species.name, 
+          'Bromus madritensis ssp rubens'= 'Bromus madritensis ssp rubens (B. rubens)', 
+          'Vulpia microstachys v pauciflora' = 'Vulpia microstachys vpauciflora (F. reflexa)',
+          'Vulpia myuros v hirsuta' = 'Vulpia myuros v hirsuta (F. megalura)',
+          'Guillenia lasiophylla' = 'Guillenia lasiophylla (Thelypodium l.)',
+          'Phlox gracilis' = 'Phlox gracilis (Microsteris g.)', 
+          'Lasthenia californica' = 'Lasthenia californica (L. chrysotoma)',
+          'Bromus hordeaceus' = 'Bromus hordeaceus (B. mollis)',
+          'Poa secunda ssp secunda' = 'Poa secunda ssp secunda (P. scabrella)',
+          'Lupinus microcarpus v microcarpus' = 'Lupinus microcarpus v microcarpus (L. ruber)',
+          'Hollisteria lanata' = 'Hollisteria lanata*',
+          'Castilleja exserta' = 'Castilleja exserta (O. purpurascens)',
+          'Vulpia bromoides' = 'Vulpia bromoides (Festuca dertonensis)',
+          'Chaenactis glabriuscula v glabriuscula' = 'Chaenactis glabriuscula vglabriuscula',
+          'Lastarriaea coriacea' = 'Lastarriaea coriacea (Chorizanthe c.)',
+          'Castilleja lineariloba' = 'Castilleja lineariloba (O. l.)',
+          'Delphinium recurvatum' = 'Delphinium recurvatum*',
+          'Amsinckia menziesii' = 'Amsinckia menziesii v menziesii',
+          'Monolopia congdonii' = 'Monolopia congdonii*',
+          'Herniaria hirsuta ssp. cinerea' = 'Herniaria hirsuta ssp cineria'))
+
+
+## because carrizo has a weird plot vs. site issue, we'll group by "site" for all analyses
+carrizo_data <- carrizo_data %>%
+  group_by(Site, year, species.name, guild, site) %>%
+  summarise(Intercepts = sum(Intercepts)) %>%
+  rename(plot = Site) 
+
 ```
 
 
@@ -121,8 +142,6 @@ Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl an
 Note that most of the code in the cleanup process was written before transitioning to R markdown and GitHub. 
 
 ```{r Importing Elkhorn, warning=FALSE, echo=FALSE}
-setwd("HollData")
-
 elkspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
 elkspp$species.code <- tolower(elkspp$species.code)
 
@@ -497,7 +516,7 @@ remove(elk_99_16)
 elk_99_18 <- full_join(elk_99_17, elk18, by = c("site", "freq", "treat", "rep", "year",
                                                 "species.code", "species.name", "guild",
                                                 "nat.exo", "ann.perr", "lifeform",
-                                                "intercepts"))
+                                                "intercepts")) 
 remove(elk_99_17)
 remove(elk99)
 remove(elk00)
@@ -525,13 +544,15 @@ remove(elk18)
 elk_99_18_species <- elk_99_18 %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "Elkhorn")
+  mutate(site = "Elkhorn") 
 elk_99_18_species$species.name <- as.character(elk_99_18_species$species.name)
 elk_99_18_species$species.name <- as.factor(elk_99_18_species$species.name)
 elk_99_18_species$year <- as.integer(elk_99_18_species$year)
 elk_99_18_species$year <- as.numeric(elk_99_18_species$year)
 
-elkhorn_data <- elk_99_18_species
+elkhorn_data <- elk_99_18_species %>%
+  mutate(species.name = fct_recode(species.name, 
+                                   'Vulpia myuros' = 'Festuca myuros'))
 
 # removing unwanted guilds (moss, litter, etc.)
 elk_99_18_species <- elk_99_18_species %>%
@@ -549,41 +570,8 @@ elk_99_18_guilds <- elk_99_18_species %>%
   summarize(guildtotal = sum(intercepts)) %>%
   ungroup() %>%
   group_by(year, guild) %>%
-  summarize(mean.intercepts = mean(guildtotal))
+  summarize(mean.intercepts = mean(guildtotal)) 
 
-Elk_Richness  <- elk_99_18_species %>%
-  group_by(year) %>%
-  summarize(rich = n_distinct(species.name))
-
-```
-
-```{r Elkhorn overview, include=FALSE}
-ggplot(Elk_Richness, aes (x = year,  y = rich)) +
-  geom_line () +
-  geom_point() +
-  labs(title = "Species Richness over time \n Elkhorn Slough",
-       y = "Species Richness",
-       x = "Year") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        axis.text.y = element_text(colour="black", size = 10),
-        axis.title.y = element_text(colour="black", size = 12),
-        axis.ticks.y = element_line(colour = "black"),
-        axis.text.x = element_text(colour="black", size = 10, angle = -45),
-        axis.title.x = element_text(colour="black", size = 12),
-        axis.ticks.x = element_line(colour = "black"),
-        legend.position ="bottom",
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(color = "black", size = 12)) +
-  coord_cartesian(ylim = c(0, 25)) +
-  scale_y_continuous(breaks = seq(0, 25, 5), expand = c(0,0)) +
-  scale_x_continuous(breaks= seq(1999, 2018, 1))
-
-unique(elk_99_18_species$species.name)
 ```
 
 ```{r Removing extra elkhorn objects}
@@ -592,7 +580,6 @@ remove(elk_99_18_species)
 remove(elk_guilds)
 remove(elkspp)
 remove(elk_99_18)
-remove(Elk_Richness)
 ```
 
 ## Jasper
@@ -616,16 +603,16 @@ Jasper_species <- Jasper %>%
   mutate(site = "Jasper") %>%
   filter(cover > 0)
 
-jasper_data <- Jasper_species
-```
+jasper_data <- Jasper_species %>%
+    mutate(species.name = fct_recode(species.name, 
+                                   'Eschscholzia californica' = 'Escholtzia californica',
+                                   'Elymus multisetus' = 'Elymus multisedis'))
 
-```{r Jasper spp check, echo=FALSE}
+
 jasper_spp_check <- jasper_data  %>%
   group_by(species.name, guild) %>%
   summarise(mean = mean(cover))
-```
 
-```{r Removing extra jasper objects}
 remove(Jasper)
 remove(Jasper_species)
 remove(Jasper_Veg)
@@ -640,7 +627,7 @@ Like the McLauglin Serpentine dataset, these data were collected at McLauglin Re
 
 ## importing the data
 McLAnn <- read.csv("ComComp Data Cleanup/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read.csv("AbioticSiteData.csv") %>%
+McL_Sites <- read.csv("ComComp Data Cleanup/McLaughlin/AbioticSiteData.csv") %>%
   rename(Site = site)
 McL_spp <- read.csv("ComComp Data Cleanup/McLaughlin/McLaughlin_FunctionalGroups.csv")
 
@@ -661,63 +648,21 @@ McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
   unite(Guild1, Guild3, col = "guild", sep = "") %>%
   mutate(Site = "McLAnn") %>%
-  select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild)
+  select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
+  group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
+  summarise(cover = mean(Cover))
 
-mclann_data <- McLAnn
-
-```
-
-```{r MCL Ann spp check, echo=FALSE}
-mclann_spp_check <- McLAnn  %>%
-  group_by(Species_Name, guild) %>%
-  summarise(mean = mean(Cover))
-```
+mclann_data <- McLAnn %>%
+ rename(species.name = Species_Name,
+        year = Year) %>%
+    mutate(species.name = fct_recode(species.name, 
+                                     'Cerastium fontanum ssp. vulgare' = 'Cerastium vulgare',
+                                     'Astragalus gambellianus' = 'Astragalus gambelianus',
+                                     'Melilotus indicus' = 'Melilotus indica'))
 
 
-Generally, everything looks okay, though we have a few rows of data we'll want to omit later on.
-
-```{r McL Annual Graph Prep & graphing, warning=FALSE, include=FALSE}
-## Finding richness per year
-McLAnn_rich  <- McLAnn %>%
-  filter(Species_Name != "Bare" &
-           Species_Name != "Rock") %>%
-  group_by(Year, plot) %>%
-  summarize(rich = n_distinct(Species_Name)) %>%
-  group_by(Year) %>%
-  summarise(meanrich = mean(rich))
-
-ggplot(McLAnn_rich, aes (x = Year,  y = meanrich)) +
-  geom_line () +
-  geom_point() +
-  labs(title = "Plot-level Species Richness over time \n McLaughlin Serpentine",
-       y = "Species Richness",
-       x = "Year") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        axis.text.y = element_text(colour="black", size = 10),
-        axis.title.y = element_text(colour="black", size = 12),
-        axis.ticks.y = element_line(colour = "black"),
-        axis.text.x = element_text(colour="black", size = 10, angle = -45),
-        axis.title.x = element_text(colour="black", size = 12),
-        axis.ticks.x = element_line(colour = "black"),
-        legend.position ="bottom",
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(color = "black", size = 12)) +
-  coord_cartesian(ylim = c(0, 35)) +
-  scale_y_continuous(breaks = seq(0, 35, 5), expand = c(0,0)) +
-  scale_x_continuous(breaks= seq(2000, 2019, 1))
-
-unique(McLAnn$Species_Name)
-```
-
-```{r Removing extra McLAnn objects}
 remove(McL_Sites)
 remove(McL_spp)
-remove(mclann_spp_check)
 remove(McLAnn)
 ```
 
@@ -725,7 +670,6 @@ remove(McLAnn)
 These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern Californa. These data are for 38 plots that were measured using 1m^2^ quadrats. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
 
 ```{r Import and Clean McL Serpentine, include = FALSE}
-setwd("McLaughlin")
 
 ## importing the data
 McLSerp <- read.csv("ComComp Data Cleanup/McLaughlin/Core_Community_Data2019.csv")
@@ -750,70 +694,40 @@ McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
   unite(Guild1, Guild3, col = "guild", sep = "") %>%
   mutate(Site = "McLSerp") %>%
-  select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild)
+  select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
+  group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
+  summarise(cover = mean(Cover))
 
-mclserp_data <- McLSerp
-```
+mclserp_data <- McLSerp %>%
+ rename(species.name = Species_Name,
+        year = Year) %>%
+    mutate(species.name = fct_recode(species.name,
+                                     'Astragalus gambellianus' = 'Astragalus gambelianus',
+                                     'Melilotus indicus' = 'Melilotus indica',
+                                     'Antirrhinum vexillocalyculatum' = 'Antirrhinum vexillo-calyculatum',
+                                     'Erythranthe guttata' = 'Mimulus guttatus'))
 
-*Note to self that the McLaughlin data is richness only from 2000-2005, so I will likely not be able to do the same CTI analysis on that full dataset.*
-
-```{r MCL Ann spp check, echo=FALSE}
-mclserp_spp_check <- mclserp_data  %>%
-  group_by(Species_Name, guild) %>%
-  summarise(mean = mean(Cover))
-```
-As with the annual mcL dataset, there are a few species rows we'll eventually want to cut out.  
-Also, there are a LOT of species in this dataset!
-
-```{r McL Serpentine Graph Prep & graphing, warning=FALSE, include=FALSE}
-## Finding richness per year
-McLSerp_rich  <- McLSerp %>%
-  filter(Species_Name != "Bare" &
-           Species_Name != "Rock") %>%
-  group_by(Year, plot) %>%
-  summarize(rich = n_distinct(Species_Name)) %>%
-  group_by(Year) %>%
-  summarise(meanrich = mean(rich))
-
-ggplot(McLSerp_rich, aes (x = Year,  y = meanrich)) +
-  geom_line () +
-  geom_point() +
-  labs(title = "Plot-level Species Richness over time \n McLaughlin Serpentine",
-       y = "Species Richness",
-       x = "Year") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        axis.text.y = element_text(colour="black", size = 10),
-        axis.title.y = element_text(colour="black", size = 12),
-        axis.ticks.y = element_line(colour = "black"),
-        axis.text.x = element_text(colour="black", size = 10, angle = -45),
-        axis.title.x = element_text(colour="black", size = 12),
-        axis.ticks.x = element_line(colour = "black"),
-        legend.position ="bottom",
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(color = "black", size = 12)) +
-  coord_cartesian(ylim = c(0, 35)) +
-  scale_y_continuous(breaks = seq(0, 35, 5), expand = c(0,0)) +
-  scale_x_continuous(breaks= seq(2000, 2014, 1))
-
-unique(McLSerp$Species_Name)
-unique(McLSerp$guild)
-```
-
-```{r Removing extra McLAnn objects}
 remove(McL_Sites)
 remove(McL_spp)
-remove(mclserp_spp_check)
 remove(McLSerp)
-remove(McLSerp_rich)
 ```
 
 ## Santa Rosa
-Incomplete at this time. 
+Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very inconsistent. Data collected via point-intercept. Richness available for more years (2000-2011) than point-intercept (2000-2006). 
+
+
+```{r SR Importing and Cleaning Data, include = FALSE}
+
+## importing the data
+saro_rich <- read.csv("ComComp Data Cleanup/Santa Rosa/SantaRosa_Richness.csv")
+saro_cov <- read.csv("ComComp Data Cleanup/Santa Rosa/SantaRosa_Cover00_06_raw.csv") 
+saro_spp <- read.csv("ComComp Data Cleanup/Santa Rosa/SantaRosa_SpeciesList.csv") %>%
+  rename("Species" = "Codes")
+
+## combining the guild information, creating a "guild" column, selecting only the desired info
+saro_rich <- left_join(saro_rich, saro_spp, by = "Species") 
+```
+
 
 ## Swanton
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar.For these analyses, I am using on the control plots (n=3), and removing all other treatments from the dataset. 
@@ -1115,7 +1029,9 @@ Swan_99_12_species$species.name <- as.factor(Swan_99_12_species$species.name)
 Swan_99_12_species$year <- as.integer(Swan_99_12_species$year)
 Swan_99_12_species$year <- as.numeric(Swan_99_12_species$year)
 
-swanton_data <- Swan_99_12_species
+swanton_data <- Swan_99_12_species %>%
+  mutate(species.name = fct_recode(species.name, 
+                                   'Vulpia myuros' = 'Festuca myuros'))
 
 Swan_99_12_species <- Swan_99_12_species %>%
   group_by(rep, year, guild, species.name) %>%
@@ -1137,35 +1053,6 @@ Swan_Richness  <- Swan_99_12_species %>%
   group_by(year) %>%
   summarize(rich = n_distinct(species.name))
 
-```
-
-```{r Swanton Overview, include=FALSE}
-ggplot(Swan_Richness, aes (x = year,  y = rich)) +
-  geom_line () +
-  geom_point() +
-  labs(title = "Species Richness over time \n Swanton Ranch",
-       y = "Species Richness",
-       x = "Year") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        axis.text.y = element_text(colour="black", size = 10),
-        axis.title.y = element_text(colour="black", size = 12),
-        axis.ticks.y = element_line(colour = "black"),
-        axis.text.x = element_text(colour="black", size = 10, angle = -45),
-        axis.title.x = element_text(colour="black", size = 12),
-        axis.ticks.x = element_line(colour = "black"),
-        legend.position ="bottom",
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(color = "black", size = 12)) +
-  coord_cartesian(ylim = c(0, 25)) +
-  scale_y_continuous(breaks = seq(0, 25, 5), expand = c(0,0)) +
-  scale_x_continuous(breaks= seq(1999, 2012, 1))
-
-unique(Swan_99_12_species$species.name)
 ```
 
 __Something I may want to consider is combining all of the *Bromus* species into one group.__
@@ -1483,63 +1370,18 @@ UCSC_99_12_species <- UCSC_99_12_species %>%
   group_by(rep, year, guild, species.name) %>%
   summarize(intercepts = sum(intercepts)) 
 
-ucsc_data <- UCSC_99_12_species
-
-UCSC_99_12_guilds <- UCSC_99_12_species %>%
-  group_by(rep, year, guild) %>%
-  summarize(guildtotal = sum(intercepts)) %>%
-  ungroup() %>%
-  group_by(year, guild) %>%
-  summarize(mean.intercepts = mean(guildtotal))
-
-ucsc_data <- UCSC_99_12_species
-
-UCSC_Richness  <- UCSC_99_12_species %>%
-  filter(guild != "Moss" &
-           guild != "Thatch" &
-           guild != "Bare ground") %>%
-  group_by(year) %>%
-  summarize(rich = n_distinct(species.name))
-```
-
-
-```{r UCSC Overview, include=FALSE}
-ggplot(UCSC_Richness, aes (x = year,  y = rich)) +
-  geom_line () +
-  geom_point() +
-  labs(title = "Species Richness over time \n UCSC",
-       y = "Species Richness",
-       x = "Year") +
-  theme(axis.line = element_line(colour = "black"),
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.border = element_blank(),
-        panel.background = element_blank(),
-        axis.text.y = element_text(colour="black", size = 10),
-        axis.title.y = element_text(colour="black", size = 12),
-        axis.ticks.y = element_line(colour = "black"),
-        axis.text.x = element_text(colour="black", size = 10, angle = -45),
-        axis.title.x = element_text(colour="black", size = 12),
-        axis.ticks.x = element_line(colour = "black"),
-        legend.position ="bottom",
-        plot.title = element_text(hjust = 0.5),
-        strip.background = element_rect(fill = "white"),
-        strip.text = element_text(color = "black", size = 12)) +
-  coord_cartesian(ylim = c(0, 25)) +
-  scale_y_continuous(breaks = seq(0, 25, 5), expand = c(0,0)) +
-  scale_x_continuous(breaks= seq(1999, 2012, 1))
-
-unique(UCSC_99_12_species$species.name)
+ucsc_data <- UCSC_99_12_species %>%
+    mutate(species.name = fct_recode(species.name, 
+                                   'Vulpia myuros' = 'Festuca myuros'))
 
 ```
+
 
 __Something I may want to consider is combining all of the *Bromus* species into one group.__  
 
 ```{r Removing extra Swanton objects}
 remove(UCSC_99_12)
 remove(UCSC_99_12_species)
-remove(UCSC_99_12_guilds)
-remove(UCSC_Richness)
 remove(UCSCspp)
 remove(UCSC_guilds)
 ```
@@ -1550,14 +1392,167 @@ Incomplete at this time.
 
 # Saving data as .csvs
 
-# ```{r Saving .csv files}
-# write.csv(angelo_data, "angelo_data.csv")
-# write.csv(carrizo_data, "carrizo_data.csv")
-# write.csv(jasper_data, "jasper_data.csv")
-# write.csv(elkhorn_data, "elkhorn_data.csv")
-# write.csv(mclann_data, "mclann_data.csv")
-# write.csv(mclserp_data, "mclserp_data.csv")
-# write.csv(swanton_data, "swanton_data.csv")
-# write.csv(ucsc_data, "ucsc_data.csv")
-# ```
+```{r Saving .csv files}
+write.csv(angelo_data, "Analysis/ComData/angelo_data.csv")
+write.csv(carrizo_data, "Analysis/ComData/carrizo_data.csv")
+write.csv(jasper_data, "Analysis/ComData/jasper_data.csv")
+write.csv(elkhorn_data, "Analysis/ComData/elkhorn_data.csv")
+write.csv(mclann_data, "Analysis/ComData/mclann_data.csv")
+write.csv(mclserp_data, "Analysis/ComData/mclserp_data.csv")
+write.csv(swanton_data, "Analysis/ComData/swanton_data.csv")
+write.csv(ucsc_data, "Analysis/ComData/ucsc_data.csv")
+```
+
+
+## Merging, making relative, and saving data
+
+```{r Post-import tidying and relative cover data}
+## angelo
+rel_ang <- angelo_data %>%
+  select(site, year, plot, species.name, cover, guild) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov,
+         datacol = "cover")
+rel_ang$plot <- as.factor(rel_ang$plot)
+
+## carrizo
+carrizo_data <- carrizo_data %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss") 
+rel_car <- carrizo_data %>%
+  select(site, year, plot, species.name, Intercepts, guild) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(Intercepts),
+         relcov = Intercepts/sumcov,
+         datacol = "pt_intercept") %>%
+  rename(cover = Intercepts) 
+rel_car$plot <- as.factor(rel_car$plot)
+
+## elkhorn
+elkhorn_data <- elkhorn_data %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Elkhorn")
+rel_elk <- elkhorn_data %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts),
+         relcov = intercepts/sumcov,
+         datacol = "pt_intercept") %>%
+  rename(plot = rep,
+         cover = intercepts)
+rel_elk$plot <- as.factor(rel_elk$plot)
+
+## jasper
+rel_jasp <- jasper_data %>%
+  filter(cover > 0) %>%
+  group_by(uniqueID, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>%
+  mutate(site = "Jasper",
+         datacol = "cover") %>%
+  rename(plot = uniqueID)
+
+## mcL ann
+mclann_data <- mclann_data %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown grass",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Ann")
+rel_mcLann <- mclann_data %>%
+  group_by(site, year, plot, species.name, guild) %>%
+  summarise(cover = sum(cover)) %>%
+  ungroup() %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = (cover/sumcov),
+         datacol = "cover")
+rel_mcLann$plot <- as.factor(rel_mcLann$plot)
+
+## mcL serp
+mclserp_data <- mclserp_data %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Serp")
+rel_mcLserp <- mclserp_data %>%
+  group_by(site, year, plot, species.name, guild) %>%
+  summarise(cover = sum(cover)) %>%
+  ungroup() %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = (cover/sumcov),
+         datacol = "cover")
+rel_mcLserp$plot <- as.factor(rel_mcLserp$plot)
+
+## swanton
+swanton_data <- swanton_data %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Swanton")
+rel_swan <- swanton_data %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts),
+         relcov = intercepts/sumcov,
+         datacol = "pt_intercept") %>%
+  rename(cover = intercepts,
+         plot = rep)
+rel_swan$plot <- as.factor(rel_swan$plot)
+
+## ucsc
+ucsc_data <- ucsc_data %>%
+  filter(species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "UCSC")
+rel_ucsc <- ucsc_data %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts),
+         relcov = intercepts/sumcov,
+         datacol = "pt_intercept") %>%
+  rename(cover = intercepts,
+         plot = rep)
+rel_ucsc$plot <- as.factor(rel_ucsc$plot)
+
+## combining all relative cover objects
+rel_all <- full_join(rel_ang, rel_car)
+rel_all <- full_join(rel_all, rel_elk)
+rel_all <- full_join(rel_all, rel_jasp)
+rel_all <- full_join(rel_all, rel_mcLann)
+rel_all <- full_join(rel_all, rel_mcLserp)
+rel_all <- full_join(rel_all, rel_swan)
+rel_all <- full_join(rel_all, rel_ucsc) 
+
+# save relative data as a .csv 
+write.csv(rel_all, "Analysis/ComData/AllData_Relative.csv")
+
+```
+
+
+```{r}
+remove(angelo_data)
+remove(carrizo_data)
+remove(elkhorn_data)
+remove(jasper_data)
+remove(mclann_data)
+remove(mclserp_data)
+remove(swanton_data)
+remove(ucsc_data)
+
+remove(rel_ang)
+remove(rel_car)
+remove(rel_elk)
+remove(rel_jasp)
+remove(rel_mcLann)
+remove(rel_mcLserp)
+remove(rel_swan)
+remove(rel_ucsc)
+```
 
