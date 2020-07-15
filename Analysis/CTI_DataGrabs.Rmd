@@ -1786,6 +1786,7 @@ mcLserp_species_data_df <- full_join(mcLserp_species_data_df, mcLserp_allium_dat
 
 # and we'll save the mclserp gbif spatial data
 write_rds(mcLserp_species_data_df, "Analysis/GBIF_Data/mcLserpGBIF.rds")
+
 ```
 
 ### Combine occurance data with climate data
@@ -1794,7 +1795,7 @@ This method of data extraction follows the tutorial on the jcoliver webpage.
 ```{r grab mclserp worldclim climate data, cache = TRUE}
 xy <- mcLserp_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
 sp_xy <- mcLserp_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
-env <- getData('worldclim', var='bio', res=2.5)
+env <- raster::getData('worldclim', var='bio', res=2.5)
 xy_bio <- raster::extract(env, xy)
 ```
 
@@ -1834,7 +1835,7 @@ mcLserp_species_clim <- mcLserp_species_clim %>%
 ```{r mclserp rel and clim data join}
 mcLserp_CTI <- left_join(rel_mcLserp, mcLserp_species_clim, by = "species.name")
 
-write.csv(mcLann_CTI, "Analysis/CTI Data/mcLserp_CTI_07_2020.csv")
+write.csv(mcLserp_CTI, "Analysis/CTI Data/mcLserp_CTI_07_2020.csv")
 ```
 
 
