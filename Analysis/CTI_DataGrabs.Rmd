@@ -699,7 +699,7 @@ This method of data extraction follows the tutorial on the jcoliver webpage.
 ```{r grab worldclim climate data, cache = TRUE}
 xy <- elk_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
 sp_xy <- elk_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
-env <- getData('worldclim', var='bio', res=2.5)
+env <- raster::getData('worldclim', var='bio', res=2.5)
 xy_bio <- raster::extract(env, xy)
 ```
 
