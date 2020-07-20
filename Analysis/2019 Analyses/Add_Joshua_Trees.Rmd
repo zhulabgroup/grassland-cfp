@@ -1,0 +1,113 @@
+---
+title: "Adding Joshua Trees"
+author: "Josie Lesage"
+date: "1/30/2020"
+output: html_document
+---
+
+# Setup and data import
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(vegan)
+library(lme4)
+
+## CTI analysis
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+
+
+## other setup chores
+theme_set(theme_bw())
+knitr::opts_knit$set(root.dir = '../') 
+knitr::opts_chunk$set(echo = TRUE)
+
+# to rip legends out of figures
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+} 
+```
+
+```{r data import, include = FALSE}
+car_data <- read.csv("Analysis/ComData/carrizo_data.csv") %>%
+  dplyr::select(-X) %>%
+    rename(species.name = Species.Name) %>%
+    mutate(species.name = fct_recode(species.name, 
+          'Bromus madritensis ssp rubens'= 'Bromus madritensis ssp rubens (B. rubens)', 
+          'Vulpia microstachys v pauciflora' = 'Vulpia microstachys vpauciflora (F. reflexa)',
+          'Vulpia myuros v hirsuta' = 'Vulpia myuros v hirsuta (F. megalura)',
+          'Guillenia lasiophylla' = 'Guillenia lasiophylla (Thelypodium l.)',
+          'Phlox gracilis' = 'Phlox gracilis (Microsteris g.)', 
+          'Lasthenia californica' = 'Lasthenia californica (L. chrysotoma)',
+          'Bromus hordeaceus' = 'Bromus hordeaceus (B. mollis)',
+          'Poa secunda ssp secunda' = 'Poa secunda ssp secunda (P. scabrella)',
+          'Lupinus microcarpus v microcarpus' = 'Lupinus microcarpus v microcarpus (L. ruber)',
+          'Hollisteria lanata' = 'Hollisteria lanata*',
+          'Castilleja exserta' = 'Castilleja exserta (O. purpurascens)',
+          'Vulpia bromoides' = 'Vulpia bromoides (Festuca dertonensis)',
+          'Chaenactis glabriuscula v glabriuscula' = 'Chaenactis glabriuscula vglabriuscula',
+          'Lastarriaea coriacea' = 'Lastarriaea coriacea (Chorizanthe c.)',
+          'Castilleja lineariloba' = 'Castilleja lineariloba (O. l.)',
+          'Delphinium recurvatum' = 'Delphinium recurvatum*',
+          'Amsinckia menziesii' = 'Amsinckia menziesii v menziesii',
+          'Monolopia congdonii' = 'Monolopia congdonii*',
+          'Herniaria hirsuta ssp. cinerea' = 'Herniaria hirsuta ssp cineria'))
+```
+
+The goal for this project is to successfully download species occurance location data from GBIF for the species in the Swanton plots, and to associate this location data with climate data from the WorldClim database. Additionally, I hope to do any cleaning that's needed between these steps before I can generate a community temperature index for the site over time.
+
+## Adding Joshua trees
+```{r adding joshua trees to table species table}
+car.jtree <- data.frame("site" = c("Carrizo"),
+                        "Plot" = c(408, 604, 1011, 1307, 1705, 1810),
+                        "Site.type" = c("EP", "EP", "EP", "EP", "EP", "EP"))
+
+```
+
+## Preparing a species list and making relative cover data
+In order to get the appropriate data from gbif, we need to generate a table of species/genus information that we can reference and call from.
+
+```{r species table}
+car_species <- unique(car_data$species.name)
+car_list <- as.data.frame(car_species)
+
+car_list$car_species <- paste0("'", car_list$car_species, "',")
+  
+cat(format_delim(car_list, delim = ""))
+
+```
+
+There are a total of ~70 species in the Carrizo dataset, some of which are sub-species, and others of which as genera or physical features (holes, moss, etc).
+
+```{r cleaning up data table}
+car_data <- car_data %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss")
+
+car_data_rel <- car_data %>%
+  select(year, Plot, species.name, Intercepts) %>%
+  distinct(year, Plot, species.name, .keep_all = TRUE) %>%
+  group_by(Plot, year) %>%
+  mutate(sumintercept = sum(Intercepts),
+         relcov = Intercepts/sumintercept)
+```
+
+**Note:** there are instances of "bromus sp." and "rumex spp." in the dataset. I am not sure if I should remove this one hit, or leave it be. It's probably bromus hordeaceus - but no way to know for sure. 
