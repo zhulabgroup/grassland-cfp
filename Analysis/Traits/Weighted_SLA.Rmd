@@ -1,0 +1,32 @@
+---
+title: "Weighted SLA Change"
+author: "Josie Lesage"
+date: "7/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Change in weighted SLA over time
+
+```{r import data and get species ID list}
+rel_all <- read.csv("Analysis/Traits/RelativeData.csv") %>% select(-X)
+
+species <- unique(rel_all$species.name)
+species <- as.data.frame(species)
+
+try_spp <- read.csv("Analysis/Traits/TryAccSpecies.csv") %>%
+  rename(species.name = "AccSpeciesName")
+
+try_IDs <- semi_join(try_spp, rel_all, by = "species.name")
+
+try_IDs <- unique(try_IDs$AccSpeciesID)
+try_IDs <- as.data.frame(try_IDs)
+try_IDs$try_IDs <- paste0(try_IDs$try_IDs, ",")
+cat(format_delim(try_IDs, delim = ""))
+```
+
+
+The goal is to use SLA data from the TRY database to (roughly) estimate the weighted SLA of these communities over time, further showing a potential change in species towards those that are adapted to hotter, drier climates. Basically, another line of evgidence to potentially show that these communities are drying over time. 

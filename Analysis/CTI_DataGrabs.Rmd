@@ -62,7 +62,7 @@ We will gather species occurrance data from GBIF through the SpOcc package.
 ```{r grabbing Angelo gbif data, echo = FALSE, cache = TRUE, warning=FALSE}
 
 ## look at species list
-species_list_ang <- c('Danthonia californica', 
+ang_species_list <- c('Danthonia californica', 
                       'Bromus hordeaceus',
                       'Bromus tectorum',
                       'Bromus diandrus',
@@ -2089,7 +2089,7 @@ ucsc_species_list <- c('Erodium botrys',
                        'Cynosurus echinatus',
                        'Isolepis carinata')
 
-ucsc_species_data <- occ(query = ucsc_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
+ucsc_species_data <- spocc::occ(query = ucsc_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -2116,7 +2116,7 @@ ucsc_species_data_df <- ucsc_species_data_df[flags$.summary,] %>%
 Because there are three genera found in the plots could reflect any number of species known from the site, we fill collect gbif data for all of these.
 ### Species without epithets
 ##### Bromus
-```{r swanton bromus query GBIF}
+```{r ucsc bromus query GBIF}
 ucsc_bromus <- c('Bromus carinatus',
                  'Bromus diandrus',
                  'Avena barbata')
@@ -2145,6 +2145,38 @@ ucsc_bromus_data_df <- ucsc_bromus_data_df[flags$.summary,]
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
 ucsc_bromus_data_df <- ucsc_bromus_data_df %>%
   mutate(species.name = "Bromus sp")
+```
+
+##### Brassica
+```{r swanton bromus query GBIF}
+ucsc_brassica <- c('Brassica rapa',
+                  'Brassica nigra',
+                  'Hirschfeldia incana')
+         
+ucsc_brassica_data <- occ(query = ucsc_brassica, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean swanton bromus data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+ucsc_brassica_data <- fixnames(ucsc_brassica_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+ucsc_brassica_data_df <- occ2df(ucsc_brassica_data)
+
+flags <- clean_coordinates(x = ucsc_brassica_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+ucsc_brassica_data_df <- ucsc_brassica_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+ucsc_brassica_data_df <- ucsc_brassica_data_df %>%
+  mutate(species.name = "Brassica sp")
 ```
 
 ### Combine with and without epithet dataframes and remove extra objects
