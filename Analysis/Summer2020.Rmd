@@ -12,6 +12,7 @@ library(codyn)
 library(MASS)
 library(lme4)
 library(nlme)
+library(vegan)
 
 
 ## misc/both/other
@@ -19,6 +20,7 @@ library(oz)
 library(plotrix)
 library(tidyverse)
 library(gridExtra)
+library(stringr)
 
 
 # to rip legends out of figures
@@ -72,14 +74,15 @@ raw_car <- raw_car %>%
   filter(species.name != "litter",
          species.name != "bare",
          species.name != "hole",
-         species.name != "moss") 
+         species.name != "moss") %>%
+  filter(plot != "SC5" | plot != "SC4")
 rel_car <- raw_car %>%
   select(site, year, plot, species.name, Intercepts, guild) %>%
   group_by(plot, year) %>%
   mutate(sumcov = sum(Intercepts),
          relcov = Intercepts/sumcov,
          datacol = "pt_intercept") %>%
-  rename(cover = Intercepts) 
+  rename(cover = Intercepts)
 rel_car$plot <- as.factor(rel_car$plot)
 
 ## elkhorn
@@ -180,9 +183,13 @@ rel_all <- full_join(rel_all, rel_mcLann)
 rel_all <- full_join(rel_all, rel_mcLserp)
 rel_all <- full_join(rel_all, rel_swan)
 rel_all <- full_join(rel_all, rel_ucsc)
+
+rel_all <- rel_all %>%
+  mutate(species.name.2 = str_squish(species.name)) %>%
+  select(-species.name) %>% rename(species.name = species.name.2)
 ```
 
-```{r removing raw and rel data objects}
+```{r removing raw data objects}
 remove(raw_ang)
 remove(raw_car)
 remove(raw_elk)
@@ -191,16 +198,8 @@ remove(raw_mcLann)
 remove(raw_mcLserp)
 remove(raw_swan)
 remove(raw_ucsc)
-
-remove(rel_ang)
-remove(rel_car)
-remove(rel_elk)
-remove(rel_jasp)
-remove(rel_mcLann)
-remove(rel_mcLserp)
-remove(rel_swan)
-remove(rel_ucsc)
 ```
+
 
 ```{r prism data import and prep, echo = FALSE}
 weather <- read.csv("Analysis/ClimData/PRISM_data.csv") %>%
@@ -320,7 +319,6 @@ summary(glm(meancov ~ year,
 summary(glm(meancov ~ year, 
               data = gcov_all_natcov[gcov_all_natcov$site == "Swanton",]))
 
-
 # UCSC
 summary(glm(meancov ~ year,
             data = gcov_all_natcov[gcov_all_natcov$site == "UCSC",]))
@@ -371,7 +369,7 @@ summary(glm(meancov ~ year,
 ```
 
 
-## Species richness over time
+# Species richness over time
 
 ```{r data prep and summary graphs, echo = FALSE}
 grich_all <- rel_all %>%
@@ -556,7 +554,234 @@ summary(glm(meanrich ~ year, family = "poisson",
 
 ```
 
-## Grouped Turnover Graph
+# Shannon Diversity Index
+
+```{r shannon prep and summary graphs, echo = FALSE}
+## Angelo
+div_ang <- raw_ang %>%
+  select(year, site, plot, species.name, cover) %>%
+  spread(species.name, cover) %>%
+  ungroup()
+div_ang_H <- div_ang %>%
+  select(-year, -site, -plot)
+div_ang_H[is.na(div_ang_H)] <- 0
+
+ang_H <- diversity(div_ang_H, "shannon")
+ang_H <- as.data.frame(ang_H) %>% rename('shannon' = 'ang_H')
+div_ang <- bind_cols(div_ang, ang_H)  %>%
+  select(year, site, plot, shannon)
+div_ang$plot <- as.factor(div_ang$plot)
+
+## Carrizo
+div_car <- raw_car %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss") %>%
+  filter(plot != "SC5" | plot != "SC4") %>%
+  select(year, site, plot, species.name, Intercepts) %>%
+  spread(species.name, Intercepts) %>%
+  ungroup()
+div_car_H <- div_car %>%
+  select(-year, -site, -plot)
+div_car_H[is.na(div_car_H)] <- 0
+
+car_H <- diversity(div_car_H, "shannon")
+car_H <- as.data.frame(car_H) %>% rename('shannon' = 'car_H')
+div_car <- bind_cols(div_car, car_H)  %>%
+  select(year, site, plot, shannon)
+div_car$plot <- as.factor(div_car$plot)
+
+
+## Elkhorn
+div_elk <- raw_elk %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Elkhorn") %>%
+  rename(plot = rep) %>%
+  select(year, site, plot, species.name, intercepts) %>%
+  spread(species.name, intercepts) %>%
+  ungroup()
+div_elk_H <- div_elk %>%
+  select(-year, -site, -plot)
+div_elk_H[is.na(div_elk_H)] <- 0
+
+elk_H <- diversity(div_elk_H, "shannon")
+elk_H <- as.data.frame(elk_H) %>% rename('shannon' = 'elk_H')
+div_elk <- bind_cols(div_elk, elk_H)  %>%
+  select(year, site, plot, shannon)
+div_elk$plot <- as.factor(div_elk$plot)
+
+## Jasper
+div_jasp <- raw_jasp %>%
+  filter(cover > 0) %>%
+  mutate(site = "Jasper") %>%
+  rename('plot' = 'uniqueID') %>%
+  select(year, site, plot, species.name, cover) %>%
+  spread(species.name, cover) %>%
+  ungroup()
+div_jasp_H <- div_jasp %>%
+  select(-year, -site, -plot)
+div_jasp_H[is.na(div_jasp_H)] <- 0
+
+jasp_H <- diversity(div_jasp_H, "shannon")
+jasp_H <- as.data.frame(jasp_H) %>% rename('shannon' = 'jasp_H')
+div_jasp <- bind_cols(div_jasp, jasp_H)  %>%
+  select(year, site, plot, shannon)
+div_jasp$plot <- as.factor(div_jasp$plot)
+
+## mcL ann
+div_mcLann <- raw_mcLann %>%
+  filter(cover > 0) %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown grass",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Ann") %>%
+  select(year, site, plot, species.name, cover) %>%
+  spread(species.name, cover) %>%
+  ungroup()
+div_mcLann_H <- div_mcLann %>%
+  select(-year, -site, -plot)
+div_mcLann_H[is.na(div_mcLann_H)] <- 0
+
+mcLann_H <- diversity(div_mcLann_H, "shannon")
+mcLann_H <- as.data.frame(mcLann_H) %>% rename('shannon' = 'mcLann_H')
+div_mcLann <- bind_cols(div_mcLann, mcLann_H)  %>%
+  select(year, site, plot, shannon)
+div_mcLann$plot <- as.factor(div_mcLann$plot)
+
+
+## mcL serp
+div_mcLserp <- raw_mcLserp %>%
+  filter(cover > 0) %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Serp") %>%
+  select(year, site, plot, species.name, cover) %>%
+  spread(species.name, cover) %>%
+  ungroup()
+div_mcLserp_H <- div_mcLserp %>%
+  select(-year, -site, -plot)
+div_mcLserp_H[is.na(div_mcLserp_H)] <- 0
+
+mcLserp_H <- diversity(div_mcLserp_H, "shannon")
+mcLserp_H <- as.data.frame(mcLserp_H) %>% rename('shannon' = 'mcLserp_H')
+div_mcLserp <- bind_cols(div_mcLserp, mcLserp_H)  %>%
+  select(year, site, plot, shannon)
+div_mcLserp$plot <- as.factor(div_mcLserp$plot)
+
+
+## swanton
+div_swan <- raw_swan %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "Swanton") %>%
+  rename('plot' = 'rep') %>%
+  select(year, site, plot, species.name, intercepts) %>%
+  spread(species.name, intercepts) %>%
+  ungroup()
+div_swan_H <- div_swan %>%
+  select(-year, -site, -plot)
+div_swan_H[is.na(div_swan_H)] <- 0
+
+swan_H <- diversity(div_swan_H, "shannon")
+swan_H <- as.data.frame(swan_H) %>% rename('shannon' = 'swan_H')
+div_swan <- bind_cols(div_swan, swan_H)  %>%
+  select(year, site, plot, shannon)
+div_swan$plot <- as.factor(div_swan$plot)
+
+## ucsc
+div_ucsc <- raw_ucsc %>%
+  filter(species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  mutate(site = "UCSC") %>%
+  rename('plot' = 'rep') %>%
+  select(year, site, plot, species.name, intercepts) %>%
+  spread(species.name, intercepts) %>%
+  ungroup()
+div_ucsc_H <- div_ucsc %>%
+  select(-year, -site, -plot)
+div_ucsc_H[is.na(div_ucsc_H)] <- 0
+
+ucsc_H <- diversity(div_ucsc_H, "shannon")
+ucsc_H <- as.data.frame(ucsc_H) %>% rename('shannon' = 'ucsc_H')
+div_ucsc <- bind_cols(div_ucsc, ucsc_H)  %>%
+  select(year, site, plot, shannon)
+div_ucsc$plot <- as.factor(div_ucsc$plot)
+
+
+## combine all 
+div_all <- full_join(div_ang, div_car)
+div_all <- full_join(div_all, div_elk)
+div_all <- full_join(div_all, div_jasp)
+div_all <- full_join(div_all, div_mcLann)
+div_all <- full_join(div_all, div_mcLserp)
+div_all <- full_join(div_all, div_swan)
+div_all <- full_join(div_all, div_ucsc)
+
+div_all_means <- div_all %>%
+  group_by(year, site) %>%
+  summarise(meanH = mean(shannon),
+            seH = std.error(shannon))
+
+ggplot(div_all_means, aes(x = year, y = meanH, color = site)) +
+  geom_point() +
+  geom_line (alpha = 0.5) +
+  geom_errorbar(aes(ymin = meanH-seH, ymax = meanH+seH)) +
+  labs(title = "All sites - Shannon H over time",
+       x = "Year",
+       y = "Shannon H") +
+  theme_bw() +
+  scale_y_continuous(limits = c(0,NA)) + 
+  expand_limits(y = 0) +
+  facet_wrap(~site, scales = "free", ncol = 4)
+
+```
+
+```{r Shannon H MODELS}
+div_all$year <- as.numeric(div_all$year)
+
+# Angelo
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "Angelo",]))
+
+# Carrizo -- LOOKS WEIRD?
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "Carrizo",]))
+
+# Elkhorn
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "Jasper",]))
+
+# McL Ann
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "McL Serp",]))
+
+# Swanton
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "Swanton",]))
+
+
+# UCSC
+summary(glm(shannon ~ year, 
+            data = div_all[div_all$site == "UCSC",]))
+
+```
+
+
+# Grouped Turnover Graph
 
 ```{r turnover, echo=FALSE}
 ## missing Carrizo because that data isn't taken in the same plots every year
@@ -821,35 +1046,35 @@ CPI_models <- CTI_plot_means %>%
 CPI_models$year <- as.numeric(CPI_models$year)
 
 # Angelo
-summary(glm(meanCTI ~ year,
+summary(glm(meanCPI ~ year,
               data = CPI_models[CPI_models$site == "Angelo",]))
 
 # Carrizo - has a problem, inconsistent plots -- ignore data for now
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "Carrizo",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "Carrizo",]))
 
 # Elkhorn
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "Elkhorn",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "Elkhorn",]))
 
 # Jasper
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "Jasper",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "Jasper",]))
 
 # McL Ann
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "McL Ann",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "McL Ann",]))
 
 # McL Serp
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "McL Serp",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "McL Serp",]))
 
 # Swanton
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "Swanton",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "Swanton",]))
 
 
 # UCSC
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "UCSC",]))
+summary(glm(meanCPI ~ year,
+              data = CPI_models[CPI_models$site == "UCSC",]))
 ```
