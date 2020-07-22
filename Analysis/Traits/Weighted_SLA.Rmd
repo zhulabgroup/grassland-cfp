@@ -7,12 +7,19 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(stringr)
+library(plotrix)
 ```
 
 # Change in weighted SLA over time
 
 ```{r import data and get species ID list}
-rel_all <- read.csv("Analysis/Traits/RelativeData.csv") %>% select(-X)
+rel_all <- read.csv("Analysis/Traits/RelativeData.csv") %>% 
+  select(-X) %>%
+  mutate(species.name = str_squish(species.name)) %>%
+  filter(relcov > 0)
 
 species <- unique(rel_all$species.name)
 species <- as.data.frame(species)
@@ -22,11 +29,55 @@ try_spp <- read.csv("Analysis/Traits/TryAccSpecies.csv") %>%
 
 try_IDs <- semi_join(try_spp, rel_all, by = "species.name")
 
-try_IDs <- unique(try_IDs$AccSpeciesID)
-try_IDs <- as.data.frame(try_IDs)
-try_IDs$try_IDs <- paste0(try_IDs$try_IDs, ",")
-cat(format_delim(try_IDs, delim = ""))
+# try_IDs <- unique(try_IDs$AccSpeciesID)
+# try_IDs <- as.data.frame(try_IDs)
+# try_IDs$try_IDs <- paste0(try_IDs$try_IDs, ",")
+# cat(format_delim(try_IDs, delim = ""))
+
+try_data <- read.csv("Analysis/Traits/TRY_Data.csv") %>%
+  rename(species.name = AccSpeciesName) %>%
+  filter(TraitID > 0) %>%
+  select(-ObservationID, -ObsDataID)
+try_data <- distinct(try_data) %>%
+  group_by(species.name) %>%
+  summarise(meanSLA = mean(StdValue))
+
+rel_all_SLA <- left_join(rel_all, try_data, by = "species.name")
+  
 ```
 
 
 The goal is to use SLA data from the TRY database to (roughly) estimate the weighted SLA of these communities over time, further showing a potential change in species towards those that are adapted to hotter, drier climates. Basically, another line of evgidence to potentially show that these communities are drying over time. 
+
+```{r weighted SLA}
+
+rel_all_SLA_means <- rel_all_SLA %>%
+  filter(meanSLA > 0) %>%
+  group_by(site, year, plot) %>%
+  summarise(meanSLA = mean(meanSLA),
+            cover_inc = sum(relcov)) %>%
+  filter(cover_inc > 0.75) %>%
+  group_by(site, year) %>%
+  summarise(mean_SLA = mean(meanSLA),
+            seSLA = std.error(meanSLA))
+
+ggplot(rel_all_SLA_means, aes(x = year, y = mean_SLA, color = site)) +
+  geom_point() +
+  geom_line() +
+  geom_errorbar(aes(ymin = (mean_SLA - seSLA), ymax = (mean_SLA + seSLA))) +
+  labs(title = "All sites - Community Temperature Index",
+       x = "Year",
+       y = "CTI") +
+  facet_wrap(~site, scales = "free", ncol = 4) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  geom_smooth(method = "lm")
+  
+```
+
+
+
+
+
+
+
