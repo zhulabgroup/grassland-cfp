@@ -197,8 +197,6 @@ This method of data extraction follows the tutorial on the jcoliver webpage.
 xy <- ang_species_data_df[,c("longitude","latitude")]
 sp_xy <- ang_species_data_df[c("species.name", "longitude","latitude")]
 
-sp_xy <- sp_xy
-
 env <- getData('worldclim', var='bio', res=2.5)
 
 plot(env, 1, main=NULL, axes=FALSE)
@@ -1853,7 +1851,7 @@ write.csv(mcLserp_CTI, "Analysis/CTI Data/mcLserp_CTI_07_2020.csv")
 ```{r swanton data and species list}
 rel_swan <- rel_all %>%
   filter(site == "Swanton")
-swan_species <- unique(rel_mcLserp$species.name)
+swan_species <- unique(rel_swan$species.name)
 swan_species <- as.data.frame(swan_species)
 swan_species$swan_species <- paste0("'", swan_species$swan_species, "',")
 cat(format_delim(swan_species, delim = ""))
@@ -1981,7 +1979,7 @@ swan_rumex_data_df <- swan_rumex_data_df[flags$.summary,]
 
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
 swan_rumex_data_df <- swan_rumex_data_df %>%
-  mutate(species.name = "Rumex sp")
+  mutate(species.name = "Rumex spp")
 ```
 
 ### Combine with and without epithet dataframes and remove extra objects
@@ -2032,7 +2030,7 @@ swan_species_clim <- swan_species_clim %>%
   summarise(meant = mean(bio1, na.rm = TRUE),
          meanp = mean(bio12, na.rm = TRUE)) %>%
   mutate(meanT = meant/10) %>%
-  select(-meant)
+  dplyr::select(-meant)
 ```
 
 ### Combine clim data with original relative data
@@ -2176,12 +2174,13 @@ ucsc_brassica_data_df <- ucsc_brassica_data_df[flags$.summary,]
 
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
 ucsc_brassica_data_df <- ucsc_brassica_data_df %>%
-  mutate(species.name = "Brassica sp")
+  mutate(species.name = "Brassica species")
 ```
 
 ### Combine with and without epithet dataframes and remove extra objects
 ```{r recombine swanton with epithet with non-epithet data}
 ucsc_species_data_df <- full_join(ucsc_species_data_df, ucsc_bromus_data_df)
+ucsc_species_data_df <- full_join(ucsc_species_data_df, ucsc_brassica_data_df)
 
 # and we'll save the swanton gbif spatial data
 write_rds(ucsc_species_data_df, "Analysis/GBIF_Data/ucscGBIF.rds")
@@ -2226,7 +2225,7 @@ ucsc_species_clim <- ucsc_species_clim %>%
   summarise(meant = mean(bio1, na.rm = TRUE),
          meanp = mean(bio12, na.rm = TRUE)) %>%
   mutate(meanT = meant/10) %>%
-  select(-meant)
+  dplyr::select(-meant)
 ```
 
 ### Combine clim data with original relative data
