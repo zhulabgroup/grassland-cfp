@@ -18,9 +18,9 @@ library(vegan)
 ## misc/both/other
 library(oz)
 library(plotrix)
-library(tidyverse)
 library(gridExtra)
 library(stringr)
+library(tidyverse)
 
 
 # to rip legends out of figures
@@ -210,6 +210,195 @@ wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv") %>%
 
 ```
 
+# Species richness over time
+
+```{r data prep and summary graphs, echo = FALSE}
+grich_all <- rel_all %>%
+  group_by(site, year, plot, guild) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  spread(guild, rich) %>%
+  replace(is.na(.), 0) %>%
+  mutate(Nat = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT),
+         Exo = (EAF+EAG+EPF+EPG),
+         NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT),
+         NatGr = (NAG+NAGr+NPG+NPGr),
+         NatForb = (NAF+NPF+NPS+NPT),
+         ExoGr = (EAG+EPG),
+         ExoForb = (EAF+EPF),
+         Grasses = (NPG+NPGr+NAG+NAGr+EAG+EPG),
+         Forbs = (NAF+NPF+NPS+NPT+EAF+EPF),
+         All = Nat + Exo) %>%
+  ungroup() %>% 
+  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', 'Forbs', 'Grasses', "All", key = "guild", value = "rich") %>%
+  group_by(site, year, plot, guild) %>%
+  summarise(meanrich = mean(rich))
+
+# write.csv(grich_all, "Analysis/JMP Exports/GuildRichness.csv")
+
+grich_all_weather <- left_join(grich_all, wtryr_weather, by = c("year", "site")) 
+
+grich_all_means <- grich_all_weather %>%
+  group_by(site, guild, year) %>%
+  summarise(serich = std.error(meanrich),
+            meanrich = mean(meanrich),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin)) %>%
+  filter(guild == "All" | guild == "Exo" | guild == "Nat")
+
+grich_all_means <- grich_all_means %>%
+  mutate(guild = recode(guild,
+                        "Exo" = "Exotic",
+                        "Nat" = "Native",
+                        "All" = "All Species"))
+  
+ggplot(grich_all_means, aes(x = year, y = meanrich, color = guild)) +
+  geom_line() +
+  geom_errorbar(aes(ymin = (meanrich - serich), ymax = (meanrich + serich))) +
+  labs(title = "All sites - Richness over time",
+       x = "Year",
+       y = "Richness (# spp.)") +
+  facet_wrap(~site, scales = "free", ncol = 4) +
+  theme_bw() +
+  scale_y_continuous(limits = c(0,NA)) + 
+  expand_limits(y = 0) +
+  geom_smooth(method='lm')
+
+```
+
+```{r TOTAL RICHNESS MODELS}
+grich_all_totalrich <- grich_all %>%
+  filter(guild == "All") %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+
+grich_all_totalrich$year <- as.numeric(grich_all_totalrich$year)
+
+# Angelo
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson", 
+            data = grich_all_totalrich[grich_all_totalrich$site == "Angelo",]))
+
+# Carrizo -- LOOKS WEIRD?
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_totalrich[grich_all_totalrich$site == "Carrizo",]))
+
+# Elkhorn
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson", 
+              data = grich_all_totalrich[grich_all_totalrich$site == "Elkhorn",]))
+
+# Jasper
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_totalrich[grich_all_totalrich$site == "Jasper",]))
+
+# McL Ann
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_totalrich[grich_all_totalrich$site == "McL Ann",]))
+
+# McL Serp
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_totalrich[grich_all_totalrich$site == "McL Serp",]))
+
+# Swanton
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_totalrich[grich_all_totalrich$site == "Swanton",]))
+
+# UCSC
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+            data = grich_all_totalrich[grich_all_totalrich$site == "UCSC",]))
+
+```
+
+```{r NATIVE RICHNESS MODELS}
+grich_all_natrich <- grich_all %>%
+  filter(guild == "Nat") %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+
+grich_all_natrich$year <- as.numeric(grich_all_natrich$year)
+
+# Angelo
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data?
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "Carrizo",]))
+
+# Elkhorn
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "Elkhorn",]))
+
+# Jasper
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "Jasper",]))
+
+# McL Ann
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "McL Ann",]))
+
+# McL Serp
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "McL Serp",]))
+
+# Swanton
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_natrich[grich_all_natrich$site == "Swanton",]))
+
+# UCSC
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+            data = grich_all_natrich[grich_all_natrich$site == "UCSC",]))
+
+```
+
+```{r EXOTIC RICHNESS MODELS}
+grich_all_exorich <- grich_all %>%
+  filter(guild == "Exo") %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+grich_all_exorich$year <- as.numeric(grich_all_exorich$year)
+
+# Angelo
+summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
+              data = grich_all_exorich[grich_all_exorich$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data for now
+coef(summary(lmer(meanrich ~ year + (1|plot), 
+              data = grich_all_exorich[grich_all_exorich$site == "Carrizo",])))
+
+# Elkhorn
+summary(glm(meanrich ~ year, family = "poisson",  
+              data = grich_all_exorich[grich_all_exorich$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(meanrich ~ year, family = "poisson", 
+              data = grich_all_exorich[grich_all_exorich$site == "Jasper",]))
+
+# McL Ann
+summary(glm(meanrich ~ year, family = "poisson", 
+              data = grich_all_exorich[grich_all_exorich$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(meanrich ~ year, family = "poisson",  
+              data = grich_all_exorich[grich_all_exorich$site == "McL Serp",]))
+
+# Swanton
+summary(glm(meanrich ~ year, family = "poisson", 
+              data = grich_all_exorich[grich_all_exorich$site == "Swanton",]))
+
+
+# UCSC
+summary(glm(meanrich ~ year, family = "poisson",
+            data = grich_all_exorich[grich_all_exorich$site == "UCSC",]))
+
+```
+
 # Changes in guild-level cover over time
 
 ```{r converting species level cover to guild level cover}
@@ -247,8 +436,11 @@ gcov_all <- rel_all %>%
   ungroup() %>% 
   gather('All', 'Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', 'Forbs', 'Grasses', 'NatGr', 'NatForb', 'ExoGr', 'ExoForb', 'NatAnGr', 'NatPerGr', 'NatAnFo', 'NatPerFo', 'ExoAnGr', 'ExoPerGr', 'ExoAnFo', 'ExoPerFo', key = "guild", value = "relcov") %>%
   group_by(site, year, guild, plot) %>%
-  summarise(meancov = mean(relcov),
-            secov = (std.error(relcov)))
+  summarise(relcov2 = relcov, 
+            meancov = mean(relcov),
+            secov = (std.error(relcov2)))
+
+# write.csv(gcov_all, "Analysis/JMP Exports/GuildCover.csv")
 
 gcov_all <- left_join(gcov_all, wtryr_weather, by = c("year", "site")) 
 
@@ -265,7 +457,7 @@ gcov_all_means <- gcov_all %>%
 #  filter(guild == "Nat" | guild == "NatAnGr" | guild == "NatPerGr" | guild == "NatAnFo" | guild == "NatPerFo")
 #  filter(guild == "Exo" | guild == "ExoAnGr" | guild == "ExoPerGr" | guild == "ExoAnFo" | guild == "ExoPerFo")
 
- gcov_all_means <- gcov_all_means %>%
+gcov_all_means <- gcov_all_means %>%
   mutate(guild = recode(guild,
                         "Exo" = "Exotic",
                         "Nat" = "Native"))
@@ -292,7 +484,7 @@ gcov_all_natcov <- gcov_all %>%
 gcov_all_natcov$year <- as.numeric(gcov_all_natcov$year)
 
 # Angelo
-summary(glm(meancov ~ year,  
+summary(lmer(meancov ~ year + (1|plot),  
               data = gcov_all_natcov[gcov_all_natcov$site == "Angelo",]))
 
 # Carrizo - has a problem, inconsistent plots -- ignore data?
@@ -368,191 +560,6 @@ summary(glm(meancov ~ year,
 
 ```
 
-
-# Species richness over time
-
-```{r data prep and summary graphs, echo = FALSE}
-grich_all <- rel_all %>%
-  group_by(site, year, plot, guild) %>%
-  summarise(rich = n_distinct(species.name)) %>%
-  spread(guild, rich) %>%
-  replace(is.na(.), 0) %>%
-  mutate(Nat = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT),
-         Exo = (EAF+EAG+EPF+EPG),
-         NatAnns = (NAF+NAG+NAGr),
-         ExoAnns = (EAF+EAG),
-         ExoPers = (EPF+EPG),
-         NatPers = (NPF+NPG+NPGr+NPS+NPT),
-         NatGr = (NAG+NAGr+NPG+NPGr),
-         NatForb = (NAF+NPF+NPS+NPT),
-         ExoGr = (EAG+EPG),
-         ExoForb = (EAF+EPF),
-         Grasses = (NPG+NPGr+NAG+NAGr+EAG+EPG),
-         Forbs = (NAF+NPF+NPS+NPT+EAF+EPF),
-         All = Nat + Exo) %>%
-  ungroup() %>% 
-  gather('Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', 'Forbs', 'Grasses', "All", key = "guild", value = "rich") %>%
-  group_by(site, year, plot, guild) %>%
-  summarise(meanrich = mean(rich))
-
-grich_all_weather <- left_join(grich_all, wtryr_weather, by = c("year", "site")) 
-
-grich_all_means <- grich_all_weather %>%
-  group_by(site, guild, year) %>%
-  summarise(serich = std.error(meanrich),
-            meanrich = mean(meanrich),
-            precip = mean(precip),
-            tmean = mean(tmean),
-            tmax = mean(tmax),
-            tmin = mean(tmin)) %>%
-  filter(guild == "All" | guild == "Exo" | guild == "Nat")
-
-grich_all_means <- grich_all_means %>%
-  mutate(guild = recode(guild,
-                        "Exo" = "Exotic",
-                        "Nat" = "Native",
-                        "All" = "All Species"))
-  
-ggplot(grich_all_means, aes(x = year, y = meanrich, color = guild)) +
-  geom_line() +
-  geom_errorbar(aes(ymin = (meanrich - serich), ymax = (meanrich + serich))) +
-  labs(title = "All sites - Richness over time",
-       x = "Year",
-       y = "Richness (# spp.)") +
-  facet_wrap(~site, scales = "free", ncol = 4) +
-  theme_bw() +
-  scale_y_continuous(limits = c(0,NA)) + 
-  expand_limits(y = 0) +
-  geom_smooth(method='lm')
-
-```
-
-```{r TOTAL RICHNESS MODELS}
-grich_all_totalrich <- grich_all %>%
-  filter(guild == "All")
-grich_all_totalrich$year <- as.numeric(grich_all_totalrich$year)
-
-# Angelo
-summary(glm(meanrich ~ year, family = "poisson", 
-            data = grich_all_totalrich[grich_all_totalrich$site == "Angelo",]))
-
-# Carrizo -- LOOKS WEIRD?
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "Carrizo",]))
-
-# Elkhorn
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "Elkhorn",]))
-
-# Jasper
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "Jasper",]))
-
-# McL Ann
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "McL Ann",]))
-
-# McL Serp
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "McL Serp",]))
-
-# Swanton
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_totalrich[grich_all_totalrich$site == "Swanton",]))
-
-
-# UCSC
-summary(glm(meanrich ~ year, family = "poisson", 
-            data = grich_all_totalrich[grich_all_totalrich$site == "UCSC",]))
-
-```
-
-```{r NATIVE RICHNESS MODELS}
-grich_all_natrich <- grich_all %>%
-  filter(guild == "Nat") %>%
-  mutate(year2 = year,
-         # we rescale the year to improve the model and prevent eigenvalue warnings
-         year = abs(year2-1983))
-
-grich_all_natrich$year <- as.numeric(grich_all_natrich$year)
-
-# Angelo
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_natrich[grich_all_natrich$site == "Angelo",]))
-
-# Carrizo - has a problem, inconsistent plots -- ignore data?
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_natrich[grich_all_natrich$site == "Carrizo",]))
-
-# Elkhorn
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_natrich[grich_all_natrich$site == "Elkhorn",]))
-
-# Jasper
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_natrich[grich_all_natrich$site == "Jasper",]))
-
-# McL Ann
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_natrich[grich_all_natrich$site == "McL Ann",]))
-
-# McL Serp
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_natrich[grich_all_natrich$site == "McL Serp",]))
-
-# Swanton
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_natrich[grich_all_natrich$site == "Swanton",]))
-
-
-# UCSC
-summary(glm(meanrich ~ year, family = "poisson",
-            data = grich_all_natrich[grich_all_natrich$site == "UCSC",]))
-
-```
-
-```{r EXOTIC RICHNESS MODELS}
-grich_all_exorich <- grich_all %>%
-  filter(guild == "Exo") %>%
-  mutate(year2 = year,
-         # we rescale the year to improve the model and prevent eigenvalue warnings
-         year = abs(year2-1983))
-grich_all_exorich$year <- as.numeric(grich_all_exorich$year)
-
-# Angelo
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_exorich[grich_all_exorich$site == "Angelo",]))
-
-# Carrizo - has a problem, inconsistent plots -- ignore data for now
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_exorich[grich_all_exorich$site == "Carrizo",]))
-
-# Elkhorn
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_exorich[grich_all_exorich$site == "Elkhorn",]))
-
-# Jasper
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_exorich[grich_all_exorich$site == "Jasper",]))
-
-# McL Ann
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_exorich[grich_all_exorich$site == "McL Ann",]))
-
-# McL Serp
-summary(glm(meanrich ~ year, family = "poisson",  
-              data = grich_all_exorich[grich_all_exorich$site == "McL Serp",]))
-
-# Swanton
-summary(glm(meanrich ~ year, family = "poisson", 
-              data = grich_all_exorich[grich_all_exorich$site == "Swanton",]))
-
-
-# UCSC
-summary(glm(meanrich ~ year, family = "poisson",
-            data = grich_all_exorich[grich_all_exorich$site == "UCSC",]))
-
-```
 
 # Shannon Diversity Index
 
@@ -956,6 +963,8 @@ CTI_all <- full_join(CTI_all, CTI_mcLann)
 CTI_all <- full_join(CTI_all, CTI_mcLserp)
 CTI_all <- full_join(CTI_all, CTI_swan)
 CTI_all <- full_join(CTI_all, CTI_ucsc)
+
+# write.csv(CTI_all, "Analysis/CTI Data/AllSites_CTI.csv")
 ```
 
 ```{r summarizing at plot level}
@@ -973,27 +982,26 @@ CTI_site_means <- CTI_all %>%
             meanCPI = mean(meanp),
             seCPI = std.error(meanp))
 
-  ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
+ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
   geom_line() +
   geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
   labs(title = "All sites - Community Temperature Index",
        x = "Year",
        y = "CTI") +
-  facet_wrap(~site, scales = "free", ncol = 4) +
   theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4)
   
-  ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
+ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
   geom_line() +
+  geom_point() +
   geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
   labs(title = "All sites - Community Precipitation Index",
        x = "Year",
        y = "CPI") +
-  facet_wrap(~site, scales = "free", ncol = 4) +
   theme_bw() +
-  theme(legend.position = "none")
-
-
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4)
 
 ```
 
@@ -1078,3 +1086,4 @@ summary(glm(meanCPI ~ year,
 summary(glm(meanCPI ~ year,
               data = CPI_models[CPI_models$site == "UCSC",]))
 ```
+

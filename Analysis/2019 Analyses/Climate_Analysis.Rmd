@@ -115,7 +115,7 @@ ggplot(all.CTI.clim) +
 Things look good - the warmest sites look warmest, and the wettest look wettest. The rain appears to be falling when logic says it would. The extra points on Carrizo and McL are due to the number of plots - this isn't summarized by plots yet.  
 We're also interested in seeing how climate may or may not have changed over time - so we will generate annual summaries.  
 
-The lines are temperature, and the bars are precip. Thi graph shows the data by water year (oct-sep):  
+The lines are temperature, and the bars are precip. This graph shows the data by water year (oct-sep):  
 
 ```{r annual climate, echo = FALSE}
 ggplot(all.CTI.wtryr) +
@@ -160,69 +160,48 @@ all.CTI.wtryr <- all.CTI.wtryr %>%
 
 ```{r precip models}
 # angelo
-ang.ppt <- all.CTI.wtryr %>% filter(site == "Angelo")
-hist(ang.ppt$precip)
-ang.ppt.lm <- lm(precip ~ year,
-                    data = ang.ppt)
-summary(ang.ppt.lm)
-ggplot(ang.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 # carrizo
-car.ppt <- all.CTI.wtryr %>% filter(site == "Carrizo")
-hist(car.ppt$precip)
-car.ppt.lm <- lm(precip ~ year,
-                    data = car.ppt)
-summary(car.ppt.lm)
-ggplot(car.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 # elkhorn
-elk.ppt <- all.CTI.wtryr %>% filter(site == "Elkhorn")
-hist(elk.ppt$precip)
-elk.ppt.lm <- lm(precip ~ year,
-                    data = elk.ppt)
-summary(elk.ppt.lm)
-ggplot(elk.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 # jasper
-jasp.ppt <- all.CTI.wtryr %>% filter(site == "Jasper")
-hist(jasp.ppt$precip)
-jasp.ppt.lm <- lm(precip ~ year,
-                    data = jasp.ppt)
-summary(jasp.ppt.lm)
-ggplot(jasp.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 # mcL ann
-mcLann.ppt <- all.CTI.wtryr %>% filter(site == "McL Ann")
-hist(mcLann.ppt$precip)
-mcLann.ppt.lm <- lm(precip ~ year,
-                    data = mcLann.ppt)
-summary(mcLann.ppt.lm)
-ggplot(mcLann.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 # mcL serp
-mcLserp.ppt <- all.CTI.wtryr %>% filter(site == "McL Serp")
-hist(mcLserp.ppt$precip)
-mcLserp.ppt.lm <- lm(precip ~ year,
-                    data = mcLserp.ppt)
-summary(mcLserp.ppt.lm)
-ggplot(mcLserp.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 # swanton
-swan.ppt <- all.CTI.wtryr %>% filter(site == "Swanton")
-hist(swan.ppt$precip)
-swan.ppt.lm <- lm(precip ~ year,
-                    data = swan.ppt)
-summary(swan.ppt.lm)
-ggplot(swan.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 
 # ucsc
-ucsc.ppt <- all.CTI.wtryr %>% filter(site == "UCSC")
-hist(ucsc.ppt$precip)
-ucsc.ppt.lm <- lm(precip ~ year,
-                    data = ucsc.ppt)
-summary(ucsc.ppt.lm)
-ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+
+
+ggplot(all.CTI.wtryr, aes(x = year, y = precip, color = site)) + geom_line()
 
 ```
 
