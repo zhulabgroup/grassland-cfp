@@ -210,6 +210,168 @@ wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv") %>%
 
 ```
 
+# Changes in guild-level cover over time
+
+```{r converting species level cover to guild level cover}
+gcov_all <- rel_all %>%
+  filter(guild != "NANANA",
+         !is.na(cover)) %>%
+  group_by(site, year, plot, guild) %>%
+  summarise(cover = sum(cover)) %>% ungroup() %>%
+  group_by(site, year, plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>% select(site, plot, year, relcov, guild) %>%
+  spread(guild, relcov) %>%
+  replace(is.na(.), 0) %>%
+  mutate(Nat = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT),
+         Exo = (EAF+EAG+EPF+EPG),
+         NatAnns = (NAF+NAG+NAGr),
+         ExoAnns = (EAF+EAG),
+         ExoPers = (EPF+EPG),
+         NatPers = (NPF+NPG+NPGr+NPS+NPT),
+         NatGr = (NAG+NAGr+NPG+NPGr),
+         NatForb = (NAF+NPF+NPS+NPT),
+         ExoGr = (EAG+EPG),
+         ExoForb = (EAF+EPF),
+         NatAnGr = (NAG + NAGr),
+         NatPerGr = (NPG + NPGr),
+         NatAnFo = (NAF),
+         NatPerFo = (NPF + NPS + NPT),
+         ExoAnGr = (EAG),
+         ExoPerGr = (EPG),
+         ExoAnFo = (EAF),
+         ExoPerFo = (EPF),
+         Grasses = (NPG+NPGr+NAG+NAGr+EAG+EPG),
+         Forbs = (NAF+NPF+NPS+NPT+EAF+EPF),
+         All = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
+  ungroup() %>% 
+  gather('All', 'Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', 'Forbs', 'Grasses', 'NatGr', 'NatForb', 'ExoGr', 'ExoForb', 'NatAnGr', 'NatPerGr', 'NatAnFo', 'NatPerFo', 'ExoAnGr', 'ExoPerGr', 'ExoAnFo', 'ExoPerFo', key = "guild", value = "relcov") %>%
+  group_by(site, year, guild, plot) %>%
+  summarise(relcov2 = relcov, 
+            meancov = mean(relcov),
+            secov = (std.error(relcov2)))
+
+# write.csv(gcov_all, "Analysis/JMP Exports/GuildCover.csv")
+
+gcov_all <- left_join(gcov_all, wtryr_weather, by = c("year", "site")) 
+
+gcov_all_means <- gcov_all %>%
+  group_by(site, guild, year) %>%
+  summarise(serelcov = (std.error(meancov)),
+            meanrelcov = mean(meancov),
+            precip = mean(precip),
+            tmean = mean(tmean),
+            tmax = mean(tmax),
+            tmin = mean(tmin)) %>%
+  filter(guild == "Nat" | guild == "Exo")
+#   filter(guild == "Nat" | guild == "Exo"| guild == "NatForb" | guild == "NatGr" | guild == "ExoForb" | guild == "ExoGr")
+#  filter(guild == "Nat" | guild == "NatAnGr" | guild == "NatPerGr" | guild == "NatAnFo" | guild == "NatPerFo")
+#  filter(guild == "Exo" | guild == "ExoAnGr" | guild == "ExoPerGr" | guild == "ExoAnFo" | guild == "ExoPerFo")
+
+gcov_all_means <- gcov_all_means %>%
+  mutate(guild = recode(guild,
+                        "Exo" = "Exotic",
+                        "Nat" = "Native"))
+  
+ggplot(gcov_all_means, aes(x = year, y = meanrelcov, color = guild)) +
+  geom_line() +
+  geom_errorbar(aes(ymin = (meanrelcov - serelcov), ymax = (meanrelcov + serelcov))) +
+  labs(title = "All sites - Relative cover over time",
+       x = "Year",
+       y = "Cover (relative)") +
+  facet_wrap(~site, scales = "free", ncol = 4) +
+  theme_bw() +
+  scale_y_continuous(limits = c(0,NA)) + 
+  expand_limits(y = 0) 
+```
+
+```{r NATIVE COVER MODELS}
+gcov_all_natcov <- gcov_all %>%
+  filter(guild == "Nat") %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+
+gcov_all_natcov$year <- as.numeric(gcov_all_natcov$year)
+
+# Angelo
+summary(lmer(meancov ~ year + (1|plot),  
+              data = gcov_all_natcov[gcov_all_natcov$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data?
+summary(glm(meancov ~ year, 
+              data = gcov_all_natcov[gcov_all_natcov$site == "Carrizo",]))
+
+# Elkhorn
+summary(glm(meancov ~ year,
+              data = gcov_all_natcov[gcov_all_natcov$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(meancov ~ year, 
+              data = gcov_all_natcov[gcov_all_natcov$site == "Jasper",]))
+
+# McL Ann
+summary(glm(meancov ~ year, 
+              data = gcov_all_natcov[gcov_all_natcov$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(meancov ~ year, 
+              data = gcov_all_natcov[gcov_all_natcov$site == "McL Serp",]))
+
+# Swanton
+summary(glm(meancov ~ year, 
+              data = gcov_all_natcov[gcov_all_natcov$site == "Swanton",]))
+
+# UCSC
+summary(glm(meancov ~ year,
+            data = gcov_all_natcov[gcov_all_natcov$site == "UCSC",]))
+
+```
+
+```{r EXOTIC COVER MODELS}
+gcov_all_exocov <- gcov_all %>%
+  filter(guild == "Exo") %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+
+gcov_all_exocov$year <- as.numeric(gcov_all_exocov$year)
+
+# Angelo
+summary(glm(meancov ~ year,  
+              data = gcov_all_exocov[gcov_all_exocov$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data?
+summary(glm(meancov ~ year, 
+              data = gcov_all_exocov[gcov_all_exocov$site == "Carrizo",]))
+
+# Elkhorn
+summary(glm(meancov ~ year,
+              data = gcov_all_exocov[gcov_all_exocov$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(meancov ~ year, 
+              data = gcov_all_exocov[gcov_all_exocov$site == "Jasper",]))
+
+# McL Ann
+summary(glm(meancov ~ year, 
+              data = gcov_all_exocov[gcov_all_exocov$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(meancov ~ year, 
+              data = gcov_all_exocov[gcov_all_exocov$site == "McL Serp",]))
+
+# Swanton
+summary(glm(meancov ~ year, 
+              data = gcov_all_exocov[gcov_all_exocov$site == "Swanton",]))
+
+# UCSC
+summary(glm(meancov ~ year,
+            data = gcov_all_exocov[gcov_all_exocov$site == "UCSC",]))
+
+```
+
+
 # Species richness over time
 
 ```{r data prep and summary graphs, echo = FALSE}
@@ -398,168 +560,6 @@ summary(glm(meanrich ~ year, family = "poisson",
             data = grich_all_exorich[grich_all_exorich$site == "UCSC",]))
 
 ```
-
-# Changes in guild-level cover over time
-
-```{r converting species level cover to guild level cover}
-gcov_all <- rel_all %>%
-  filter(guild != "NANANA",
-         !is.na(cover)) %>%
-  group_by(site, year, plot, guild) %>%
-  summarise(cover = sum(cover)) %>% ungroup() %>%
-  group_by(site, year, plot) %>%
-  mutate(sumcov = sum(cover),
-         relcov = cover/sumcov) %>% select(site, plot, year, relcov, guild) %>%
-  spread(guild, relcov) %>%
-  replace(is.na(.), 0) %>%
-  mutate(Nat = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT),
-         Exo = (EAF+EAG+EPF+EPG),
-         NatAnns = (NAF+NAG+NAGr),
-         ExoAnns = (EAF+EAG),
-         ExoPers = (EPF+EPG),
-         NatPers = (NPF+NPG+NPGr+NPS+NPT),
-         NatGr = (NAG+NAGr+NPG+NPGr),
-         NatForb = (NAF+NPF+NPS+NPT),
-         ExoGr = (EAG+EPG),
-         ExoForb = (EAF+EPF),
-         NatAnGr = (NAG + NAGr),
-         NatPerGr = (NPG + NPGr),
-         NatAnFo = (NAF),
-         NatPerFo = (NPF + NPS + NPT),
-         ExoAnGr = (EAG),
-         ExoPerGr = (EPG),
-         ExoAnFo = (EAF),
-         ExoPerFo = (EPF),
-         Grasses = (NPG+NPGr+NAG+NAGr+EAG+EPG),
-         Forbs = (NAF+NPF+NPS+NPT+EAF+EPF),
-         All = (NAF+NAG+NAGr+NPF+NPG+NPGr+NPS+NPT+EAF+EAG+EPF+EPG)) %>%
-  ungroup() %>% 
-  gather('All', 'Nat', 'Exo', 'NatAnns', 'ExoAnns', 'ExoPers', 'NatPers', 'Forbs', 'Grasses', 'NatGr', 'NatForb', 'ExoGr', 'ExoForb', 'NatAnGr', 'NatPerGr', 'NatAnFo', 'NatPerFo', 'ExoAnGr', 'ExoPerGr', 'ExoAnFo', 'ExoPerFo', key = "guild", value = "relcov") %>%
-  group_by(site, year, guild, plot) %>%
-  summarise(relcov2 = relcov, 
-            meancov = mean(relcov),
-            secov = (std.error(relcov2)))
-
-# write.csv(gcov_all, "Analysis/JMP Exports/GuildCover.csv")
-
-gcov_all <- left_join(gcov_all, wtryr_weather, by = c("year", "site")) 
-
-gcov_all_means <- gcov_all %>%
-  group_by(site, guild, year) %>%
-  summarise(serelcov = (std.error(meancov)),
-            meanrelcov = mean(meancov),
-            precip = mean(precip),
-            tmean = mean(tmean),
-            tmax = mean(tmax),
-            tmin = mean(tmin)) %>%
-  filter(guild == "Nat" | guild == "Exo")
-#   filter(guild == "Nat" | guild == "Exo"| guild == "NatForb" | guild == "NatGr" | guild == "ExoForb" | guild == "ExoGr")
-#  filter(guild == "Nat" | guild == "NatAnGr" | guild == "NatPerGr" | guild == "NatAnFo" | guild == "NatPerFo")
-#  filter(guild == "Exo" | guild == "ExoAnGr" | guild == "ExoPerGr" | guild == "ExoAnFo" | guild == "ExoPerFo")
-
-gcov_all_means <- gcov_all_means %>%
-  mutate(guild = recode(guild,
-                        "Exo" = "Exotic",
-                        "Nat" = "Native"))
-  
-ggplot(gcov_all_means, aes(x = year, y = meanrelcov, color = guild)) +
-  geom_line() +
-  geom_errorbar(aes(ymin = (meanrelcov - serelcov), ymax = (meanrelcov + serelcov))) +
-  labs(title = "All sites - Relative cover over time",
-       x = "Year",
-       y = "Cover (relative)") +
-  facet_wrap(~site, scales = "free", ncol = 4) +
-  theme_bw() +
-  scale_y_continuous(limits = c(0,NA)) + 
-  expand_limits(y = 0) 
-```
-
-```{r NATIVE COVER MODELS}
-gcov_all_natcov <- gcov_all %>%
-  filter(guild == "Nat") %>%
-  mutate(year2 = year,
-         # we rescale the year to improve the model and prevent eigenvalue warnings
-         year = abs(year2-1983))
-
-gcov_all_natcov$year <- as.numeric(gcov_all_natcov$year)
-
-# Angelo
-summary(lmer(meancov ~ year + (1|plot),  
-              data = gcov_all_natcov[gcov_all_natcov$site == "Angelo",]))
-
-# Carrizo - has a problem, inconsistent plots -- ignore data?
-summary(glm(meancov ~ year, 
-              data = gcov_all_natcov[gcov_all_natcov$site == "Carrizo",]))
-
-# Elkhorn
-summary(glm(meancov ~ year,
-              data = gcov_all_natcov[gcov_all_natcov$site == "Elkhorn",]))
-
-# Jasper
-summary(glm(meancov ~ year, 
-              data = gcov_all_natcov[gcov_all_natcov$site == "Jasper",]))
-
-# McL Ann
-summary(glm(meancov ~ year, 
-              data = gcov_all_natcov[gcov_all_natcov$site == "McL Ann",]))
-
-# McL Serp
-summary(glm(meancov ~ year, 
-              data = gcov_all_natcov[gcov_all_natcov$site == "McL Serp",]))
-
-# Swanton
-summary(glm(meancov ~ year, 
-              data = gcov_all_natcov[gcov_all_natcov$site == "Swanton",]))
-
-# UCSC
-summary(glm(meancov ~ year,
-            data = gcov_all_natcov[gcov_all_natcov$site == "UCSC",]))
-
-```
-
-```{r EXOTIC COVER MODELS}
-gcov_all_exocov <- gcov_all %>%
-  filter(guild == "Exo") %>%
-  mutate(year2 = year,
-         # we rescale the year to improve the model and prevent eigenvalue warnings
-         year = abs(year2-1983))
-
-gcov_all_exocov$year <- as.numeric(gcov_all_exocov$year)
-
-# Angelo
-summary(glm(meancov ~ year,  
-              data = gcov_all_exocov[gcov_all_exocov$site == "Angelo",]))
-
-# Carrizo - has a problem, inconsistent plots -- ignore data?
-summary(glm(meancov ~ year, 
-              data = gcov_all_exocov[gcov_all_exocov$site == "Carrizo",]))
-
-# Elkhorn
-summary(glm(meancov ~ year,
-              data = gcov_all_exocov[gcov_all_exocov$site == "Elkhorn",]))
-
-# Jasper
-summary(glm(meancov ~ year, 
-              data = gcov_all_exocov[gcov_all_exocov$site == "Jasper",]))
-
-# McL Ann
-summary(glm(meancov ~ year, 
-              data = gcov_all_exocov[gcov_all_exocov$site == "McL Ann",]))
-
-# McL Serp
-summary(glm(meancov ~ year, 
-              data = gcov_all_exocov[gcov_all_exocov$site == "McL Serp",]))
-
-# Swanton
-summary(glm(meancov ~ year, 
-              data = gcov_all_exocov[gcov_all_exocov$site == "Swanton",]))
-
-# UCSC
-summary(glm(meancov ~ year,
-            data = gcov_all_exocov[gcov_all_exocov$site == "UCSC",]))
-
-```
-
 
 # Shannon Diversity Index
 
@@ -909,7 +909,7 @@ ggplot(all_turn_means, aes(x = precip, y = meanturn)) +
        y = "Turnover (# spp. lost+gained / total # spp.)") +
    geom_smooth(method = lm)
  
-  ggplot(all_turn_means_lump, aes(x = meanprecip, y = meanturn)) +
+ggplot(all_turn_means_lump, aes(x = meanprecip, y = meanturn)) +
   geom_point() +
   geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
   geom_errorbarh(aes(xmin = meanprecip-seprecip, xmax = meanprecip+seprecip, height = 0)) +
@@ -1001,7 +1001,8 @@ ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
        y = "CPI") +
   theme_bw() +
   theme(legend.position = "none") +
-  facet_wrap(~site, scales = "free", ncol = 4)
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
 
 ```
 
@@ -1086,4 +1087,6 @@ summary(glm(meanCPI ~ year,
 summary(glm(meanCPI ~ year,
               data = CPI_models[CPI_models$site == "UCSC",]))
 ```
+
+
 
