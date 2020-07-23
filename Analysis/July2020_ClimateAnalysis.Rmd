@@ -48,37 +48,15 @@ wtr_yr <- function(dates, start_month=10) {
 climate_site <- read.csv("Analysis/ClimData/PRISM_data.csv")
 climate_site_wtryr <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv")
 
-ang_cti <- read.csv("Analysis/CTI Data/Angelo_CTI.csv")
-car_cti <- read.csv("Analysis/CTI Data/Carrizo_CTI.csv") %>%
-  rename(site = Site)
-elk_cti <- read.csv("Analysis/CTI Data/Elkhorn_CTI.csv") %>%
-  rename(site = Site)
-jasp_cti <- read.csv("Analysis/CTI Data/Jasper_CTI.csv") %>%
-  rename(site = Site)
-McLAnn_cti <- read.csv("Analysis/CTI Data/McLAnn_CTI.csv")  %>%
-  rename(site = Site)
-mcLserp_cti <- read.csv("Analysis/CTI Data/McLSerp_CTI.csv") %>%
-  rename(site = Site)
-Swan_cti <- read.csv("Analysis/CTI Data/Swanton_CTI.csv")  %>%
-  rename(site = Site)
-UCSC_cti <- read.csv("Analysis/CTI Data/UCSC_CTI.csv")  %>%
-  rename(site = Site)
-
-all.CTI <- full_join(ang_cti, car_cti)
-all.CTI <- full_join(all.CTI, elk_cti)
-all.CTI <- full_join(all.CTI, jasp_cti)
-all.CTI <- full_join(all.CTI, McLAnn_cti)
-all.CTI <- full_join(all.CTI, mcLserp_cti)
-all.CTI <- full_join(all.CTI, Swan_cti)
-all.CTI <- full_join(all.CTI, UCSC_cti)
-
-
-all.CTI$site <- as.factor(all.CTI$site)
-
-all.CTI <- all.CTI %>%
-  dplyr::select(-X, -hotTI, -ColdTI) %>%
-  mutate(site2 = factor(site, levels=c("Angelo", "Swanton", "UCSC", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Carrizo")))
-
+all.CTI <- read.csv("Analysis/CTI Data/AllSites_CTI.csv") %>%
+  select(-X, -X.1) %>%
+  mutate(site = factor(site, levels=c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"))) %>%
+  group_by(site, year) %>%
+  summarise(meanCTI = mean(meanT),
+            seCTI = std.error(meanT),
+            meanCPI = mean(meanp),
+            seCPI = std.error(meanp))
+  
 all.CTI.wtryr <- left_join(all.CTI, climate_site_wtryr, by = c("year", "site"))
 all.CTI.clim <- left_join(all.CTI, climate_site, by = c("year", "site"))
 ```
@@ -97,7 +75,7 @@ avg.temp <- all.CTI.clim %>%
 
 
 ```{r plots, echo = FALSE}
-ggplot(all.CTI.clim, aes(x = site2, y = tmean)) +
+ggplot(all.CTI.clim, aes(x = site, y = tmean)) +
   geom_boxplot()  +
   geom_jitter(aes(color = month)) +
   labs(x = "site",
@@ -105,8 +83,8 @@ ggplot(all.CTI.clim, aes(x = site2, y = tmean)) +
        title = "Mean monthly temps at all sites")
 
 ggplot(all.CTI.clim) +
-  geom_jitter(aes(x = site2, y = tmax), color = "red") +
-  geom_jitter(aes(x = site2, y = tmin), color = "blue") +
+  geom_jitter(aes(x = site, y = tmax), color = "red") +
+  geom_jitter(aes(x = site, y = tmin), color = "blue") +
   labs(x = "site",
        y = "monthly min and max temps, 1982-2019",
        title = "Comparison of min and max temps at all sites")
@@ -139,61 +117,61 @@ ggplot(all.CTI.wtryr) +
 
 # ANALYSIS
 In order to have legs to stand on, we must take a look at the weather history at these sites - this means determining whether there have been directional trends in temperature or precipitation over time.  
+
 One thing to note is that we should only look at the data over the years in which we have community composition data.  
 
 
 ## Precipitation Analysis
 First, let's take a look at the change in precipitation over time, since I think that is less likely to be significant for our focal years. Then, we'll look at our temp. data.  
 
-
-### Overall water year precip
+### Water year precipitation
 ```{r ppt prep, echo = FALSE}
 # this is a quick piece of code to ensure that there's only one datapoint per year per site
 all.CTI.wtryr <- all.CTI.wtryr %>%
-  group_by(year, site, site2) %>%
+  group_by(year, site) %>%
   summarise(precip = mean(precip),
             tmax = mean(tmax),
             tmin = mean(tmin),
             tmean = mean(tmean))
-```
 
+climate_site_wtryr
+```
 
 ```{r precip models}
 # angelo
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Angelo",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Angelo",]))
 
 # carrizo
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Carrizo",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Carrizo",]))
 
 # elkhorn
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Elkhorn",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Elkhorn",]))
 
 # jasper
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Jasper",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Jasper",]))
 
 # mcL ann
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "McL Ann",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "McL Ann",]))
 
 # mcL serp
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "McL Serp",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "McL Serp",]))
 
 # swanton
-hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Swan",]$precip)
 summary(lm(precip ~ year,
-                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
-
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Swan",]))
 
 # ucsc
 hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
@@ -201,13 +179,63 @@ summary(lm(precip ~ year,
                     data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 
 
-ggplot(all.CTI.wtryr, aes(x = year, y = precip, color = site)) + geom_line()
+ggplot(all.CTI.wtryr, aes(x = year, y = precip, color = site)) + 
+  geom_line() +
+  facet_wrap(~site, ncol = 4, scales = "free")
 
 ```
 
+## beyond data years
+```{r precip models}
+# angelo
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Angelo",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "Angelo",]))
+
+# carrizo
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Carrizo",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "Carrizo",]))
+
+# elkhorn
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Elkhorn",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "Elkhorn",]))
+
+# jasper
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Jasper",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "Jasper",]))
+
+# mcL ann
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "McL Ann",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "McL Ann",]))
+
+# mcL serp
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "McL Serp",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "McL Serp",]))
+
+# swanton
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Swan",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "Swanton",]))
+
+# ucsc
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = climate_site_wtryr[climate_site_wtryr$site == "UCSC",]))
+
+
+ggplot(climate_site_wtryr, aes(x = year, y = precip, color = site)) + 
+  geom_line() +
+  facet_wrap(~site, ncol = 4, scales = "free")
+
+```
 
 ```{r wateryear ppt graphs, echo = FALSE}
-## creating significance df
+## creating significance df based on data above
 wyppt.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
                         sig = c("Yes", "No", "No", "No", "No", "No", "No", "No"))
 
@@ -227,7 +255,7 @@ ggplot(wyppt, aes(x = year, y = precip, color = site2)) +
         axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
         text = element_text(size = 14)) +
   scale_linetype_manual(values=c("dashed", "solid"))+
-  facet_wrap(~site2, scales = "free", nrow = 2)
+  facet_wrap(~site2, scales = "free", ncol = 4)
 ```
 
 
@@ -301,16 +329,16 @@ ggplot(swan.ppt, aes(x = year, y = precip)) + geom_line()
 
 
 # ucsc
-ucsc.ppt <- win.ppt %>% filter(site == "UCSC")
-ucsc.ppt.lm <- lm(precip ~ year,
-                    data = ucsc.ppt)
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$precip)
+summary(lm(precip ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
 summary(ucsc.ppt.lm)
 ggplot(ucsc.ppt, aes(x = year, y = precip)) + geom_line()
 
 ```
 
 ```{r winter ppt graphs, echo = FALSE}
-ggplot(win.ppt, aes(x = year, y = precip, color = site2)) +
+ggplot(win.ppt, aes(x = year, y = precip, color = site)) +
   geom_point(shape = 3) +
   geom_line() +
   labs(x = "Year",
@@ -320,7 +348,7 @@ ggplot(win.ppt, aes(x = year, y = precip, color = site2)) +
   theme(legend.position = "none",
         strip.background = element_blank(),
         strip.text = element_blank()) +
-  facet_wrap(~site2, scales = "free", nrow = 2)
+  facet_wrap(~site, scales = "free", nrow = 2)
 ```
 
 
@@ -328,95 +356,79 @@ ggplot(win.ppt, aes(x = year, y = precip, color = site2)) +
 Welp -- nothing looks significant here! Onto temperature.  
 
 ## Temperature Analysis
-### Overall yearly Tmin
-With nothing looking significant on our precip analyses, it's  time to see if the minimum temperature is changing over time.  
+### Mean temp
+Next, let's take a look at the minimum wintertime temperature (which I suspect may be important in cueing germination)
 
-```{r min temp models}
-# angelo
-ang.tmin <- all.CTI.wtryr %>% filter(site == "Angelo")
-ang.tmin.lm <- lm(tmin ~ year,
-                    data = ang.tmin)
-summary(ang.tmin.lm)
-ggplot(ang.tmin, aes(x = year, y = tmin)) + geom_line()
+```{r create wintertime tmin object, include = FALSE}
+# this code to reduces us to 1 data point per year per site, and gives only wintertime ppt
+meanT_graphs <- climate_site %>%
+  dplyr::select(-X) %>%
+  mutate(wyear = wtr_yr(date)) 
 
-# carrizo
-car.tmin <- all.CTI.wtryr %>% filter(site == "Carrizo")
-car.tmin.lm <- lm(tmin ~ year,
-                    data = car.tmin)
-summary(car.tmin.lm)
-ggplot(car.tmin, aes(x = year, y = tmin)) + geom_line()
-
-# elkhorn
-elk.tmin <- all.CTI.wtryr %>% filter(site == "Elkhorn")
-elk.tmin.lm <- lm(tmin ~ year,
-                    data = elk.tmin)
-summary(elk.tmin.lm)
-ggplot(elk.tmin, aes(x = year, y = tmin)) + geom_line()
-
-# jasper
-jasp.tmin <- all.CTI.wtryr %>% filter(site == "Jasper")
-jasp.tmin.lm <- lm(tmin ~ year,
-                    data = jasp.tmin)
-summary(jasp.tmin.lm)
-ggplot(jasp.tmin, aes(x = year, y = tmin)) + geom_line()
-
-# mcL ann
-mcLann.tmin <- all.CTI.wtryr %>% filter(site == "McL Ann")
-mcLann.tmin.lm <- lm(tmin ~ year,
-                    data = mcLann.tmin)
-summary(mcLann.tmin.lm)
-ggplot(mcLann.tmin, aes(x = year, y = tmin)) + geom_line()
-
-# mcL serp
-mcLserp.tmin <- all.CTI.wtryr %>% filter(site == "McL Serp")
-mcLserp.tmin.lm <- lm(tmin ~ year,
-                    data = mcLserp.tmin)
-summary(mcLserp.tmin.lm)
-ggplot(mcLserp.tmin, aes(x = year, y = tmin)) + geom_line()
-
-# swanton
-swan.tmin <- all.CTI.wtryr %>% filter(site == "Swanton")
-swan.tmin.lm <- lm(tmin ~ year,
-                    data = swan.tmin)
-summary(swan.tmin.lm)
-ggplot(swan.tmin, aes(x = year, y = tmin)) + geom_line()
-
-
-# ucsc
-ucsc.tmin <- all.CTI.wtryr %>% filter(site == "UCSC")
-ucsc.tmin.lm <- lm(tmin ~ year,
-                    data = ucsc.tmin)
-summary(ucsc.tmin.lm)
-ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
-
-```
-
-
-```{r overall tmin graphs, echo = FALSE}
-## creating significance df
-wytmin.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
-                        sig = c("No", "Yes", "Almost", "Yes", "Yes", "Yes", "No", "No"))
-  
-
-wytmin <- left_join(all.CTI.wtryr, wytmin.sig)
+meanT_graphs <- left_join(all.CTI, meanT_graphs) %>%
+  group_by(year, site) %>%
+  summarise(tmean = mean(tmean)) 
 
 #graph
-ggplot(wytmin, aes(x = year, y = tmin, color = site2)) +
+ggplot(meanT_graphs, aes(x = year, y = tmean, color = site)) +
   geom_point(shape = 3) +
-  geom_line(aes(linetype = sig)) +
+  geom_line() +
   labs(x = "Year",
-       y = "Minimum temperature (C)",
-       title = "Minimum temperature") +
+       y = "Mean temperature (C)",
+       title = "Mean temperature") +
   theme_bw() +
   theme(legend.position = "left",
         strip.background = element_blank(),
         strip.text = element_blank(),
         axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45),
         text = element_text(size = 14)) +
-  scale_linetype_manual(values=c( "dashed", "dotted", "solid"))+
-  facet_wrap(~site2, scales = "free", nrow = 2)
+  facet_wrap(~site, scales = "free", nrow = 2)
 ```
 
+```{r mean temp lms}
+# angelo
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Angelo",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Angelo",]))
+
+# carrizo
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Carrizo",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Carrizo",]))
+
+# elkhorn
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Elkhorn",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Elkhorn",]))
+
+# jasper
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Jasper",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Jasper",]))
+
+# mcL ann
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "McL Ann",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "McL Ann",]))
+
+# mcL serp
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "McL Serp",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "McL Serp",]))
+
+# swanton
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "Swanton",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "Swanton",]))
+
+# ucsc
+hist(all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]$tmean)
+summary(lm(tmean ~ year,
+                    data = all.CTI.wtryr[all.CTI.wtryr$site == "UCSC",]))
+
+
+
+```
 
 
 ### Wintertime min. temp
@@ -427,7 +439,13 @@ Next, let's take a look at the minimum wintertime temperature (which I suspect m
 win.tmin <- climate_site %>%
   dplyr::select(-X) %>%
   filter(month == 12 | month == 1 | month == 2) %>%
-  mutate(wyear = wtr_yr(date)) 
+  mutate(wyear = wtr_yr(date))
+
+tminforgraph <- win.tmin %>%
+  group_by(wyear, site) %>%
+  summarise(wintmin = mean(tmin)) %>%
+  rename(year = wyear)
+
 win.tmin <- left_join(all.CTI, win.tmin) %>%
   group_by(wyear, site, plot, site2) %>%
   summarise(tmin = mean(tmin)) %>%
@@ -438,61 +456,48 @@ win.tmin <- left_join(all.CTI, win.tmin) %>%
 
 ```{r winter tmin models}
 # angelo
-ang.tmin <- win.tmin %>% filter(site == "Angelo")
-ang.tmin.lm <- lm(tmin ~ year,
-                    data = ang.tmin)
-summary(ang.tmin.lm)
-ggplot(ang.tmin, aes(x = year, y = tmin)) + geom_line()
+hist(win.tmin[win.tmin$site == "Angelo",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "Angelo",]))
 
 # carrizo
-car.tmin <- win.tmin %>% filter(site == "Carrizo")
-car.tmin.lm <- lm(tmin ~ year,
-                    data = car.tmin)
-summary(car.tmin.lm)
-ggplot(car.tmin, aes(x = year, y = tmin)) + geom_line()
+hist(win.tmin[win.tmin$site == "Carrizo",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "Carrizo",]))
 
 # elkhorn
-elk.tmin <- win.tmin %>% filter(site == "Elkhorn")
-elk.tmin.lm <- lm(tmin ~ year,
-                    data = elk.tmin)
-summary(elk.tmin.lm)
-ggplot(elk.tmin, aes(x = year, y = tmin)) + geom_line()
+hist(win.tmin[win.tmin$site == "Elkhorn",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "Elkhorn",]))
 
 # jasper
-jasp.tmin <- win.tmin %>% filter(site == "Jasper")
-jasp.tmin.lm <- lm(tmin ~ year,
-                    data = jasp.tmin)
-summary(jasp.tmin.lm)
-ggplot(jasp.tmin, aes(x = year, y = tmin)) + geom_line()
+jhist(win.tmin[win.tmin$site == "Jasper",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "Jasper",]))
 
 # mcL ann
-mcLann.tmin <- win.tmin %>% filter(site == "McL Ann")
-mcLann.tmin.lm <- lm(tmin ~ year,
-                    data = mcLann.tmin)
-summary(mcLann.tmin.lm)
-ggplot(mcLann.tmin, aes(x = year, y = tmin)) + geom_line()
+hist(win.tmin[win.tmin$site == "McL Ann",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "McL Ann",]))
 
 # mcL serp
-mcLserp.tmin <- win.tmin %>% filter(site == "McL Serp")
-mcLserp.tmin.lm <- lm(tmin ~ year,
-                    data = mcLserp.tmin)
-summary(mcLserp.tmin.lm)
-ggplot(mcLserp.tmin, aes(x = year, y = tmin)) + geom_line()
+hist(win.tmin[win.tmin$site == "McL Serp",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "McL Serp",]))
 
 # swanton
-swan.tmin <- win.tmin %>% filter(site == "Swanton")
-swan.tmin.lm <- lm(tmin ~ year,
-                    data = swan.tmin)
-summary(swan.tmin.lm)
-ggplot(swan.tmin, aes(x = year, y = tmin)) + geom_line()
-
+hist(win.tmin[win.tmin$site == "Swanton",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "Swanton",]))
 
 # ucsc
-ucsc.tmin <- win.tmin %>% filter(site == "UCSC")
-ucsc.tmin.lm <- lm(tmin ~ year,
-                    data = ucsc.tmin)
-summary(ucsc.tmin.lm)
-ggplot(ucsc.tmin, aes(x = year, y = tmin)) + geom_line()
+hist(win.tmin[win.tmin$site == "UCSC",]$tmin)
+summary(lm(tmin ~ year,
+                    data = win.tmin[win.tmin$site == "UCSC",]))
+
+ggplot(win.tmin, aes(x = year, y = tmin, color = site)) + 
+  geom_line() +
+  facet_wrap(~site, ncol = 4, scales = "free")
 
 ```
 
@@ -510,10 +515,92 @@ ggplot(win.tmin, aes(x = year, y = tmin, color = site2)) +
   facet_wrap(~site2, scales = "free", nrow = 2)
 ```
 
+## Beyond Data Year Mean Temp
+```{r tmean beyond models}
+# angelo
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Angelo",]))
+
+# carrizo
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Carrizo",]))
+
+# elkhorn
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Elkhorn",]))
+
+# jasper
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Jasper",]))
+
+# mcL ann
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "McL Ann",]))
+
+# mcL serp
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "McL Serp",]))
+
+# swanton
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Swanton",]))
+
+# ucsc
+summary(lm(tmean ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "UCSC",]))
+
+
+ggplot(climate_site_wtryr, aes(x = year, y = tmean, color = site)) + 
+  geom_line() +
+  facet_wrap(~site, ncol = 4, scales = "free")
+
+```
+
+## Beyond Data Year Mean Temp
+```{r tmin beyond models}
+# angelo
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Angelo",]))
+
+# carrizo
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Carrizo",]))
+
+# elkhorn
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Elkhorn",]))
+
+# jasper
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Jasper",]))
+
+# mcL ann
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "McL Ann",]))
+
+# mcL serp
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "McL Serp",]))
+
+# swanton
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "Swanton",]))
+
+# ucsc
+summary(lm(tmin ~ year,
+           data = climate_site_wtryr[climate_site_wtryr$site == "UCSC",]))
+
+
+ggplot(climate_site_wtryr, aes(x = year, y = tmin, color = site)) + 
+  geom_line() +
+  facet_wrap(~site, ncol = 4, scales = "free")
+
+```
+
+
 ## lab meeting plots
 
 ```{r lab graphs}
-
 ## creating significance df
 wytmin.sig <- data.frame(site = c("Angelo", "Carrizo", "Elkhorn", "Jasper", "McL Ann", "McL Serp", "Swanton", "UCSC"),
                         sig = c("No", "Yes", "Almost", "Yes", "Yes", "Yes", "No", "No"))
@@ -542,5 +629,30 @@ ggplot(wytmin) +
         axis.text.x = element_text(hjust = 1, vjust = 1, angle = 45)) +
   scale_linetype_manual(values=c("dashed", "dotted", "solid")) +
   facet_wrap(site2~var, scales = "free", nrow = 2)
+```
+
+```{r graph}
+graphs.df <- left_join(all.CTI.wtryr, tminforgraph) %>%
+  group_by(year, site) %>%
+  summarize(tmin = mean(tmin),
+            wintmin = mean(wintmin),
+            tmean = mean(tmean),
+            precip = mean(precip))
+
+ggplot(graphs.df, aes(color = site)) + 
+  geom_line(aes(x = year, y = tmean)) +
+  geom_point(aes(x = year, y = tmean), color = "black") +
+  geom_line(aes(x = year, y = tmin), linetype = 2) +
+  geom_point(aes(x = year, y = tmin), color = "black") +
+  geom_line(aes(x = year, y = wintmin), linetype = 3) +
+  geom_point(aes(x = year, y = wintmin), color = "black") +
+  geom_bar(aes(x = year, y = precip/200, fill = site, color = site, alpha = 0.01), stat = "identity") +
+  labs(x = "Year",
+       title = "Temp (mean, min, and winter min) and precip over time") +
+  theme(legend.position = "none") +
+  scale_y_continuous(name = "Mean (solid), mini (dash), and winter min (dot) annual temperature (°C)", 
+                     sec.axis = sec_axis(~.*200, name = "Annual precipitation (mm)")) +
+  facet_wrap(~site, ncol = 2, scales = "free")
+
 ```
 
