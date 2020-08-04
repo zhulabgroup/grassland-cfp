@@ -1141,7 +1141,7 @@ UCSC01 <- spread(UCSC01, key = plot, value = intercepts) %>%
 UCSC01$intercepts <- as.numeric(UCSC01$intercepts)
 
 UCSC02 <- UCSC02 %>%
-  filter(Site == "elk",
+  filter(Site == "ucsc",
          Frequency == "con") %>%
   select(Site:thatch) %>%
   replace(is.na(.), 0) %>%
