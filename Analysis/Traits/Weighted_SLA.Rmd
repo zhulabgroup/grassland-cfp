@@ -19,7 +19,11 @@ library(plotrix)
 rel_all <- read.csv("Analysis/Traits/RelativeData.csv") %>% 
   select(-X) %>%
   mutate(species.name = str_squish(species.name)) %>%
-  filter(relcov > 0)
+  filter(relcov > 0) %>%
+  mutate(species.name = recode(species.name,
+                               "Festuca perennis" = "Lolium multiflorum",
+                               "Lysimachia arvensis" = "Anagalis arvensis",
+                               "Bromus madritensis ssp rubens" = "Bromus madritensis"))
 
 species <- unique(rel_all$species.name)
 species <- as.data.frame(species)
@@ -65,9 +69,9 @@ ggplot(rel_all_SLA_means, aes(x = year, y = mean_SLA, color = site)) +
   geom_point() +
   geom_line() +
   geom_errorbar(aes(ymin = (mean_SLA - seSLA), ymax = (mean_SLA + seSLA))) +
-  labs(title = "All sites - Community Temperature Index",
+  labs(title = "All sites - Specific Leaf Area",
        x = "Year",
-       y = "CTI") +
+       y = "Community-weighted SLA") +
   facet_wrap(~site, scales = "free", ncol = 4) +
   theme_bw() +
   theme(legend.position = "none") +
