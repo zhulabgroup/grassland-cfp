@@ -1,6 +1,6 @@
 "","plot","year","species.name","guild","site","Intercepts"
 "1","EP1",2007,"Bromus hordeaceus","EAG","Carrizo",5
-"2","EP1",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",13
+"2","EP1",2007,"Bromus rubens","EAG","Carrizo",13
 "3","EP1",2007,"Calandrinia ciliata","NAF","Carrizo",1
 "4","EP1",2007,"Dichelostemma capitatum","NPF","Carrizo",1
 "5","EP1",2007,"Erodium cicutarium","EAF","Carrizo",13
@@ -28,7 +28,7 @@
 "27","EP1",2008,"bare","bare","Carrizo",53
 "28","EP1",2008,"litter","litter","Carrizo",57
 "29","EP1",2009,"Amsinckia tessellata","NAF","Carrizo",9
-"30","EP1",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"30","EP1",2009,"Bromus rubens","EAG","Carrizo",2
 "31","EP1",2009,"Calandrinia ciliata","NAF","Carrizo",13
 "32","EP1",2009,"Dichelostemma capitatum","NPF","Carrizo",6
 "33","EP1",2009,"Erodium cicutarium","EAF","Carrizo",193
@@ -44,7 +44,7 @@
 "43","EP1",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",8
 "44","EP1",2009,"bare","bare","Carrizo",139
 "45","EP1",2009,"litter","litter","Carrizo",101
-"46","EP1",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"46","EP1",2010,"Bromus rubens","EAG","Carrizo",3
 "47","EP1",2010,"Calandrinia ciliata","NAF","Carrizo",2
 "48","EP1",2010,"Dichelostemma capitatum","NPF","Carrizo",2
 "49","EP1",2010,"Erodium cicutarium","EAF","Carrizo",98
@@ -58,7 +58,7 @@
 "57","EP1",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",201
 "58","EP1",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",95
 "59","EP1",2010,"bare","bare","Carrizo",21
-"60","EP1",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",27
+"60","EP1",2011,"Bromus rubens","EAG","Carrizo",27
 "61","EP1",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "62","EP1",2011,"Erodium cicutarium","EAF","Carrizo",207
 "63","EP1",2011,"Hordeum murinum","EAG","Carrizo",41
@@ -68,7 +68,7 @@
 "67","EP1",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",44
 "68","EP1",2011,"bare","bare","Carrizo",28
 "69","EP1",2011,"litter","litter","Carrizo",23
-"70","EP1",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",12
+"70","EP1",2012,"Bromus rubens","EAG","Carrizo",12
 "71","EP1",2012,"Erodium cicutarium","EAF","Carrizo",63
 "72","EP1",2012,"Hordeum murinum","EAG","Carrizo",56
 "73","EP1",2012,"Poa secunda ssp secunda","NPG","Carrizo",3
@@ -78,7 +78,7 @@
 "77","EP1",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",7
 "78","EP1",2012,"bare","bare","Carrizo",155
 "79","EP1",2012,"litter","litter","Carrizo",249
-"80","EP1",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",16
+"80","EP1",2013,"Bromus rubens","EAG","Carrizo",16
 "81","EP1",2013,"Erodium cicutarium","EAF","Carrizo",26
 "82","EP1",2013,"Hordeum murinum","EAG","Carrizo",12
 "83","EP1",2013,"Poa secunda ssp secunda","NPG","Carrizo",2
@@ -88,7 +88,7 @@
 "87","EP1",2013,"bare","bare","Carrizo",224
 "88","EP1",2013,"hole","hole","Carrizo",1
 "89","EP1",2013,"litter","litter","Carrizo",347
-"90","EP1",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",5
+"90","EP1",2014,"Bromus rubens","EAG","Carrizo",5
 "91","EP1",2014,"Calandrinia ciliata","NAF","Carrizo",4
 "92","EP1",2014,"Dichelostemma capitatum","NPF","Carrizo",2
 "93","EP1",2014,"Erodium cicutarium","EAF","Carrizo",57
@@ -100,7 +100,7 @@
 "99","EP1",2014,"bare","bare","Carrizo",319
 "100","EP1",2014,"litter","litter","Carrizo",239
 "101","EP1",2015,"Amsinckia tessellata","NAF","Carrizo",1
-"102","EP1",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",8
+"102","EP1",2015,"Bromus rubens","EAG","Carrizo",8
 "103","EP1",2015,"Calandrinia ciliata","NAF","Carrizo",25
 "104","EP1",2015,"Dichelostemma capitatum","NPF","Carrizo",1
 "105","EP1",2015,"Erodium cicutarium","EAF","Carrizo",269
@@ -114,7 +114,7 @@
 "113","EP1",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",41
 "114","EP1",2015,"bare","bare","Carrizo",166
 "115","EP1",2015,"litter","litter","Carrizo",17
-"116","EP1",2016,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"116","EP1",2016,"Bromus rubens","EAG","Carrizo",2
 "117","EP1",2016,"Calandrinia ciliata","NAF","Carrizo",1
 "118","EP1",2016,"Dichelostemma capitatum","NPF","Carrizo",1
 "119","EP1",2016,"Erodium cicutarium","EAF","Carrizo",52
@@ -129,7 +129,7 @@
 "128","EP1",2016,"bare","bare","Carrizo",4
 "129","EP1",2016,"litter","litter","Carrizo",4
 "130","EP1",2017,"Amsinckia tessellata","NAF","Carrizo",4
-"131","EP1",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",25
+"131","EP1",2017,"Bromus rubens","EAG","Carrizo",25
 "132","EP1",2017,"Erodium cicutarium","EAF","Carrizo",27
 "133","EP1",2017,"Hordeum murinum","EAG","Carrizo",34
 "134","EP1",2017,"Lepidium nitidum","NAF","Carrizo",1
@@ -138,7 +138,7 @@
 "137","EP1",2017,"Tropidocarpum gracile","NAF","Carrizo",5
 "138","EP1",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",33
 "139","EP1",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",22
-"140","EP1",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"140","EP1",2018,"Bromus rubens","EAG","Carrizo",6
 "141","EP1",2018,"Erodium cicutarium","EAF","Carrizo",1
 "142","EP1",2018,"Hordeum murinum","EAG","Carrizo",38
 "143","EP1",2018,"Lepidium nitidum","NAF","Carrizo",8
@@ -163,7 +163,7 @@
 "162","EP10",2007,"bare","bare","Carrizo",255
 "163","EP10",2007,"litter","litter","Carrizo",185
 "164","EP10",2008,"Amsinckia tessellata","NAF","Carrizo",56
-"165","EP10",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"165","EP10",2008,"Bromus rubens","EAG","Carrizo",2
 "166","EP10",2008,"Calandrinia ciliata","NAF","Carrizo",4
 "167","EP10",2008,"Dichelostemma capitatum","NPF","Carrizo",5
 "168","EP10",2008,"Eriogonum gracillimum","NAF","Carrizo",3
@@ -217,7 +217,7 @@
 "216","EP10",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",2
 "217","EP10",2010,"bare","bare","Carrizo",73
 "218","EP10",2011,"Amsinckia tessellata","NAF","Carrizo",32
-"219","EP10",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"219","EP10",2011,"Bromus rubens","EAG","Carrizo",2
 "220","EP10",2011,"Eriogonum gracillimum","NAF","Carrizo",11
 "221","EP10",2011,"Erodium cicutarium","EAF","Carrizo",208
 "222","EP10",2011,"Lasthenia minor","NAF","Carrizo",65
@@ -230,7 +230,7 @@
 "229","EP10",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",2
 "230","EP10",2011,"bare","bare","Carrizo",110
 "231","EP10",2011,"litter","litter","Carrizo",14
-"232","EP10",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"232","EP10",2012,"Bromus rubens","EAG","Carrizo",1
 "233","EP10",2012,"Dichelostemma capitatum","NPF","Carrizo",1
 "234","EP10",2012,"Erodium cicutarium","EAF","Carrizo",17
 "235","EP10",2012,"Hordeum murinum","EAG","Carrizo",1
@@ -302,7 +302,7 @@
 "301","EP10",2018,"Schismus arabicus","EAG","Carrizo",9
 "302","EP10",2018,"bare","bare","Carrizo",163
 "303","EP10",2018,"litter","litter","Carrizo",63
-"304","EP2",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",14
+"304","EP2",2007,"Bromus rubens","EAG","Carrizo",14
 "305","EP2",2007,"Calandrinia ciliata","NAF","Carrizo",2
 "306","EP2",2007,"Dichelostemma capitatum","NPF","Carrizo",1
 "307","EP2",2007,"Erodium cicutarium","EAF","Carrizo",29
@@ -317,7 +317,7 @@
 "316","EP2",2007,"bare","bare","Carrizo",123
 "317","EP2",2007,"litter","litter","Carrizo",208
 "318","EP2",2008,"Amsinckia tessellata","NAF","Carrizo",9
-"319","EP2",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"319","EP2",2008,"Bromus rubens","EAG","Carrizo",1
 "320","EP2",2008,"Calandrinia ciliata","NAF","Carrizo",25
 "321","EP2",2008,"Dichelostemma capitatum","NPF","Carrizo",4
 "322","EP2",2008,"Erodium cicutarium","EAF","Carrizo",207
@@ -331,7 +331,7 @@
 "330","EP2",2008,"bare","bare","Carrizo",138
 "331","EP2",2008,"litter","litter","Carrizo",94
 "332","EP2",2009,"Amsinckia tessellata","NAF","Carrizo",20
-"333","EP2",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"333","EP2",2009,"Bromus rubens","EAG","Carrizo",2
 "334","EP2",2009,"Calandrinia ciliata","NAF","Carrizo",23
 "335","EP2",2009,"Dichelostemma capitatum","NPF","Carrizo",4
 "336","EP2",2009,"Eriogonum gracillimum","NAF","Carrizo",1
@@ -366,7 +366,7 @@
 "365","EP2",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",3
 "366","EP2",2010,"bare","bare","Carrizo",41
 "367","EP2",2011,"Amsinckia tessellata","NAF","Carrizo",10
-"368","EP2",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",9
+"368","EP2",2011,"Bromus rubens","EAG","Carrizo",9
 "369","EP2",2011,"Erodium cicutarium","EAF","Carrizo",119
 "370","EP2",2011,"Hordeum murinum","EAG","Carrizo",38
 "371","EP2",2011,"Lasthenia minor","NAF","Carrizo",9
@@ -381,7 +381,7 @@
 "380","EP2",2011,"bare","bare","Carrizo",56
 "381","EP2",2011,"hole","hole","Carrizo",1
 "382","EP2",2011,"litter","litter","Carrizo",30
-"383","EP2",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",16
+"383","EP2",2012,"Bromus rubens","EAG","Carrizo",16
 "384","EP2",2012,"Erodium cicutarium","EAF","Carrizo",35
 "385","EP2",2012,"Hordeum murinum","EAG","Carrizo",21
 "386","EP2",2012,"Lepidium nitidum","NAF","Carrizo",4
@@ -434,7 +434,7 @@
 "433","EP2",2016,"bare","bare","Carrizo",206
 "434","EP2",2016,"litter","litter","Carrizo",6
 "435","EP2",2017,"Amsinckia tessellata","NAF","Carrizo",46
-"436","EP2",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"436","EP2",2017,"Bromus rubens","EAG","Carrizo",2
 "437","EP2",2017,"Descurainia sophia","EAF","Carrizo",1
 "438","EP2",2017,"Erodium cicutarium","EAF","Carrizo",30
 "439","EP2",2017,"Guillenia lasiophylla","NAF","Carrizo",127
@@ -462,7 +462,7 @@
 "461","EP2",2018,"bare","bare","Carrizo",58
 "462","EP2",2018,"hole","hole","Carrizo",2
 "463","EP2",2018,"litter","litter","Carrizo",110
-"464","EP3",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",20
+"464","EP3",2007,"Bromus rubens","EAG","Carrizo",20
 "465","EP3",2007,"Calandrinia ciliata","NAF","Carrizo",1
 "466","EP3",2007,"Capsella bursa-pastoris","EAF","Carrizo",2
 "467","EP3",2007,"Erodium cicutarium","EAF","Carrizo",20
@@ -479,7 +479,7 @@
 "478","EP3",2007,"hole","hole","Carrizo",1
 "479","EP3",2007,"litter","litter","Carrizo",232
 "480","EP3",2008,"Amsinckia tessellata","NAF","Carrizo",4
-"481","EP3",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"481","EP3",2008,"Bromus rubens","EAG","Carrizo",2
 "482","EP3",2008,"Calandrinia ciliata","NAF","Carrizo",6
 "483","EP3",2008,"Dichelostemma capitatum","NPF","Carrizo",3
 "484","EP3",2008,"Erodium cicutarium","EAF","Carrizo",236
@@ -494,7 +494,7 @@
 "493","EP3",2008,"bare","bare","Carrizo",70
 "494","EP3",2008,"litter","litter","Carrizo",115
 "495","EP3",2009,"Amsinckia tessellata","NAF","Carrizo",4
-"496","EP3",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"496","EP3",2009,"Bromus rubens","EAG","Carrizo",1
 "497","EP3",2009,"Calandrinia ciliata","NAF","Carrizo",4
 "498","EP3",2009,"Dichelostemma capitatum","NPF","Carrizo",6
 "499","EP3",2009,"Erodium cicutarium","EAF","Carrizo",137
@@ -512,7 +512,7 @@
 "511","EP3",2009,"litter","litter","Carrizo",32
 "512","EP3",2010,"Amsinckia tessellata","NAF","Carrizo",1
 "513","EP3",2010,"Astragalus didymocarpus","NAF","Carrizo",4
-"514","EP3",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"514","EP3",2010,"Bromus rubens","EAG","Carrizo",2
 "515","EP3",2010,"Calandrinia ciliata","NAF","Carrizo",11
 "516","EP3",2010,"Capsella bursa-pastoris","EAF","Carrizo",8
 "517","EP3",2010,"Dichelostemma capitatum","NPF","Carrizo",6
@@ -527,7 +527,7 @@
 "526","EP3",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",154
 "527","EP3",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",17
 "528","EP3",2010,"bare","bare","Carrizo",11
-"529","EP3",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"529","EP3",2011,"Bromus rubens","EAG","Carrizo",3
 "530","EP3",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "531","EP3",2011,"Erodium cicutarium","EAF","Carrizo",238
 "532","EP3",2011,"Lasthenia minor","NAF","Carrizo",28
@@ -541,7 +541,7 @@
 "540","EP3",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",5
 "541","EP3",2011,"bare","bare","Carrizo",62
 "542","EP3",2011,"litter","litter","Carrizo",53
-"543","EP3",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",4
+"543","EP3",2012,"Bromus rubens","EAG","Carrizo",4
 "544","EP3",2012,"Erodium cicutarium","EAF","Carrizo",35
 "545","EP3",2012,"Hordeum murinum","EAG","Carrizo",2
 "546","EP3",2012,"Poa secunda ssp secunda","NPG","Carrizo",1
@@ -557,7 +557,7 @@
 "556","EP3",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",15
 "557","EP3",2013,"bare","bare","Carrizo",235
 "558","EP3",2013,"litter","litter","Carrizo",334
-"559","EP3",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"559","EP3",2014,"Bromus rubens","EAG","Carrizo",1
 "560","EP3",2014,"Calandrinia ciliata","NAF","Carrizo",13
 "561","EP3",2014,"Erodium cicutarium","EAF","Carrizo",32
 "562","EP3",2014,"Lepidium nitidum","NAF","Carrizo",1
@@ -590,7 +590,7 @@
 "589","EP3",2016,"bare","bare","Carrizo",62
 "590","EP3",2016,"litter","litter","Carrizo",14
 "591","EP3",2017,"Amsinckia tessellata","NAF","Carrizo",5
-"592","EP3",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",13
+"592","EP3",2017,"Bromus rubens","EAG","Carrizo",13
 "593","EP3",2017,"Erodium cicutarium","EAF","Carrizo",124
 "594","EP3",2017,"Guillenia lasiophylla","NAF","Carrizo",28
 "595","EP3",2017,"Hordeum murinum","EAG","Carrizo",2
@@ -603,7 +603,7 @@
 "602","EP3",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
 "603","EP3",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",1
 "604","EP3",2017,"bare","bare","Carrizo",2
-"605","EP3",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"605","EP3",2018,"Bromus rubens","EAG","Carrizo",1
 "606","EP3",2018,"Calandrinia ciliata","NAF","Carrizo",2
 "607","EP3",2018,"Erodium cicutarium","EAF","Carrizo",26
 "608","EP3",2018,"Guillenia lasiophylla","NAF","Carrizo",6
@@ -615,7 +615,7 @@
 "614","EP3",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
 "615","EP3",2018,"bare","bare","Carrizo",224
 "616","EP3",2018,"litter","litter","Carrizo",162
-"617","EP4",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",11
+"617","EP4",2007,"Bromus rubens","EAG","Carrizo",11
 "618","EP4",2007,"Erodium cicutarium","EAF","Carrizo",26
 "619","EP4",2007,"Lepidium nitidum","NAF","Carrizo",40
 "620","EP4",2007,"Microseris douglasii","NAF","Carrizo",2
@@ -625,7 +625,7 @@
 "624","EP4",2007,"bare","bare","Carrizo",134
 "625","EP4",2007,"hole","hole","Carrizo",1
 "626","EP4",2007,"litter","litter","Carrizo",192
-"627","EP4",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"627","EP4",2008,"Bromus rubens","EAG","Carrizo",1
 "628","EP4",2008,"Erodium cicutarium","EAF","Carrizo",330
 "629","EP4",2008,"Lepidium nitidum","NAF","Carrizo",32
 "630","EP4",2008,"Microseris douglasii","NAF","Carrizo",1
@@ -660,7 +660,7 @@
 "659","EP4",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",192
 "660","EP4",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",14
 "661","EP4",2010,"bare","bare","Carrizo",25
-"662","EP4",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"662","EP4",2011,"Bromus rubens","EAG","Carrizo",2
 "663","EP4",2011,"Erodium cicutarium","EAF","Carrizo",209
 "664","EP4",2011,"Microseris douglasii","NAF","Carrizo",3
 "665","EP4",2011,"Schismus arabicus","EAG","Carrizo",40
@@ -669,7 +669,7 @@
 "668","EP4",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",14
 "669","EP4",2011,"bare","bare","Carrizo",35
 "670","EP4",2011,"litter","litter","Carrizo",55
-"671","EP4",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"671","EP4",2012,"Bromus rubens","EAG","Carrizo",6
 "672","EP4",2012,"Erodium cicutarium","EAF","Carrizo",59
 "673","EP4",2012,"Hordeum murinum","EAG","Carrizo",2
 "674","EP4",2012,"Schismus arabicus","EAG","Carrizo",28
@@ -678,7 +678,7 @@
 "677","EP4",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",3
 "678","EP4",2012,"bare","bare","Carrizo",195
 "679","EP4",2012,"litter","litter","Carrizo",319
-"680","EP4",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",4
+"680","EP4",2013,"Bromus rubens","EAG","Carrizo",4
 "681","EP4",2013,"Erodium cicutarium","EAF","Carrizo",60
 "682","EP4",2013,"Schismus arabicus","EAG","Carrizo",1
 "683","EP4",2013,"Trifolium gracilentum","NAF","Carrizo",1
@@ -714,7 +714,7 @@
 "713","EP4",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",12
 "714","EP4",2016,"bare","bare","Carrizo",94
 "715","EP4",2016,"litter","litter","Carrizo",4
-"716","EP4",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",34
+"716","EP4",2017,"Bromus rubens","EAG","Carrizo",34
 "717","EP4",2017,"Calandrinia ciliata","NAF","Carrizo",1
 "718","EP4",2017,"Erodium cicutarium","EAF","Carrizo",124
 "719","EP4",2017,"Guillenia lasiophylla","NAF","Carrizo",9
@@ -728,7 +728,7 @@
 "727","EP4",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",8
 "728","EP4",2017,"bare","bare","Carrizo",22
 "729","EP4",2017,"litter","litter","Carrizo",5
-"730","EP4",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"730","EP4",2018,"Bromus rubens","EAG","Carrizo",3
 "731","EP4",2018,"Erodium cicutarium","EAF","Carrizo",5
 "732","EP4",2018,"Hordeum murinum","EAG","Carrizo",3
 "733","EP4",2018,"Lepidium nitidum","NAF","Carrizo",15
@@ -799,7 +799,7 @@
 "798","EP5",2010,"bare","bare","Carrizo",161
 "799","EP5",2011,"Amsinckia tessellata","NAF","Carrizo",41
 "800","EP5",2011,"Astragalus oxyphysus","NPF","Carrizo",2
-"801","EP5",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"801","EP5",2011,"Bromus rubens","EAG","Carrizo",1
 "802","EP5",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "803","EP5",2011,"Eriogonum gracillimum","NAF","Carrizo",3
 "804","EP5",2011,"Erodium cicutarium","EAF","Carrizo",300
@@ -882,7 +882,7 @@
 "881","EP5",2018,"Tropidocarpum gracile","NAF","Carrizo",5
 "882","EP5",2018,"bare","bare","Carrizo",183
 "883","EP5",2018,"litter","litter","Carrizo",38
-"884","EP6",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"884","EP6",2007,"Bromus rubens","EAG","Carrizo",6
 "885","EP6",2007,"Capsella bursa-pastoris","EAF","Carrizo",1
 "886","EP6",2007,"Erodium cicutarium","EAF","Carrizo",1
 "887","EP6",2007,"Guillenia lasiophylla","NAF","Carrizo",1
@@ -922,7 +922,7 @@
 "921","EP6",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",2
 "922","EP6",2009,"bare","bare","Carrizo",160
 "923","EP6",2009,"litter","litter","Carrizo",25
-"924","EP6",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"924","EP6",2010,"Bromus rubens","EAG","Carrizo",1
 "925","EP6",2010,"Dichelostemma capitatum","NPF","Carrizo",1
 "926","EP6",2010,"Erodium cicutarium","EAF","Carrizo",134
 "927","EP6",2010,"Guillenia lasiophylla","NAF","Carrizo",10
@@ -937,7 +937,7 @@
 "936","EP6",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",18
 "937","EP6",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",11
 "938","EP6",2010,"bare","bare","Carrizo",19
-"939","EP6",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"939","EP6",2011,"Bromus rubens","EAG","Carrizo",2
 "940","EP6",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "941","EP6",2011,"Erodium cicutarium","EAF","Carrizo",361
 "942","EP6",2011,"Microseris douglasii","NAF","Carrizo",37
@@ -949,7 +949,7 @@
 "948","EP6",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",8
 "949","EP6",2011,"bare","bare","Carrizo",147
 "950","EP6",2011,"litter","litter","Carrizo",5
-"951","EP6",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"951","EP6",2012,"Bromus rubens","EAG","Carrizo",1
 "952","EP6",2012,"Erodium cicutarium","EAF","Carrizo",2
 "953","EP6",2012,"Hordeum murinum","EAG","Carrizo",9
 "954","EP6",2012,"Schismus arabicus","EAG","Carrizo",2
@@ -957,7 +957,7 @@
 "956","EP6",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",2
 "957","EP6",2012,"bare","bare","Carrizo",338
 "958","EP6",2012,"litter","litter","Carrizo",275
-"959","EP6",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",5
+"959","EP6",2013,"Bromus rubens","EAG","Carrizo",5
 "960","EP6",2013,"Erodium cicutarium","EAF","Carrizo",24
 "961","EP6",2013,"Hordeum murinum","EAG","Carrizo",12
 "962","EP6",2013,"Lepidium nitidum","NAF","Carrizo",3
@@ -966,7 +966,7 @@
 "965","EP6",2013,"bare","bare","Carrizo",434
 "966","EP6",2013,"litter","litter","Carrizo",160
 "967","EP6",2013,"moss","moss","Carrizo",1
-"968","EP6",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"968","EP6",2014,"Bromus rubens","EAG","Carrizo",1
 "969","EP6",2014,"Calandrinia ciliata","NAF","Carrizo",6
 "970","EP6",2014,"Erodium cicutarium","EAF","Carrizo",25
 "971","EP6",2014,"Schismus arabicus","EAG","Carrizo",1
@@ -1001,7 +1001,7 @@
 "1000","EP6",2016,"litter","litter","Carrizo",2
 "1001","EP6",2017,"Amsinckia menziesii v intermedia","NAF","Carrizo",4
 "1002","EP6",2017,"Amsinckia tessellata","NAF","Carrizo",9
-"1003","EP6",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",15
+"1003","EP6",2017,"Bromus rubens","EAG","Carrizo",15
 "1004","EP6",2017,"Calandrinia ciliata","NAF","Carrizo",4
 "1005","EP6",2017,"Capsella bursa-pastoris","EAF","Carrizo",1
 "1006","EP6",2017,"Descurainia sophia","EAF","Carrizo",7
@@ -1016,7 +1016,7 @@
 "1015","EP6",2017,"bare","bare","Carrizo",29
 "1016","EP6",2017,"litter","litter","Carrizo",15
 "1017","EP6",2018,"Amsinckia tessellata","NAF","Carrizo",2
-"1018","EP6",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",17
+"1018","EP6",2018,"Bromus rubens","EAG","Carrizo",17
 "1019","EP6",2018,"Erodium cicutarium","EAF","Carrizo",9
 "1020","EP6",2018,"Guillenia lasiophylla","NAF","Carrizo",2
 "1021","EP6",2018,"Hordeum murinum","EAG","Carrizo",131
@@ -1027,7 +1027,7 @@
 "1026","EP6",2018,"bare","bare","Carrizo",205
 "1027","EP6",2018,"litter","litter","Carrizo",223
 "1028","EP7",2007,"Amsinckia tessellata","NAF","Carrizo",2
-"1029","EP7",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",5
+"1029","EP7",2007,"Bromus rubens","EAG","Carrizo",5
 "1030","EP7",2007,"Erodium cicutarium","EAF","Carrizo",13
 "1031","EP7",2007,"Hordeum murinum","EAG","Carrizo",87
 "1032","EP7",2007,"Schismus arabicus","EAG","Carrizo",30
@@ -1076,7 +1076,7 @@
 "1075","EP7",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",3
 "1076","EP7",2010,"bare","bare","Carrizo",31
 "1077","EP7",2011,"Amsinckia tessellata","NAF","Carrizo",27
-"1078","EP7",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"1078","EP7",2011,"Bromus rubens","EAG","Carrizo",3
 "1079","EP7",2011,"Erodium cicutarium","EAF","Carrizo",230
 "1080","EP7",2011,"Hordeum murinum","EAG","Carrizo",6
 "1081","EP7",2011,"Lasthenia minor","NAF","Carrizo",2
@@ -1103,7 +1103,7 @@
 "1102","EP7",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
 "1103","EP7",2013,"bare","bare","Carrizo",397
 "1104","EP7",2013,"litter","litter","Carrizo",201
-"1105","EP7",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"1105","EP7",2014,"Bromus rubens","EAG","Carrizo",1
 "1106","EP7",2014,"Calandrinia ciliata","NAF","Carrizo",37
 "1107","EP7",2014,"Dichelostemma capitatum","NPF","Carrizo",1
 "1108","EP7",2014,"Erodium cicutarium","EAF","Carrizo",40
@@ -1220,7 +1220,7 @@
 "1219","EP8",2011,"bare","bare","Carrizo",120
 "1220","EP8",2011,"litter","litter","Carrizo",13
 "1221","EP8",2012,"Astragalus oxyphysus","NPF","Carrizo",11
-"1222","EP8",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"1222","EP8",2012,"Bromus rubens","EAG","Carrizo",1
 "1223","EP8",2012,"Eriogonum gracillimum","NAF","Carrizo",1
 "1224","EP8",2012,"Erodium cicutarium","EAF","Carrizo",5
 "1225","EP8",2012,"Schismus arabicus","EAG","Carrizo",68
@@ -1263,17 +1263,17 @@
 "1262","EP8",2016,"Schismus arabicus","EAG","Carrizo",1
 "1263","EP8",2016,"bare","bare","Carrizo",42
 "1264","EP8",2017,"Amsinckia tessellata","NAF","Carrizo",4
-"1265","EP8",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"1265","EP8",2017,"Bromus rubens","EAG","Carrizo",1
 "1266","EP8",2017,"Guillenia lasiophylla","NAF","Carrizo",53
 "1267","EP8",2017,"Lasthenia minor","NAF","Carrizo",22
 "1268","EP8",2017,"litter","litter","Carrizo",1
-"1269","EP8",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"1269","EP8",2018,"Bromus rubens","EAG","Carrizo",1
 "1270","EP8",2018,"Lasthenia minor","NAF","Carrizo",5
 "1271","EP8",2018,"Lepidium nitidum","NAF","Carrizo",1
 "1272","EP8",2018,"Tropidocarpum gracile","NAF","Carrizo",1
 "1273","EP8",2018,"bare","bare","Carrizo",17
 "1274","EP8",2018,"litter","litter","Carrizo",56
-"1275","EP9",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",4
+"1275","EP9",2007,"Bromus rubens","EAG","Carrizo",4
 "1276","EP9",2007,"Calandrinia ciliata","NAF","Carrizo",3
 "1277","EP9",2007,"Erodium cicutarium","EAF","Carrizo",54
 "1278","EP9",2007,"Guillenia lasiophylla","NAF","Carrizo",1
@@ -1342,7 +1342,7 @@
 "1341","EP9",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",30
 "1342","EP9",2010,"bare","bare","Carrizo",83
 "1343","EP9",2011,"Amsinckia tessellata","NAF","Carrizo",58
-"1344","EP9",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"1344","EP9",2011,"Bromus rubens","EAG","Carrizo",2
 "1345","EP9",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "1346","EP9",2011,"Eriogonum gracillimum","NAF","Carrizo",8
 "1347","EP9",2011,"Erodium cicutarium","EAF","Carrizo",108
@@ -1357,7 +1357,7 @@
 "1356","EP9",2011,"bare","bare","Carrizo",69
 "1357","EP9",2011,"litter","litter","Carrizo",11
 "1358","EP9",2012,"Amsinckia tessellata","NAF","Carrizo",1
-"1359","EP9",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"1359","EP9",2012,"Bromus rubens","EAG","Carrizo",2
 "1360","EP9",2012,"Eriogonum gracillimum","NAF","Carrizo",7
 "1361","EP9",2012,"Erodium cicutarium","EAF","Carrizo",25
 "1362","EP9",2012,"Hordeum murinum","EAG","Carrizo",8
@@ -1429,7 +1429,7 @@
 "1428","EP9",2018,"Schismus arabicus","EAG","Carrizo",8
 "1429","EP9",2018,"bare","bare","Carrizo",190
 "1430","EP9",2018,"litter","litter","Carrizo",20
-"1431","SC1",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",32
+"1431","SC1",2007,"Bromus rubens","EAG","Carrizo",32
 "1432","SC1",2007,"Chorizanthe watsonii","NAF","Carrizo",2
 "1433","SC1",2007,"Erodium cicutarium","EAF","Carrizo",36
 "1434","SC1",2007,"Lepidium nitidum","NAF","Carrizo",7
@@ -1442,7 +1442,7 @@
 "1441","SC1",2007,"hole","hole","Carrizo",1
 "1442","SC1",2007,"litter","litter","Carrizo",140
 "1443","SC1",2008,"Amsinckia tessellata","NAF","Carrizo",6
-"1444","SC1",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",5
+"1444","SC1",2008,"Bromus rubens","EAG","Carrizo",5
 "1445","SC1",2008,"Calandrinia ciliata","NAF","Carrizo",12
 "1446","SC1",2008,"Dichelostemma capitatum","NPF","Carrizo",9
 "1447","SC1",2008,"Eriogonum gracillimum","NAF","Carrizo",3
@@ -1503,7 +1503,7 @@
 "1502","SC1",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",4
 "1503","SC1",2010,"bare","bare","Carrizo",66
 "1504","SC1",2011,"Amsinckia tessellata","NAF","Carrizo",1
-"1505","SC1",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"1505","SC1",2011,"Bromus rubens","EAG","Carrizo",6
 "1506","SC1",2011,"Chorizanthe uniaristata","NAF","Carrizo",6
 "1507","SC1",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "1508","SC1",2011,"Erodium cicutarium","EAF","Carrizo",72
@@ -1522,7 +1522,7 @@
 "1521","SC1",2011,"bare","bare","Carrizo",172
 "1522","SC1",2011,"litter","litter","Carrizo",61
 "1523","SC1",2012,"Astragalus oxyphysus","NPF","Carrizo",1
-"1524","SC1",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"1524","SC1",2012,"Bromus rubens","EAG","Carrizo",1
 "1525","SC1",2012,"Eriogonum gracillimum","NAF","Carrizo",1
 "1526","SC1",2012,"Erodium cicutarium","EAF","Carrizo",66
 "1527","SC1",2012,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
@@ -1581,7 +1581,7 @@
 "1580","SC1",2016,"bare","bare","Carrizo",81
 "1581","SC1",2016,"litter","litter","Carrizo",3
 "1582","SC1",2017,"Astragalus oxyphysus","NPF","Carrizo",1
-"1583","SC1",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"1583","SC1",2017,"Bromus rubens","EAG","Carrizo",2
 "1584","SC1",2017,"Calandrinia ciliata","NAF","Carrizo",4
 "1585","SC1",2017,"Chorizanthe uniaristata","NAF","Carrizo",1
 "1586","SC1",2017,"Erodium cicutarium","EAF","Carrizo",49
@@ -1595,7 +1595,7 @@
 "1594","SC1",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",10
 "1595","SC1",2017,"bare","bare","Carrizo",23
 "1596","SC1",2017,"litter","litter","Carrizo",9
-"1597","SC1",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"1597","SC1",2018,"Bromus rubens","EAG","Carrizo",1
 "1598","SC1",2018,"Calandrinia ciliata","NAF","Carrizo",2
 "1599","SC1",2018,"Erodium cicutarium","EAF","Carrizo",21
 "1600","SC1",2018,"Hollisteria lanata","NAF","Carrizo",1
@@ -1611,7 +1611,7 @@
 "1610","SC1",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
 "1611","SC1",2018,"bare","bare","Carrizo",53
 "1612","SC1",2018,"litter","litter","Carrizo",68
-"1613","SC10",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",259
+"1613","SC10",2007,"Bromus rubens","EAG","Carrizo",259
 "1614","SC10",2007,"Erodium cicutarium","EAF","Carrizo",62
 "1615","SC10",2007,"Hordeum murinum","EAG","Carrizo",3
 "1616","SC10",2007,"Lasthenia californica","NAF","Carrizo",1
@@ -1622,7 +1622,7 @@
 "1621","SC10",2007,"bare","bare","Carrizo",64
 "1622","SC10",2007,"litter","litter","Carrizo",112
 "1623","SC10",2008,"Amsinckia tessellata","NAF","Carrizo",65
-"1624","SC10",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",77
+"1624","SC10",2008,"Bromus rubens","EAG","Carrizo",77
 "1625","SC10",2008,"Calandrinia ciliata","NAF","Carrizo",8
 "1626","SC10",2008,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
 "1627","SC10",2008,"Chorizanthe uniaristata","NAF","Carrizo",2
@@ -1642,7 +1642,7 @@
 "1641","SC10",2008,"bare","bare","Carrizo",96
 "1642","SC10",2008,"litter","litter","Carrizo",165
 "1643","SC10",2009,"Amsinckia tessellata","NAF","Carrizo",91
-"1644","SC10",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",71
+"1644","SC10",2009,"Bromus rubens","EAG","Carrizo",71
 "1645","SC10",2009,"Calandrinia ciliata","NAF","Carrizo",3
 "1646","SC10",2009,"Chorizanthe uniaristata","NAF","Carrizo",9
 "1647","SC10",2009,"Erodium cicutarium","EAF","Carrizo",132
@@ -1659,7 +1659,7 @@
 "1658","SC10",2009,"hole","hole","Carrizo",2
 "1659","SC10",2009,"litter","litter","Carrizo",67
 "1660","SC10",2010,"Amsinckia tessellata","NAF","Carrizo",66
-"1661","SC10",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",77
+"1661","SC10",2010,"Bromus rubens","EAG","Carrizo",77
 "1662","SC10",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",4
 "1663","SC10",2010,"Chorizanthe uniaristata","NAF","Carrizo",3
 "1664","SC10",2010,"Erodium cicutarium","EAF","Carrizo",73
@@ -1681,7 +1681,7 @@
 "1680","SC10",2010,"bare","bare","Carrizo",65
 "1681","SC10",2010,"litter","litter","Carrizo",2
 "1682","SC10",2011,"Amsinckia tessellata","NAF","Carrizo",20
-"1683","SC10",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",195
+"1683","SC10",2011,"Bromus rubens","EAG","Carrizo",195
 "1684","SC10",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",3
 "1685","SC10",2011,"Chorizanthe uniaristata","NAF","Carrizo",15
 "1686","SC10",2011,"Erodium cicutarium","EAF","Carrizo",70
@@ -1702,7 +1702,7 @@
 "1701","SC10",2011,"bare","bare","Carrizo",74
 "1702","SC10",2011,"litter","litter","Carrizo",51
 "1703","SC10",2012,"Amsinckia tessellata","NAF","Carrizo",9
-"1704","SC10",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",77
+"1704","SC10",2012,"Bromus rubens","EAG","Carrizo",77
 "1705","SC10",2012,"Chorizanthe uniaristata","NAF","Carrizo",2
 "1706","SC10",2012,"Eriogonum gracillimum","NAF","Carrizo",1
 "1707","SC10",2012,"Erodium cicutarium","EAF","Carrizo",68
@@ -1717,7 +1717,7 @@
 "1716","SC10",2012,"bare","bare","Carrizo",132
 "1717","SC10",2012,"litter","litter","Carrizo",304
 "1718","SC10",2013,"Amsinckia tessellata","NAF","Carrizo",1
-"1719","SC10",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",40
+"1719","SC10",2013,"Bromus rubens","EAG","Carrizo",40
 "1720","SC10",2013,"Erodium cicutarium","EAF","Carrizo",30
 "1721","SC10",2013,"Hordeum murinum","EAG","Carrizo",13
 "1722","SC10",2013,"Linanthus liniflorus","NAF","Carrizo",3
@@ -1730,7 +1730,7 @@
 "1729","SC10",2013,"hole","hole","Carrizo",1
 "1730","SC10",2013,"litter","litter","Carrizo",339
 "1731","SC10",2014,"Amsinckia tessellata","NAF","Carrizo",3
-"1732","SC10",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",4
+"1732","SC10",2014,"Bromus rubens","EAG","Carrizo",4
 "1733","SC10",2014,"Calandrinia ciliata","NAF","Carrizo",7
 "1734","SC10",2014,"Dichelostemma capitatum","NPF","Carrizo",3
 "1735","SC10",2014,"Erodium cicutarium","EAF","Carrizo",70
@@ -1743,7 +1743,7 @@
 "1742","SC10",2014,"bare","bare","Carrizo",348
 "1743","SC10",2014,"litter","litter","Carrizo",193
 "1744","SC10",2015,"Amsinckia tessellata","NAF","Carrizo",93
-"1745","SC10",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"1745","SC10",2015,"Bromus rubens","EAG","Carrizo",3
 "1746","SC10",2015,"Calandrinia ciliata","NAF","Carrizo",15
 "1747","SC10",2015,"Chorizanthe uniaristata","NAF","Carrizo",2
 "1748","SC10",2015,"Eriogonum gracillimum","NAF","Carrizo",1
@@ -1773,7 +1773,7 @@
 "1772","SC10",2017,"Hordeum murinum","EAG","Carrizo",28
 "1773","SC10",2017,"Schismus arabicus","EAG","Carrizo",1
 "1774","SC10",2018,"Amsinckia tessellata","NAF","Carrizo",23
-"1775","SC10",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",7
+"1775","SC10",2018,"Bromus rubens","EAG","Carrizo",7
 "1776","SC10",2018,"Erodium cicutarium","EAF","Carrizo",3
 "1777","SC10",2018,"Guillenia lasiophylla","NAF","Carrizo",2
 "1778","SC10",2018,"Hordeum murinum","EAG","Carrizo",27
@@ -1784,7 +1784,7 @@
 "1783","SC10",2018,"bare","bare","Carrizo",28
 "1784","SC10",2018,"litter","litter","Carrizo",39
 "1785","SC2",2007,"Amsinckia tessellata","NAF","Carrizo",2
-"1786","SC2",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",162
+"1786","SC2",2007,"Bromus rubens","EAG","Carrizo",162
 "1787","SC2",2007,"Erodium cicutarium","EAF","Carrizo",51
 "1788","SC2",2007,"Hordeum murinum","EAG","Carrizo",10
 "1789","SC2",2007,"Lepidium nitidum","NAF","Carrizo",2
@@ -1794,7 +1794,7 @@
 "1793","SC2",2007,"bare","bare","Carrizo",73
 "1794","SC2",2007,"litter","litter","Carrizo",244
 "1795","SC2",2008,"Amsinckia tessellata","NAF","Carrizo",31
-"1796","SC2",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",46
+"1796","SC2",2008,"Bromus rubens","EAG","Carrizo",46
 "1797","SC2",2008,"Calandrinia ciliata","NAF","Carrizo",13
 "1798","SC2",2008,"Dichelostemma capitatum","NPF","Carrizo",2
 "1799","SC2",2008,"Erodium cicutarium","EAF","Carrizo",112
@@ -1812,7 +1812,7 @@
 "1811","SC2",2008,"bare","bare","Carrizo",114
 "1812","SC2",2008,"litter","litter","Carrizo",216
 "1813","SC2",2009,"Amsinckia tessellata","NAF","Carrizo",52
-"1814","SC2",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",58
+"1814","SC2",2009,"Bromus rubens","EAG","Carrizo",58
 "1815","SC2",2009,"Calandrinia ciliata","NAF","Carrizo",25
 "1816","SC2",2009,"Dichelostemma capitatum","NPF","Carrizo",2
 "1817","SC2",2009,"Erodium cicutarium","EAF","Carrizo",141
@@ -1833,7 +1833,7 @@
 "1832","SC2",2009,"bare","bare","Carrizo",131
 "1833","SC2",2009,"litter","litter","Carrizo",50
 "1834","SC2",2010,"Amsinckia tessellata","NAF","Carrizo",34
-"1835","SC2",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",31
+"1835","SC2",2010,"Bromus rubens","EAG","Carrizo",31
 "1836","SC2",2010,"Calandrinia ciliata","NAF","Carrizo",41
 "1837","SC2",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
 "1838","SC2",2010,"Dichelostemma capitatum","NPF","Carrizo",2
@@ -1863,7 +1863,7 @@
 "1862","SC2",2011,"Amsinckia tessellata","NAF","Carrizo",3
 "1863","SC2",2011,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",3
 "1864","SC2",2011,"Astragalus oxyphysus","NPF","Carrizo",7
-"1865","SC2",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",92
+"1865","SC2",2011,"Bromus rubens","EAG","Carrizo",92
 "1866","SC2",2011,"Eriogonum gracillimum","NAF","Carrizo",7
 "1867","SC2",2011,"Erodium cicutarium","EAF","Carrizo",101
 "1868","SC2",2011,"Hollisteria lanata","NAF","Carrizo",8
@@ -1886,7 +1886,7 @@
 "1885","SC2",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",1
 "1886","SC2",2011,"bare","bare","Carrizo",84
 "1887","SC2",2011,"litter","litter","Carrizo",60
-"1888","SC2",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",42
+"1888","SC2",2012,"Bromus rubens","EAG","Carrizo",42
 "1889","SC2",2012,"Camissonia campestris","NAF","Carrizo",1
 "1890","SC2",2012,"Eriogonum gracillimum","NAF","Carrizo",1
 "1891","SC2",2012,"Erodium cicutarium","EAF","Carrizo",51
@@ -1899,7 +1899,7 @@
 "1898","SC2",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",27
 "1899","SC2",2012,"bare","bare","Carrizo",167
 "1900","SC2",2012,"litter","litter","Carrizo",284
-"1901","SC2",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",8
+"1901","SC2",2013,"Bromus rubens","EAG","Carrizo",8
 "1902","SC2",2013,"Calandrinia ciliata","NAF","Carrizo",8
 "1903","SC2",2013,"Erodium cicutarium","EAF","Carrizo",27
 "1904","SC2",2013,"Hollisteria lanata","NAF","Carrizo",2
@@ -1929,7 +1929,7 @@
 "1928","SC2",2014,"bare","bare","Carrizo",348
 "1929","SC2",2014,"litter","litter","Carrizo",201
 "1930","SC2",2015,"Amsinckia tessellata","NAF","Carrizo",7
-"1931","SC2",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"1931","SC2",2015,"Bromus rubens","EAG","Carrizo",2
 "1932","SC2",2015,"Calandrinia ciliata","NAF","Carrizo",69
 "1933","SC2",2015,"Chorizanthe uniaristata","NAF","Carrizo",3
 "1934","SC2",2015,"Dichelostemma capitatum","NPF","Carrizo",1
@@ -1962,7 +1962,7 @@
 "1961","SC2",2016,"litter","litter","Carrizo",14
 "1962","SC2",2017,"Amsinckia tessellata","NAF","Carrizo",20
 "1963","SC2",2017,"Astragalus oxyphysus","NPF","Carrizo",1
-"1964","SC2",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",5
+"1964","SC2",2017,"Bromus rubens","EAG","Carrizo",5
 "1965","SC2",2017,"Calandrinia ciliata","NAF","Carrizo",2
 "1966","SC2",2017,"Chorizanthe uniaristata","NAF","Carrizo",1
 "1967","SC2",2017,"Erodium cicutarium","EAF","Carrizo",68
@@ -1981,7 +1981,7 @@
 "1980","SC2",2017,"bare","bare","Carrizo",22
 "1981","SC2",2017,"litter","litter","Carrizo",2
 "1982","SC2",2018,"Amsinckia tessellata","NAF","Carrizo",8
-"1983","SC2",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",5
+"1983","SC2",2018,"Bromus rubens","EAG","Carrizo",5
 "1984","SC2",2018,"Calandrinia ciliata","NAF","Carrizo",3
 "1985","SC2",2018,"Erodium cicutarium","EAF","Carrizo",11
 "1986","SC2",2018,"Guillenia lasiophylla","NAF","Carrizo",2
@@ -1997,7 +1997,7 @@
 "1996","SC2",2018,"litter","litter","Carrizo",92
 "1997","SC3",2007,"Amsinckia tessellata","NAF","Carrizo",4
 "1998","SC3",2007,"Astragalus oxyphysus","NPF","Carrizo",1
-"1999","SC3",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",12
+"1999","SC3",2007,"Bromus rubens","EAG","Carrizo",12
 "2000","SC3",2007,"Eriogonum gracillimum","NAF","Carrizo",2
 "2001","SC3",2007,"Erodium cicutarium","EAF","Carrizo",71
 "2002","SC3",2007,"Hordeum murinum","EAG","Carrizo",1
@@ -2062,7 +2062,7 @@
 "2061","SC3",2011,"Allium sp.","NPF","Carrizo",1
 "2062","SC3",2011,"Amsinckia tessellata","NAF","Carrizo",18
 "2063","SC3",2011,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",35
-"2064","SC3",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"2064","SC3",2011,"Bromus rubens","EAG","Carrizo",1
 "2065","SC3",2011,"Dichelostemma capitatum","NPF","Carrizo",2
 "2066","SC3",2011,"Eriogonum gracillimum","NAF","Carrizo",25
 "2067","SC3",2011,"Erodium cicutarium","EAF","Carrizo",178
@@ -2172,7 +2172,7 @@
 "2171","SC3",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
 "2172","SC3",2018,"bare","bare","Carrizo",69
 "2173","SC3",2018,"litter","litter","Carrizo",46
-"2174","SC4",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",44
+"2174","SC4",2007,"Bromus rubens","EAG","Carrizo",44
 "2175","SC4",2007,"Erodium cicutarium","EAF","Carrizo",60
 "2176","SC4",2007,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
 "2177","SC4",2007,"Hordeum murinum","EAG","Carrizo",1
@@ -2184,7 +2184,7 @@
 "2183","SC4",2007,"bare","bare","Carrizo",167
 "2184","SC4",2007,"litter","litter","Carrizo",276
 "2185","SC4",2008,"Amsinckia tessellata","NAF","Carrizo",9
-"2186","SC4",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",7
+"2186","SC4",2008,"Bromus rubens","EAG","Carrizo",7
 "2187","SC4",2008,"Calandrinia ciliata","NAF","Carrizo",8
 "2188","SC4",2008,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
 "2189","SC4",2008,"Dichelostemma capitatum","NPF","Carrizo",1
@@ -2203,7 +2203,7 @@
 "2202","SC4",2008,"litter","litter","Carrizo",131
 "2203","SC4",2009,"Amsinckia tessellata","NAF","Carrizo",28
 "2204","SC4",2009,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",2
-"2205","SC4",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"2205","SC4",2009,"Bromus rubens","EAG","Carrizo",2
 "2206","SC4",2009,"Calandrinia ciliata","NAF","Carrizo",64
 "2207","SC4",2009,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",3
 "2208","SC4",2009,"Chorizanthe uniaristata","NAF","Carrizo",10
@@ -2227,7 +2227,7 @@
 "2226","SC4",2010,"Amsinckia tessellata","NAF","Carrizo",40
 "2227","SC4",2010,"Astragalus didymocarpus","NAF","Carrizo",1
 "2228","SC4",2010,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",14
-"2229","SC4",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"2229","SC4",2010,"Bromus rubens","EAG","Carrizo",1
 "2230","SC4",2010,"Calandrinia ciliata","NAF","Carrizo",54
 "2231","SC4",2010,"Camissonia campestris","NAF","Carrizo",1
 "2232","SC4",2010,"Castilleja exserta","NAF","Carrizo",1
@@ -2257,7 +2257,7 @@
 "2256","SC4",2011,"Amsinckia tessellata","NAF","Carrizo",7
 "2257","SC4",2011,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",2
 "2258","SC4",2011,"Astragalus oxyphysus","NPF","Carrizo",21
-"2259","SC4",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",10
+"2259","SC4",2011,"Bromus rubens","EAG","Carrizo",10
 "2260","SC4",2011,"Camissonia palmeri","NAF","Carrizo",2
 "2261","SC4",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",10
 "2262","SC4",2011,"Chorizanthe uniaristata","NAF","Carrizo",12
@@ -2281,7 +2281,7 @@
 "2280","SC4",2011,"bare","bare","Carrizo",215
 "2281","SC4",2011,"litter","litter","Carrizo",37
 "2282","SC4",2012,"Astragalus oxyphysus","NPF","Carrizo",10
-"2283","SC4",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"2283","SC4",2012,"Bromus rubens","EAG","Carrizo",3
 "2284","SC4",2012,"Chorizanthe uniaristata","NAF","Carrizo",1
 "2285","SC4",2012,"Dichelostemma capitatum","NPF","Carrizo",2
 "2286","SC4",2012,"Eriogonum gracillimum","NAF","Carrizo",3
@@ -2293,7 +2293,7 @@
 "2292","SC4",2012,"Schismus arabicus","EAG","Carrizo",79
 "2293","SC4",2012,"bare","bare","Carrizo",314
 "2294","SC4",2012,"litter","litter","Carrizo",150
-"2295","SC4",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"2295","SC4",2013,"Bromus rubens","EAG","Carrizo",1
 "2296","SC4",2013,"Calandrinia ciliata","NAF","Carrizo",2
 "2297","SC4",2013,"Dichelostemma capitatum","NPF","Carrizo",1
 "2298","SC4",2013,"Erodium cicutarium","EAF","Carrizo",14
@@ -2341,7 +2341,7 @@
 "2340","SC4",2015,"bare","bare","Carrizo",269
 "2341","SC4",2015,"litter","litter","Carrizo",12
 "2342","SC5",2007,"Amsinckia tessellata","NAF","Carrizo",2
-"2343","SC5",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",239
+"2343","SC5",2007,"Bromus rubens","EAG","Carrizo",239
 "2344","SC5",2007,"Erodium cicutarium","EAF","Carrizo",20
 "2345","SC5",2007,"Hordeum murinum","EAG","Carrizo",6
 "2346","SC5",2007,"Lasthenia californica","NAF","Carrizo",2
@@ -2352,7 +2352,7 @@
 "2351","SC5",2007,"bare","bare","Carrizo",44
 "2352","SC5",2007,"litter","litter","Carrizo",187
 "2353","SC5",2008,"Amsinckia tessellata","NAF","Carrizo",38
-"2354","SC5",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",54
+"2354","SC5",2008,"Bromus rubens","EAG","Carrizo",54
 "2355","SC5",2008,"Calandrinia ciliata","NAF","Carrizo",24
 "2356","SC5",2008,"Dichelostemma capitatum","NPF","Carrizo",1
 "2357","SC5",2008,"Erodium cicutarium","EAF","Carrizo",135
@@ -2370,7 +2370,7 @@
 "2369","SC5",2008,"bare","bare","Carrizo",37
 "2370","SC5",2008,"litter","litter","Carrizo",133
 "2371","SC5",2009,"Amsinckia tessellata","NAF","Carrizo",28
-"2372","SC5",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",89
+"2372","SC5",2009,"Bromus rubens","EAG","Carrizo",89
 "2373","SC5",2009,"Calandrinia ciliata","NAF","Carrizo",15
 "2374","SC5",2009,"Chorizanthe uniaristata","NAF","Carrizo",2
 "2375","SC5",2009,"Dichelostemma capitatum","NPF","Carrizo",5
@@ -2389,7 +2389,7 @@
 "2388","SC5",2009,"hole","hole","Carrizo",1
 "2389","SC5",2009,"litter","litter","Carrizo",48
 "2390","SC5",2010,"Amsinckia tessellata","NAF","Carrizo",12
-"2391","SC5",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",122
+"2391","SC5",2010,"Bromus rubens","EAG","Carrizo",122
 "2392","SC5",2010,"Calandrinia ciliata","NAF","Carrizo",1
 "2393","SC5",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
 "2394","SC5",2010,"Dichelostemma capitatum","NPF","Carrizo",1
@@ -2409,7 +2409,7 @@
 "2408","SC5",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
 "2409","SC5",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",35
 "2410","SC5",2010,"bare","bare","Carrizo",20
-"2411","SC5",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",268
+"2411","SC5",2011,"Bromus rubens","EAG","Carrizo",268
 "2412","SC5",2011,"Chorizanthe uniaristata","NAF","Carrizo",5
 "2413","SC5",2011,"Dichelostemma capitatum","NPF","Carrizo",1
 "2414","SC5",2011,"Erodium cicutarium","EAF","Carrizo",29
@@ -2425,7 +2425,7 @@
 "2424","SC5",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",14
 "2425","SC5",2011,"bare","bare","Carrizo",40
 "2426","SC5",2011,"litter","litter","Carrizo",68
-"2427","SC5",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",86
+"2427","SC5",2012,"Bromus rubens","EAG","Carrizo",86
 "2428","SC5",2012,"Chorizanthe uniaristata","NAF","Carrizo",1
 "2429","SC5",2012,"Erodium cicutarium","EAF","Carrizo",33
 "2430","SC5",2012,"Hordeum murinum","EAG","Carrizo",37
@@ -2435,7 +2435,7 @@
 "2434","SC5",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",1
 "2435","SC5",2012,"bare","bare","Carrizo",146
 "2436","SC5",2012,"litter","litter","Carrizo",264
-"2437","SC5",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",37
+"2437","SC5",2013,"Bromus rubens","EAG","Carrizo",37
 "2438","SC5",2013,"Erodium cicutarium","EAF","Carrizo",36
 "2439","SC5",2013,"Hordeum murinum","EAG","Carrizo",13
 "2440","SC5",2013,"Lasthenia californica","NAF","Carrizo",3
@@ -2447,7 +2447,7 @@
 "2446","SC5",2013,"bare","bare","Carrizo",193
 "2447","SC5",2013,"hole","hole","Carrizo",2
 "2448","SC5",2013,"litter","litter","Carrizo",324
-"2449","SC5",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"2449","SC5",2014,"Bromus rubens","EAG","Carrizo",6
 "2450","SC5",2014,"Calandrinia ciliata","NAF","Carrizo",8
 "2451","SC5",2014,"Dichelostemma capitatum","NPF","Carrizo",2
 "2452","SC5",2014,"Erodium cicutarium","EAF","Carrizo",40
@@ -2461,7 +2461,7 @@
 "2460","SC5",2014,"hole","hole","Carrizo",1
 "2461","SC5",2014,"litter","litter","Carrizo",263
 "2462","SC5",2015,"Amsinckia tessellata","NAF","Carrizo",1
-"2463","SC5",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",12
+"2463","SC5",2015,"Bromus rubens","EAG","Carrizo",12
 "2464","SC5",2015,"Calandrinia ciliata","NAF","Carrizo",37
 "2465","SC5",2015,"Chorizanthe uniaristata","NAF","Carrizo",6
 "2466","SC5",2015,"Erodium cicutarium","EAF","Carrizo",119
@@ -2478,7 +2478,7 @@
 "2477","SC5",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
 "2478","SC5",2015,"bare","bare","Carrizo",123
 "2479","SC5",2015,"litter","litter","Carrizo",10
-"2480","SC6",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",98
+"2480","SC6",2007,"Bromus rubens","EAG","Carrizo",98
 "2481","SC6",2007,"Erodium cicutarium","EAF","Carrizo",46
 "2482","SC6",2007,"Hollisteria lanata","NAF","Carrizo",1
 "2483","SC6",2007,"Poa secunda ssp secunda","NPG","Carrizo",112
@@ -2488,7 +2488,7 @@
 "2487","SC6",2007,"bare","bare","Carrizo",51
 "2488","SC6",2007,"litter","litter","Carrizo",300
 "2489","SC6",2008,"Amsinckia tessellata","NAF","Carrizo",19
-"2490","SC6",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",20
+"2490","SC6",2008,"Bromus rubens","EAG","Carrizo",20
 "2491","SC6",2008,"Calandrinia ciliata","NAF","Carrizo",3
 "2492","SC6",2008,"Dichelostemma capitatum","NPF","Carrizo",3
 "2493","SC6",2008,"Erodium cicutarium","EAF","Carrizo",119
@@ -2502,7 +2502,7 @@
 "2501","SC6",2008,"litter","litter","Carrizo",209
 "2502","SC6",2009,"Amsinckia tessellata","NAF","Carrizo",49
 "2503","SC6",2009,"Astragalus didymocarpus","NAF","Carrizo",1
-"2504","SC6",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",17
+"2504","SC6",2009,"Bromus rubens","EAG","Carrizo",17
 "2505","SC6",2009,"Calandrinia ciliata","NAF","Carrizo",19
 "2506","SC6",2009,"Chorizanthe uniaristata","NAF","Carrizo",4
 "2507","SC6",2009,"Dichelostemma capitatum","NPF","Carrizo",5
@@ -2520,7 +2520,7 @@
 "2519","SC6",2009,"bare","bare","Carrizo",182
 "2520","SC6",2009,"litter","litter","Carrizo",67
 "2521","SC6",2010,"Amsinckia tessellata","NAF","Carrizo",22
-"2522","SC6",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",41
+"2522","SC6",2010,"Bromus rubens","EAG","Carrizo",41
 "2523","SC6",2010,"Calandrinia ciliata","NAF","Carrizo",39
 "2524","SC6",2010,"Chorizanthe uniaristata","NAF","Carrizo",3
 "2525","SC6",2010,"Dichelostemma capitatum","NPF","Carrizo",1
@@ -2543,7 +2543,7 @@
 "2542","SC6",2010,"litter","litter","Carrizo",7
 "2543","SC6",2011,"Amsinckia tessellata","NAF","Carrizo",10
 "2544","SC6",2011,"Astragalus didymocarpus","NAF","Carrizo",1
-"2545","SC6",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",67
+"2545","SC6",2011,"Bromus rubens","EAG","Carrizo",67
 "2546","SC6",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",4
 "2547","SC6",2011,"Chorizanthe uniaristata","NAF","Carrizo",4
 "2548","SC6",2011,"Dichelostemma capitatum","NPF","Carrizo",1
@@ -2563,7 +2563,7 @@
 "2562","SC6",2011,"bare","bare","Carrizo",94
 "2563","SC6",2011,"hole","hole","Carrizo",1
 "2564","SC6",2011,"litter","litter","Carrizo",72
-"2565","SC6",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",17
+"2565","SC6",2012,"Bromus rubens","EAG","Carrizo",17
 "2566","SC6",2012,"Dichelostemma capitatum","NPF","Carrizo",2
 "2567","SC6",2012,"Erodium cicutarium","EAF","Carrizo",44
 "2568","SC6",2012,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
@@ -2579,7 +2579,7 @@
 "2578","SC6",2012,"bare","bare","Carrizo",208
 "2579","SC6",2012,"litter","litter","Carrizo",276
 "2580","SC6",2013,"Amsinckia tessellata","NAF","Carrizo",1
-"2581","SC6",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"2581","SC6",2013,"Bromus rubens","EAG","Carrizo",3
 "2582","SC6",2013,"Eriogonum gracillimum","NAF","Carrizo",1
 "2583","SC6",2013,"Erodium cicutarium","EAF","Carrizo",44
 "2584","SC6",2013,"Pectocarya penicillata","NAF","Carrizo",1
@@ -2601,7 +2601,7 @@
 "2600","SC6",2014,"litter","litter","Carrizo",142
 "2601","SC6",2014,"moss","moss","Carrizo",3
 "2602","SC6",2015,"Amsinckia tessellata","NAF","Carrizo",14
-"2603","SC6",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"2603","SC6",2015,"Bromus rubens","EAG","Carrizo",3
 "2604","SC6",2015,"Calandrinia ciliata","NAF","Carrizo",66
 "2605","SC6",2015,"Chorizanthe uniaristata","NAF","Carrizo",4
 "2606","SC6",2015,"Dichelostemma capitatum","NPF","Carrizo",5
@@ -2624,7 +2624,7 @@
 "2623","SC6",2016,"bare","bare","Carrizo",42
 "2624","SC6",2016,"litter","litter","Carrizo",5
 "2625","SC6",2017,"Amsinckia tessellata","NAF","Carrizo",4
-"2626","SC6",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"2626","SC6",2017,"Bromus rubens","EAG","Carrizo",6
 "2627","SC6",2017,"Erodium cicutarium","EAF","Carrizo",34
 "2628","SC6",2017,"Hollisteria lanata","NAF","Carrizo",1
 "2629","SC6",2017,"Hordeum murinum","EAG","Carrizo",2
@@ -2634,7 +2634,7 @@
 "2633","SC6",2017,"Malacothrix coulteri","NAF","Carrizo",2
 "2634","SC6",2017,"Monolopia lanceolata","NAF","Carrizo",8
 "2635","SC6",2017,"Schismus arabicus","EAG","Carrizo",17
-"2636","SC6",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"2636","SC6",2018,"Bromus rubens","EAG","Carrizo",2
 "2637","SC6",2018,"Dichelostemma capitatum","NPF","Carrizo",1
 "2638","SC6",2018,"Erodium cicutarium","EAF","Carrizo",4
 "2639","SC6",2018,"Lepidium nitidum","NAF","Carrizo",3
@@ -2643,7 +2643,7 @@
 "2642","SC6",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
 "2643","SC6",2018,"bare","bare","Carrizo",16
 "2644","SC6",2018,"litter","litter","Carrizo",36
-"2645","SC7",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",55
+"2645","SC7",2007,"Bromus rubens","EAG","Carrizo",55
 "2646","SC7",2007,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
 "2647","SC7",2007,"Erodium cicutarium","EAF","Carrizo",39
 "2648","SC7",2007,"Poa secunda ssp secunda","NPG","Carrizo",98
@@ -2653,7 +2653,7 @@
 "2652","SC7",2007,"bare","bare","Carrizo",156
 "2653","SC7",2007,"litter","litter","Carrizo",276
 "2654","SC7",2008,"Amsinckia tessellata","NAF","Carrizo",11
-"2655","SC7",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",7
+"2655","SC7",2008,"Bromus rubens","EAG","Carrizo",7
 "2656","SC7",2008,"Calandrinia ciliata","NAF","Carrizo",14
 "2657","SC7",2008,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",4
 "2658","SC7",2008,"Chorizanthe uniaristata","NAF","Carrizo",8
@@ -2671,7 +2671,7 @@
 "2670","SC7",2008,"litter","litter","Carrizo",143
 "2671","SC7",2009,"Amsinckia tessellata","NAF","Carrizo",42
 "2672","SC7",2009,"Bromus hordeaceus","EAG","Carrizo",1
-"2673","SC7",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"2673","SC7",2009,"Bromus rubens","EAG","Carrizo",1
 "2674","SC7",2009,"Calandrinia ciliata","NAF","Carrizo",38
 "2675","SC7",2009,"Camissonia campestris","NAF","Carrizo",1
 "2676","SC7",2009,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",13
@@ -2690,7 +2690,7 @@
 "2689","SC7",2009,"bare","bare","Carrizo",145
 "2690","SC7",2009,"litter","litter","Carrizo",13
 "2691","SC7",2010,"Amsinckia tessellata","NAF","Carrizo",25
-"2692","SC7",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"2692","SC7",2010,"Bromus rubens","EAG","Carrizo",6
 "2693","SC7",2010,"Calandrinia ciliata","NAF","Carrizo",5
 "2694","SC7",2010,"Camissonia palmeri","NAF","Carrizo",1
 "2695","SC7",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",27
@@ -2713,7 +2713,7 @@
 "2712","SC7",2010,"bare","bare","Carrizo",84
 "2713","SC7",2010,"litter","litter","Carrizo",2
 "2714","SC7",2011,"Amsinckia tessellata","NAF","Carrizo",13
-"2715","SC7",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",37
+"2715","SC7",2011,"Bromus rubens","EAG","Carrizo",37
 "2716","SC7",2011,"Camissonia palmeri","NAF","Carrizo",4
 "2717","SC7",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",26
 "2718","SC7",2011,"Chorizanthe uniaristata","NAF","Carrizo",11
@@ -2731,7 +2731,7 @@
 "2730","SC7",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",44
 "2731","SC7",2011,"bare","bare","Carrizo",109
 "2732","SC7",2011,"litter","litter","Carrizo",46
-"2733","SC7",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",15
+"2733","SC7",2012,"Bromus rubens","EAG","Carrizo",15
 "2734","SC7",2012,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
 "2735","SC7",2012,"Erodium cicutarium","EAF","Carrizo",59
 "2736","SC7",2012,"Hordeum murinum","EAG","Carrizo",9
@@ -2743,7 +2743,7 @@
 "2742","SC7",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",12
 "2743","SC7",2012,"bare","bare","Carrizo",224
 "2744","SC7",2012,"litter","litter","Carrizo",205
-"2745","SC7",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"2745","SC7",2013,"Bromus rubens","EAG","Carrizo",6
 "2746","SC7",2013,"Erodium cicutarium","EAF","Carrizo",34
 "2747","SC7",2013,"Hordeum murinum","EAG","Carrizo",2
 "2748","SC7",2013,"Lasthenia californica","NAF","Carrizo",7
@@ -2785,7 +2785,7 @@
 "2784","SC7",2015,"bare","bare","Carrizo",235
 "2785","SC7",2015,"litter","litter","Carrizo",46
 "2786","SC7",2015,"moss","moss","Carrizo",5
-"2787","SC7",2016,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"2787","SC7",2016,"Bromus rubens","EAG","Carrizo",1
 "2788","SC7",2016,"Erodium cicutarium","EAF","Carrizo",95
 "2789","SC7",2016,"Hordeum murinum","EAG","Carrizo",2
 "2790","SC7",2016,"Lasthenia californica","NAF","Carrizo",2
@@ -2797,7 +2797,7 @@
 "2796","SC7",2016,"litter","litter","Carrizo",46
 "2797","SC7",2016,"moss","moss","Carrizo",7
 "2798","SC7",2017,"Amsinckia tessellata","NAF","Carrizo",6
-"2799","SC7",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"2799","SC7",2017,"Bromus rubens","EAG","Carrizo",3
 "2800","SC7",2017,"Camissonia campestris","NAF","Carrizo",1
 "2801","SC7",2017,"Castilleja exserta","NAF","Carrizo",1
 "2802","SC7",2017,"Chorizanthe uniaristata","NAF","Carrizo",3
@@ -2816,7 +2816,7 @@
 "2815","SC7",2017,"litter","litter","Carrizo",18
 "2816","SC7",2017,"moss","moss","Carrizo",2
 "2817","SC7",2018,"Amsinckia tessellata","NAF","Carrizo",1
-"2818","SC7",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"2818","SC7",2018,"Bromus rubens","EAG","Carrizo",2
 "2819","SC7",2018,"Calandrinia ciliata","NAF","Carrizo",4
 "2820","SC7",2018,"Erodium cicutarium","EAF","Carrizo",56
 "2821","SC7",2018,"Hordeum murinum","EAG","Carrizo",11
@@ -2832,7 +2832,7 @@
 "2831","SC7",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
 "2832","SC7",2018,"bare","bare","Carrizo",121
 "2833","SC7",2018,"litter","litter","Carrizo",136
-"2834","SC8",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",273
+"2834","SC8",2007,"Bromus rubens","EAG","Carrizo",273
 "2835","SC8",2007,"Erodium cicutarium","EAF","Carrizo",83
 "2836","SC8",2007,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
 "2837","SC8",2007,"Hordeum murinum","EAG","Carrizo",5
@@ -2844,7 +2844,7 @@
 "2843","SC8",2007,"bare","bare","Carrizo",48
 "2844","SC8",2007,"litter","litter","Carrizo",159
 "2845","SC8",2008,"Amsinckia tessellata","NAF","Carrizo",8
-"2846","SC8",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",61
+"2846","SC8",2008,"Bromus rubens","EAG","Carrizo",61
 "2847","SC8",2008,"Calandrinia ciliata","NAF","Carrizo",12
 "2848","SC8",2008,"Crassula connata","NAF","Carrizo",1
 "2849","SC8",2008,"Delphenium sp.","NPF","Carrizo",1
@@ -2862,7 +2862,7 @@
 "2861","SC8",2008,"hole","hole","Carrizo",1
 "2862","SC8",2008,"litter","litter","Carrizo",158
 "2863","SC8",2009,"Amsinckia tessellata","NAF","Carrizo",27
-"2864","SC8",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",69
+"2864","SC8",2009,"Bromus rubens","EAG","Carrizo",69
 "2865","SC8",2009,"Calandrinia ciliata","NAF","Carrizo",2
 "2866","SC8",2009,"Erodium cicutarium","EAF","Carrizo",161
 "2867","SC8",2009,"Guillenia lasiophylla","NAF","Carrizo",1
@@ -2878,7 +2878,7 @@
 "2877","SC8",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
 "2878","SC8",2009,"bare","bare","Carrizo",56
 "2879","SC8",2009,"litter","litter","Carrizo",54
-"2880","SC8",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",45
+"2880","SC8",2010,"Bromus rubens","EAG","Carrizo",45
 "2881","SC8",2010,"Calandrinia ciliata","NAF","Carrizo",2
 "2882","SC8",2010,"Delphinium recurvatum","NPF","Carrizo",2
 "2883","SC8",2010,"Eriogonum gracillimum","NAF","Carrizo",3
@@ -2900,7 +2900,7 @@
 "2899","SC8",2010,"bare","bare","Carrizo",20
 "2900","SC8",2010,"litter","litter","Carrizo",1
 "2901","SC8",2011,"Amsinckia tessellata","NAF","Carrizo",5
-"2902","SC8",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",198
+"2902","SC8",2011,"Bromus rubens","EAG","Carrizo",198
 "2903","SC8",2011,"Castilleja lineariloba","NAF","Carrizo",1
 "2904","SC8",2011,"Eriogonum gracillimum","NAF","Carrizo",4
 "2905","SC8",2011,"Erodium cicutarium","EAF","Carrizo",83
@@ -2916,7 +2916,7 @@
 "2915","SC8",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",19
 "2916","SC8",2011,"bare","bare","Carrizo",69
 "2917","SC8",2011,"litter","litter","Carrizo",70
-"2918","SC8",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",68
+"2918","SC8",2012,"Bromus rubens","EAG","Carrizo",68
 "2919","SC8",2012,"Eriogonum gracillimum","NAF","Carrizo",3
 "2920","SC8",2012,"Erodium cicutarium","EAF","Carrizo",55
 "2921","SC8",2012,"Hordeum murinum","EAG","Carrizo",27
@@ -2931,7 +2931,7 @@
 "2930","SC8",2012,"bare","bare","Carrizo",67
 "2931","SC8",2012,"hole","hole","Carrizo",1
 "2932","SC8",2012,"litter","litter","Carrizo",343
-"2933","SC8",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",54
+"2933","SC8",2013,"Bromus rubens","EAG","Carrizo",54
 "2934","SC8",2013,"Calandrinia ciliata","NAF","Carrizo",1
 "2935","SC8",2013,"Eriogonum gracillimum","NAF","Carrizo",1
 "2936","SC8",2013,"Erodium cicutarium","EAF","Carrizo",51
@@ -2959,7 +2959,7 @@
 "2958","SC8",2014,"bare","bare","Carrizo",279
 "2959","SC8",2014,"litter","litter","Carrizo",307
 "2960","SC8",2015,"Amsinckia tessellata","NAF","Carrizo",1
-"2961","SC8",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",4
+"2961","SC8",2015,"Bromus rubens","EAG","Carrizo",4
 "2962","SC8",2015,"Calandrinia ciliata","NAF","Carrizo",6
 "2963","SC8",2015,"Eriogonum gracillimum","NAF","Carrizo",9
 "2964","SC8",2015,"Erodium cicutarium","EAF","Carrizo",75
@@ -2979,7 +2979,7 @@
 "2978","SC8",2016,"Schismus arabicus","EAG","Carrizo",10
 "2979","SC8",2016,"bare","bare","Carrizo",126
 "2980","SC8",2016,"litter","litter","Carrizo",16
-"2981","SC8",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"2981","SC8",2017,"Bromus rubens","EAG","Carrizo",3
 "2982","SC8",2017,"Calandrinia ciliata","NAF","Carrizo",1
 "2983","SC8",2017,"Erodium cicutarium","EAF","Carrizo",37
 "2984","SC8",2017,"Guillenia lasiophylla","NAF","Carrizo",3
@@ -2991,7 +2991,7 @@
 "2990","SC8",2017,"bare","bare","Carrizo",88
 "2991","SC8",2017,"hole","hole","Carrizo",1
 "2992","SC8",2017,"litter","litter","Carrizo",8
-"2993","SC8",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",4
+"2993","SC8",2018,"Bromus rubens","EAG","Carrizo",4
 "2994","SC8",2018,"Erodium cicutarium","EAF","Carrizo",26
 "2995","SC8",2018,"Guillenia lasiophylla","NAF","Carrizo",12
 "2996","SC8",2018,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
@@ -3002,7 +3002,7 @@
 "3001","SC8",2018,"bare","bare","Carrizo",65
 "3002","SC8",2018,"litter","litter","Carrizo",1
 "3003","SC9",2007,"Amsinckia tessellata","NAF","Carrizo",3
-"3004","SC9",2007,"Bromus madritensis ssp rubens","EAG","Carrizo",281
+"3004","SC9",2007,"Bromus rubens","EAG","Carrizo",281
 "3005","SC9",2007,"Erodium cicutarium","EAF","Carrizo",54
 "3006","SC9",2007,"Hordeum murinum","EAG","Carrizo",2
 "3007","SC9",2007,"Lepidium nitidum","NAF","Carrizo",5
@@ -3014,7 +3014,7 @@
 "3013","SC9",2007,"bare","bare","Carrizo",21
 "3014","SC9",2007,"litter","litter","Carrizo",118
 "3015","SC9",2008,"Amsinckia tessellata","NAF","Carrizo",77
-"3016","SC9",2008,"Bromus madritensis ssp rubens","EAG","Carrizo",46
+"3016","SC9",2008,"Bromus rubens","EAG","Carrizo",46
 "3017","SC9",2008,"Dichelostemma capitatum","NPF","Carrizo",2
 "3018","SC9",2008,"Erodium cicutarium","EAF","Carrizo",161
 "3019","SC9",2008,"Guillenia lasiophylla","NAF","Carrizo",1
@@ -3032,7 +3032,7 @@
 "3031","SC9",2008,"bare","bare","Carrizo",52
 "3032","SC9",2008,"litter","litter","Carrizo",215
 "3033","SC9",2009,"Amsinckia tessellata","NAF","Carrizo",92
-"3034","SC9",2009,"Bromus madritensis ssp rubens","EAG","Carrizo",41
+"3034","SC9",2009,"Bromus rubens","EAG","Carrizo",41
 "3035","SC9",2009,"Chorizanthe uniaristata","NAF","Carrizo",1
 "3036","SC9",2009,"Dichelostemma capitatum","NPF","Carrizo",1
 "3037","SC9",2009,"Erodium cicutarium","EAF","Carrizo",150
@@ -3049,7 +3049,7 @@
 "3048","SC9",2009,"bare","bare","Carrizo",90
 "3049","SC9",2009,"litter","litter","Carrizo",108
 "3050","SC9",2010,"Amsinckia tessellata","NAF","Carrizo",74
-"3051","SC9",2010,"Bromus madritensis ssp rubens","EAG","Carrizo",35
+"3051","SC9",2010,"Bromus rubens","EAG","Carrizo",35
 "3052","SC9",2010,"Calandrinia ciliata","NAF","Carrizo",3
 "3053","SC9",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",2
 "3054","SC9",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
@@ -3073,7 +3073,7 @@
 "3072","SC9",2010,"bare","bare","Carrizo",51
 "3073","SC9",2010,"litter","litter","Carrizo",8
 "3074","SC9",2011,"Amsinckia tessellata","NAF","Carrizo",116
-"3075","SC9",2011,"Bromus madritensis ssp rubens","EAG","Carrizo",113
+"3075","SC9",2011,"Bromus rubens","EAG","Carrizo",113
 "3076","SC9",2011,"Chorizanthe uniaristata","NAF","Carrizo",12
 "3077","SC9",2011,"Eriogonum gracillimum","NAF","Carrizo",2
 "3078","SC9",2011,"Erodium cicutarium","EAF","Carrizo",43
@@ -3093,7 +3093,7 @@
 "3092","SC9",2011,"bare","bare","Carrizo",67
 "3093","SC9",2011,"litter","litter","Carrizo",54
 "3094","SC9",2012,"Amsinckia tessellata","NAF","Carrizo",1
-"3095","SC9",2012,"Bromus madritensis ssp rubens","EAG","Carrizo",47
+"3095","SC9",2012,"Bromus rubens","EAG","Carrizo",47
 "3096","SC9",2012,"Erodium cicutarium","EAF","Carrizo",61
 "3097","SC9",2012,"Hordeum murinum","EAG","Carrizo",33
 "3098","SC9",2012,"Lepidium nitidum","NAF","Carrizo",1
@@ -3106,7 +3106,7 @@
 "3105","SC9",2012,"bare","bare","Carrizo",112
 "3106","SC9",2012,"litter","litter","Carrizo",296
 "3107","SC9",2013,"Amsinckia tessellata","NAF","Carrizo",1
-"3108","SC9",2013,"Bromus madritensis ssp rubens","EAG","Carrizo",17
+"3108","SC9",2013,"Bromus rubens","EAG","Carrizo",17
 "3109","SC9",2013,"Eriogonum gracillimum","NAF","Carrizo",1
 "3110","SC9",2013,"Erodium cicutarium","EAF","Carrizo",52
 "3111","SC9",2013,"Hordeum murinum","EAG","Carrizo",12
@@ -3120,7 +3120,7 @@
 "3119","SC9",2013,"hole","hole","Carrizo",2
 "3120","SC9",2013,"litter","litter","Carrizo",368
 "3121","SC9",2014,"Amsinckia tessellata","NAF","Carrizo",1
-"3122","SC9",2014,"Bromus madritensis ssp rubens","EAG","Carrizo",1
+"3122","SC9",2014,"Bromus rubens","EAG","Carrizo",1
 "3123","SC9",2014,"Calandrinia ciliata","NAF","Carrizo",5
 "3124","SC9",2014,"Chorizanthe uniaristata","NAF","Carrizo",4
 "3125","SC9",2014,"Erodium cicutarium","EAF","Carrizo",55
@@ -3132,7 +3132,7 @@
 "3131","SC9",2014,"bare","bare","Carrizo",302
 "3132","SC9",2014,"litter","litter","Carrizo",243
 "3133","SC9",2015,"Amsinckia tessellata","NAF","Carrizo",52
-"3134","SC9",2015,"Bromus madritensis ssp rubens","EAG","Carrizo",6
+"3134","SC9",2015,"Bromus rubens","EAG","Carrizo",6
 "3135","SC9",2015,"Calandrinia ciliata","NAF","Carrizo",8
 "3136","SC9",2015,"Chorizanthe uniaristata","NAF","Carrizo",12
 "3137","SC9",2015,"Erodium cicutarium","EAF","Carrizo",167
@@ -3162,7 +3162,7 @@
 "3161","SC9",2016,"bare","bare","Carrizo",148
 "3162","SC9",2016,"litter","litter","Carrizo",22
 "3163","SC9",2017,"Amsinckia tessellata","NAF","Carrizo",58
-"3164","SC9",2017,"Bromus madritensis ssp rubens","EAG","Carrizo",2
+"3164","SC9",2017,"Bromus rubens","EAG","Carrizo",2
 "3165","SC9",2017,"Calandrinia ciliata","NAF","Carrizo",1
 "3166","SC9",2017,"Chorizanthe uniaristata","NAF","Carrizo",2
 "3167","SC9",2017,"Erodium cicutarium","EAF","Carrizo",47
@@ -3179,7 +3179,7 @@
 "3178","SC9",2017,"bare","bare","Carrizo",36
 "3179","SC9",2017,"litter","litter","Carrizo",5
 "3180","SC9",2018,"Amsinckia tessellata","NAF","Carrizo",22
-"3181","SC9",2018,"Bromus madritensis ssp rubens","EAG","Carrizo",3
+"3181","SC9",2018,"Bromus rubens","EAG","Carrizo",3
 "3182","SC9",2018,"Chorizanthe uniaristata","NAF","Carrizo",1
 "3183","SC9",2018,"Erodium cicutarium","EAF","Carrizo",26
 "3184","SC9",2018,"Guillenia lasiophylla","NAF","Carrizo",39

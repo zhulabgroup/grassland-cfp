@@ -106,7 +106,7 @@ remove(carrizo_spp)
 carrizo_data <- carrizo_data %>%
     rename(species.name = Species.Name) %>%
     mutate(species.name = fct_recode(species.name, 
-          'Bromus madritensis ssp rubens'= 'Bromus madritensis ssp rubens (B. rubens)', 
+          'Bromus rubens'= 'Bromus madritensis ssp rubens (B. rubens)', 
           'Vulpia microstachys v pauciflora' = 'Vulpia microstachys vpauciflora (F. reflexa)',
           'Vulpia myuros v hirsuta' = 'Vulpia myuros v hirsuta (F. megalura)',
           'Guillenia lasiophylla' = 'Guillenia lasiophylla (Thelypodium l.)',
