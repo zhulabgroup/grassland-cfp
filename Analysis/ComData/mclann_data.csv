@@ -193,7 +193,7 @@
 "192",2000,"McLAnn",40,"Calochortus luteus","Native","Perennial","Forb","NPF",NA
 "193",2000,"McLAnn",40,"Castilleja attenuata","Native","Annual","Forb","NAF",NA
 "194",2000,"McLAnn",40,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",NA
-"195",2000,"McLAnn",40,"Centaurium trichanthum","Native","Annual","Forb","NAF",NA
+"195",2000,"McLAnn",40,"Zeltnera trichantha","Native","Annual","Forb","NAF",NA
 "196",2000,"McLAnn",40,"Cerastium glomeratum","Exotic","Annual","Forb","EAF",NA
 "197",2000,"McLAnn",40,"Clarkia purpurea","Native","Annual","Forb","NAF",NA
 "198",2000,"McLAnn",40,"Cynosurus echinatus","Exotic","Annual","Grass","EAG",NA
@@ -1100,7 +1100,7 @@
 "1099",2000,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",NA
 "1100",2000,"McLAnn",80,"Calandrinia ciliata","Native","Annual","Forb","NAF",NA
 "1101",2000,"McLAnn",80,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",NA
-"1102",2000,"McLAnn",80,"Centaurium trichanthum","Native","Annual","Forb","NAF",NA
+"1102",2000,"McLAnn",80,"Zeltnera trichantha","Native","Annual","Forb","NAF",NA
 "1103",2000,"McLAnn",80,"Cerastium glomeratum","Exotic","Annual","Forb","EAF",NA
 "1104",2000,"McLAnn",80,"Chamomilla suaveolens","Exotic","Annual","Forb","EAF",NA
 "1105",2000,"McLAnn",80,"Clarkia purpurea","Native","Annual","Forb","NAF",NA
@@ -4059,7 +4059,7 @@
 "4058",2003,"McLAnn",68,"Dactylis glomerata","Exotic","Perennial","Grass","EPG",NA
 "4059",2003,"McLAnn",68,"Delphinium variegatum","Native","Perennial","Forb","NPF",NA
 "4060",2003,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",NA
-"4061",2003,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",NA
+"4061",2003,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",NA
 "4062",2003,"McLAnn",68,"Epilobium brachycarpum","Native","Annual","Forb","NAF",NA
 "4063",2003,"McLAnn",68,"Erodium cicutarium","Exotic","Annual","Forb","EAF",NA
 "4064",2003,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",NA
@@ -5249,7 +5249,7 @@
 "5248",2004,"McLAnn",68,"Clarkia purpurea","Native","Annual","Forb","NAF",NA
 "5249",2004,"McLAnn",68,"Delphinium variegatum","Native","Perennial","Forb","NPF",NA
 "5250",2004,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",NA
-"5251",2004,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",NA
+"5251",2004,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",NA
 "5252",2004,"McLAnn",68,"Epilobium brachycarpum","Native","Annual","Forb","NAF",NA
 "5253",2004,"McLAnn",68,"Erodium brachycarpum","Exotic","Annual","Forb","EAF",NA
 "5254",2004,"McLAnn",68,"Erodium cicutarium","Exotic","Annual","Forb","EAF",NA
@@ -5559,7 +5559,7 @@
 "5558",2005,"McLAnn",17,"Castilleja densiflora","Native","Annual","Forb","NAF",NA
 "5559",2005,"McLAnn",17,"Centaurea melitensis","Exotic","Annual","Forb","EAF",NA
 "5560",2005,"McLAnn",17,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",NA
-"5561",2005,"McLAnn",17,"Centaurium trichanthum","Native","Annual","Forb","NAF",NA
+"5561",2005,"McLAnn",17,"Zeltnera trichantha","Native","Annual","Forb","NAF",NA
 "5562",2005,"McLAnn",17,"Eremocarpus setigerus","Native","Annual","Forb","NAF",NA
 "5563",2005,"McLAnn",17,"Erodium cicutarium","Exotic","Annual","Forb","EAF",NA
 "5564",2005,"McLAnn",17,"Gilia tricolor","Native","Annual","Forb","NAF",NA
@@ -6393,7 +6393,7 @@
 "6392",2005,"McLAnn",68,"Claytonia parviflora","Native","Annual","Forb","NAF",NA
 "6393",2005,"McLAnn",68,"Delphinium variegatum","Native","Perennial","Forb","NPF",NA
 "6394",2005,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",NA
-"6395",2005,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",NA
+"6395",2005,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",NA
 "6396",2005,"McLAnn",68,"Epilobium brachycarpum","Native","Annual","Forb","NAF",NA
 "6397",2005,"McLAnn",68,"Erodium cicutarium","Exotic","Annual","Forb","EAF",NA
 "6398",2005,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",NA
@@ -7564,7 +7564,7 @@
 "7563",2006,"McLAnn",69,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",9
 "7564",2006,"McLAnn",69,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",0.55
 "7565",2006,"McLAnn",69,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",33
-"7566",2006,"McLAnn",69,"Centaurium trichanthum","Native","Annual","Forb","NAF",0.1
+"7566",2006,"McLAnn",69,"Zeltnera trichantha","Native","Annual","Forb","NAF",0.1
 "7567",2006,"McLAnn",69,"Cerastium glomeratum","Exotic","Annual","Forb","EAF",0.15
 "7568",2006,"McLAnn",69,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.1
 "7569",2006,"McLAnn",69,"Galium murale","Exotic","Annual","Forb","EAF",0.633333333333333
@@ -7848,7 +7848,7 @@
 "7847",2006,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",18.2
 "7848",2006,"McLAnn",80,"Brodiaea elegans","Native","Perennial","Forb","NPF",1
 "7849",2006,"McLAnn",80,"Bromus diandrus","Exotic","Annual","Grass","EAG",39
-"7850",2006,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",40
+"7850",2006,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",40
 "7851",2006,"McLAnn",80,"Erodium brachycarpum","Exotic","Annual","Forb","EAF",0.1
 "7852",2006,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",19
 "7853",2006,"McLAnn",80,"Lolium multiflorum","Exotic","Annual","Grass","EAG",7
@@ -8652,7 +8652,7 @@
 "8651",2007,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",12.8
 "8652",2007,"McLAnn",80,"Bromus diandrus","Exotic","Annual","Grass","EAG",1
 "8653",2007,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",12.25
-"8654",2007,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",27.5
+"8654",2007,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",27.5
 "8655",2007,"McLAnn",80,"Erodium botrys","Exotic","Annual","Forb","EAF",1
 "8656",2007,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",4.5
 "8657",2007,"McLAnn",80,"Taeniatherum caput-medusae","Exotic","Annual","Grass","EAG",77
@@ -9464,7 +9464,7 @@
 "9463",2008,"McLAnn",79,"Taeniatherum caput-medusae","Exotic","Annual","Grass","EAG",54
 "9464",2008,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",17.02
 "9465",2008,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",0.675
-"9466",2008,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",37.5
+"9466",2008,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",37.5
 "9467",2008,"McLAnn",80,"Erodium cicutarium","Exotic","Annual","Forb","EAF",1.76666666666667
 "9468",2008,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",6.3
 "9469",2008,"McLAnn",80,"Plagiobothrys nothofulvus","Native","Annual","Forb","NAF",3
@@ -11649,7 +11649,7 @@
 "11648",2010,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",14
 "11649",2010,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",1.18
 "11650",2010,"McLAnn",80,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",0.1
-"11651",2010,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",25.5
+"11651",2010,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",25.5
 "11652",2010,"McLAnn",80,"Eremocarpus setigerus","Native","Annual","Forb","NAF",0.1
 "11653",2010,"McLAnn",80,"Erodium brachycarpum","Exotic","Annual","Forb","EAF",0.325
 "11654",2010,"McLAnn",80,"Erodium cicutarium","Exotic","Annual","Forb","EAF",5
@@ -11887,7 +11887,7 @@
 "11886",2011,"McLAnn",42,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",0.833333333333333
 "11887",2011,"McLAnn",42,"Bromus madritensis","Exotic","Annual","Grass","EAG",1
 "11888",2011,"McLAnn",42,"Camissonia graciliflora","Native","Annual","Forb","NAF",0.4
-"11889",2011,"McLAnn",42,"Centaurium trichanthum","Native","Annual","Forb","NAF",5
+"11889",2011,"McLAnn",42,"Zeltnera trichantha","Native","Annual","Forb","NAF",5
 "11890",2011,"McLAnn",42,"Clarkia purpurea","Native","Annual","Forb","NAF",6
 "11891",2011,"McLAnn",42,"Euphorbia crenulata","Native","Annual","Forb","NAF",0.1
 "11892",2011,"McLAnn",42,"Hypochaeris glabra","Exotic","Annual","Forb","EAF",0.3
@@ -13209,7 +13209,7 @@
 "13208",2012,"McLAnn",68,"Chlorogalum pomeridianum","Native","Perennial","Forb","NPF",0.1
 "13209",2012,"McLAnn",68,"Clarkia purpurea","Native","Annual","Forb","NAF",0.1
 "13210",2012,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.2
-"13211",2012,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",30
+"13211",2012,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",30
 "13212",2012,"McLAnn",68,"Galium aparine","Native","Annual","Forb","NAF",0.2
 "13213",2012,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",0.466666666666667
 "13214",2012,"McLAnn",68,"Geranium dissectum","Exotic","Annual","Forb","EAF",0.325
@@ -13333,7 +13333,7 @@
 "13332",2012,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",1.86666666666667
 "13333",2012,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",13.7
 "13334",2012,"McLAnn",74,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.1
-"13335",2012,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",1.7
+"13335",2012,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",1.7
 "13336",2012,"McLAnn",74,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.35
 "13337",2012,"McLAnn",74,"Galium murale","Exotic","Annual","Forb","EAF",0.125
 "13338",2012,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",11.8
@@ -13470,7 +13470,7 @@
 "13469",2012,"McLAnn",79,"Trifolium hirtum","Exotic","Annual","Forb","EAF",0.1
 "13470",2012,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",26
 "13471",2012,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",0.675
-"13472",2012,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",12.7666666666667
+"13472",2012,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",12.7666666666667
 "13473",2012,"McLAnn",80,"Erodium brachycarpum","Exotic","Annual","Forb","EAF",0.2
 "13474",2012,"McLAnn",80,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.1
 "13475",2012,"McLAnn",80,"Galium murale","Exotic","Annual","Forb","EAF",0.1
@@ -14102,7 +14102,7 @@
 "14101",2013,"McLAnn",68,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",5.275
 "14102",2013,"McLAnn",68,"Chlorogalum pomeridianum","Native","Perennial","Forb","NPF",0.1
 "14103",2013,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.34
-"14104",2013,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",32
+"14104",2013,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",32
 "14105",2013,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",0.125
 "14106",2013,"McLAnn",68,"Geranium dissectum","Exotic","Annual","Forb","EAF",1.1
 "14107",2013,"McLAnn",68,"Hemizonia congesta","Native","Annual","Forb","NAF",0.2
@@ -14237,7 +14237,7 @@
 "14236",2013,"McLAnn",74,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",3.425
 "14237",2013,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",1.1
 "14238",2013,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",1.5
-"14239",2013,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",32
+"14239",2013,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",32
 "14240",2013,"McLAnn",74,"Galium murale","Exotic","Annual","Forb","EAF",0.1
 "14241",2013,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",4.875
 "14242",2013,"McLAnn",74,"Lactuca serriola","Exotic","Annual","Forb","EAF",0.2
@@ -14360,7 +14360,7 @@
 "14359",2013,"McLAnn",79,"Vicia villosa","Exotic","Annual","Forb","EAF",1.5
 "14360",2013,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",7.66
 "14361",2013,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",3.275
-"14362",2013,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",41.5
+"14362",2013,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",41.5
 "14363",2013,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",10.3
 "14364",2013,"McLAnn",80,"Lactuca serriola","Exotic","Annual","Forb","EAF",0.6
 "14365",2013,"McLAnn",80,"Taeniatherum caput-medusae","Exotic","Annual","Grass","EAG",52.6
@@ -15038,7 +15038,7 @@
 "15037",2014,"McLAnn",68,"Clarkia purpurea","Native","Annual","Forb","NAF",0.1
 "15038",2014,"McLAnn",68,"Collinsia sparsiflora","Native","Annual","Forb","NAF",0.1
 "15039",2014,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.1
-"15040",2014,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",40
+"15040",2014,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",40
 "15041",2014,"McLAnn",68,"Galium aparine","Native","Annual","Forb","NAF",1
 "15042",2014,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",0.125
 "15043",2014,"McLAnn",68,"Hemizonia congesta","Native","Annual","Forb","NAF",0.1
@@ -15170,7 +15170,7 @@
 "15169",2014,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",5.68
 "15170",2014,"McLAnn",74,"Clarkia purpurea","Native","Annual","Forb","NAF",0.1
 "15171",2014,"McLAnn",74,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.1
-"15172",2014,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",20
+"15172",2014,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",20
 "15173",2014,"McLAnn",74,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.366666666666667
 "15174",2014,"McLAnn",74,"Galium murale","Exotic","Annual","Forb","EAF",0.725
 "15175",2014,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",2.06666666666667
@@ -15298,7 +15298,7 @@
 "15297",2014,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",27.8
 "15298",2014,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",1.03333333333333
 "15299",2014,"McLAnn",80,"Clarkia purpurea","Native","Annual","Forb","NAF",0.2
-"15300",2014,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",26
+"15300",2014,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",26
 "15301",2014,"McLAnn",80,"Eremocarpus setigerus","Native","Annual","Forb","NAF",0.15
 "15302",2014,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",0.92
 "15303",2014,"McLAnn",80,"Holocarpha virgata","Native","Annual","Forb","NAF",1
@@ -15921,7 +15921,7 @@
 "15920",2015,"McLAnn",68,"Clarkia purpurea","Native","Annual","Forb","NAF",0.25
 "15921",2015,"McLAnn",68,"Delphinium variegatum","Native","Perennial","Forb","NPF",0.4
 "15922",2015,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.1
-"15923",2015,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",70
+"15923",2015,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",70
 "15924",2015,"McLAnn",68,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.2
 "15925",2015,"McLAnn",68,"Galium aparine","Native","Annual","Forb","NAF",0.2
 "15926",2015,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",0.2
@@ -16044,7 +16044,7 @@
 "16043",2015,"McLAnn",74,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",0.1
 "16044",2015,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",0.2
 "16045",2015,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",16
-"16046",2015,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",60
+"16046",2015,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",60
 "16047",2015,"McLAnn",74,"Erodium cicutarium","Exotic","Annual","Forb","EAF",2.1
 "16048",2015,"McLAnn",74,"Galium murale","Exotic","Annual","Forb","EAF",0.1
 "16049",2015,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",0.6
@@ -16154,7 +16154,7 @@
 "16153",2015,"McLAnn",79,"Taeniatherum caput-medusae","Exotic","Annual","Grass","EAG",5.05
 "16154",2015,"McLAnn",79,"Vicia villosa","Exotic","Annual","Forb","EAF",3
 "16155",2015,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",80.6
-"16156",2015,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",46.5
+"16156",2015,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",46.5
 "16157",2015,"McLAnn",80,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.2
 "16158",2015,"McLAnn",80,"Galium murale","Exotic","Annual","Forb","EAF",0.2
 "16159",2015,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",8
@@ -16771,7 +16771,7 @@
 "16770",2016,"McLAnn",68,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",10
 "16771",2016,"McLAnn",68,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",3.33333333333333
 "16772",2016,"McLAnn",68,"Clarkia purpurea","Native","Annual","Forb","NAF",0.1
-"16773",2016,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",60
+"16773",2016,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",60
 "16774",2016,"McLAnn",68,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.3
 "16775",2016,"McLAnn",68,"Galium murale","Exotic","Annual","Forb","EAF",0.4
 "16776",2016,"McLAnn",68,"Geranium dissectum","Exotic","Annual","Forb","EAF",1.2
@@ -16877,7 +16877,7 @@
 "16876",2016,"McLAnn",74,"Bromus diandrus","Exotic","Annual","Grass","EAG",55
 "16877",2016,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",1
 "16878",2016,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",21.75
-"16879",2016,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",18
+"16879",2016,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",18
 "16880",2016,"McLAnn",74,"Erodium cicutarium","Exotic","Annual","Forb","EAF",1.13333333333333
 "16881",2016,"McLAnn",74,"Galium murale","Exotic","Annual","Forb","EAF",0.6
 "16882",2016,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",4
@@ -16994,7 +16994,7 @@
 "16993",2016,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",36.2
 "16994",2016,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",8
 "16995",2016,"McLAnn",80,"Clarkia purpurea","Native","Annual","Forb","NAF",1
-"16996",2016,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",95
+"16996",2016,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",95
 "16997",2016,"McLAnn",80,"Galium murale","Exotic","Annual","Forb","EAF",2.5
 "16998",2016,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",6.5
 "16999",2016,"McLAnn",80,"Lactuca serriola","Exotic","Annual","Forb","EAF",2
@@ -17622,7 +17622,7 @@
 "17621",2017,"McLAnn",74,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",5
 "17622",2017,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",5.5
 "17623",2017,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",45
-"17624",2017,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",75
+"17624",2017,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",75
 "17625",2017,"McLAnn",74,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.5
 "17626",2017,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",25.7
 "17627",2017,"McLAnn",74,"Lupinus bicolor","Native","Annual","Forb","NAF",0.575
@@ -17720,7 +17720,7 @@
 "17719",2017,"McLAnn",80,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",5
 "17720",2017,"McLAnn",80,"Cerastium glomeratum","Exotic","Annual","Forb","EAF",0.266666666666667
 "17721",2017,"McLAnn",80,"Clarkia purpurea","Native","Annual","Forb","NAF",0.2
-"17722",2017,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",77.5
+"17722",2017,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",77.5
 "17723",2017,"McLAnn",80,"Galium murale","Exotic","Annual","Forb","EAF",5.15
 "17724",2017,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",24.75
 "17725",2017,"McLAnn",80,"Lactuca serriola","Exotic","Annual","Forb","EAF",4.25
@@ -18318,7 +18318,7 @@
 "18317",2018,"McLAnn",74,"Bromus diandrus","Exotic","Annual","Grass","EAG",45
 "18318",2018,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",40
 "18319",2018,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",13.4
-"18320",2018,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",80
+"18320",2018,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",80
 "18321",2018,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",14.5
 "18322",2018,"McLAnn",74,"Lactuca serriola","Exotic","Annual","Forb","EAF",0.6
 "18323",2018,"McLAnn",74,"Lupinus bicolor","Native","Annual","Forb","NAF",0.5
@@ -18413,7 +18413,7 @@
 "18412",2018,"McLAnn",80,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",5
 "18413",2018,"McLAnn",80,"Cerastium glomeratum","Exotic","Annual","Forb","EAF",0.3
 "18414",2018,"McLAnn",80,"Clarkia purpurea","Native","Annual","Forb","NAF",0.2
-"18415",2018,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",80
+"18415",2018,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",80
 "18416",2018,"McLAnn",80,"Galium murale","Exotic","Annual","Forb","EAF",5
 "18417",2018,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",14.6
 "18418",2018,"McLAnn",80,"Taeniatherum caput-medusae","Exotic","Annual","Grass","EAG",49.2
@@ -18931,7 +18931,7 @@
 "18930",2019,"McLAnn",68,"Bromus diandrus","Exotic","Annual","Grass","EAG",16.6
 "18931",2019,"McLAnn",68,"Dichelostemma capitatum","Native","Perennial","Forb","NPF",0.266666666666667
 "18932",2019,"McLAnn",68,"Elymus elymoides","Native","Perennial","Grass","NPG",5
-"18933",2019,"McLAnn",68,"Elytrigia repens","Exotic","Perennial","Grass","EPG",60
+"18933",2019,"McLAnn",68,"Elymus repens","Exotic","Perennial","Grass","EPG",60
 "18934",2019,"McLAnn",68,"Erodium cicutarium","Exotic","Annual","Forb","EAF",0.8
 "18935",2019,"McLAnn",68,"Geranium dissectum","Exotic","Annual","Forb","EAF",0.5
 "18936",2019,"McLAnn",68,"Hemizonia congesta","Native","Annual","Forb","NAF",5
@@ -19011,7 +19011,7 @@
 "19010",2019,"McLAnn",74,"Carduus pycnocephalus","Exotic","Annual","Forb","EAF",90
 "19011",2019,"McLAnn",74,"Centaurea solstitialis","Exotic","Annual","Forb","EAF",12
 "19012",2019,"McLAnn",74,"Cerastium glomeratum","Exotic","Annual","Forb","EAF",1
-"19013",2019,"McLAnn",74,"Elytrigia repens","Exotic","Perennial","Grass","EPG",90
+"19013",2019,"McLAnn",74,"Elymus repens","Exotic","Perennial","Grass","EPG",90
 "19014",2019,"McLAnn",74,"Geranium dissectum","Exotic","Annual","Forb","EAF",10.4
 "19015",2019,"McLAnn",74,"Lolium multiflorum","Exotic","Annual","Grass","EAG",5
 "19016",2019,"McLAnn",74,"Lupinus bicolor","Native","Annual","Forb","NAF",1
@@ -19095,7 +19095,7 @@
 "19094",2019,"McLAnn",80,"Avena fatua","Exotic","Annual","Grass","EAG",5.5
 "19095",2019,"McLAnn",80,"Bromus diandrus","Exotic","Annual","Grass","EAG",67.5
 "19096",2019,"McLAnn",80,"Bromus hordeaceus","Exotic","Annual","Grass","EAG",4.25
-"19097",2019,"McLAnn",80,"Elytrigia repens","Exotic","Perennial","Grass","EPG",65
+"19097",2019,"McLAnn",80,"Elymus repens","Exotic","Perennial","Grass","EPG",65
 "19098",2019,"McLAnn",80,"Geranium dissectum","Exotic","Annual","Forb","EAF",2.5
 "19099",2019,"McLAnn",80,"Taeniatherum caput-medusae","Exotic","Annual","Grass","EAG",32
 "19100",2019,"McLAnn",80,"Vicia villosa","Exotic","Annual","Forb","EAF",41.6

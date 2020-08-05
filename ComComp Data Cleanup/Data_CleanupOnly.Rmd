@@ -658,7 +658,9 @@ mclann_data <- McLAnn %>%
     mutate(species.name = fct_recode(species.name, 
                                      'Cerastium fontanum ssp. vulgare' = 'Cerastium vulgare',
                                      'Astragalus gambellianus' = 'Astragalus gambelianus',
-                                     'Melilotus indicus' = 'Melilotus indica'))
+                                     'Melilotus indicus' = 'Melilotus indica',
+                                     'Zeltnera trichantha' = 'Centaurium trichanthum',
+                                     'Elymus repens' = 'Elytrigia repens'))
 
 
 remove(McL_Sites)
@@ -705,7 +707,9 @@ mclserp_data <- McLSerp %>%
                                      'Astragalus gambellianus' = 'Astragalus gambelianus',
                                      'Melilotus indicus' = 'Melilotus indica',
                                      'Antirrhinum vexillocalyculatum' = 'Antirrhinum vexillo-calyculatum',
-                                     'Erythranthe guttata' = 'Mimulus guttatus'))
+                                     'Erythranthe guttata' = 'Mimulus guttatus',
+                                     'Zeltnera trichantha' = 'Centaurium trichanthum',
+                                     'Elymus repens' = 'Elytrigia repens'))
 
 remove(McL_Sites)
 remove(McL_spp)
