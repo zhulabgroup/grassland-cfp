@@ -34,7 +34,7 @@ library(gridExtra)
 
 ```{r data import, include = FALSE}
 rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv") %>%
-  select(-X)
+  dplyr::select(-X)
 ```
 
 # Site-level data cleanup
@@ -260,7 +260,7 @@ There are a total of ~70 species in the Carrizo dataset, some of which are sub-s
 
 #### Species with epithets
 ```{r grabbing carrizo gbif data, echo = FALSE, cache = TRUE, warning=FALSE}
-car_species_list <- c('Bromus madritensis ssp rubens', 
+car_species_list <- c('Bromus rubens', 
                        'Schismus arabicus',
                        'Hordeum murinum',
                        'Erodium cicutarium',
@@ -1024,7 +1024,7 @@ mcLann_species_list <- c('Bromus hordeaceus',
                          'Navarretia viscidula',
                          'Triphysaria eriantha',
                          'Navarretia tagetina',
-                         'Centaurium trichanthum',
+                         'Zeltnera trichantha',
                          'Linanthus ciliatus',
                          'Minuartia californica',
                          'Polypogon monspeliensis',
@@ -1138,7 +1138,7 @@ mcLann_species_list <- c('Bromus hordeaceus',
                          'Crassula connata',
                          'Astragalus rattanii var. jepsonianus',
                          'Pectocarya pusilla',
-                         'Elytrigia repens',
+                         'Elymus repens',
                          'Uropappus lindleyi',
                          'Chorizanthe membranacea',
                          'Navarretia jepsonii',
@@ -1177,8 +1177,7 @@ mcLann_species_list <- c('Bromus hordeaceus',
                          'Allium fimbriatum')
 
 mcLann_species_data <- occ(query = mcLann_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
-                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
-                                stateProvince = "California"))
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US", stateProvince = "California"))
 ```
 
 ```{r clean mcLann species data}
@@ -1461,7 +1460,7 @@ mcLann_species_list <- c('Astragalus gambellianus',
                          'Brodiaea elegans',
                          'Polypogon monspeliensis',
                          'Trifolium variegatum',
-                         'Centaurium trichanthum',
+                         'Zeltnera trichantha',
                          'Gastridium ventricosum',
                          'Poa bulbosa',
                          'Viola douglasii',
@@ -1552,7 +1551,7 @@ mcLann_species_list <- c('Astragalus gambellianus',
                          'Bellardia trixago',
                          'Helianthus exilis',
                          'Hordeum murinum',
-                         'Elytrigia repens',
+                         'Elymus repens',
                          'Scutellaria siphocampyloides',
                          'Linanthus ciliatus',
                          'Phalaris paradoxa',
@@ -1796,6 +1795,16 @@ write_rds(mcLserp_species_data_df, "Analysis/GBIF_Data/mcLserpGBIF.rds")
 
 ```
 
+## McL Replacements
+
+There are two species in the McL datasets that need to be replaced. 
+
+```{r}
+'Zeltnera trichantha', 'Elymus repens'
+
+```
+
+
 ### Combine occurance data with climate data
 This method of data extraction follows the tutorial on the jcoliver webpage. 
 
@@ -1951,6 +1960,7 @@ swan_bromus_data_df <- swan_bromus_data_df %>%
   mutate(species.name = "Bromus sp")
 ```
 
+##### Rumex
 ```{r swanton rumex query GBIF}
 swan_rumex <- c('Rumex acetosella',
                 'Rumex crispus',
@@ -2069,23 +2079,19 @@ ucsc_species_list <- c('Erodium botrys',
                        'Lysimachia arvensis',
                        'Bromus diandrus',
                        'Brachypodium distachyon',
-                       'Trifolium angustifolium',
-                       'Trifolium subterraneum',
-                       'Danthonia californica',
-                       'Juncus occidentalis',
+                       'Briza maxima',
+                       'Stipa pulchra',
                        'Aira caryophyllea',
                        'Avena barbata',
                        'Erodium cicutarium',
                        'Carduus pycnocephalus',
                        'Phalaris aquatica',
+                       'Trifolium angustifolium',
                        'Epilobium ciliatum',
                        'Cerastium glomeratum',
                        'Juncus phaeocephalus',
                        'Brassica species',
-                       'Hirschfeldia incana',
-                       'Trifolium dubium',
-                       'Cynosurus echinatus',
-                       'Isolepis carinata')
+                       'Hirschfeldia incana')
 
 ucsc_species_data <- spocc::occ(query = ucsc_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
@@ -2184,6 +2190,7 @@ ucsc_species_data_df <- full_join(ucsc_species_data_df, ucsc_brassica_data_df)
 
 # and we'll save the swanton gbif spatial data
 write_rds(ucsc_species_data_df, "Analysis/GBIF_Data/ucscGBIF.rds")
+
 ```
 
 ### Combine occurance data with climate data
@@ -2234,3 +2241,5 @@ ucsc_CTI <- left_join(rel_ucsc, ucsc_species_clim, by = "species.name")
 
 write.csv(ucsc_CTI, "Analysis/CTI Data/ucsc_CTI_07_2020.csv")
 ```
+
+
