@@ -737,8 +737,6 @@ saro_rich <- left_join(saro_rich, saro_spp, by = "Species")
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar.For these analyses, I am using on the control plots (n=3), and removing all other treatments from the dataset. 
 
 ```{r Importing Swanton, warning=FALSE, echo=FALSE}
-
-
 Swanspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
 Swanspp$species.code <- tolower(Swanspp$species.code)
 Swan_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
@@ -1221,7 +1219,7 @@ names(UCSC08) <- tolower(names(UCSC08))
 UCSC08 <- left_join(UCSC08, UCSCspp, by = "species.code")
 
 UCSC09 <- UCSC09 %>%
-  filter(SITE == "elk",
+  filter(SITE == "ucsc",
          FREQ == "CONTROL") %>%
   select(SITE:vulpsp, -Comments) %>%
   replace(is.na(.), 0) %>%
