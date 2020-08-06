@@ -5,6 +5,21 @@ date: "8/5/2020"
 output: html_document
 ---
 
+
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(vegan)
+library(lme4)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+library(gridExtra)
+```
+
 # File Goal
 
 One of the key concerns about Karens' control plots is that they were released from grazing, and that this release may have affected the change in CTI over time. To potentially rebut this, I will examine the CTI of all of these plots over time, not just the control plots.
@@ -415,10 +430,15 @@ unique(elkhorn_data_tidy$treat)
 # fixing all of the treatment types to align with one another
 elkhorn_data <- elkhorn_data %>%
   mutate(freq = fct_recode(freq,
-                           "1x clip" = "cl1",
-                           "1x clip" = "CL1",
-                           "2x clip" = "cl2",
-                           "3x clip" = "cl3",
+                           "CL1" = "cl1",
+                           "CL1" = "CL1",
+                           "CL1" = "1x clip",
+                           "CL2" = "CL2",
+                           "CL2" = "cl2",
+                           "CL2" = "2x clip",
+                           "CL3" = "cl3",
+                           "CL3" = "CL3",
+                           "CL3" = "3x clip",
                            "Control" = "con",
                            "Control" = "CONTROL",
                            "Grazed" = "graz",
@@ -727,10 +747,15 @@ swanton_data <- Swan_99_12_species %>%
 # fixing all of the treatment types to align with one another
 swanton_data <- swanton_data %>%
   mutate(freq = fct_recode(freq,
-                           "1x clip" = "cl1",
-                           "1x clip" = "CL1",
-                           "2x clip" = "cl2",
-                           "3x clip" = "cl3",
+                           "CL1" = "cl1",
+                           "CL1" = "CL1",
+                           "CL1" = "1x clip",
+                           "CL2" = "CL2",
+                           "CL2" = "cl2",
+                           "CL2" = "2x clip",
+                           "CL3" = "cl3",
+                           "CL3" = "CL3",
+                           "CL3" = "3x clip",
                            "Control" = "con",
                            "Control" = "CONTROL",
                            "Control" = "CON",
@@ -1030,12 +1055,15 @@ ucsc_data <- UCSC_99_12_species %>%
 
 ucsc_data <- ucsc_data %>%
   mutate(freq = fct_recode(freq,
-                           "1x clip" = "cl1",
-                           "1x clip" = "CL1",
-                           "2x clip" = "cl2",
-                           "2x clip" = "CL2",
-                           "3x clip" = "cl3",
-                           "3x clip" = "CL3",
+                           "CL1" = "cl1",
+                           "CL1" = "CL1",
+                           "CL1" = "1x clip",
+                           "CL2" = "CL2",
+                           "CL2" = "cl2",
+                           "CL2" = "2x clip",
+                           "CL3" = "cl3",
+                           "CL3" = "CL3",
+                           "CL3" = "3x clip",
                            "Control" = "con",
                            "Control" = "CONTROL",
                            "Control" = "CON",
@@ -1066,9 +1094,9 @@ remove(Swan_guilds)
 
 
 ```{r saving data files}
-write.csv(elkhorn_data, "Analysis/ComData/elkhorn_data_allplots.csv")
-write.csv(swanton_data, "Analysis/ComData/swanton_data_allplots.csv")
-write.csv(ucsc_data, "Analysis/ComData/ucsc_data_allplots.csv")
+# write.csv(elkhorn_data, "Analysis/ComData/elkhorn_data_allplots.csv")
+# write.csv(swanton_data, "Analysis/ComData/swanton_data_allplots.csv")
+# write.csv(ucsc_data, "Analysis/ComData/ucsc_data_allplots.csv")
 ```
 
 # Combine all of the sites into a single dataset
@@ -1079,7 +1107,8 @@ write.csv(ucsc_data, "Analysis/ComData/ucsc_data_allplots.csv")
 raw_elk <- elkhorn_data %>%
   filter(species.name != "Moss",
          species.name != "Thatch",
-         species.name != "Bare ground") %>%
+         species.name != "Bare ground",
+         species.name != "Dung") %>%
   mutate(site = "Elkhorn")
 rel_elk <- raw_elk %>%
   select(freq, treat, site, year, rep, species.name, intercepts, guild) %>%
@@ -1095,7 +1124,8 @@ rel_elk$plot <- as.factor(rel_elk$plot)
 raw_swan <- swanton_data %>%
   filter(species.name != "Moss",
          species.name != "Thatch",
-         species.name != "Bare ground") %>%
+         species.name != "Bare ground",
+         species.name != "Dung") %>%
   mutate(site = "Swanton")
 rel_swan <- raw_swan %>%
   select(freq, treat, site, year, rep, species.name, intercepts, guild) %>%
@@ -1133,8 +1163,26 @@ rel_all <- rel_all %>%
   select(-species.name) %>% rename(species.name = species.name.2)
 
 
-write.csv(rel_all, "Analysis/ComData/AllKarenData_Relative.csv")
+# write.csv(rel_all, "Analysis/ComData/AllKarenData_Relative.csv")
 ```
+
+## Calculating CTI
+
+```{r load CTI packages}
+## CTI analysis
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+require(rgbif)
+```
+
+
 
 ```{r getting CTI data}
 all_species <- unique(rel_all$species.name)
@@ -1193,7 +1241,6 @@ all_species_list <- c('Erodium botrys',
                       'Poa annua',
                       'Lysimachia minima',
                       'Lupinus nanus',
-                      'Brodiaea species',
                       'Brodiaea terrestris',
                       'Carex densa',
                       'Sonchus asper',
@@ -1235,29 +1282,31 @@ all_species_list <- c('Erodium botrys',
 #                       'Vicia spp',
 #                       'Bromus sp',
 #                       'Brassica species',
+#                       'Brodiaea species',
 
-all_species_data <- occ(query = all_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
-                gbifopts = list(hasGeospatialIssue = FALSE, country = "US", stateProvince = "California"))
+all_species_data <- occ(query = all_species_list, from = "gbif", has_coords = TRUE, limit = 100000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
 
 
 ```
 
 ```{r clean mcLann species data}
 ## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
-mcLann_species_data <- fixnames(mcLann_species_data, how = "query")
+all_species_data <- fixnames(all_species_data, how = "query")
 
 ## The occ2df function should convert the data to a dataframe format
-mcLann_species_data_df <- occ2df(mcLann_species_data)
+all_species_data_df <- occ2df(all_species_data)
 
 # We need to clean the coordinates, as it appears some are in the ocean, and there might be some that are just incorrect. To do this, we will use a coordinate cleaner package.
-flags <- clean_coordinates(x = mcLann_species_data_df, lon = "longitude", lat = "latitude",
+flags <- clean_coordinates(x = all_species_data_df, lon = "longitude", lat = "latitude",
                           species = "name",
                           tests = c("capitals", "centroids", "equal","gbif", "institutions",
                                     "seas", "zeros", "duplicates")) # most tests are on by default
 
 # Most of our flagged coordinates are coastal/in the ocean. Therefore, we'll remove them from our database.
 # keep only the non-flagged data
-mcLann_species_data_df <- mcLann_species_data_df[flags$.summary,] %>%
+all_species_data_df <- all_species_data_df[flags$.summary,] %>%
   rename("species.name" = "name")
 ```
 
@@ -1297,7 +1346,7 @@ all_bromus_data_df <- all_bromus_data_df %>%
 ```
 
 ##### Brassica
-```{r elk bromus query GBIF}
+```{r bromus query GBIF}
 all_brassica <- c('Brassica rapa',
                   'Brassica nigra',
                   'Hirschfeldia incana')
@@ -1307,7 +1356,7 @@ all_brassica_data <- occ(query = all_brassica, from = "gbif", has_coords = TRUE,
                                 stateProvince = "California"))
 ```
 
-```{r clean elk bromus data}
+```{r clean bromus data}
 ## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
 ## we should use the scrubr version of the function in the future
 all_brassica_data <- fixnames(all_brassica_data, how = "query")
@@ -1329,53 +1378,347 @@ all_brassica_data_df <- all_brassica_data_df %>%
 ```
 
 ##### Rumex
-```{r swanton rumex query GBIF}
-swan_rumex <- c('Rumex acetosella',
+```{r  rumex query GBIF}
+all_rumex <- c('Rumex acetosella',
                 'Rumex crispus',
                 'Rumex pulcher')
          
-swan_rumex_data <- occ(query = swan_rumex, from = "gbif", has_coords = TRUE, limit = 10000,
+all_rumex_data <- occ(query = all_rumex, from = "gbif", has_coords = TRUE, limit = 10000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
 
-```{r clean swanton rumex data}
+```{r clean  rumex data}
 ## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
 ## we should use the scrubr version of the function in the future
-swan_rumex_data <- fixnames(swan_rumex_data, how = "query")
+all_rumex_data <- fixnames(all_rumex_data, how = "query")
 
 ## The occ2df function should convert the data to a dataframe format
-swan_rumex_data_df <- occ2df(swan_rumex_data)
+all_rumex_data_df <- occ2df(all_rumex_data)
 
-flags <- clean_coordinates(x = swan_rumex_data_df, lon = "longitude", lat = "latitude",
+flags <- clean_coordinates(x = all_rumex_data_df, lon = "longitude", lat = "latitude",
                           species = "name",
                           tests = c("capitals", "centroids", "equal","gbif", "institutions",
                                     "seas", "zeros", "duplicates")) # most test are on by default
 
 # remove flagged records
-swan_rumex_data_df <- swan_rumex_data_df[flags$.summary,]
+all_rumex_data_df <- all_rumex_data_df[flags$.summary,]
 
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
-swan_rumex_data_df <- swan_rumex_data_df %>%
+all_rumex_data_df <- all_rumex_data_df %>%
   mutate(species.name = "Rumex spp")
 ```
 
 
+##### Erigeron spp
+
+```{r Erigeron query GBIF}
+all_erigeron <- c('Erigeron canadensis',
+                  'Erigeron sumatrensis')
+         
+all_erigeron_data <- occ(query = all_erigeron, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean Erigeron data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+all_erigeron_data <- fixnames(all_erigeron_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+all_erigeron_data_df <- occ2df(all_erigeron_data)
+
+flags <- clean_coordinates(x = all_erigeron_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+all_erigeron_data_df <- all_erigeron_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+all_erigeron_data_df <- all_erigeron_data_df %>%
+  mutate(species.name = "Erigeron spp")
+```
+
+##### 'Carex spp'
+```{r Carex query GBIF}
+all_carex <- c('Carex tumulicola',
+                  'Carex densa')
+         
+all_carex_data <- occ(query = all_carex, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean Carex data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+all_carex_data <- fixnames(all_carex_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+all_carex_data_df <- occ2df(all_carex_data)
+
+flags <- clean_coordinates(x = all_carex_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+all_carex_data_df <- all_carex_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+all_carex_data_df <- all_carex_data_df %>%
+  mutate(species.name = "Carex spp")
+```
+
+##### 'Briza sp'
+```{r Briza query GBIF}
+all_briza <- c('Briza maxima',
+               'Briza minor')
+         
+all_briza_data <- occ(query = all_briza, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean Briza data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+all_briza_data <- fixnames(all_briza_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+all_briza_data_df <- occ2df(all_briza_data)
+
+flags <- clean_coordinates(x = all_briza_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+all_briza_data_df <- all_briza_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+all_briza_data_df <- all_briza_data_df %>%
+  mutate(species.name = "Briza sp")
+```
+
+##### 'Madia sp'
+```{r Madia query GBIF}
+all_madia <- c('Madia sativa',
+                  'Madia elegans')
+         
+all_madia_data <- occ(query = all_madia, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean Madia data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+all_madia_data <- fixnames(all_madia_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+all_madia_data_df <- occ2df(all_madia_data)
+
+flags <- clean_coordinates(x = all_madia_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+all_madia_data_df <- all_madia_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+all_madia_data_df <- all_madia_data_df %>%
+  mutate(species.name = "Madia sp")
+```
+
+##### 'Vicia spp'
+```{r Carex query GBIF}
+all_vicia <- c('Carex tumulicola',
+                  'Carex densa')
+         
+all_vicia_data <- occ(query = all_vicia, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean Carex data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+all_vicia_data <- fixnames(all_vicia_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+all_vicia_data_df <- occ2df(all_vicia_data)
+
+flags <- clean_coordinates(x = all_vicia_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+all_vicia_data_df <- all_vicia_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+all_vicia_data_df <- all_vicia_data_df %>%
+  mutate(species.name = "Vicia spp")
+```
+
+##### 'Brodiaea species'
+```{r Carex query GBIF}
+all_brodiaea <- c('Brodiaea terrestris',
+                  'Brodiaea elegans')
+         
+all_brodiaea_data <- occ(query = all_brodiaea, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+```
+
+```{r clean Carex data}
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+all_brodiaea_data <- fixnames(all_brodiaea_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+all_brodiaea_data_df <- occ2df(all_brodiaea_data)
+
+flags <- clean_coordinates(x = all_brodiaea_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros", "duplicates")) # most test are on by default
+
+# remove flagged records
+all_brodiaea_data_df <- all_brodiaea_data_df[flags$.summary,]
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+all_brodiaea_data_df <- all_brodiaea_data_df %>%
+  mutate(species.name = "Brodiaea species")
+```
 
 ### Combine with and without epithet dataframes and remove extra objects
 
 ```{r recombine car with epithet with non-epithet data}
-elk_species_data_df <- full_join(elk_species_data_df, elk_bromus_data_df)
-elk_species_data_df <- full_join(elk_species_data_df, elk_brassica_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_bromus_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_brassica_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_rumex_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_erigeron_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_carex_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_briza_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_madia_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_vicia_data_df)
+all_species_data_df <- full_join(all_species_data_df, all_brodiaea_data_df)
 
 
 # and we'll save the angelo gbif spatial data
-write_rds(elk_species_data_df, "Analysis/GBIF_Data/ElkGBIF.rds")
+write_rds(all_species_data_df, "Analysis/GBIF_Data/AllKaren_GBIF.rds")
 ```
 
 
-```{r remove carrizo objects}
-remove(elk_bromus_data_df)
-remove(elk_brassica_data_df)
-remove(elk_species)
+### Combine occurance data with climate data
+
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r based on oikos page, cache = TRUE}
+xy <- all_species_data_df[,c("longitude","latitude")]
+sp_xy <- all_species_data_df[c("species.name", "longitude","latitude")]
+
+env <- getData('worldclim', var='bio', res=2.5)
+
+plot(env, 1, main=NULL, axes=FALSE)
+points(xy, col='blue', pch=20)
+
+xy_bio <- raster::extract(env, xy)
+
 ```
+
+Reference list for climate variables:
+ * BIO1 = Annual Mean Temperature (°C * 10) -- (i.e. 231 represents 23.1 °C)
+ * BIO2 = Mean Diurnal Range (Mean of monthly (max temp – min temp)) 
+ * BIO3 = Isothermality (BIO2/BIO7) (* 100)
+ * BIO4 = Temperature Seasonality (standard deviation *100)
+ * BIO5 = Max Temperature of Warmest Month (°C * 10)
+ * BIO6 = Min Temperature of Coldest Month (°C * 10)
+ * BIO7 = Temperature Annual Range (BIO5-BIO6)
+ * BIO8 = Mean Temperature of Wettest Quarter (°C * 10)
+ * BIO9 = Mean Temperature of Driest Quarter (°C * 10)
+ * BIO10 = Mean Temperature of Warmest Quarter (°C * 10)
+ * BIO11 = Mean Temperature of Coldest Quarter (°C * 10)
+ * BIO12 = Annual Precipitation (mm)
+ * BIO13 = Precipitation of Wettest Month (mm)
+ * BIO14 = Precipitation of Driest Month (mm)
+ * BIO15 = Precipitation Seasonality (Coeficent of Variation) 
+ * BIO16 = Precipitation of Wettest Quarter (mm)
+ * BIO17 = Precipitation of Driest Quarter (mm)
+ * BIO18 = Precipitation of Warmest Quarter (mm)
+ * BIO19 = Precipitation of Coldest Quarter (mm)
+ 
+```{r mean species temp, echo=FALSE}
+all_species_clim <- cbind(xy_bio, sp_xy) 
+
+all_species_clim <- all_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  dplyr::select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r angelo rel and clim data join}
+all_karen_CTI <- left_join(rel_all, all_species_clim, by = "species.name") 
+
+write.csv(all_karen_CTI, "Analysis/CTI Data/All_Karen_08_2020.csv")
+```
+
+# CTI Graphs
+
+```{r}
+
+all_karen_CTI <- all_karen_CTI %>%
+  filter(species.name != "Dung",
+         species.name != "Oxalis pilosa",
+         freq != "CLA", freq != "CLB", freq != "CLC", freq != "NM", freq != "CL2", freq != "CL3")
+
+CTI_plot_means <- all_karen_CTI %>%
+  group_by(site, plot, freq, treat, year) %>%
+  summarise(meanCTI = mean(meanT),
+            seCTI = std.error(meanT),
+            meanCPI = mean(meanp),
+            seCPI = std.error(meanp))
+
+CTI_site_means <- all_karen_CTI %>%
+  group_by(site, freq, year) %>%
+  summarise(meanCTI = mean(meanT),
+            seCTI = std.error(meanT),
+            meanCPI = mean(meanp),
+            seCPI = std.error(meanp))
+
+grid.arrange(
+ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
+  labs(title = "All sites - Community Temperature Index",
+       x = "Year",
+       y = "CTI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(site~freq, scales = "free_x", ncol = 3) # + geom_smooth(method = "lm")
+,
+ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
+  labs(title = "All sites - Community Precipitation Index",
+       x = "Year",
+       y = "CPI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(site~freq, scales = "free_x", ncol = 3) # + geom_smooth(method = "lm")
+, ncol=2
+)
+
+```
+
