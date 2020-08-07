@@ -26,16 +26,40 @@ library(gridExtra)
 The goal of this file is to recalculate CTI without the handful of species that have very limited spatial data (Linanthus jepsonii, Senecio eurycephalus, Linanthus latisectus, Centaurium trichanthum, Navarretia jepsonii, Bromus madritensis ssp rubens, Elytrigia repens). 
 
 ```{r remove seven species}
-CTI_all <- read.csv("Analysis/CTI Data/AllSites_CTI.csv") %>%
-  dplyr::select(-X, -X.1)
+CTI_ang <- read.csv("Analysis/CTI Data/Ang_CTI_08_2020.csv")
+CTI_car <- read.csv("Analysis/CTI Data/Car_CTI_08_2020.csv")
+CTI_elk <- read.csv("Analysis/CTI Data/Elk_CTI_08_2020.csv")
+CTI_jasp <- read.csv("Analysis/CTI Data/Jasp_CTI_08_2020.csv")
+CTI_mcLann <- read.csv("Analysis/CTI Data/mcLann_CTI_08_2020.csv")
+CTI_mcLserp <- read.csv("Analysis/CTI Data/mcLserp_CTI_08_2020.csv")
+CTI_swan <- read.csv("Analysis/CTI Data/swan_CTI_08_2020.csv")
+CTI_ucsc <- read.csv("Analysis/CTI Data/ucsc_CTI_08_2020.csv")
 
-CTI_all_lowdataremoved <- read.csv("Analysis/CTI Data/AllSites_CTI.csv") %>%
-  dplyr::select(-X, -X.1) %>%
-  filter(species.name != "Linanthus jepsonii",
-         species.name != "Senecio eurycephalus",
-         species.name != "Linanthus latisectus",
-         species.name != "Centaurium trichanthum",
-         species.name != "Navarretia jepsonii")
+CTI_ang$plot <- as.factor(CTI_ang$plot)
+CTI_car$plot <- as.factor(CTI_car$plot)
+CTI_elk$plot <- as.factor(CTI_elk$plot)
+CTI_jasp$plot <- as.factor(CTI_jasp$plot)
+CTI_mcLann$plot <- as.factor(CTI_mcLann$plot)
+CTI_mcLserp$plot <- as.factor(CTI_mcLserp$plot)
+CTI_swan$plot <- as.factor(CTI_swan$plot)
+CTI_ucsc$plot <- as.factor(CTI_ucsc$plot)
+
+CTI_all <- full_join(CTI_ang, CTI_car)
+CTI_all <- full_join(CTI_all, CTI_elk)
+CTI_all <- full_join(CTI_all, CTI_jasp)
+CTI_all <- full_join(CTI_all, CTI_mcLann)
+CTI_all <- full_join(CTI_all, CTI_mcLserp)
+CTI_all <- full_join(CTI_all, CTI_swan)
+CTI_all <- full_join(CTI_all, CTI_ucsc)
+
+CTI_all_lowdataonly <- CTI_all %>%
+  filter(species.name == "Linanthus jepsonii" |
+         species.name == "Linanthus latisectus")
+
+CTI_all_lowdataremoved <- CTI_all %>%
+  dplyr::select(-X) %>%
+  filter(species.name == "Linanthus jepsonii" |
+         species.name == "Linanthus latisectus")
 
 CTI_all <- CTI_all %>%
   group_by(site, year, plot) %>%
@@ -122,4 +146,13 @@ ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
 )
 ```
 
+# How much cover do the low data species contribute?
+
+```{r low data cover}
+
+CTI_all_lowdataonly <- CTI_all_lowdataonly %>%
+  group_by(site, plot, year) %>%
+  summarise(totcov = sum(relcov))
+
+```
 
