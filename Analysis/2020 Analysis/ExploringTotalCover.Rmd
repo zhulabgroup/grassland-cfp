@@ -24,28 +24,28 @@ g_legend <- function(a.gplot){
 ```
 
 ```{r com data import, include=FALSE, echo=FALSE}
-raw_ang <- read.csv("../ComData/angelo_data.csv") %>%
+raw_ang <- read.csv("Analysis/ComData/angelo_data.csv") %>%
   select(-X)
 
-raw_elk <- read.csv("../ComData/elkhorn_data.csv") %>%
+raw_elk <- read.csv("Analysis/ComData/elkhorn_data.csv") %>%
   select(-X)
 
-raw_car <- read.csv("../ComData/carrizo_data.csv") %>%
+raw_car <- read.csv("Analysis/ComData/carrizo_data.csv") %>%
   select(-X)
 
-raw_jasp <- read.csv("../ComData/jasper_data.csv") %>%
+raw_jasp <- read.csv("Analysis/ComData/jasper_data.csv") %>%
   select(-X)
 
-raw_mcLann <- read.csv("../ComData/mclann_data.csv") %>%
+raw_mcLann <- read.csv("Analysis/ComData/mclann_data.csv") %>%
   select(-X)
 
-raw_mcLserp <- read.csv("../ComData/mclserp_data.csv") %>%
+raw_mcLserp <- read.csv("Analysis/ComData/mclserp_data.csv") %>%
   select(-X)
 
-raw_swan <- read.csv("../ComData/swanton_data.csv") %>%
+raw_swan <- read.csv("Analysis/ComData/swanton_data.csv") %>%
   select(-X)
 
-raw_ucsc <- read.csv("../ComData/ucsc_data.csv") %>%
+raw_ucsc <- read.csv("Analysis/ComData/ucsc_data.csv") %>%
   select(-X)
 
 ```
