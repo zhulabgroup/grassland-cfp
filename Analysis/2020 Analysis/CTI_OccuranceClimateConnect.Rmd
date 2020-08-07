@@ -38,17 +38,18 @@ This file will also generate histograms for all of the species in the datasets.
 ```{r data import, include = FALSE}
 rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv") %>%
   dplyr::select(-X)
+rel_all$species.name <- str_trim(rel_all$species.name)
 
-ang_species_data_df <- read_rds("Analysis/GBIF_Data/AngGBIF.rds")
-car_species_data_df <- read_rds("Analysis/GBIF_Data/CarGBIF_0820.rds")
-elk_species_data_df <- read_rds("Analysis/GBIF_Data/ElkGBIF.rds")
-jasp_species_data_df <- read_rds("Analysis/GBIF_Data/JaspGBIF.rds")
-mcLann_species_data_df <- read_rds("Analysis/GBIF_Data/mcLannGBIF_0820.rds")
-mcLserp_species_data_df <- read_rds("Analysis/GBIF_Data/mcLserpGBIF_0820.rds")
-swan_species_data_df <- read_rds("Analysis/GBIF_Data/swanGBIF.rds")
-ucsc_species_data_df <- read_rds("Analysis/GBIF_Data/ucscGBIF.rds")
+ang_species_data_df <- read_rds("Analysis/GBIF_Data/AngGBIF_080720.rds")
+car_species_data_df <- read_rds("Analysis/GBIF_Data/CarGBIF_080720.rds")
+elk_species_data_df <- read_rds("Analysis/GBIF_Data/ElkGBIF_080720.rds")
+jasp_species_data_df <- read_rds("Analysis/GBIF_Data/JaspGBIF_080720.rds")
+mcLann_species_data_df <- read_rds("Analysis/GBIF_Data/mcLannGBIF_080720.rds")
+mcLserp_species_data_df <- read_rds("Analysis/GBIF_Data/mcLserpGBIF_080720.rds")
+swan_species_data_df <- read_rds("Analysis/GBIF_Data/swanGBIF_080720.rds")
+ucsc_species_data_df <- read_rds("Analysis/GBIF_Data/ucscGBIF_080720.rds")
 
-env <- getData('worldclim', var='bio', res=2.5)
+env <- raster::getData('worldclim', var='bio', res=2.5)
 
 all_spp_df <- full_join(ang_species_data_df, car_species_data_df)
 all_spp_df <- full_join(all_spp_df, elk_species_data_df)
