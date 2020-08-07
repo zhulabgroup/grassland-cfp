@@ -1,0 +1,125 @@
+---
+title: "CTI without low-data species"
+author: "Josie Lesage"
+date: "8/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## community analysis
+library(codyn)
+library(MASS)
+library(vegan)
+library(lme4)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+library(gridExtra)
+```
+
+# File goal
+
+The goal of this file is to recalculate CTI without the handful of species that have very limited spatial data (Linanthus jepsonii, Senecio eurycephalus, Linanthus latisectus, Centaurium trichanthum, Navarretia jepsonii, Bromus madritensis ssp rubens, Elytrigia repens). 
+
+```{r remove seven species}
+CTI_all <- read.csv("Analysis/CTI Data/AllSites_CTI.csv") %>%
+  dplyr::select(-X, -X.1)
+
+CTI_all_lowdataremoved <- read.csv("Analysis/CTI Data/AllSites_CTI.csv") %>%
+  dplyr::select(-X, -X.1) %>%
+  filter(species.name != "Linanthus jepsonii",
+         species.name != "Senecio eurycephalus",
+         species.name != "Linanthus latisectus",
+         species.name != "Centaurium trichanthum",
+         species.name != "Navarretia jepsonii")
+
+CTI_all <- CTI_all %>%
+  group_by(site, year, plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov,
+         CTI = relcov*meanT,
+         CPI = relcov*meanp) %>%
+  summarise(CTI = sum(CTI),
+            CPI = sum(CPI))
+
+CTI_all_lowdataremoved <- CTI_all_lowdataremoved %>%
+  group_by(site, year, plot) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov,
+         CTI = relcov*meanT,
+         CPI = relcov*meanp) %>%
+  summarise(CTI = sum(CTI),
+            CPI = sum(CPI))
+
+```
+
+```{r}
+CTI_site_means_nolow <- CTI_all_lowdataremoved %>%
+  group_by(site, year) %>%
+  summarise(meanCTI = mean(meanT),
+            seCTI = std.error(meanT),
+            meanCPI = mean(meanp),
+            seCPI = std.error(meanp))
+
+grid.arrange(
+ggplot(CTI_site_means_nolow, aes(x = year, y = meanCTI, color = site)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
+  labs(title = "All sites - Community Temperature Index",
+       x = "Year",
+       y = "CTI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) # + geom_smooth(method = "lm")
+,
+ggplot(CTI_site_means_nolow, aes(x = year, y = meanCPI, color = site)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
+  labs(title = "All sites - Community Precipitation Index",
+       x = "Year",
+       y = "CPI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) # +  geom_smooth(method = "lm")
+)
+
+
+CTI_site_means <- CTI_all %>%
+  group_by(site, year) %>%
+  summarise(meanCTI = mean(meanT),
+            seCTI = std.error(meanT),
+            meanCPI = mean(meanp),
+            seCPI = std.error(meanp))
+
+grid.arrange(
+ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
+  labs(title = "All sites - Community Temperature Index",
+       x = "Year",
+       y = "CTI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) # + geom_smooth(method = "lm")
+,
+ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
+  labs(title = "All sites - Community Precipitation Index",
+       x = "Year",
+       y = "CPI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) # +  geom_smooth(method = "lm")
+)
+```
+
+
