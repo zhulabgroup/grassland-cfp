@@ -1,0 +1,328 @@
+---
+title: "GBIF_Clim_Connect_forCTI"
+author: "Josie Lesage"
+date: "8/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## CTI analysis
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+library(gridExtra)
+```
+
+# File goal
+
+Use the previously called rds data to get coordinate-specific climate data for each site. 
+
+# Setup and data import
+
+
+```{r data import, include = FALSE}
+rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv") %>%
+  dplyr::select(-X)
+
+ang_species_data_df <- read_rds("Analysis/GBIF_Data/AngGBIF.rds")
+car_species_data_df <- read_rds("Analysis/GBIF_Data/CarGBIF_0820.rds")
+elk_species_data_df <- read_rds("Analysis/GBIF_Data/ElkGBIF.rds")
+jasp_species_data_df <- read_rds("Analysis/GBIF_Data/JaspGBIF.rds")
+mcLann_species_data_df <- read_rds("Analysis/GBIF_Data/mcLannGBIF.rds")
+mcLserp_species_data_df <- read_rds("Analysis/GBIF_Data/mcLserpGBIF.rds")
+swan_species_data_df <- read_rds("Analysis/GBIF_Data/swanGBIF.rds")
+ucsc_species_data_df <- read_rds("Analysis/GBIF_Data/ucscGBIF.rds")
+
+env <- getData('worldclim', var='bio', res=2.5)
+```
+
+# Site-level data cleanup
+## Angelo
+### Combine occurance data with climate data
+
+```{r Angelo data and species list}
+rel_ang <- rel_all %>%
+  filter(site == "Angelo")
+
+xy <- ang_species_data_df[,c("longitude","latitude")]
+sp_xy <- ang_species_data_df[c("species.name", "longitude","latitude")]
+xy_bio <- raster::extract(env, xy)
+
+ang_species_clim <- cbind(xy_bio, sp_xy) 
+
+ang_species_clim <- ang_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r angelo rel and clim data join}
+ang_CTI <- left_join(rel_ang, ang_species_clim, by = "species.name") 
+
+write.csv(ang_CTI, "Analysis/CTI Data/Ang_CTI_08_2020.csv")
+```
+
+## Carrizo
+### Preparing a species list table and importing data
+```{r carrizo data and species list}
+rel_car <- rel_all %>%
+  filter(site == "Carrizo")
+
+```
+
+### Combine occurance data with climate data
+
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab worldclim climate data, cache = TRUE}
+xy <- car_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- car_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+car_species_clim <- cbind(xy_bio, sp_xy) 
+
+car_species_clim <- car_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r elk rel and clim data join}
+car_CTI <- left_join(rel_car, car_species_clim, by = "species.name")
+
+write.csv(car_CTI, "Analysis/CTI Data/Car_CTI_08_2020.csv")
+```
+
+## Elkhorn
+
+### Preparing a species list table and importing data
+```{r elk data and species list}
+rel_elk <- rel_all %>%
+  filter(site == "Elkhorn")
+```
+
+
+### Combine occurance data with climate data
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab worldclim climate data, cache = TRUE}
+xy <- elk_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- elk_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+elk_species_clim <- cbind(xy_bio, sp_xy) 
+
+elk_species_clim <- elk_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r elk rel and clim data join}
+elk_CTI <- left_join(rel_elk, elk_species_clim, by = "species.name")
+
+write.csv(elk_CTI, "Analysis/CTI Data/Elk_CTI_08_2020.csv")
+```
+
+
+## Jasper
+
+### Preparing a species list table and importing data
+```{r jasp data and species list}
+rel_jasp <- rel_all %>%
+  filter(site == "Jasper")
+```
+
+### Combine occurance data with climate data
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab jasp worldclim climate data, cache = TRUE}
+xy <- jasp_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- jasp_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+jasp_species_clim <- cbind(xy_bio, sp_xy) 
+
+jasp_species_clim <- jasp_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r jasp rel and clim data join}
+jasp_CTI <- left_join(rel_jasp, jasp_species_clim, by = "species.name")
+
+write.csv(jasp_CTI, "Analysis/CTI Data/Jasp_CTI_08_2020.csv")
+```
+
+
+## McL Ann
+
+### Preparing a species list table and importing data
+```{r mcLann data and species list}
+rel_mcLann <- rel_all %>%
+  filter(site == "McL Ann")
+```
+
+### Combine occurance data with climate data
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab mcLann worldclim climate data, cache = TRUE}
+xy <- mcLann_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- mcLann_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+mcLann_species_clim <- cbind(xy_bio, sp_xy) 
+
+mcLann_species_clim <- mcLann_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r mcLann rel and clim data join}
+mcLann_CTI <- left_join(rel_mcLann, mcLann_species_clim, by = "species.name")
+
+write.csv(mcLann_CTI, "Analysis/CTI Data/mcLann_CTI_08_2020.csv")
+```
+
+
+## McL Serp
+
+### Preparing a species list table and importing data
+```{r mcLserp data and species list}
+rel_mcLserp <- rel_all %>%
+  filter(site == "McL Serp")
+```
+
+### Combine occurance data with climate data
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab mclserp worldclim climate data, cache = TRUE}
+xy <- mcLserp_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- mcLserp_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+
+mcLserp_species_clim <- cbind(xy_bio, sp_xy) 
+
+mcLserp_species_clim <- mcLserp_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r mclserp rel and clim data join}
+mcLserp_CTI <- left_join(rel_mcLserp, mcLserp_species_clim, by = "species.name")
+
+write.csv(mcLserp_CTI, "Analysis/CTI Data/mcLserp_CTI_08_2020.csv")
+```
+
+
+## Swanton
+### Preparing a species list table and importing data
+```{r swanton data and species list}
+rel_swan <- rel_all %>%
+  filter(site == "Swanton")
+```
+
+### Combine occurance data with climate data
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab swanton worldclim climate data, cache = TRUE}
+xy <- swan_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- swan_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+swan_species_clim <- cbind(xy_bio, sp_xy) 
+
+swan_species_clim <- swan_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  dplyr::select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r swanton rel and clim data join}
+swan_CTI <- left_join(rel_swan, swan_species_clim, by = "species.name")
+write.csv(swan_CTI, "Analysis/CTI Data/swan_CTI_08_2020.csv")
+```
+
+## UCSC
+### Preparing a species list table and importing data
+```{r ucsc data and species list}
+rel_ucsc <- rel_all %>%
+  filter(site == "UCSC")
+```
+
+### Combine occurance data with climate data
+This method of data extraction follows the tutorial on the jcoliver webpage. 
+
+```{r grab ucsc worldclim climate data, cache = TRUE}
+xy <- ucsc_species_data_df[,c("longitude","latitude")] # make a list of all x/y coords
+sp_xy <- ucsc_species_data_df[c("species.name", "longitude","latitude")] # make a list that associates species names with x/y coords
+xy_bio <- raster::extract(env, xy)
+
+ucsc_species_clim <- cbind(xy_bio, sp_xy) 
+
+ucsc_species_clim <- ucsc_species_clim %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  dplyr::select(-meant)
+```
+
+### Combine clim data with original relative data
+```{r ucsc rel and clim data join}
+ucsc_CTI <- left_join(rel_ucsc, ucsc_species_clim, by = "species.name")
+
+write.csv(ucsc_CTI, "Analysis/CTI Data/ucsc_CTI_08_2020.csv")
+```
+
+# Combine all CTI data
+
+```{r combine CTI data}
+All_CTI <- full_join(ang_CTI, car_CTI)
+All_CTI <- full_join(All_CTI, elk_CTI)
+All_CTI <- full_join(All_CTI, jasp_CTI)
+All_CTI <- full_join(All_CTI, mcLann_CTI)
+All_CTI <- full_join(All_CTI, mcLserp_CTI)
+All_CTI <- full_join(All_CTI, swan_CTI)
+All_CTI <- full_join(All_CTI, ucsc_CTI)
+
+write.csv(All_CTI, "Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+```
