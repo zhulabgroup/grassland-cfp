@@ -432,43 +432,6 @@ all_species_data_df <- all_species_data_df[flags$.summary,] %>%
 
 ```
 
-```{r extra species df}
-extras <- c("Briza minor",
-"Castilleja attenuata",
-"Anagallis arvensis")
-
-
-extras_data <- occ(query = extras, from = "gbif", has_coords = TRUE, limit = 50000,
-                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
-                                stateProvince = "California"))
-
-# Convert to dataframe #
-
-## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
-## we should use the scrubr version of the function in the future
-extras_data <- fixnames(extras_data, how = "query")
-
-## The occ2df function should convert the data to a dataframe format
-extras_data_df <- occ2df(extras_data)
-
-## save the df as a .csv
-# write.csv(all_species_data_df, "Analysis/CTI Data/SpeciesGBIFData.csv")
-
-# We need to clean the coordinates, as it appears some are in the ocean, and there might be some that are just incorrect. To do this, we will use a coordinate cleaner package.
-
-flags <- clean_coordinates(x = extras_data_df, lon = "longitude", lat = "latitude",
-                          species = "name",
-                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
-                                    "seas", "zeros", "duplicates")) # most tests are on by default
-
-# Most of our flagged coordinates are coastal/in the ocean. Therefore, we'll remove them from our database.
-# keep only the non-flagged data
-extras_data_df <- extras_data_df[flags$.summary,] %>%
-  rename("species.name" = "name")
-
-```
-
-
 ```{r extracting coords and climate data}
 xy <- all_species_data_df[,c("longitude","latitude")]
 sp_xy <- all_species_data_df[c("species.name", "longitude","latitude")]
