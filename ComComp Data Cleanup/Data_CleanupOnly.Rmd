@@ -125,7 +125,9 @@ carrizo_data <- carrizo_data %>%
           'Delphinium recurvatum' = 'Delphinium recurvatum*',
           'Amsinckia menziesii' = 'Amsinckia menziesii v menziesii',
           'Monolopia congdonii' = 'Monolopia congdonii*',
-          'Herniaria hirsuta ssp. cinerea' = 'Herniaria hirsuta ssp cineria'))
+          'Herniaria hirsuta ssp. cinerea' = 'Herniaria hirsuta ssp cineria',
+          'Carrizo Allium sp.' = 'Allium sp.',
+          "Car Astragalus sp." = "Astragalus sp."))
 
 
 ## because carrizo has a weird plot vs. site issue, we'll group by "site" for all analyses
@@ -661,7 +663,8 @@ mclann_data <- McLAnn %>%
                                      'Astragalus gambellianus' = 'Astragalus gambelianus',
                                      'Melilotus indicus' = 'Melilotus indica',
                                      'Zeltnera trichantha' = 'Centaurium trichanthum',
-                                     'Elymus repens' = 'Elytrigia repens'))
+                                     'Elymus repens' = 'Elytrigia repens',
+                                     'Packera eurycephala' = 'Senecio eurycephalus'))
 
 
 remove(McL_Sites)
@@ -710,7 +713,10 @@ mclserp_data <- McLSerp %>%
                                      'Antirrhinum vexillocalyculatum' = 'Antirrhinum vexillo-calyculatum',
                                      'Erythranthe guttata' = 'Mimulus guttatus',
                                      'Zeltnera trichantha' = 'Centaurium trichanthum',
-                                     'Elymus repens' = 'Elytrigia repens'))
+                                     'Elymus repens' = 'Elytrigia repens',
+                                     'Packera eurycephala' = 'Senecio eurycephalus',
+                                     'mcLserp Allium sp.' = 'Allium sp.',
+                                     "mcLserp Astragalus sp." = "Astragalus sp."))
 
 remove(McL_Sites)
 remove(McL_spp)
