@@ -1,0 +1,135 @@
+---
+title: "Dominant Species"
+author: "Josie Lesage"
+date: "8/6/2020"
+output: html_document
+---
+
+# Setup and data import
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(lme4)
+library(nlme)
+library(vegan)
+
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(gridExtra)
+library(stringr)
+library(tidyverse)
+
+
+# to rip legends out of figures
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+} 
+``` 
+
+```{r com data import, echo=FALSE}
+rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv") %>%
+  select(-X)
+rel_all$year <- as.numeric(rel_all$year)
+```
+
+# File Goal
+
+The goal in this file is to examine the most common species in each site over time, and to compare changes in their abundance over time.
+
+```{r}
+ang_ratechange <- rel_all %>% filter(site == "Angelo")
+ang_ratechange <- rate_change_interval(df = ang_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "Angelo")
+
+car_ratechange <- rel_all %>% filter(site == "Carrizo")
+car_ratechange <- rate_change_interval(df = car_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "Carrizo") 
+
+elk_ratechange <- rel_all %>% filter(site == "Elkhorn") 
+elk_ratechange <- rate_change_interval(df = elk_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "Elkhorn") 
+
+jasp_ratechange <- rel_all %>% filter(site == "Jasper")
+jasp_ratechange <- rate_change_interval(df = jasp_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "Jasper") 
+
+mcLann_ratechange <- rel_all %>% filter(site == "McL Ann")
+mcLann_ratechange <- rate_change_interval(df = mcLann_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "McL Ann")
+
+mcLserp_ratechange <- rel_all %>% filter(site == "McL Serp")
+mcLserp_ratechange <- rate_change_interval(df = mcLserp_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "McL Serp") 
+
+swan_ratechange <- rel_all %>% filter(site == "Swanton")
+swan_ratechange <- rate_change_interval(df = swan_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "Swanton") 
+
+ucsc_ratechange <- rel_all %>% filter(site == "UCSC")
+ucsc_ratechange <- rate_change_interval(df = ucsc_ratechange,
+                        time.var = "year",
+                        species.var = "species.name",
+                        abundance.var = "relcov", 
+                        replicate.var = "plot") %>%
+  mutate(site = "UCSC") 
+
+all_ratechange <- full_join(ang_ratechange, car_ratechange)
+all_ratechange <- full_join(all_ratechange, elk_ratechange)
+all_ratechange <- full_join(all_ratechange, jasp_ratechange)
+all_ratechange <- full_join(all_ratechange, mcLann_ratechange)
+all_ratechange <- full_join(all_ratechange, mcLserp_ratechange)
+all_ratechange <- full_join(all_ratechange, swan_ratechange)
+all_ratechange <- full_join(all_ratechange, ucsc_ratechange)
+
+all_ratechange_means <- all_ratechange %>%
+  group_by(site, interval) %>%
+  summarise(meanchange = mean(distance),
+            sechange = std.error(distance))
+
+ggplot(all_ratechange, aes(interval, distance, color = site)) + 
+  facet_wrap(~site, scale = "free") + 
+  geom_point() + 
+  theme_bw() + 
+  stat_smooth(method = "lm", se = F, size = 2)
+
+ggplot(all_ratechange_means, aes(interval, meanchange, color = site)) + 
+  facet_wrap(~site, scale = "free") + 
+  geom_point() + 
+  theme_bw() + 
+  stat_smooth(method = "lm", se = F, size = 2)
+```
+
