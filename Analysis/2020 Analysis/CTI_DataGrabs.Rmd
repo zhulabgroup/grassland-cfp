@@ -103,7 +103,7 @@ ang_species_list <- c('Danthonia californica',
                       'Erodium cicutarium',
                       'Hemizonia congesta')
 
-ang_species_data <- occ(query = ang_species_list, from = "gbif", has_coords = TRUE, limit = 15000,
+ang_species_data <- occ(query = ang_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -157,7 +157,7 @@ ang_trifolium <- c('Trifolium albopurpureum var. albopurpureum',
                     'Trifolium variegatum',
                     'Trifolium willdenovii')
 
-ang_trifolium_data <- occ(query = ang_trifolium, from = "gbif", has_coords = TRUE, limit = 10000,
+ang_trifolium_data <- occ(query = ang_trifolium, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -273,7 +273,7 @@ car_species_list <- c('Bromus rubens',
                        'Stephanomeria pauciflora',
                        'Delphinium recurvatum')
 
-car_species_data <- occ(query = car_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
+car_species_data <- occ(query = car_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -310,7 +310,7 @@ car_allium <- c('Allium lacunosum',
                    'Allium fimbriatum',
                    'Allium howellii')
 
-car_allium_data <- occ(query = car_allium, from = "gbif", has_coords = TRUE, limit = 10000,
+car_allium_data <- occ(query = car_allium, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -333,7 +333,7 @@ car_allium_data_df <- car_allium_data_df[flags$.summary,]
 
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
 car_allium_data_df <- car_allium_data_df %>%
-  mutate(species.name = "Allium sp.")
+  mutate(species.name = "Carrizo Allium sp.")
 
 ```
 
@@ -346,7 +346,7 @@ car_astragalus <- c('Astragalus asymmetricus',
                 'Astragalus oxyphysus',
                 'Astragalus lentiginosus')
 
-car_astragalus_data <- occ(query = car_astragalus, from = "gbif", has_coords = TRUE, limit = 10000,
+car_astragalus_data <- occ(query = car_astragalus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -369,7 +369,7 @@ car_astragalus_data_df <- car_astragalus_data_df[flags$.summary,]
 
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
 car_astragalus_data_df <- car_astragalus_data_df %>%
-  mutate(species.name = "Astragalus sp.")
+  mutate(species.name = "Car Astragalus sp.")
 
 ```
 
@@ -380,7 +380,7 @@ car_delpinium <- c('Delphinium gypsophilum',
                     'Delphinium parryi',
                     'Delphinium recurvatum')
 
-car_delpinium_data <- occ(query = car_delpinium, from = "gbif", has_coords = TRUE, limit = 10000,
+car_delpinium_data <- occ(query = car_delpinium, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -469,7 +469,7 @@ elk_species_list <- c('Erodium botrys',
                       'Convolvulus arvensis',
                       'Sonchus asper')
 
-elk_species_data <- occ(query = elk_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
+elk_species_data <- occ(query = elk_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -502,7 +502,7 @@ elk_bromus <- c('Bromus carinatus',
                 'Bromus diandrus',
                 'Avena barbata')
 
-elk_bromus_data <- occ(query = elk_bromus, from = "gbif", has_coords = TRUE, limit = 10000,
+elk_bromus_data <- occ(query = elk_bromus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -534,7 +534,7 @@ elk_brassica <- c('Brassica rapa',
                   'Brassica nigra',
                   'Hirschfeldia incana')
 
-elk_brassica_data <- occ(query = elk_brassica, from = "gbif", has_coords = TRUE, limit = 10000,
+elk_brassica_data <- occ(query = elk_brassica, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -618,7 +618,7 @@ jasp_species_list <- c('Agoseris heterophylla',
          'Lomatium utriculatum',
          'Bromus berteroanus')
 
-jasp_species_data <- occ(query = jasp_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
+jasp_species_data <- occ(query = jasp_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -649,7 +649,7 @@ Because there are three genera found in the plots could reflect any number of sp
 jasp_brodiaea <- c('Brodiaea elegans ssp. elegans',
                    'Brodiaea terrestris ssp. terrestris')
          
-jasp_brodiaea_data <- occ(query = jasp_brodiaea, from = "gbif", has_coords = TRUE, limit = 10000,
+jasp_brodiaea_data <- occ(query = jasp_brodiaea, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -701,7 +701,7 @@ jasp_trifolium <- c('Trifolium albopurpureum var. albopurpureum',
                     'Trifolium variegatum var. variegatum',
                     'Trifolium willdenovii')
 
-jasp_trifolium_data <- occ(query = jasp_trifolium, from = "gbif", has_coords = TRUE, limit = 10000,
+jasp_trifolium_data <- occ(query = jasp_trifolium, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -953,7 +953,7 @@ mcLann_species_list <- c('Bromus hordeaceus',
                          'Trifolium variegatum',
                          'Allium fimbriatum')
 
-mcLann_species_data <- occ(query = mcLann_species_list, from = "gbif", has_coords = TRUE, limit = 100000,
+mcLann_species_data <- occ(query = mcLann_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US", stateProvince = "California"))
 ```
 
@@ -986,7 +986,7 @@ mcLann_juncus <- c('Juncus balticus',
                    'Juncus phaeocephalus',
                    'Juncus occidentalis')
          
-mcLann_juncus_data <- occ(query = mcLann_juncus, from = "gbif", has_coords = TRUE, limit = 10000,
+mcLann_juncus_data <- occ(query = mcLann_juncus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1292,7 +1292,6 @@ mcLann_species_list <- c('Astragalus gambellianus',
                          'Rumex crispus',
                          'Eriogonum covilleanum',
                          'Nemophila pedunculata',
-                         'Vulpia bromoides',
                          'Stellaria media',
                          'Crassula connata',
                          'Sanicula crassicaulis',
@@ -1308,7 +1307,7 @@ mcLann_species_list <- c('Astragalus gambellianus',
                          'Asclepias eriocarpa',
                          'Velezia rigida')
 
-mcLserp_species_data <- occ(query = mcLann_species_list, from = "gbif", has_coords = TRUE, limit = 100000,
+mcLserp_species_data <- occ(query = mcLann_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1342,7 +1341,7 @@ mcLserp_juncus <- c('Juncus balticus',
                    'Juncus phaeocephalus',
                    'Juncus occidentalis')
          
-mcLserp_juncus_data <- occ(query = mcLserp_juncus, from = "gbif", has_coords = TRUE, limit = 10000,
+mcLserp_juncus_data <- occ(query = mcLserp_juncus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1375,7 +1374,7 @@ mcLserp_astragalus <- c('Astragalus breweri',
                    'Astragalus gambellianus',
                    'Astragalus rattanii var. jepsonianus')
 
-mcLserp_astragalus_data <- occ(query = mcLserp_astragalus, from = "gbif", has_coords = TRUE, limit = 10000,
+mcLserp_astragalus_data <- occ(query = mcLserp_astragalus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1398,7 +1397,7 @@ mcLserp_astragalus_data_df <- mcLserp_astragalus_data_df[flags$.summary,]
 
 # change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
 mcLserp_astragalus_data_df <- mcLserp_astragalus_data_df %>%
-  mutate(species.name = "Astragalus sp.")
+  mutate(species.name = "mcLserp Astragalus sp.")
 ```
 
 ##### Quercus
@@ -1412,7 +1411,7 @@ mcLserp_quercus <- c('Quercus berberidifolia',
                    'Quercus wislizeni var. frutescens',
                    'Quercus wislizeni var. wislizeni')
 
-mcLserp_quercus_data <- occ(query = mcLserp_quercus, from = "gbif", has_coords = TRUE, limit = 10000,
+mcLserp_quercus_data <- occ(query = mcLserp_quercus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1446,7 +1445,7 @@ mcLserp_centaurea <- c('Centaurea calcitrapa',
                    'Centaurea melitensis',
                    'Centaurea solstitialis')
 
-mcLserp_centaurea_data <- occ(query = mcLserp_centaurea, from = "gbif", has_coords = TRUE, limit = 10000,
+mcLserp_centaurea_data <- occ(query = mcLserp_centaurea, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1481,7 +1480,7 @@ mcLserp_allium <- c('Allium acuminatum',
                    'Allium fimbriatum var. purdyi', 
                    'Allium serra')
 
-mcLserp_allium_data <- occ(query = mcLserp_allium, from = "gbif", has_coords = TRUE, limit = 10000,
+mcLserp_allium_data <- occ(query = mcLserp_allium, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1503,7 +1502,7 @@ flags <- clean_coordinates(x = mcLserp_allium_data_df, lon = "longitude", lat = 
 mcLserp_allium_data_df <- mcLserp_allium_data_df[flags$.summary,]
 
 mcLserp_allium_data_df <-mcLserp_allium_data_df %>%
-  mutate(species.name = "Allium sp.") 
+  mutate(species.name = "mcLserp Allium sp.") 
 ```
 
 
@@ -1564,7 +1563,7 @@ swan_species_list <- c('Lysimachia arvensis',
                        'Eschscholzia californica',
                        'Sonchus asper')
 
-swan_species_data <- occ(query = swan_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
+swan_species_data <- occ(query = swan_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1596,7 +1595,7 @@ swan_bromus <- c('Bromus carinatus',
                  'Bromus diandrus',
                  'Avena barbata')
          
-swan_bromus_data <- occ(query = swan_bromus, from = "gbif", has_coords = TRUE, limit = 10000,
+swan_bromus_data <- occ(query = swan_bromus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1628,7 +1627,7 @@ swan_rumex <- c('Rumex acetosella',
                 'Rumex crispus',
                 'Rumex pulcher')
          
-swan_rumex_data <- occ(query = swan_rumex, from = "gbif", has_coords = TRUE, limit = 10000,
+swan_rumex_data <- occ(query = swan_rumex, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1704,8 +1703,8 @@ ucsc_species_list <- c('Erodium botrys',
                        'Brassica species',
                        'Hirschfeldia incana')
 
-ucsc_species_data <- spocc::occ(query = ucsc_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
-                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+ucsc_species_data <- spocc::occ(query = ucsc_species_list, from = "gbif", has_coords = TRUE, limit = 25000,
+                                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
 
@@ -1736,7 +1735,7 @@ ucsc_bromus <- c('Bromus carinatus',
                  'Bromus diandrus',
                  'Avena barbata')
          
-ucsc_bromus_data <- occ(query = ucsc_bromus, from = "gbif", has_coords = TRUE, limit = 10000,
+ucsc_bromus_data <- occ(query = ucsc_bromus, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1768,7 +1767,7 @@ ucsc_brassica <- c('Brassica rapa',
                   'Brassica nigra',
                   'Hirschfeldia incana')
          
-ucsc_brassica_data <- occ(query = ucsc_brassica, from = "gbif", has_coords = TRUE, limit = 10000,
+ucsc_brassica_data <- occ(query = ucsc_brassica, from = "gbif", has_coords = TRUE, limit = 25000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 ```
@@ -1802,14 +1801,14 @@ ucsc_species_data_df <- full_join(ucsc_species_data_df, ucsc_brassica_data_df)
 
 ```{r save rds files}
 # save the gbif spatial data
-write_rds(ang_species_data_df, "Analysis/GBIF_Data/AngGBIF_0820.rds")
-write_rds(car_species_data_df, "Analysis/GBIF_Data/CarGBIF_0820.rds")
-write_rds(elk_species_data_df, "Analysis/GBIF_Data/ElkGBIF_0820.rds")
-write_rds(jasp_species_data_df, "Analysis/GBIF_Data/JaspGBIF_0820.rds")
-write_rds(mcLann_species_data_df, "Analysis/GBIF_Data/mcLannGBIF_0820.rds")
-write_rds(mcLserp_species_data_df, "Analysis/GBIF_Data/mcLserpGBIF_0820.rds")
-write_rds(swan_species_data_df, "Analysis/GBIF_Data/swanGBIF_0820.rds")
-write_rds(ucsc_species_data_df, "Analysis/GBIF_Data/ucscGBIF_0820.rds")
+write_rds(ang_species_data_df, "Analysis/GBIF_Data/AngGBIF_080720.rds")
+write_rds(car_species_data_df, "Analysis/GBIF_Data/CarGBIF_080720.rds")
+write_rds(elk_species_data_df, "Analysis/GBIF_Data/ElkGBIF_080720.rds")
+write_rds(jasp_species_data_df, "Analysis/GBIF_Data/JaspGBIF_080720.rds")
+write_rds(mcLann_species_data_df, "Analysis/GBIF_Data/mcLannGBIF_080720.rds")
+write_rds(mcLserp_species_data_df, "Analysis/GBIF_Data/mcLserpGBIF_080720.rds")
+write_rds(swan_species_data_df, "Analysis/GBIF_Data/swanGBIF_080720.rds")
+write_rds(ucsc_species_data_df, "Analysis/GBIF_Data/ucscGBIF_080720.rds")
 ```
 
 
