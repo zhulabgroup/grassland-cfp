@@ -348,7 +348,7 @@ grich_all_means <- grich_all_weather %>%
             tmean = mean(tmean),
             tmax = mean(tmax),
             tmin = mean(tmin)) %>%
-  filter(guild == "All" | guild == "Exo" | guild == "Nat")
+  filter(guild == "Exo" | guild == "Nat" | guild == "Grasses" | guild == "Forbs")
 
 grich_all_means <- grich_all_means %>%
   mutate(guild = recode(guild,
@@ -367,49 +367,6 @@ ggplot(grich_all_means, aes(x = year, y = meanrich, color = guild)) +
   scale_y_continuous(limits = c(0,NA)) + 
   expand_limits(y = 0) +
   geom_smooth(method='lm')
-
-```
-
-```{r TOTAL RICHNESS MODELS}
-grich_all_totalrich <- grich_all %>%
-  filter(guild == "All") %>%
-  mutate(year2 = year,
-         # we rescale the year to improve the model and prevent eigenvalue warnings
-         year = abs(year2-1983))
-
-grich_all_totalrich$year <- as.numeric(grich_all_totalrich$year)
-
-# Angelo
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson", 
-            data = grich_all_totalrich[grich_all_totalrich$site == "Angelo",]))
-
-# Carrizo -- LOOKS WEIRD?
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "Carrizo",]))
-
-# Elkhorn
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson", 
-              data = grich_all_totalrich[grich_all_totalrich$site == "Elkhorn",]))
-
-# Jasper
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "Jasper",]))
-
-# McL Ann
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "McL Ann",]))
-
-# McL Serp
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "McL Serp",]))
-
-# Swanton
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
-              data = grich_all_totalrich[grich_all_totalrich$site == "Swanton",]))
-
-# UCSC
-summary(glmer(meanrich ~ year + (1|plot), family = "poisson",  
-            data = grich_all_totalrich[grich_all_totalrich$site == "UCSC",]))
 
 ```
 
@@ -942,13 +899,13 @@ summary(glm(turnover ~ year,
 Here, we'll try to analyze CTI for all of the sites at once. 
 
 ```{r import CTI data}
-CTI_all <- read.csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+CTI_all_raw <- read.csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv")
   
-CTI_all <- CTI_all %>%
+CTI_all_raw <- CTI_all_raw %>%
   filter(species.name != "Linanthus jepsonii",
          species.name != "Linanthus latisectus")
 
-CTI_all <- CTI_all %>%
+CTI_all <- CTI_all_raw %>%
   filter(relcov >= 0) %>%
   group_by(site, year, plot) %>%
   mutate(relCTI = relcov*meanT,
@@ -995,6 +952,30 @@ ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
   facet_wrap(~site, scales = "free", ncol = 4) + geom_smooth(method = "lm")
 
 ```
+
+```{r compare guild average CPI/CTI}
+CTI_byspp <- CTI_all_raw %>%
+  group_by(site, guild) %>%
+  summarise(meanSTI = mean(meanT),
+            meanSPI = mean(meanp),
+            seSTI = std.error(meanT),
+            seSPI = std.error(meanp))
+
+ggplot(CTI_byspp, aes(x = guild, y = meanSTI)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanSTI - seSTI), ymax = (meanSTI + seSTI))) +
+  labs(title = "All sites - Community Temperature Index",
+       x = "Year",
+       y = "CTI") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = -90)) +
+  facet_grid(~site)
+
+
+```
+
 
 ```{r CTI MODELS}
 CTI_models <- CTI_plot_means %>%

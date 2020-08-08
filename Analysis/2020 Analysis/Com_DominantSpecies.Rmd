@@ -116,20 +116,22 @@ all_ratechange <- full_join(all_ratechange, swan_ratechange)
 all_ratechange <- full_join(all_ratechange, ucsc_ratechange)
 
 all_ratechange_means <- all_ratechange %>%
-  group_by(site, interval) %>%
+  group_by(site, interval, plot) %>%
   summarise(meanchange = mean(distance),
             sechange = std.error(distance))
 
 ggplot(all_ratechange, aes(interval, distance, color = site)) + 
-  facet_wrap(~site, scale = "free") + 
+  facet_wrap(~site, scale = "free", ncol = 4) + 
   geom_point() + 
   theme_bw() + 
+  theme(legend.position = "none") +
   stat_smooth(method = "lm", se = F, size = 2)
 
 ggplot(all_ratechange_means, aes(interval, meanchange, color = site)) + 
-  facet_wrap(~site, scale = "free") + 
+  facet_wrap(~site, scale = "free", ncol = 4) + 
   geom_point() + 
   theme_bw() + 
+  theme(legend.position = "none") +
   stat_smooth(method = "lm", se = F, size = 2)
 ```
 
