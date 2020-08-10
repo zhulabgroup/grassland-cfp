@@ -56,19 +56,25 @@ The goal is to use SLA data from the TRY database to (roughly) estimate the weig
 ```{r weighted SLA}
 
 rel_all_SLA_means <- rel_all_SLA %>%
-  filter(meanSLA > 0) %>%
+  filter(meanSLA >= 0) %>%
   group_by(site, year, plot) %>%
-  summarise(meanSLA = mean(meanSLA),
-            cover_inc = sum(relcov)) %>%
-  filter(cover_inc > 0.75) %>%
-  group_by(site, year) %>%
-  summarise(mean_SLA = mean(meanSLA),
-            seSLA = std.error(meanSLA))
+  mutate(totcov = sum(cover),
+         cov_inc = totcov/sumcov) %>%
+  filter(cov_inc > 0.70)
+  
+rel_all_SLA_means <- rel_all_SLA_means %>%
+  group_by(site, year, plot, species.name) %>%
+  mutate(relcov = cover/totcov,
+         weightedSLA = relcov*meanSLA) %>%
+  group_by(site, year, plot) %>%
+  summarise(mean_SLA = sum(weightedSLA)) %>%
+    summarise(meanSLA = mean(mean_SLA),
+              seSLA = std.error(mean_SLA))
 
-ggplot(rel_all_SLA_means, aes(x = year, y = mean_SLA, color = site)) +
+ggplot(rel_all_SLA_means, aes(x = year, y = meanSLA, color = site)) +
   geom_point() +
   geom_line() +
-  geom_errorbar(aes(ymin = (mean_SLA - seSLA), ymax = (mean_SLA + seSLA))) +
+  geom_errorbar(aes(ymin = (meanSLA - seSLA), ymax = (meanSLA + seSLA))) +
   labs(title = "All sites - Specific Leaf Area",
        x = "Year",
        y = "Community-weighted SLA") +
