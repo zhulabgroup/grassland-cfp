@@ -27,36 +27,36 @@ One of the key concerns about Karens' control plots is that they were released f
 To begin, I'll re-clean all of the data, but will not isolate the control plot data. 
 
 
-## Elkhorn
+## Data Cleanup - don't run again
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, I am using on the control plots (n=3), and removing all other treatments from the dataset. *Karen has suggested combining all of the Bromus species into one group*. 
 
 Note that most of the code in the cleanup process was written before transitioning to R markdown and GitHub. 
 
 ```{r Importing Elkhorn, warning=FALSE, echo=FALSE}
-elkspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
+elkspp <- read.csv("Data and Data Cleanup/HollData/ElkhornSpecies.csv")
 elkspp$species.code <- tolower(elkspp$species.code)
 
-elk_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
-elk99 <- read.csv("ComComp Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
-elk00 <- read.csv("ComComp Data Cleanup/HollData/Elk_2000.csv", skip = 3)
-elk01 <- read.csv("ComComp Data Cleanup/HollData/Elk_2001.csv", skip = 3)
-elk02 <- read.csv("ComComp Data Cleanup/HollData/Elk_2002.csv", skip = 3)
-elk03 <- read.csv("ComComp Data Cleanup/HollData/Elk_2003.csv")
-elk04 <- read.csv("ComComp Data Cleanup/HollData/Elk_2004.csv")
-elk05 <- read.csv("ComComp Data Cleanup/HollData/Elk_2005.csv")
-elk06 <- read.csv("ComComp Data Cleanup/HollData/Elk_2006.csv")
-elk07 <- read.csv("ComComp Data Cleanup/HollData/Elk_2007.csv")
-elk08 <- read.csv("ComComp Data Cleanup/HollData/Elk_2008.csv")
-elk09 <- read.csv("ComComp Data Cleanup/HollData/Elk_2009.csv")
-elk10 <- read.csv("ComComp Data Cleanup/HollData/Elk_2010.csv", skip = 1)
-elk11 <- read.csv("ComComp Data Cleanup/HollData/Elk_2011.csv")
-elk12 <- read.csv("ComComp Data Cleanup/HollData/Elk_2012.csv")
-elk13 <- read.csv("ComComp Data Cleanup/HollData/Elk_2013.csv", skip = 2)
-elk14 <- read.csv("ComComp Data Cleanup/HollData/Elk_2014.csv", skip = 1)
-elk15 <- read.csv("ComComp Data Cleanup/HollData/Elk_2015.csv", skip = 1)
-elk16 <- read.csv("ComComp Data Cleanup/HollData/Elk_2016.csv", skip = 1)
-elk17 <- read.csv("ComComp Data Cleanup/HollData/Elk_2017.csv", skip = 1)
-elk18 <- read.csv("ComComp Data Cleanup/HollData/Elk_2018.csv", skip = 1)
+elk_guilds <- read.csv("Data and Data Cleanup/HollData/ElkhornGuilds.csv")
+elk99 <- read.csv("Data and Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
+elk00 <- read.csv("Data and Data Cleanup/HollData/Elk_2000.csv", skip = 3)
+elk01 <- read.csv("Data and Data Cleanup/HollData/Elk_2001.csv", skip = 3)
+elk02 <- read.csv("Data and Data Cleanup/HollData/Elk_2002.csv", skip = 3)
+elk03 <- read.csv("Data and Data Cleanup/HollData/Elk_2003.csv")
+elk04 <- read.csv("Data and Data Cleanup/HollData/Elk_2004.csv")
+elk05 <- read.csv("Data and Data Cleanup/HollData/Elk_2005.csv")
+elk06 <- read.csv("Data and Data Cleanup/HollData/Elk_2006.csv")
+elk07 <- read.csv("Data and Data Cleanup/HollData/Elk_2007.csv")
+elk08 <- read.csv("Data and Data Cleanup/HollData/Elk_2008.csv")
+elk09 <- read.csv("Data and Data Cleanup/HollData/Elk_2009.csv")
+elk10 <- read.csv("Data and Data Cleanup/HollData/Elk_2010.csv", skip = 1)
+elk11 <- read.csv("Data and Data Cleanup/HollData/Elk_2011.csv")
+elk12 <- read.csv("Data and Data Cleanup/HollData/Elk_2012.csv")
+elk13 <- read.csv("Data and Data Cleanup/HollData/Elk_2013.csv", skip = 2)
+elk14 <- read.csv("Data and Data Cleanup/HollData/Elk_2014.csv", skip = 1)
+elk15 <- read.csv("Data and Data Cleanup/HollData/Elk_2015.csv", skip = 1)
+elk16 <- read.csv("Data and Data Cleanup/HollData/Elk_2016.csv", skip = 1)
+elk17 <- read.csv("Data and Data Cleanup/HollData/Elk_2017.csv", skip = 1)
+elk18 <- read.csv("Data and Data Cleanup/HollData/Elk_2018.csv", skip = 1)
 
 ```
 
@@ -460,24 +460,24 @@ remove(elk_99_18)
 ```
 
 ```{r Importing Swanton, warning=FALSE, echo=FALSE}
-Swanspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
+Swanspp <- read.csv("Data and Data Cleanup/HollData/ElkhornSpecies.csv")
 Swanspp$species.code <- tolower(Swanspp$species.code)
-Swan_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
+Swan_guilds <- read.csv("Data and Data Cleanup/HollData/ElkhornGuilds.csv")
 
-Swan99 <- read.csv("ComComp Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
-Swan00 <- read.csv("ComComp Data Cleanup/HollData/Elk_2000.csv", skip = 3)
-Swan01 <- read.csv("ComComp Data Cleanup/HollData/Elk_2001.csv", skip = 3)
-Swan02 <- read.csv("ComComp Data Cleanup/HollData/Elk_2002.csv", skip = 3)
-Swan03 <- read.csv("ComComp Data Cleanup/HollData/Elk_2003.csv")
-Swan04 <- read.csv("ComComp Data Cleanup/HollData/Elk_2004.csv")
-Swan05 <- read.csv("ComComp Data Cleanup/HollData/Elk_2005.csv")
-Swan06 <- read.csv("ComComp Data Cleanup/HollData/Elk_2006.csv")
-Swan07 <- read.csv("ComComp Data Cleanup/HollData/Elk_2007.csv")
-Swan08 <- read.csv("ComComp Data Cleanup/HollData/swanton_08.csv", skip = 1)
-Swan09 <- read.csv("ComComp Data Cleanup/HollData/Elk_2009.csv")
-Swan10 <- read.csv("ComComp Data Cleanup/HollData/Elk_2010.csv", skip = 1)
-Swan11 <- read.csv("ComComp Data Cleanup/HollData/Elk_2011.csv")
-Swan12 <- read.csv("ComComp Data Cleanup/HollData/Elk_2012.csv")
+Swan99 <- read.csv("Data and Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
+Swan00 <- read.csv("Data and Data Cleanup/HollData/Elk_2000.csv", skip = 3)
+Swan01 <- read.csv("Data and Data Cleanup/HollData/Elk_2001.csv", skip = 3)
+Swan02 <- read.csv("Data and Data Cleanup/HollData/Elk_2002.csv", skip = 3)
+Swan03 <- read.csv("Data and Data Cleanup/HollData/Elk_2003.csv")
+Swan04 <- read.csv("Data and Data Cleanup/HollData/Elk_2004.csv")
+Swan05 <- read.csv("Data and Data Cleanup/HollData/Elk_2005.csv")
+Swan06 <- read.csv("Data and Data Cleanup/HollData/Elk_2006.csv")
+Swan07 <- read.csv("Data and Data Cleanup/HollData/Elk_2007.csv")
+Swan08 <- read.csv("Data and Data Cleanup/HollData/swanton_08.csv", skip = 1)
+Swan09 <- read.csv("Data and Data Cleanup/HollData/Elk_2009.csv")
+Swan10 <- read.csv("Data and Data Cleanup/HollData/Elk_2010.csv", skip = 1)
+Swan11 <- read.csv("Data and Data Cleanup/HollData/Elk_2011.csv")
+Swan12 <- read.csv("Data and Data Cleanup/HollData/Elk_2012.csv")
 
 ```
 
@@ -634,8 +634,6 @@ Swan12$intercepts <- as.numeric(Swan12$intercepts)
 Swan12 <- left_join(Swan12, Swanspp, by = "species.code")
 ```
 
-Once the data is cleaned up on a yearly basis, we can combine the years into a single dataframe. 
-
 ```{r Compiling Swanton, warning=FALSE, echo=FALSE}
 Swan_99_00 <- full_join(Swan99, Swan00, by = c("site", "freq", "treat", "rep", "year",
                                           "species.code", "species.name", "guild",
@@ -772,24 +770,24 @@ swanton_data <- swanton_data %>%
 
 ```{r Importing UCSC, warning=FALSE, echo=FALSE}
 
-UCSCspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
+UCSCspp <- read.csv("Data and Data Cleanup/HollData/ElkhornSpecies.csv")
 UCSCspp$species.code <- tolower(UCSCspp$species.code)
-UCSC_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
+UCSC_guilds <- read.csv("Data and Data Cleanup/HollData/ElkhornGuilds.csv")
 
-UCSC99 <- read.csv("ComComp Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
-UCSC00 <- read.csv("ComComp Data Cleanup/HollData/Elk_2000.csv", skip = 3)
-UCSC01 <- read.csv("ComComp Data Cleanup/HollData/Elk_2001.csv", skip = 3)
-UCSC02 <- read.csv("ComComp Data Cleanup/HollData/Elk_2002.csv", skip = 3)
-UCSC03 <- read.csv("ComComp Data Cleanup/HollData/Elk_2003.csv")
-UCSC04 <- read.csv("ComComp Data Cleanup/HollData/Elk_2004.csv")
-UCSC05 <- read.csv("ComComp Data Cleanup/HollData/Elk_2005.csv")
-UCSC06 <- read.csv("ComComp Data Cleanup/HollData/Elk_2006.csv")
-UCSC07 <- read.csv("ComComp Data Cleanup/HollData/Elk_2007.csv")
-UCSC08 <- read.csv("ComComp Data Cleanup/HollData/ucsc_08.csv")
-UCSC09 <- read.csv("ComComp Data Cleanup/HollData/Elk_2009.csv")
-UCSC10 <- read.csv("ComComp Data Cleanup/HollData/Elk_2010.csv", skip = 1)
-UCSC11 <- read.csv("ComComp Data Cleanup/HollData/Elk_2011.csv")
-UCSC12 <- read.csv("ComComp Data Cleanup/HollData/Elk_2012.csv")
+UCSC99 <- read.csv("Data and Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
+UCSC00 <- read.csv("Data and Data Cleanup/HollData/Elk_2000.csv", skip = 3)
+UCSC01 <- read.csv("Data and Data Cleanup/HollData/Elk_2001.csv", skip = 3)
+UCSC02 <- read.csv("Data and Data Cleanup/HollData/Elk_2002.csv", skip = 3)
+UCSC03 <- read.csv("Data and Data Cleanup/HollData/Elk_2003.csv")
+UCSC04 <- read.csv("Data and Data Cleanup/HollData/Elk_2004.csv")
+UCSC05 <- read.csv("Data and Data Cleanup/HollData/Elk_2005.csv")
+UCSC06 <- read.csv("Data and Data Cleanup/HollData/Elk_2006.csv")
+UCSC07 <- read.csv("Data and Data Cleanup/HollData/Elk_2007.csv")
+UCSC08 <- read.csv("Data and Data Cleanup/HollData/ucsc_08.csv")
+UCSC09 <- read.csv("Data and Data Cleanup/HollData/Elk_2009.csv")
+UCSC10 <- read.csv("Data and Data Cleanup/HollData/Elk_2010.csv", skip = 1)
+UCSC11 <- read.csv("Data and Data Cleanup/HollData/Elk_2011.csv")
+UCSC12 <- read.csv("Data and Data Cleanup/HollData/Elk_2012.csv")
 ```
 
 ```{r Cleaning UCSC, warning=FALSE, echo=FALSE}
@@ -1079,8 +1077,6 @@ ucsc_data <- ucsc_data %>%
 
 ```
 
-
-
 ```{r Removing extra objects}
 remove(UCSC_99_12)
 remove(UCSC_99_12_species)
@@ -1092,7 +1088,6 @@ remove(Swanspp)
 remove(Swan_guilds)
 ```
 
-
 ```{r saving data files}
 # write.csv(elkhorn_data, "Analysis/ComData/elkhorn_data_allplots.csv")
 # write.csv(swanton_data, "Analysis/ComData/swanton_data_allplots.csv")
@@ -1102,6 +1097,9 @@ remove(Swan_guilds)
 # Combine all of the sites into a single dataset
 
 ```{r combine data}
+elkhorn_data <- read.csv("Analysis/ComData/elkhorn_data_allplots.csv")
+swanton_data <- read.csv("Analysis/ComData/swanton_data_allplots.csv")
+ucsc_data <- read.csv("Analysis/ComData/ucsc_data_allplots.csv")
 
 ## elkhorn
 raw_elk <- elkhorn_data %>%
@@ -1155,10 +1153,10 @@ rel_ucsc <- raw_ucsc %>%
 rel_ucsc$plot <- as.factor(rel_ucsc$plot)
 
 # combine
-rel_all <- full_join(rel_elk, rel_swan)
-rel_all <- full_join(rel_all, rel_ucsc)
+karen_rel_all <- full_join(rel_elk, rel_swan)
+karen_rel_all <- full_join(rel_all, rel_ucsc)
 
-rel_all <- rel_all %>%
+karen_rel_all <- karen_rel_all %>%
   mutate(species.name.2 = str_squish(species.name)) %>%
   select(-species.name) %>% rename(species.name = species.name.2)
 
@@ -1182,19 +1180,15 @@ library(spocc)
 require(rgbif)
 ```
 
-
-
-```{r getting CTI data}
-all_species <- unique(rel_all$species.name)
-all_species <- as.data.frame(all_species)
-all_species$all_species <- paste0("'", all_species$all_species, "',")
-cat(format_delim(all_species, delim = ""))
-
+```{r generate species list data}
+karen_species <- unique(rel_all$species.name)
+karen_species <- as.data.frame(karen_species)
+karen_species$karen_species <- paste0("'", karen_species$karen_species, "',")
+cat(format_delim(karen_species, delim = ""))
 ```
 
-
-```{r}
-all_species_list <- c('Erodium botrys',
+```{r call GBIF data}
+karen_species_list <- c('Erodium botrys',
                       'Erodium moschatum',
                       'Geranium dissectum',
                       'Stellaria media',
@@ -1284,29 +1278,29 @@ all_species_list <- c('Erodium botrys',
 #                       'Brassica species',
 #                       'Brodiaea species',
 
-all_species_data <- occ(query = all_species_list, from = "gbif", has_coords = TRUE, limit = 100000,
+karen_species_data <- occ(query = karen_species_list, from = "gbif", has_coords = TRUE, limit = 100000,
                 gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
                                 stateProvince = "California"))
 
 
 ```
 
-```{r clean mcLann species data}
+```{r clean species occurance GBIF data}
 ## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
-all_species_data <- fixnames(all_species_data, how = "query")
+karen_species_data <- fixnames(karen_species_data, how = "query")
 
 ## The occ2df function should convert the data to a dataframe format
-all_species_data_df <- occ2df(all_species_data)
+karen_species_data_df <- occ2df(karen_species_data)
 
 # We need to clean the coordinates, as it appears some are in the ocean, and there might be some that are just incorrect. To do this, we will use a coordinate cleaner package.
-flags <- clean_coordinates(x = all_species_data_df, lon = "longitude", lat = "latitude",
+flags <- clean_coordinates(x = karen_species_data_df, lon = "longitude", lat = "latitude",
                           species = "name",
                           tests = c("capitals", "centroids", "equal","gbif", "institutions",
                                     "seas", "zeros", "duplicates")) # most tests are on by default
 
 # Most of our flagged coordinates are coastal/in the ocean. Therefore, we'll remove them from our database.
 # keep only the non-flagged data
-all_species_data_df <- all_species_data_df[flags$.summary,] %>%
+karen_species_data_df <- karen_species_data_df[flags$.summary,] %>%
   rename("species.name" = "name")
 ```
 
@@ -1600,19 +1594,18 @@ all_brodiaea_data_df <- all_brodiaea_data_df %>%
 ### Combine with and without epithet dataframes and remove extra objects
 
 ```{r recombine car with epithet with non-epithet data}
-all_species_data_df <- full_join(all_species_data_df, all_bromus_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_brassica_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_rumex_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_erigeron_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_carex_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_briza_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_madia_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_vicia_data_df)
-all_species_data_df <- full_join(all_species_data_df, all_brodiaea_data_df)
-
+karen_species_data_df <- full_join(karen_species_data_df, all_bromus_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_brassica_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_rumex_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_erigeron_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_carex_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_briza_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_madia_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_vicia_data_df)
+karen_species_data_df <- full_join(karen_species_data_df, all_brodiaea_data_df)
 
 # and we'll save the angelo gbif spatial data
-write_rds(all_species_data_df, "Analysis/GBIF_Data/AllKaren_GBIF.rds")
+write_rds(karen_species_data_df, "Analysis/GBIF_Data/AllKaren_GBIF.rds")
 ```
 
 
@@ -1621,13 +1614,10 @@ write_rds(all_species_data_df, "Analysis/GBIF_Data/AllKaren_GBIF.rds")
 This method of data extraction follows the tutorial on the jcoliver webpage. 
 
 ```{r based on oikos page, cache = TRUE}
-xy <- all_species_data_df[,c("longitude","latitude")]
-sp_xy <- all_species_data_df[c("species.name", "longitude","latitude")]
+xy <- karen_species_data_df[,c("longitude","latitude")]
+sp_xy <- karen_species_data_df[c("species.name", "longitude","latitude")]
 
-env <- getData('worldclim', var='bio', res=2.5)
-
-plot(env, 1, main=NULL, axes=FALSE)
-points(xy, col='blue', pch=20)
+env <- raster::getData('worldclim', var='bio', res=2.5)
 
 xy_bio <- raster::extract(env, xy)
 
@@ -1655,9 +1645,9 @@ Reference list for climate variables:
  * BIO19 = Precipitation of Coldest Quarter (mm)
  
 ```{r mean species temp, echo=FALSE}
-all_species_clim <- cbind(xy_bio, sp_xy) 
+karen_species_clim <- cbind(xy_bio, sp_xy) 
 
-all_species_clim <- all_species_clim %>%
+karen_species_clim <- karen_species_clim %>%
   group_by(species.name) %>%
   summarise(meant = mean(bio1, na.rm = TRUE),
          meanp = mean(bio12, na.rm = TRUE)) %>%
@@ -1666,8 +1656,8 @@ all_species_clim <- all_species_clim %>%
 ```
 
 ### Combine clim data with original relative data
-```{r angelo rel and clim data join}
-all_karen_CTI <- left_join(rel_all, all_species_clim, by = "species.name") 
+```{r rel and clim data join}
+all_karen_CTI <- left_join(karen_rel_all, karen_species_clim, by = "species.name") 
 
 write.csv(all_karen_CTI, "Analysis/CTI Data/All_Karen_08_2020.csv")
 ```
@@ -1675,25 +1665,32 @@ write.csv(all_karen_CTI, "Analysis/CTI Data/All_Karen_08_2020.csv")
 # CTI Graphs
 
 ```{r}
+all_karen_CTI_raw <- read.csv("Analysis/CTI Data/All_Karen_08_2020.csv")
 
-all_karen_CTI <- all_karen_CTI %>%
+
+all_karen_CTI <- all_karen_CTI_raw %>%
   filter(species.name != "Dung",
          species.name != "Oxalis pilosa",
-         freq != "CLA", freq != "CLB", freq != "CLC", freq != "NM", freq != "CL2", freq != "CL3")
+         freq != "CLA", freq != "CLB", freq != "CLC", freq != "NM", freq != "CL2", freq != "CL3") %>%
+  group_by(site, year, plot, freq, treat) %>%
+  mutate(relCTI = relcov*meanT,
+         relCPI = relcov*meanp) %>%
+  summarise(plotCTI = sum(relCTI),
+            plotCPI = sum(relCPI))
 
 CTI_plot_means <- all_karen_CTI %>%
-  group_by(site, plot, freq, treat, year) %>%
-  summarise(meanCTI = mean(meanT),
-            seCTI = std.error(meanT),
-            meanCPI = mean(meanp),
-            seCPI = std.error(meanp))
+  group_by(site, plot, freq, year) %>%
+  summarise(meanCTI = mean(plotCTI),
+            seCTI = std.error(plotCTI),
+            meanCPI = mean(plotCPI),
+            seCPI = std.error(plotCPI))
 
 CTI_site_means <- all_karen_CTI %>%
   group_by(site, freq, year) %>%
-  summarise(meanCTI = mean(meanT),
-            seCTI = std.error(meanT),
-            meanCPI = mean(meanp),
-            seCPI = std.error(meanp))
+  summarise(meanCTI = mean(plotCTI),
+            seCTI = std.error(plotCTI),
+            meanCPI = mean(plotCPI),
+            seCPI = std.error(plotCPI))
 
 grid.arrange(
 ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
@@ -1705,7 +1702,7 @@ ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
        y = "CTI") +
   theme_bw() +
   theme(legend.position = "none") +
-  facet_wrap(site~freq, scales = "free_x", ncol = 3) # + geom_smooth(method = "lm")
+  facet_wrap(site~freq, scales = "free_x", ncol = 3)  + geom_smooth(method = "lm")
 ,
 ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
   geom_line() +
@@ -1716,9 +1713,15 @@ ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
        y = "CPI") +
   theme_bw() +
   theme(legend.position = "none") +
-  facet_wrap(site~freq, scales = "free_x", ncol = 3) # + geom_smooth(method = "lm")
+  facet_wrap(site~freq, scales = "free_x", ncol = 3)  + geom_smooth(method = "lm")
 , ncol=2
 )
+
+```
+
+## linear models for change over time
+
+```{r}
 
 ```
 

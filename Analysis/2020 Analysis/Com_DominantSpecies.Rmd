@@ -42,6 +42,7 @@ rel_all$year <- as.numeric(rel_all$year)
 
 The goal in this file is to examine the most common species in each site over time, and to compare changes in their abundance over time.
 
+# Comparisons of rates of change over time
 ```{r}
 ang_ratechange <- rel_all %>% filter(site == "Angelo")
 ang_ratechange <- rate_change_interval(df = ang_ratechange,
@@ -128,10 +129,36 @@ ggplot(all_ratechange, aes(interval, distance, color = site)) +
   stat_smooth(method = "lm", se = F, size = 2)
 
 ggplot(all_ratechange_means, aes(interval, meanchange, color = site)) + 
-  facet_wrap(~site, scale = "free", ncol = 4) + 
+  # facet_wrap(~site, scale = "free", ncol = 4) + 
   geom_point() + 
   theme_bw() + 
   theme(legend.position = "none") +
   stat_smooth(method = "lm", se = F, size = 2)
 ```
+
+# Top five species over time
+
+```{r}
+top3 <- rel_all %>%
+  filter(!is.na(relcov)) %>%
+  arrange(desc(relcov)) %>% 
+  group_by(site, year, plot) %>%
+  slice(1:3) 
+
+top3_ang <- top3 %>%
+  filter(site == "Angelo") %>%
+  
+
+ggplot(top3, aes(x = year, y = relcov, color = species.name)) +
+  geom_point() +
+  #geom_errorbar(aes(ymin = mean_relcov - se_relcov, ymax = mean_relcov + se_relcov)) +
+  #geom_line() +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free")
+
+```
+
+
+
 
