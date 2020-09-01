@@ -1676,7 +1676,9 @@ all_karen_CTI <- all_karen_CTI_raw %>%
   mutate(relCTI = relcov*meanT,
          relCPI = relcov*meanp) %>%
   summarise(plotCTI = sum(relCTI),
-            plotCPI = sum(relCPI))
+            plotCPI = sum(relCPI)) %>%
+  mutate(freq = recode_factor(freq,
+                              "CL1" = "Clipped"))
 
 CTI_plot_means <- all_karen_CTI %>%
   group_by(site, plot, freq, year) %>%
@@ -1693,27 +1695,29 @@ CTI_site_means <- all_karen_CTI %>%
             seCPI = std.error(plotCPI))
 
 grid.arrange(
-ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
+ggplot(CTI_site_means, aes(x = year, y = meanCTI)) +
   geom_line() +
   geom_point() +
   geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
-  labs(title = "All sites - Community Temperature Index",
+  labs(title = "CTI",
        x = "Year",
        y = "CTI") +
   theme_bw() +
-  theme(legend.position = "none") +
-  facet_wrap(site~freq, scales = "free_x", ncol = 3)  + geom_smooth(method = "lm")
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, hjust = -0.5)) +
+  facet_wrap(site~freq, scales = "free", ncol = 3)
 ,
-ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
+ggplot(CTI_site_means, aes(x = year, y = meanCPI)) +
   geom_line() +
   geom_point() +
   geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
-  labs(title = "All sites - Community Precipitation Index",
+  labs(title = "CPI",
        x = "Year",
        y = "CPI") +
   theme_bw() +
-  theme(legend.position = "none") +
-  facet_wrap(site~freq, scales = "free_x", ncol = 3)  + geom_smooth(method = "lm")
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 90, hjust = -0.5)) +
+  facet_wrap(site~freq, scales = "free", ncol = 3)
 , ncol=2
 )
 
@@ -1721,7 +1725,92 @@ ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
 
 ## linear models for change over time
 
-```{r}
+```{r CTI MODELS}
+CTI_models <- all_karen_CTI %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1998)) %>%
+  unite(site, freq, col = "site", sep = "-")
+CTI_models$year <- as.numeric(CTI_models$year)
 
+
+# Elkhorn-Control
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "Elkhorn-Control",]))
+
+# Elkhorn-Clipped
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "Elkhorn-Clipped",]))
+
+# Elkhorn-Grazed
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "Elkhorn-Grazed",]))
+
+
+# Swanton-Control
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "Swanton-Control",]))
+
+# Swanton-Clipped
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "Swanton-Clipped",]))
+
+# Swanton-Grazed
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "Swanton-Grazed",]))
+
+
+# UCSC-Control
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "UCSC-Control",]))
+
+# UCSC-Clipped
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "UCSC-Clipped",]))
+
+# UCSC-Grazed
+summary(glm(plotCTI ~ year,
+              data = CTI_models[CTI_models$site == "UCSC-Grazed",]))
+
+```
+
+```{r CPI models}
+# Elkhorn-Control
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "Elkhorn-Control",]))
+
+# Elkhorn-Clipped
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "Elkhorn-Clipped",]))
+
+# Elkhorn-Grazed
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "Elkhorn-Grazed",]))
+
+
+# Swanton-Control
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "Swanton-Control",]))
+
+# Swanton-Clipped
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "Swanton-Clipped",]))
+
+# Swanton-Grazed
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "Swanton-Grazed",]))
+
+
+# UCSC-Control
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "UCSC-Control",]))
+
+# UCSC-Clipped
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "UCSC-Clipped",]))
+
+# UCSC-Grazed
+summary(glm(plotCPI ~ year,
+              data = CTI_models[CTI_models$site == "UCSC-Grazed",]))
 ```
 
