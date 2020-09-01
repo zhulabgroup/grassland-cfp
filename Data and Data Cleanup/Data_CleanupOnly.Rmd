@@ -18,12 +18,12 @@ This code cleans and compiles 10 datasets I am using for my grassland community 
 These data were collected by K.B. Suttle from 2002 to 2015.  
 
 ```{r Angelo Data Import and Clean, echo= FALSE}
-Angelo <- read.csv("ComComp Data Cleanup/Angelo/Angelo_CommCompData.csv") %>%
+Angelo <- read.csv("Data and Data Cleanup/Angelo/Angelo_CommCompData.csv") %>%
   filter(TMT == "C") %>%
   gather("Dan":"Thistle", key = species, value = cover)
 names(Angelo) <- tolower(names(Angelo))
 
-Angelo_spp <- read.csv("ComComp Data Cleanup/Angelo/Angelo_spp_guilds.csv")
+Angelo_spp <- read.csv("Data and Data Cleanup/Angelo/Angelo_spp_guilds.csv")
 
 Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
   mutate(Site = "Angelo") %>%
@@ -60,10 +60,10 @@ In the raw data, there should be be 8 1x1m plots per site (e.g. EP1, EP2) and te
 ```{r Import & clean Carrizo, include=FALSE}
 
 ## importing all of the files
-carrizo_spp <- read.csv("ComComp Data Cleanup/Carrizo/Carrizo_plant list.csv")
-carrizo <- read.csv("ComComp Data Cleanup/Carrizo/Carrizo_data.csv")
-carrizo_forms <- read.csv("ComComp Data Cleanup/Carrizo/Carrizo_plant forms.csv")
-carrizo_extras <- read.csv("ComComp Data Cleanup/Carrizo/carrizo_extraspecies.csv")
+carrizo_spp <- read.csv("Data and Data Cleanup/Carrizo/Carrizo_plant list.csv")
+carrizo <- read.csv("Data and Data Cleanup/Carrizo/Carrizo_data.csv")
+carrizo_forms <- read.csv("Data and Data Cleanup/Carrizo/Carrizo_plant forms.csv")
+carrizo_extras <- read.csv("Data and Data Cleanup/Carrizo/carrizo_extraspecies.csv")
 
 carrizo$Plot <- as.factor(carrizo$Plot)
 str(carrizo)
@@ -145,30 +145,30 @@ Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl an
 Note that most of the code in the cleanup process was written before transitioning to R markdown and GitHub. 
 
 ```{r Importing Elkhorn, warning=FALSE, echo=FALSE}
-elkspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
+elkspp <- read.csv("Data and Data Cleanup/HollData/ElkhornSpecies.csv")
 elkspp$species.code <- tolower(elkspp$species.code)
 
-elk_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
-elk99 <- read.csv("ComComp Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
-elk00 <- read.csv("ComComp Data Cleanup/HollData/Elk_2000.csv", skip = 3)
-elk01 <- read.csv("ComComp Data Cleanup/HollData/Elk_2001.csv", skip = 3)
-elk02 <- read.csv("ComComp Data Cleanup/HollData/Elk_2002.csv", skip = 3)
-elk03 <- read.csv("ComComp Data Cleanup/HollData/Elk_2003.csv")
-elk04 <- read.csv("ComComp Data Cleanup/HollData/Elk_2004.csv")
-elk05 <- read.csv("ComComp Data Cleanup/HollData/Elk_2005.csv")
-elk06 <- read.csv("ComComp Data Cleanup/HollData/Elk_2006.csv")
-elk07 <- read.csv("ComComp Data Cleanup/HollData/Elk_2007.csv")
-elk08 <- read.csv("ComComp Data Cleanup/HollData/Elk_2008.csv")
-elk09 <- read.csv("ComComp Data Cleanup/HollData/Elk_2009.csv")
-elk10 <- read.csv("ComComp Data Cleanup/HollData/Elk_2010.csv", skip = 1)
-elk11 <- read.csv("ComComp Data Cleanup/HollData/Elk_2011.csv")
-elk12 <- read.csv("ComComp Data Cleanup/HollData/Elk_2012.csv")
-elk13 <- read.csv("ComComp Data Cleanup/HollData/Elk_2013.csv", skip = 2)
-elk14 <- read.csv("ComComp Data Cleanup/HollData/Elk_2014.csv", skip = 1)
-elk15 <- read.csv("ComComp Data Cleanup/HollData/Elk_2015.csv", skip = 1)
-elk16 <- read.csv("ComComp Data Cleanup/HollData/Elk_2016.csv", skip = 1)
-elk17 <- read.csv("ComComp Data Cleanup/HollData/Elk_2017.csv", skip = 1)
-elk18 <- read.csv("ComComp Data Cleanup/HollData/Elk_2018.csv", skip = 1)
+elk_guilds <- read.csv("Data and Data Cleanup/HollData/ElkhornGuilds.csv")
+elk99 <- read.csv("Data and Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
+elk00 <- read.csv("Data and Data Cleanup/HollData/Elk_2000.csv", skip = 3)
+elk01 <- read.csv("Data and Data Cleanup/HollData/Elk_2001.csv", skip = 3)
+elk02 <- read.csv("Data and Data Cleanup/HollData/Elk_2002.csv", skip = 3)
+elk03 <- read.csv("Data and Data Cleanup/HollData/Elk_2003.csv")
+elk04 <- read.csv("Data and Data Cleanup/HollData/Elk_2004.csv")
+elk05 <- read.csv("Data and Data Cleanup/HollData/Elk_2005.csv")
+elk06 <- read.csv("Data and Data Cleanup/HollData/Elk_2006.csv")
+elk07 <- read.csv("Data and Data Cleanup/HollData/Elk_2007.csv")
+elk08 <- read.csv("Data and Data Cleanup/HollData/Elk_2008.csv")
+elk09 <- read.csv("Data and Data Cleanup/HollData/Elk_2009.csv")
+elk10 <- read.csv("Data and Data Cleanup/HollData/Elk_2010.csv", skip = 1)
+elk11 <- read.csv("Data and Data Cleanup/HollData/Elk_2011.csv")
+elk12 <- read.csv("Data and Data Cleanup/HollData/Elk_2012.csv")
+elk13 <- read.csv("Data and Data Cleanup/HollData/Elk_2013.csv", skip = 2)
+elk14 <- read.csv("Data and Data Cleanup/HollData/Elk_2014.csv", skip = 1)
+elk15 <- read.csv("Data and Data Cleanup/HollData/Elk_2015.csv", skip = 1)
+elk16 <- read.csv("Data and Data Cleanup/HollData/Elk_2016.csv", skip = 1)
+elk17 <- read.csv("Data and Data Cleanup/HollData/Elk_2017.csv", skip = 1)
+elk18 <- read.csv("Data and Data Cleanup/HollData/Elk_2018.csv", skip = 1)
 
 ```
 
@@ -589,7 +589,7 @@ remove(elk_99_18)
 These data were collected from Jasper Ridge from 1983 to 2015.  
 
 ```{r Jasper Data Import & Clean, include=FALSE}
-Jasper_Veg <- read.csv("ComComp Data Cleanup/Jasper/JR_cover_forJosie.csv") %>%
+Jasper_Veg <- read.csv("Data and Data Cleanup/Jasper/JR_cover_forJosie.csv") %>%
   select(-X) %>%
   spread(key = species, value = cover) %>%
   replace(is.na(.), 0) %>%
@@ -597,7 +597,7 @@ Jasper_Veg <- read.csv("ComComp Data Cleanup/Jasper/JR_cover_forJosie.csv") %>%
   group_by(uniqueID, year, species) %>%
   summarize(cover = mean(cover))
 
-JR_spp <- read.csv("ComComp Data Cleanup/Jasper/JR_speciesnames2.csv")
+JR_spp <- read.csv("Data and Data Cleanup/Jasper/JR_speciesnames2.csv")
 
 Jasper <- left_join(Jasper_Veg, JR_spp, by = "species")
 
@@ -629,10 +629,10 @@ Like the McLauglin Serpentine dataset, these data were collected at McLauglin Re
 ```{r McLaughlin Importing and Cleaning Data, include = FALSE}
 
 ## importing the data
-McLAnn <- read.csv("ComComp Data Cleanup/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read.csv("ComComp Data Cleanup/McLaughlin/AbioticSiteData.csv") %>%
+McLAnn <- read.csv("Data and Data Cleanup/McLaughlin/Core_Community_Data2019.csv")
+McL_Sites <- read.csv("Data and Data Cleanup/McLaughlin/AbioticSiteData.csv") %>%
   rename(Site = site)
-McL_spp <- read.csv("ComComp Data Cleanup/McLaughlin/McLaughlin_FunctionalGroups.csv")
+McL_spp <- read.csv("Data and Data Cleanup/McLaughlin/McLaughlin_FunctionalGroups.csv")
 
 ## combining the data with site infomation, filtering to just serptentine sites
 McLAnn <- left_join(McLAnn, McL_Sites, by = "Site")
@@ -678,10 +678,10 @@ These data were collected by Susan Harrison from serpentine grassland sites at M
 ```{r Import and Clean McL Serpentine, include = FALSE}
 
 ## importing the data
-McLSerp <- read.csv("ComComp Data Cleanup/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read.csv("ComComp Data Cleanup/McLaughlin/AbioticSiteData.csv") %>%
+McLSerp <- read.csv("Data and Data Cleanup/McLaughlin/Core_Community_Data2019.csv")
+McL_Sites <- read.csv("Data and Data Cleanup/McLaughlin/AbioticSiteData.csv") %>%
   rename(Site = site)
-McL_spp <- read.csv("ComComp Data Cleanup/McLaughlin/McLaughlin_FunctionalGroups.csv") 
+McL_spp <- read.csv("Data and Data Cleanup/McLaughlin/McLaughlin_FunctionalGroups.csv") 
 
 ## combining the data with site infomation, filtering to just serptentine sites
 McLSerp <- left_join(McLSerp, McL_Sites, by = "Site")
@@ -730,9 +730,9 @@ Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very in
 ```{r SR Importing and Cleaning Data, include = FALSE}
 
 ## importing the data
-saro_rich <- read.csv("ComComp Data Cleanup/Santa Rosa/SantaRosa_Richness.csv")
-saro_cov <- read.csv("ComComp Data Cleanup/Santa Rosa/SantaRosa_Cover00_06_raw.csv") 
-saro_spp <- read.csv("ComComp Data Cleanup/Santa Rosa/SantaRosa_SpeciesList.csv") %>%
+saro_rich <- read.csv("Data and Data Cleanup/Santa Rosa/SantaRosa_Richness.csv")
+saro_cov <- read.csv("Data and Data Cleanup/Santa Rosa/SantaRosa_Cover00_06_raw.csv") 
+saro_spp <- read.csv("Data and Data Cleanup/Santa Rosa/SantaRosa_SpeciesList.csv") %>%
   rename("Species" = "Codes")
 
 ## combining the guild information, creating a "guild" column, selecting only the desired info
@@ -744,24 +744,24 @@ saro_rich <- left_join(saro_rich, saro_spp, by = "Species")
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar.For these analyses, I am using on the control plots (n=3), and removing all other treatments from the dataset. 
 
 ```{r Importing Swanton, warning=FALSE, echo=FALSE}
-Swanspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
+Swanspp <- read.csv("Data and Data Cleanup/HollData/ElkhornSpecies.csv")
 Swanspp$species.code <- tolower(Swanspp$species.code)
-Swan_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
+Swan_guilds <- read.csv("Data and Data Cleanup/HollData/ElkhornGuilds.csv")
 
-Swan99 <- read.csv("ComComp Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
-Swan00 <- read.csv("ComComp Data Cleanup/HollData/Elk_2000.csv", skip = 3)
-Swan01 <- read.csv("ComComp Data Cleanup/HollData/Elk_2001.csv", skip = 3)
-Swan02 <- read.csv("ComComp Data Cleanup/HollData/Elk_2002.csv", skip = 3)
-Swan03 <- read.csv("ComComp Data Cleanup/HollData/Elk_2003.csv")
-Swan04 <- read.csv("ComComp Data Cleanup/HollData/Elk_2004.csv")
-Swan05 <- read.csv("ComComp Data Cleanup/HollData/Elk_2005.csv")
-Swan06 <- read.csv("ComComp Data Cleanup/HollData/Elk_2006.csv")
-Swan07 <- read.csv("ComComp Data Cleanup/HollData/Elk_2007.csv")
-Swan08 <- read.csv("ComComp Data Cleanup/HollData/swanton_08.csv", skip = 1)
-Swan09 <- read.csv("ComComp Data Cleanup/HollData/Elk_2009.csv")
-Swan10 <- read.csv("ComComp Data Cleanup/HollData/Elk_2010.csv", skip = 1)
-Swan11 <- read.csv("ComComp Data Cleanup/HollData/Elk_2011.csv")
-Swan12 <- read.csv("ComComp Data Cleanup/HollData/Elk_2012.csv")
+Swan99 <- read.csv("Data and Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
+Swan00 <- read.csv("Data and Data Cleanup/HollData/Elk_2000.csv", skip = 3)
+Swan01 <- read.csv("Data and Data Cleanup/HollData/Elk_2001.csv", skip = 3)
+Swan02 <- read.csv("Data and Data Cleanup/HollData/Elk_2002.csv", skip = 3)
+Swan03 <- read.csv("Data and Data Cleanup/HollData/Elk_2003.csv")
+Swan04 <- read.csv("Data and Data Cleanup/HollData/Elk_2004.csv")
+Swan05 <- read.csv("Data and Data Cleanup/HollData/Elk_2005.csv")
+Swan06 <- read.csv("Data and Data Cleanup/HollData/Elk_2006.csv")
+Swan07 <- read.csv("Data and Data Cleanup/HollData/Elk_2007.csv")
+Swan08 <- read.csv("Data and Data Cleanup/HollData/swanton_08.csv", skip = 1)
+Swan09 <- read.csv("Data and Data Cleanup/HollData/Elk_2009.csv")
+Swan10 <- read.csv("Data and Data Cleanup/HollData/Elk_2010.csv", skip = 1)
+Swan11 <- read.csv("Data and Data Cleanup/HollData/Elk_2011.csv")
+Swan12 <- read.csv("Data and Data Cleanup/HollData/Elk_2012.csv")
 
 ```
 
@@ -1080,24 +1080,24 @@ These are data for grassland plots at UCSC. Data were collected by Karen Holl an
 
 ```{r Importing UCSC, warning=FALSE, echo=FALSE}
 
-UCSCspp <- read.csv("ComComp Data Cleanup/HollData/ElkhornSpecies.csv")
+UCSCspp <- read.csv("Data and Data Cleanup/HollData/ElkhornSpecies.csv")
 UCSCspp$species.code <- tolower(UCSCspp$species.code)
-UCSC_guilds <- read.csv("ComComp Data Cleanup/HollData/ElkhornGuilds.csv")
+UCSC_guilds <- read.csv("Data and Data Cleanup/HollData/ElkhornGuilds.csv")
 
-UCSC99 <- read.csv("ComComp Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
-UCSC00 <- read.csv("ComComp Data Cleanup/HollData/Elk_2000.csv", skip = 3)
-UCSC01 <- read.csv("ComComp Data Cleanup/HollData/Elk_2001.csv", skip = 3)
-UCSC02 <- read.csv("ComComp Data Cleanup/HollData/Elk_2002.csv", skip = 3)
-UCSC03 <- read.csv("ComComp Data Cleanup/HollData/Elk_2003.csv")
-UCSC04 <- read.csv("ComComp Data Cleanup/HollData/Elk_2004.csv")
-UCSC05 <- read.csv("ComComp Data Cleanup/HollData/Elk_2005.csv")
-UCSC06 <- read.csv("ComComp Data Cleanup/HollData/Elk_2006.csv")
-UCSC07 <- read.csv("ComComp Data Cleanup/HollData/Elk_2007.csv")
-UCSC08 <- read.csv("ComComp Data Cleanup/HollData/ucsc_08.csv")
-UCSC09 <- read.csv("ComComp Data Cleanup/HollData/Elk_2009.csv")
-UCSC10 <- read.csv("ComComp Data Cleanup/HollData/Elk_2010.csv", skip = 1)
-UCSC11 <- read.csv("ComComp Data Cleanup/HollData/Elk_2011.csv")
-UCSC12 <- read.csv("ComComp Data Cleanup/HollData/Elk_2012.csv")
+UCSC99 <- read.csv("Data and Data Cleanup/HollData/Elk_1999.csv",  skip = 4)
+UCSC00 <- read.csv("Data and Data Cleanup/HollData/Elk_2000.csv", skip = 3)
+UCSC01 <- read.csv("Data and Data Cleanup/HollData/Elk_2001.csv", skip = 3)
+UCSC02 <- read.csv("Data and Data Cleanup/HollData/Elk_2002.csv", skip = 3)
+UCSC03 <- read.csv("Data and Data Cleanup/HollData/Elk_2003.csv")
+UCSC04 <- read.csv("Data and Data Cleanup/HollData/Elk_2004.csv")
+UCSC05 <- read.csv("Data and Data Cleanup/HollData/Elk_2005.csv")
+UCSC06 <- read.csv("Data and Data Cleanup/HollData/Elk_2006.csv")
+UCSC07 <- read.csv("Data and Data Cleanup/HollData/Elk_2007.csv")
+UCSC08 <- read.csv("Data and Data Cleanup/HollData/ucsc_08.csv")
+UCSC09 <- read.csv("Data and Data Cleanup/HollData/Elk_2009.csv")
+UCSC10 <- read.csv("Data and Data Cleanup/HollData/Elk_2010.csv", skip = 1)
+UCSC11 <- read.csv("Data and Data Cleanup/HollData/Elk_2011.csv")
+UCSC12 <- read.csv("Data and Data Cleanup/HollData/Elk_2012.csv")
 ```
 
 After creating objects for each year, we will clean each to a compatible structure. 
