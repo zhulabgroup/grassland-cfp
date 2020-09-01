@@ -556,10 +556,39 @@ ggplot(graphs.df, aes(color = site)) +
   geom_bar(aes(x = year, y = precip/200, fill = site, color = site, alpha = 0.01), stat = "identity") +
   labs(x = "Year",
        title = "Temp (mean, min, and winter min) and precip over time") +
+  theme_bw() +
   theme(legend.position = "none") +
   scale_y_continuous(name = "Mean (solid), mini (dash), and winter min (dot) annual temperature (°C)", 
                      sec.axis = sec_axis(~.*200, name = "Annual precipitation (mm)")) +
-  facet_wrap(~site, ncol = 2, scales = "free")
+  facet_wrap(~site, ncol = 4, scales = "free")
 
+
+
+graphs.df <- left_join(all.CTI.wtryr, tminforgraph) %>%
+  group_by(site) %>%
+  summarize(tmin = mean(tmin),
+            wintmin = mean(wintmin),
+            tmean = mean(tmean),
+            precip = mean(precip))
+
+ggplot(graphs.df, aes(color = site)) + 
+  geom_line(aes(x = site, y = tmean)) +
+  geom_point(aes(x = site, y = tmean), color = "black") +
+  labs(x = "Year",
+       title = "Temp (mean, min, and winter min) and precip over time") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  scale_y_continuous(name = "Mean (solid), mini (dash), and winter min (dot) annual temperature (°C)", 
+                     sec.axis = sec_axis(~.*200, name = "Annual precipitation (mm)")) +
+  facet_wrap(~site, ncol = 4, scales = "free")
+
+```
+
+
+```{r mean temp, precip per site}
+means.all.CTI.wtryr <- all.CTI.wtryr %>%
+  group_by(site) %>%
+  summarize(precip = mean(precip),
+            tmean = mean(tmean))
 ```
 
