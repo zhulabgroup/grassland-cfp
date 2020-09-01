@@ -151,3 +151,86 @@ write.csv(climate_site_wtryr, "Analysis/ClimData/PRISM_wtryr_data.csv")
 ```
 
 
+```{r Prism data download, eval=FALSE}
+options(prism.path = "Analysis/ClimData/prism/2020")
+get_prism_monthlys(type = "vpdmax", years = 1982:2019, mon = 1:12, keepZip = F)
+
+
+# Stack all of the prism raster data
+climate_data <- ls_prism_data() %>% prism_stack(.)
+
+# Get proj from raster stack
+climate_crs <- climate_data@crs@projargs
+ 
+sites <- data.frame(site = c("Jasper", "Elkhorn", 
+                             "McL Ann", "McL Serp", 
+                             "UCSC", "Swanton", 
+                             "Angelo", "Carrizo"),
+                    Lat = c(37.406855, 36.868095, 
+                            38.869529, 38.869529, 
+                            36.988252, 37.070389, 
+                            39.738936, 35.114272),
+                    Long = c (-122.223305, -121.740360, 
+                              -122.419575, -122.419575, 
+                              -122.051716, -122.250000, 
+                              -123.630758, -119.773864))
+
+# Convert these locations to format that can be matched to Prism climate data
+coordinates(sites) <- c('Long', 'Lat')
+proj4string(sites) <- CRS(climate_crs)
+
+# Extract the  extracted from the raster stack for those sites 
+climate_site_daily_raw <- data.frame(coordinates(sites), 
+                   sites$site, 
+                   raster::extract(climate_data, sites))
+
+
+# Reshape data. Col 1:3 are lat, long, and site ID. Col 4:ncol are climate data
+# Column headers include date and climate type info
+climate_site_daily <- climate_site_daily_raw %>% 
+  gather(date, value, 4:ncol(climate_site_raw))
+
+climate_site_daily$date <- gsub('PRISM_', '', climate_site_daily$date) %>% 
+  gsub('provisional_4kmM3_', '', .) %>% 
+  gsub('provisional_4kmM2_', '', .) %>%
+  gsub('stable_4kmM3_', '', .) %>% 
+  gsub('stable_4kmM2_', '', .) %>%
+  gsub('_bil', '', .)
+
+# Split header into type (precipitation or temperature), year, and month
+climate_site_daily <- separate(climate_site_daily, 'date', 
+                 into = c('type', 'YearMonth'), 
+                 sep = '_')
+climate_site_daily <- separate(climate_site_daily, 'YearMonth',
+                 into = c('year', 'month'),
+                 sep = 4)
+
+# Reshape data-- make a separate column for temperature and precipitation
+climate_site_daily <- unique(climate_site_daily)
+climate_site_daily <- climate_site_daily %>% 
+  spread(type, value) %>%
+  rename(site = sites.site) %>%
+  mutate(Year1 = year,
+         Month1 = month) %>%
+  unite(Year1, Month1, col = "date", sep = "-")
+
+climate_site_daily$date <- lubridate::ymd(climate_site_daily$date, truncated = 1L)
+climate_site_wtryr_daily <- climate_site_daily %>% 
+  mutate(date1 = date,
+         wateryr = wtr_yr(date1)) %>%
+  group_by(site, wateryr) %>%
+  summarise(precip = sum(ppt),
+            tmean = mean(tmean),
+            tmin = mean(tmin),
+            tmax = mean(tmax)) %>%
+  rename(year = wateryr) %>%
+  filter(year != 2020)
+
+# Make year and month numeric variables
+climate_site_daily$year  <- as.numeric(climate_site_daily$year)
+climate_site_wtryr_daily$year  <- as.numeric(climate_site_wtryr_daily$year)
+
+write.csv(climate_site_daily, "Analysis/ClimData/PRISM_data_daily.csv")
+write.csv(climate_site_wtryr_daily, "Analysis/ClimData/PRISM_wtryr_data_daily.csv")
+
+```
