@@ -32,17 +32,16 @@ g_legend <- function(a.gplot){
 } 
 ```
 
-```{r com data import, echo=FALSE}
-rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv")
-```
 
-```{r prism data import and prep, echo = FALSE}
+```{r data import and prep, echo = FALSE}
+rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv") %>% 
+  select(-X)
+
 weather <- read.csv("Analysis/ClimData/PRISM_data.csv") %>%
   select(-X)
 
 wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv") %>%
   select(-X)
-
 ```
 
 # Changes in guild-level cover over time
@@ -102,10 +101,13 @@ gcov_all_means <- gcov_all %>%
             tmean = mean(tmean),
             tmax = mean(tmax),
             tmin = mean(tmin)) %>%
-  filter(guild == "Nat" | guild == "Exo")
+#  filter(guild == "Nat" | guild == "Exo")
 #   filter(guild == "NatForb" | guild == "NatGr" | guild == "ExoForb" | guild == "ExoGr")
 #  filter(guild == "Nat" | guild == "NatAnGr" | guild == "NatPerGr" | guild == "NatAnFo" | guild == "NatPerFo")
 #  filter(guild == "Exo" | guild == "ExoAnGr" | guild == "ExoPerGr" | guild == "ExoAnFo" | guild == "ExoPerFo")
+#  filter(guild == "Ann" | guild == "Nat" | guild == "Forbs")
+  filter(guild == "Nat")
+  
 
 gcov_all_means <- gcov_all_means %>%
   mutate(guild = recode(guild,
@@ -132,7 +134,15 @@ ggplot(gcov_all_means, aes(x = year, y = meanrelcov, color = guild)) +
         axis.text.x = element_text(angle = -90, vjust = 0.5)) +
   scale_y_continuous(limits = c(0,NA)) + 
   expand_limits(y = 0)+
-  facet_grid(vars(guild), vars(site), scales = "free")
+  facet_grid(guild~site, scales = "free_x")
+
+
+## Overall realtive native cover for table
+overall_mean_natrelcov <- gcov_all %>%
+  group_by(site, guild) %>%
+  summarise(serelcov = (std.error(meancov)),
+            meanrelcov = mean(meancov)) %>%
+  filter(guild == "Nat")
 
 ```
 
@@ -265,7 +275,6 @@ summary(glm(meancov ~ year,
 
 ```
 
-
 ```{r EXOTIC GRASS MODELS}
 gcov_all_exogr <- gcov_all %>%
   filter(guild == "Exo") %>%
@@ -309,6 +318,49 @@ summary(glm(meancov ~ year,
 
 ```
 
+```{r NATIVE COVER MODELS}
+gcov_all_nat <- gcov_all %>%
+  filter(guild == "Nat") %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+
+gcov_all_nat$year <- as.numeric(gcov_all_nat$year)
+
+# Angelo
+summary(glm(meancov ~ year ,  
+              data = gcov_all_nat[gcov_all_nat$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data?
+summary(glm(meancov ~ year, 
+              data = gcov_all_nat[gcov_all_nat$site == "Carrizo",]))
+
+# Elkhorn
+summary(glm(meancov ~ year,
+              data = gcov_all_nat[gcov_all_nat$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(meancov ~ year, 
+              data = gcov_all_nat[gcov_all_nat$site == "Jasper",]))
+
+# McL Ann
+summary(glm(meancov ~ year, 
+              data = gcov_all_nat[gcov_all_nat$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(meancov ~ year, 
+              data = gcov_all_nat[gcov_all_nat$site == "McL Serp",]))
+
+# Swanton
+summary(glm(meancov ~ year, 
+              data = gcov_all_nat[gcov_all_nat$site == "Swanton",]))
+
+# UCSC
+summary(glm(meancov ~ year,
+            data = gcov_all_nat[gcov_all_nat$site == "UCSC",]))
+
+```
+
 
 # Species richness over time
 
@@ -348,11 +400,11 @@ grich_all_means <- grich_all_weather %>%
             tmean = mean(tmean),
             tmax = mean(tmax),
             tmin = mean(tmin)) %>%
-  filter(guild == "Exo" | guild == "Nat" | guild == "Grasses" | guild == "Forbs")
+  filter(guild == "Exo" | guild == "Nat")
 
 grich_all_means <- grich_all_means %>%
   mutate(guild = recode(guild,
-                        "Exo" = "Exotic",
+                        "Exo" = "Non-Native",
                         "Nat" = "Native",
                         "All" = "All Species"))
   
@@ -365,8 +417,8 @@ ggplot(grich_all_means, aes(x = year, y = meanrich, color = guild)) +
   facet_wrap(~site, scales = "free", ncol = 4) +
   theme_bw() +
   scale_y_continuous(limits = c(0,NA)) + 
-  expand_limits(y = 0) +
-  geom_smooth(method='lm')
+  expand_limits(y = 0) 
+# + geom_smooth(method='lm')
 
 ```
 
@@ -814,15 +866,17 @@ ggplot(all_turn_means, aes(x = precip, y = meanturn)) +
   theme(legend.position = "none") +
   stat_smooth(method = "lm", se = F, size =  1)
 
-grid.arrange(
-  ggplot(all_turn_means, aes(x = year, y = meanturn, color = site)) +
+
+  ggplot(all_turn_means, aes(x = year, y = meanturn)) +
     geom_line() +
     geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
     labs(title = "Community turnover over time",
          x = "Year",
          y = "Turnover (# spp. lost & gained/total # spp.)") +
-    facet_wrap(~site, ncol = 4, scale = "free") +
-    theme(legend.position = "none"),
+    facet_wrap(~site, ncol = 8, scales = "free_x") +
+    theme(legend.position = "none")
+  
+  
   
   ggplot(all_turn_means_lump, aes(x = meanprecip, y = meanturn, color = site)) +
     geom_point() +
@@ -833,7 +887,7 @@ grid.arrange(
          y = "Turnover") +
     scale_x_continuous(limits = c(0,2000), expand = c(0,0)) +
     scale_y_continuous(limits = c(0,0.7), expand = c(0,0)) +
-    theme(legend.position = "top"),
+    theme(legend.position = "top")
   
   ggplot(all_turn_means_lump, aes(x = meancov, y = meanturn, color = site)) +
     geom_point() +
@@ -843,7 +897,7 @@ grid.arrange(
     scale_x_continuous(limits = c(0,1), expand = c(0,0)) +
     scale_y_continuous(limits = c(0,0.7), expand = c(0,0)) +
     theme(legend.position = "none")
-)
+
 
 ```
 
@@ -892,9 +946,143 @@ summary(glm(turnover ~ year,
               data = all_turn_models[all_turn_models$site == "UCSC",]))
 ```
 
+# uwCTI over time
 
+Here, we'll try to analyze unweighted CTI for all of the sites at once - this means that rare and common species will have the same weight towards the CTI of a site over time. 
 
-# Changes in CTI over time
+```{r import uwCTI data}
+uwCTI_all_raw <- read.csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+  
+uwCTI_all_raw <- uwCTI_all_raw %>%
+  filter(species.name != "Linanthus jepsonii",
+         species.name != "Linanthus latisectus")
+
+uwCTI_all <- uwCTI_all_raw %>%
+  filter(relcov >= 0) %>%
+  group_by(site, year, plot) %>%
+  summarise(plotCTI = mean(meanT),
+            plotCPI = mean(meanp))
+
+uwCTI_plot_means <- uwCTI_all %>%
+  group_by(site, plot, year) %>%
+  summarise(meanCTI = mean(plotCTI),
+            seCTI = std.error(plotCTI),
+            meanCPI = mean(plotCPI),
+            seCPI = std.error(plotCPI))
+
+uwCTI_site_means <- uwCTI_all %>%
+  group_by(site, year) %>%
+  summarise(meanCTI = mean(plotCTI),
+            seCTI = std.error(plotCTI),
+            meanCPI = mean(plotCPI),
+            seCPI = std.error(plotCPI))
+
+grid.arrange(
+ggplot(uwCTI_site_means, aes(x = year, y = meanCTI)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
+  labs(title = "All sites - unweighted Community Temperature Index",
+       x = "Year",
+       y = "uwCTI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 8) # + geom_smooth(method = "lm")
+,
+ggplot(uwCTI_site_means, aes(x = year, y = meanCPI)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
+  labs(title = "All sites - Community Precipitation Index",
+       x = "Year",
+       y = "uwCPI") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 8) # + geom_smooth(method = "lm")
+)
+```
+
+```{r uwCTI MODELS}
+uwCTI_models <- uwCTI_plot_means %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+uwuwCTI_models$year <- as.numeric(uwuwCTI_models$year)
+
+# Angelo
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data for now
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "Carrizo",]))
+
+# Elkhorn
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "Jasper",]))
+
+# McL Ann
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "McL Serp",]))
+
+# Swanton
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "Swanton",]))
+
+# UCSC
+summary(glm(meanCTI ~ year,
+              data = uwCTI_models[uwCTI_models$site == "UCSC",]))
+```
+
+```{r uwCPI MODELS}
+uwCPI_models <- uwCTI_plot_means %>%
+  mutate(year2 = year,
+         # we rescale the year to improve the model and prevent eigenvalue warnings
+         year = abs(year2-1983))
+uwCPI_models$year <- as.numeric(uwCPI_models$year)
+
+# Angelo
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "Angelo",]))
+
+# Carrizo - has a problem, inconsistent plots -- ignore data for now
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "Carrizo",]))
+
+# Elkhorn
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "Elkhorn",]))
+
+# Jasper
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "Jasper",]))
+
+# McL Ann
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "McL Ann",]))
+
+# McL Serp
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "McL Serp",]))
+
+# Swanton
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "Swanton",]))
+
+# UCSC
+summary(glm(meanCPI ~ year,
+              data = uwCPI_models[uwCPI_models$site == "UCSC",]))
+```
+
+# Changes in wCTI over time
 
 Here, we'll try to analyze CTI for all of the sites at once. 
 
@@ -929,7 +1117,8 @@ CTI_site_means <- CTI_all %>%
             meanCPI = mean(plotCPI),
             seCPI = std.error(plotCPI))
 
-ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
+grid.arrange(
+ggplot(CTI_site_means, aes(x = year, y = meanCTI)) +
   geom_line() +
   geom_point() +
   geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
@@ -938,8 +1127,8 @@ ggplot(CTI_site_means, aes(x = year, y = meanCTI, color = site)) +
        y = "CTI") +
   theme_bw() +
   theme(legend.position = "none") +
-  facet_wrap(~site, scales = "free", ncol = 4) + geom_smooth(method = "lm")
-  
+  facet_wrap(~site, scales = "free", ncol = 8) # + geom_smooth(method = "lm")
+,
 ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
   geom_line() +
   geom_point() +
@@ -949,8 +1138,8 @@ ggplot(CTI_site_means, aes(x = year, y = meanCPI, color = site)) +
        y = "CPI") +
   theme_bw() +
   theme(legend.position = "none") +
-  facet_wrap(~site, scales = "free", ncol = 4) + geom_smooth(method = "lm")
-
+  facet_wrap(~site, scales = "free", ncol = 8) # + geom_smooth(method = "lm")
+)
 ```
 
 ```{r compare guild average CPI/CTI}
@@ -986,7 +1175,7 @@ CTI_models$year <- as.numeric(CTI_models$year)
 
 # Angelo
 summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "Angelo",]))
+              data = uwCTI_models[CTI_models$site == "Angelo",]))
 
 # Carrizo - has a problem, inconsistent plots -- ignore data for now
 summary(glm(meanCTI ~ year,
@@ -1006,19 +1195,7 @@ summary(glm(meanCTI ~ year,
 
 # McL Serp
 summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "McL Serp",]))
-
-# Swanton
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "Swanton",]))
-
-# UCSC
-summary(glm(meanCTI ~ year,
-              data = CTI_models[CTI_models$site == "UCSC",]))
-```
-
-```{r CPI MODELS}
-CPI_models <- CTI_plot_means %>%
+              data = CTI_models[CTI_models$site == "McL Serp",]))t_means %>%
   mutate(year2 = year,
          # we rescale the year to improve the model and prevent eigenvalue warnings
          year = abs(year2-1983))
@@ -1067,6 +1244,7 @@ wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv") %>%
 CTI_Clim_Rich <- left_join(CTI_site_means, wtryr_weather)
 CTI_Clim_Rich <- left_join(CTI_Clim_Rich, grich_all_means)
 
+## Mean T and CTI
 ggplot(CTI_Clim_Rich, aes(x = tmean, y = meanCTI, color = site)) +
   geom_point() +
   theme_bw() +
@@ -1074,12 +1252,66 @@ ggplot(CTI_Clim_Rich, aes(x = tmean, y = meanCTI, color = site)) +
   facet_wrap(~site, scales = "free", ncol = 4) + 
   geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
 
+## Min T and CTI
+ggplot(CTI_Clim_Rich, aes(x = precip, y = meanCTI, color = site)) +
+  geom_point() +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+## Annual Precipitation and CPI
+
+## Annual Precipitation and CPI
 ggplot(CTI_Clim_Rich, aes(x = precip, y = meanCPI, color = site)) +
   geom_point() +
   theme_bw() +
   theme(legend.position = "none") +
   facet_wrap(~site, scales = "free", ncol = 4) + 
   geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Angelo",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Carrizo",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Elkhorn",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Jasper",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "McL Ann",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "McL Serp",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Swanton",]))
+summary(glm(meanCPI ~ precip,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "UCSC",]))
+
+## Minimum T and CTI
+ggplot(CTI_Clim_Rich, aes(x = tmin, y = meanCTI, color = site)) +
+  geom_point() +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Angelo",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Carrizo",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Elkhorn",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Jasper",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "McL Ann",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "McL Serp",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Swanton",]))
+summary(glm(meanCTI ~ tmin,
+              data = CTI_Clim_Rich[CTI_Clim_Rich$site == "UCSC",]))
+
 
 ggplot(CTI_Clim_Rich, aes(x = tmin, y = meanCPI, color = site)) +
   geom_point() +
@@ -1093,5 +1325,202 @@ ggplot(CTI_Clim_Rich, aes(x = meanrich, y = meanCTI, color = site)) +
   theme(legend.position = "none") +
   facet_wrap(~site, scales = "free", ncol = 4) + 
   geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+ggplot(CTI_Clim_Rich, aes(x = meanCTI, y = meanCPI, color = site)) +
+  geom_point() +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
 ```
+
+
+# Comparing CTI of Native and Non-Native species
+```{r CTI by nat/non-nat}
+STI_byspecies_raw <- CTI_all_raw %>%
+  group_by(species.name, guild, site) %>%
+  summarise(SpTI = mean(meanT),
+            SpPI = mean(meanp)) %>%
+  mutate(guild = recode_factor(guild, 
+                               "NAF" = "Native Annual Forb",
+                               "NAG" = "Native Annual Grass",
+                               "NPF" = "Native Perennial Forb",
+                               "NPG" = "Native Perennial Grass",
+                               "EAF" = "Non-native Annual Forb",
+                               "EAG" = "Non-native Annual Grass",
+                               "EPF" = "Non-native Perennial Forb",
+                               "EPG" = "Non-native Perennial Grass",
+                               "NPS" = "Native Perennial Shrub",
+                               "NPT" = "Native Perennial Tree",
+                               "NAGr" = "Native Annual Graminiod",
+                               "NPGr" = "Native Perennial Graminiod"
+                               )) %>%
+  filter(guild != "NANANA") %>%
+  separate(guild, into = c("Provenance", "AnnPer", "Lifeform"), sep = " ")
+
+STI_byspecies <- STI_byspecies_raw %>%
+  group_by(site, Provenance) %>%
+  summarise(STI = mean(SpTI),
+            SPI = mean(SpPI),
+            seSTI = std.error(SpTI),
+            seSPI = std.error(SpPI))
+
+
+STI_graph <- ggplot(STI_byguild, aes(x = Provenance, y = STI, color = Provenance)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = STI - seSTI, ymax = STI + seSTI)) +
+  labs(y = "Mean Species \n Temperature Index") +
+  theme_bw() +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  facet_wrap(~site, ncol = 8)
+
+SPI_graph <- ggplot(STI_byguild, aes(x = Provenance, y = SPI, color = Provenance)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = SPI - seSPI, ymax = SPI + seSPI)) +
+  labs(y = "Mean Species \n Precipitation Index") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  facet_wrap(~site, ncol = 8)
+
+nat_exo <- g_legend(STI_graph)
+
+grid.arrange(arrangeGrob(STI_graph + theme(legend.position = "none"), SPI_graph, ncol=1, nrow=2),
+         arrangeGrob(nat_exo, ncol=1, nrow=1), heights=c(6,0), widths=c(4,1))
+
+
+# t-tests
+## STI
+# Angelo
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Angelo",])
+
+# Carrizo
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Carrizo",])
+
+# Elkhorn
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Elkhorn",])
+
+# Jasper
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Jasper",])
+
+# McL Ann
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "McL Ann",])
+
+# McL Serp
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "McL Serp",])
+
+# Swanton
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Swanton",])
+
+# UCSC
+t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "UCSC",])
+
+
+## SPI
+# Angelo
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Angelo",])
+
+# Carrizo
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Carrizo",])
+
+# Elkhorn
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Elkhorn",])
+
+# Jasper
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Jasper",])
+
+# McL Ann
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "McL Ann",])
+
+# McL Serp
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "McL Serp",])
+
+# Swanton
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Swanton",])
+
+# UCSC
+t.test(SpPI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "UCSC",])
+
+```
+
+
+## figs for draft
+```{r draft figures}
+
+grid.arrange(
+ggplot(grich_all_means, aes(x = year, y = meanrich, color = guild)) +
+  geom_line() +
+  geom_errorbar(aes(ymin = (meanrich - serich), ymax = (meanrich + serich))) +
+  labs(title = "All sites - Richness over time",
+       x = "Year",
+       y = "Richness (# spp.)") +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  scale_y_continuous(limits = c(0,NA)) + 
+  expand_limits(y = 0) +
+  facet_wrap(~site, scales = "free_x", ncol = 8) 
+# + geom_smooth(method='lm')
+,
+ ggplot(gcov_all_means, aes(x = year, y = meanrelcov, color = guild)) +
+  geom_line() +
+  scale_linetype_manual(values=c("dotted", "solid")) +
+  geom_errorbar(aes(ymin = (meanrelcov - serelcov), ymax = (meanrelcov + serelcov))) +
+  labs(title = "All sites - Relative cover over time",
+       x = "Year",
+       y = "% Cover (relative)") +
+  theme_bw() +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = -90, vjust = 0.5)) +
+  scale_y_continuous(limits = c(0,NA)) + 
+  expand_limits(y = 0)+
+  facet_wrap(~site, scales = "free_x", ncol = 8)
+)
+
+
+ggplot(all_turn_means, aes(x = year, y = meanturn)) +
+    geom_line() +
+    geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+    labs(title = "Community turnover over time",
+         x = "Year",
+         y = "Turnover (# lost + gained/total # spp.)") +
+    facet_wrap(~site, ncol = 8, scales = "free_x") +
+    theme_bw() +
+    theme(axis.text.x = element_text(angle = -90, vjust = 0.5),
+          legend.position = "none")
+
+grid.arrange(
+ggplot(CTI_site_means, aes(x = year, y = meanCTI)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCTI - seCTI), ymax = (meanCTI + seCTI))) +
+  labs(title = "All sites - Community Temperature Index",
+       x = "Year",
+       y = "CTI") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.text.y = element_text(angle = 90, hjust = 0.5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  facet_wrap(~site, scales = "free", ncol = 8) # + geom_smooth(method = "lm")
+,
+ggplot(CTI_site_means, aes(x = year, y = meanCPI)) +
+  geom_line() +
+  geom_point() +
+  geom_errorbar(aes(ymin = (meanCPI - seCPI), ymax = (meanCPI + seCPI))) +
+  labs(title = "All sites - Community Precipitation Index",
+       x = "Year",
+       y = "CPI") +
+  theme_bw() +
+  theme(legend.position = "none",
+        axis.text.y = element_text(angle = 90, hjust = 0.5),
+        axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+  facet_wrap(~site, scales = "free", ncol = 8) # + geom_smooth(method = "lm")
+)
+
+```
+
 
