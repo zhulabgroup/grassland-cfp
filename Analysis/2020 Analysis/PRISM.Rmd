@@ -8,229 +8,125 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_knit$set(root.dir = '../') 
 
-## community analysis
-library(codyn)
-library(MASS)
-library(vegan)
-library(lme4)
-
 ## CTI + PRISM
-library(CoordinateCleaner)
-library(countrycode)
-library(mapr)
-library(maptools)
 library(raster)
-library(rgbif)
-library(scrubr)
-library(sp)
-library(spocc)
 library(prism)
 
 ## misc/both/other
-library(oz)
 library(plotrix)
 library(tidyverse)
 library(reshape2)
 library(stringr)
-library(psych)
+library(lubridate)
+
+# converts the year into the water year based on month
+wtr_yr <- function(dates, start_month=10) {
+  # Convert dates into POSIXlt
+  dates.posix = as.POSIXlt(dates)
+  # Year offset
+  offset = ifelse(dates.posix$mon >= start_month - 1, 1, 0)
+  # Water year
+  adj.year = dates.posix$year + 1900 + offset
+  # Return the water year
+  adj.year
+}
+
 
 ```
 
 # PRISM DATA
+## New Data Download Method
 
-## Background
+This data was downloaded directly form the PRISM website and represents all monthly PRISM data fields for the sites above. We used interpolated data for the specific site coordinates. 
 
-The goal of this markdown doc is to download PRISM data via the 'prism' R package and create a .csv file of the climate data at each site.
+[PRISM dataset.](https://prism.oregonstate.edu/explorer/)
 
-To do this, we'll need some GPS points for the plots in my studies...  
+```{r important downloaded PRISM data}
+ang_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Angelo_PRISM_all.csv", skip = 10) %>% mutate(site = "Angelo")
 
-Jasper ridge: 37.406855, -122.223305
-Elkhorn slough: 36.868095, -121.740360
-McLaughlin Reserve: 38.869529, -122.419575...  
+car_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Carrizo_PRISM_all.csv", skip = 10) %>% mutate(site = "Carrizo")
 
+elk_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Elkhorn_PRISM_all.csv", skip = 10) %>% mutate(site = "Elkhorn")
 
-Here's a neat webpage to help me get the correct data out of prism!
-https://rpubs.com/collnell/get_prism
+jasp_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/JasperRidge_PRISM_all.csv", skip = 10) %>% mutate(site = "Jasper")
 
+mcL_ann_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/McL_PRISM_all.csv", skip = 10) %>% mutate(site = "McL Ann")
 
-## Data Download
-First, we download all of the data from PRISM. This is based on the rpubs docs by (Shannon Carter)[https://rpubs.com/shannon_carter/471278] and (Colleen N.)[https://rpubs.com/collnell/get_prism].
-```{r Prism data download, eval=FALSE}
-options(prism.path = "Analysis/ClimData/prism/2020")
-get_prism_monthlys(type = "ppt", years = 1982:2019, mon = 1:12, keepZip = F)
-get_prism_monthlys(type = "tmean", years = 1981:2019, mon = 1:12, keepZip = F)
-get_prism_monthlys(type = "tmin", years = 1981:2019, mon = 1:12, keepZip = F)
-get_prism_monthlys(type = "tmax", years = 1981:2019, mon = 1:12, keepZip = F)
+mcL_serp_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/McL_PRISM_all.csv", skip = 10) %>% mutate(site = "McL Serp")
 
-# Stack all of the prism raster data
-climate_data <- ls_prism_data() %>% prism_stack(.)
+swan_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Swanton_PRISM_all.csv", skip = 10) %>% mutate(site = "Swanton")
 
-# Get proj from raster stack
-climate_crs <- climate_data@crs@projargs
+ucsc_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/UCSC_PRISM_all.csv", skip = 10) %>% mutate(site = "UCSC")
+
+prism <- full_join(ang_prism, car_prism)
+prism <- full_join(prism, jasp_prism)
+prism <- full_join(prism, elk_prism)
+prism <- full_join(prism, mcL_ann_prism)
+prism <- full_join(prism, mcL_serp_prism)
+prism <- full_join(prism, swan_prism)
+prism <- full_join(prism, ucsc_prism)
+
+prism$ppt..inches. <- as.numeric(prism$ppt..inches.)
+```
+
+Now, we need to fix the way the dates are diplayed. 
+
+```{r clean prism data}
+prism_clean <- prism %>%
+  mutate(date = Date) %>%
+  separate(Date, into = c("year", "month")) %>%
+  mutate(full_date = parse_date_time(date, "ym"),
+         wateryear = wtr_yr(full_date)) %>%
+  rename("precip_inches" = "ppt..inches.",
+         "tmin_F" = "tmin..degrees.F.",
+         "tmean_F" = "tmean..degrees.F.",
+         "tmax_F" = "tmax..degrees.F.",
+         "vpdmin_hPa" = "vpdmin..hPa.",
+         "vpdmax_hPa" = "vpdmax..hPa.") %>%
+  mutate(precip_mm = (precip_inches*25.4),
+         tmin_c = (5/9)*(tmin_F-32),
+         tmean_c = (5/9)*(tmean_F-32),
+         tmax_c = (5/9)*(tmax_F-32),
+         vpd_mean = ((vpdmin_hPa+vpdmax_hPa)/2)) %>%
+  dplyr::select(site, date, wateryear, year, month, precip_mm, tmin_c, tmax_c, tmean_c, vpdmin_hPa, vpdmax_hPa, vpd_mean) 
+
+# calculate mean water-year values
+prism_by_wtryr <- prism_clean %>%
+  group_by(site, wateryear) %>%
+  summarise(total_precip = sum(precip_mm),
+            mean_minT = mean(tmin_c),
+            mean_maxT = mean(tmax_c),
+            mean_meanT = mean(tmean_c),
+            mean_vpdmax = mean(vpdmax_hPa),
+            mean_vpdmin = mean(vpdmin_hPa),
+            mean_vpdmean = mean(vpd_mean),)
+
+prism_win <- prism_clean %>%
+  filter(month == "12" | month == "01" | month == "02") %>%
+  group_by(site, wateryear) %>%
+  summarise(win_precip = sum(precip_mm),
+            win_minT = mean(tmin_c),
+            win_maxT = mean(tmax_c),
+            win_meanT = mean(tmean_c),
+            win_vpdmax = mean(vpdmax_hPa),
+            win_vpdmin = mean(vpdmin_hPa),
+            win_vpdmean = mean(vpd_mean))
+
+prism_all <- left_join(prism_by_wtryr, prism_win) %>%
+  filter(wateryear != "2020")
+
+## Graphing variables real quick
+prism_graphs <- gather(prism_all, "total_precip":"win_vpdmean", key = "var", value = "value")
+
+ggplot(prism_graphs, aes(x = wateryear, y = value, group = site, color = site)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~var, scales = "free")
+```
+
+```{r save data}
+
+write.csv(prism_all, "Analysis/ClimData/PRISM_wtryr_alldata.csv")
 
 ```
 
-After downloading all of the PRISM raster data, we need to extract the data for our specific sites. We can do this by associating the site name with a lat/long and extracting from the raster.  
-
-We begin by making a dataframe with the lat/long, then convert that to match the PRISM format.
-
-```{r create site lat/long} 
-sites <- data.frame(site = c("Jasper", "Elkhorn", "McL Ann", "McL Serp", "UCSC", "Swanton", "Angelo", "Carrizo"),
-                    Lat = c(37.406855, 36.868095, 38.869529, 38.869529, 36.988252, 37.070389, 39.738936, 35.114272),
-                    Long = c (-122.223305, -121.740360, -122.419575, -122.419575, -122.051716, -122.250000, -123.630758, -119.773864))
-
-# Convert these locations to format that can be matched to Prism climate data
-coordinates(sites) <- c('Long', 'Lat')
-proj4string(sites) <- CRS(climate_crs)
-
-```
-
-Then, we extract the data. 
-
-
-```{r extract climate data, eval = false}
-# Extract the  extracted from the raster stack for those sites 
-climate_site_raw <- data.frame(coordinates(sites), 
-                   sites$site, 
-                   raster::extract(climate_data, sites))
-
-```
-
-```{r reshape climate from raster}
-# Reshape data. Col 1:3 are lat, long, and site ID. Col 4:ncol are climate data
-# Column headers include date and climate type info
-climate_site <- climate_site_raw %>% 
-  gather(date, value, 4:ncol(climate_site_raw))
-
-climate_site$date <- gsub('PRISM_', '', climate_site$date) %>% 
-  gsub('provisional_4kmM3_', '', .) %>% 
-  gsub('provisional_4kmM2_', '', .) %>%
-  gsub('stable_4kmM3_', '', .) %>% 
-  gsub('stable_4kmM2_', '', .) %>%
-  gsub('_bil', '', .)
-
-# Split header into type (precipitation or temperature), year, and month
-climate_site <- separate(climate_site, 'date', 
-                 into = c('type', 'YearMonth'), 
-                 sep = '_')
-climate_site <- separate(climate_site, 'YearMonth',
-                 into = c('year', 'month'),
-                 sep = 4)
-
-# Reshape data-- make a separate column for temperature and precipitation
-climate_site <- unique(climate_site)
-climate_site <- climate_site %>% 
-  spread(type, value) %>%
-  rename(site = sites.site) %>%
-  mutate(Year1 = year,
-         Month1 = month) %>%
-  unite(Year1, Month1, col = "date", sep = "-")
-
-climate_site$date <- lubridate::ymd(climate_site$date, truncated = 1L)
-climate_site_wtryr <- climate_site %>% 
-  mutate(date1 = date,
-         wateryr = wtr_yr(date1)) %>%
-  group_by(site, wateryr) %>%
-  summarise(precip = sum(ppt),
-            tmean = mean(tmean),
-            tmin = mean(tmin),
-            tmax = mean(tmax)) %>%
-  rename(year = wateryr) %>%
-  filter(year != 2020)
-
-# Make year and month numeric variables
-climate_site$year  <- as.numeric(climate_site$year)
-climate_site_wtryr$year  <- as.numeric(climate_site_wtryr$year)
-```
-
-```{r writing our csv files}
-
-write.csv(climate_site, "Analysis/ClimData/PRISM_data.csv")
-write.csv(climate_site_wtryr, "Analysis/ClimData/PRISM_wtryr_data.csv")
-
-```
-
-
-```{r Prism data download, eval=FALSE}
-options(prism.path = "Analysis/ClimData/prism/2020")
-get_prism_monthlys(type = "vpdmax", years = 1982:2019, mon = 1:12, keepZip = F)
-
-
-# Stack all of the prism raster data
-climate_data <- ls_prism_data() %>% prism_stack(.)
-
-# Get proj from raster stack
-climate_crs <- climate_data@crs@projargs
- 
-sites <- data.frame(site = c("Jasper", "Elkhorn", 
-                             "McL Ann", "McL Serp", 
-                             "UCSC", "Swanton", 
-                             "Angelo", "Carrizo"),
-                    Lat = c(37.406855, 36.868095, 
-                            38.869529, 38.869529, 
-                            36.988252, 37.070389, 
-                            39.738936, 35.114272),
-                    Long = c (-122.223305, -121.740360, 
-                              -122.419575, -122.419575, 
-                              -122.051716, -122.250000, 
-                              -123.630758, -119.773864))
-
-# Convert these locations to format that can be matched to Prism climate data
-coordinates(sites) <- c('Long', 'Lat')
-proj4string(sites) <- CRS(climate_crs)
-
-# Extract the  extracted from the raster stack for those sites 
-climate_site_daily_raw <- data.frame(coordinates(sites), 
-                   sites$site, 
-                   raster::extract(climate_data, sites))
-
-
-# Reshape data. Col 1:3 are lat, long, and site ID. Col 4:ncol are climate data
-# Column headers include date and climate type info
-climate_site_daily <- climate_site_daily_raw %>% 
-  gather(date, value, 4:ncol(climate_site_raw))
-
-climate_site_daily$date <- gsub('PRISM_', '', climate_site_daily$date) %>% 
-  gsub('provisional_4kmM3_', '', .) %>% 
-  gsub('provisional_4kmM2_', '', .) %>%
-  gsub('stable_4kmM3_', '', .) %>% 
-  gsub('stable_4kmM2_', '', .) %>%
-  gsub('_bil', '', .)
-
-# Split header into type (precipitation or temperature), year, and month
-climate_site_daily <- separate(climate_site_daily, 'date', 
-                 into = c('type', 'YearMonth'), 
-                 sep = '_')
-climate_site_daily <- separate(climate_site_daily, 'YearMonth',
-                 into = c('year', 'month'),
-                 sep = 4)
-
-# Reshape data-- make a separate column for temperature and precipitation
-climate_site_daily <- unique(climate_site_daily)
-climate_site_daily <- climate_site_daily %>% 
-  spread(type, value) %>%
-  rename(site = sites.site) %>%
-  mutate(Year1 = year,
-         Month1 = month) %>%
-  unite(Year1, Month1, col = "date", sep = "-")
-
-climate_site_daily$date <- lubridate::ymd(climate_site_daily$date, truncated = 1L)
-climate_site_wtryr_daily <- climate_site_daily %>% 
-  mutate(date1 = date,
-         wateryr = wtr_yr(date1)) %>%
-  group_by(site, wateryr) %>%
-  summarise(precip = sum(ppt),
-            tmean = mean(tmean),
-            tmin = mean(tmin),
-            tmax = mean(tmax)) %>%
-  rename(year = wateryr) %>%
-  filter(year != 2020)
-
-# Make year and month numeric variables
-climate_site_daily$year  <- as.numeric(climate_site_daily$year)
-climate_site_wtryr_daily$year  <- as.numeric(climate_site_wtryr_daily$year)
-
-write.csv(climate_site_daily, "Analysis/ClimData/PRISM_data_daily.csv")
-write.csv(climate_site_wtryr_daily, "Analysis/ClimData/PRISM_wtryr_data_daily.csv")
-
-```
