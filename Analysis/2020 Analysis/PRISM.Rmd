@@ -112,11 +112,21 @@ prism_win <- prism_clean %>%
             win_vpdmin = mean(vpdmin_hPa),
             win_vpdmean = mean(vpd_mean))
 
-prism_all <- left_join(prism_by_wtryr, prism_win) %>%
+prism_grow <- prism_clean %>%
+  filter(month == "12" | month == "01" | month == "02" | month == "03" | month == "04") %>%
+  group_by(site, wateryear) %>%
+  summarise(grow_precip = sum(precip_mm),
+            grow_minT = mean(tmin_c),
+            grow_maxT = mean(tmax_c),
+            grow_vpdmax = mean(vpdmax_hPa),
+            grow_vpdmin = mean(vpdmin_hPa))
+
+prism_all <- left_join(prism_by_wtryr, prism_win)
+prism_all <- left_join(prism_all, prism_grow) %>%
   filter(wateryear != "2020")
 
 ## Graphing variables real quick
-prism_graphs <- gather(prism_all, "total_precip":"win_vpdmean", key = "var", value = "value")
+prism_graphs <- gather(prism_all, "total_precip":"grow_vpdmin", key = "var", value = "value")
 
 ggplot(prism_graphs, aes(x = wateryear, y = value, group = site, color = site)) +
   geom_point() +
