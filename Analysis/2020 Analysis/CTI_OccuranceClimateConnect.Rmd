@@ -58,7 +58,7 @@ all_spp_df <- full_join(all_spp_df, mcLann_species_data_df)
 all_spp_df <- full_join(all_spp_df, mcLserp_species_data_df)
 all_spp_df <- full_join(all_spp_df, swan_species_data_df)
 all_spp_df <- full_join(all_spp_df, ucsc_species_data_df) %>%
-  select(-name)
+  dplyr::select(-name)
 ```
 
 
@@ -66,9 +66,9 @@ all_spp_df <- full_join(all_spp_df, ucsc_species_data_df) %>%
 all_spp_df <- distinct(all_spp_df)
 
 xy <- all_spp_df %>%
-  select(longitude,latitude)
+  dplyr::select(longitude,latitude)
 sp_xy <- all_spp_df %>%
-  select(species.name, longitude, latitude, key)
+  dplyr::select(species.name, longitude, latitude, key)
 xy_bio <- raster::extract(env, xy)
 
 all_spp_clim_raw <- cbind(xy_bio, sp_xy)
@@ -78,11 +78,18 @@ all_spp_clim <- all_spp_clim_raw %>%
   summarise(meant = mean(bio1, na.rm = TRUE),
          meanp = mean(bio12, na.rm = TRUE)) %>%
   mutate(meanT = meant/10) %>%
-  select(-meant) 
+  dplyr::select(-meant) 
 
 all_CTI <- left_join(rel_all, all_spp_clim, by = "species.name") 
-write.csv(all_CTI, "Analysis/CTI Data/AllSite_CTI_08_2020.csv")
 ```
+
+
+```{r write n read}
+write.csv(all_CTI, "Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+
+all_CTI <- read.csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+```
+
 
 # Combine all clim data for histograms
 ```{r}
