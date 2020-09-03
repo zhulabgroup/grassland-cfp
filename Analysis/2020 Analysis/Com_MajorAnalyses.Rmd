@@ -1236,39 +1236,127 @@ summary(glm(meanCPI ~ year,
 
 ## CTI vs actual temp
 ```{r adding weather}
-wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_data.csv") %>%
-  select(-X)
+wtryr_weather <- read.csv("Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
+   rename("year" = "wateryear")
 ```
 
 ```{r join CTI/temp}
-CTI_Clim_Rich <- left_join(CTI_site_means, wtryr_weather)
-CTI_Clim_Rich <- left_join(CTI_Clim_Rich, grich_all_means)
+CTI_Clim_Rich_byplot <- left_join(CTI_plot_means, wtryr_weather)
+CTI_Clim_Rich_bysite <- left_join(CTI_site_means, wtryr_weather)
 
 ## Mean T and CTI
-ggplot(CTI_Clim_Rich, aes(x = tmean, y = meanCTI, color = site)) +
+ggplot(CTI_Clim_Rich_bysite, aes(x = mean_meanT, y = meanCTI, color = site)) +
   geom_point() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI)) +
   theme_bw() +
   theme(legend.position = "none") +
   facet_wrap(~site, scales = "free", ncol = 4) + 
   geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+### --- this one is huge!! --- ###
+## Grow_VPD_min and CTI
+ggplot(CTI_Clim_Rich_bysite, aes(x = grow_vpdmin, y = meanCPI, color = site)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Angelo",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Carrizo",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Elkhorn",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Jasper",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "McL Ann",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "McL Serp",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Swanton",]))
+summary(glm(meanCTI ~ grow_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "UCSC",]))
+
+
+## Mean_VPD_min and CTI
+ggplot(CTI_Clim_Rich_bysite, aes(x = mean_vpdmin, y = meanCTI, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Angelo",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Carrizo",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Elkhorn",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Jasper",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "McL Ann",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "McL Serp",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "Swanton",]))
+summary(glm(meanCTI ~ mean_vpdmin,
+              data = CTI_Clim_Rich_byplot[CTI_Clim_Rich_byplot$site == "UCSC",]))
 
 ## Min T and CTI
-ggplot(CTI_Clim_Rich, aes(x = precip, y = meanCTI, color = site)) +
+ggplot(CTI_Clim_Rich, aes(x = mean_minT, y = meanCTI, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) +
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+## Max T and CTI
+ggplot(CTI_Clim_Rich, aes(x = mean_maxT, y = meanCTI, color = site)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI)) +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) +
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+## Win min VPD and CTI
+ggplot(CTI_Clim_Rich, aes(x = win_vpdmin, y = meanCTI, color = site)) +
   geom_point() +
   theme_bw() +
   theme(legend.position = "none") +
   facet_wrap(~site, scales = "free", ncol = 4) + 
   geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
 
-## Annual Precipitation and CPI
-
-## Annual Precipitation and CPI
-ggplot(CTI_Clim_Rich, aes(x = precip, y = meanCPI, color = site)) +
+## Win max VPD and CTI
+ggplot(CTI_Clim_Rich, aes(x = win_vpdmax, y = meanCTI, color = site)) +
   geom_point() +
   theme_bw() +
   theme(legend.position = "none") +
   facet_wrap(~site, scales = "free", ncol = 4) + 
   geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+## Min VPD and CTI
+ggplot(CTI_Clim_Rich, aes(x = mean_vpdmin, y = meanCTI, color = site)) +
+  geom_point() +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
+## Min VPD and CTI
+ggplot(CTI_Clim_Rich, aes(x = mean_vpdmin, y = meanCPI, color = site)) +
+  geom_point() +
+  theme_bw() +
+  theme(legend.position = "none") +
+  facet_wrap(~site, scales = "free", ncol = 4) + 
+  geom_smooth(method = "lm", alpha = 0.5, aes(color = site))
+
 
 summary(glm(meanCPI ~ precip,
               data = CTI_Clim_Rich[CTI_Clim_Rich$site == "Angelo",]))
@@ -1395,6 +1483,9 @@ grid.arrange(arrangeGrob(STI_graph + theme(legend.position = "none"), SPI_graph,
 
 # t-tests
 ## STI
+
+t.test(SpTI ~ Provenance , data = STI_byspecies_raw)
+
 # Angelo
 t.test(SpTI ~ Provenance, data = STI_byspecies_raw[STI_byspecies_raw$site == "Angelo",])
 
