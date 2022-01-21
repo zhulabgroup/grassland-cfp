@@ -1,0 +1,135 @@
+---
+title: "Replicate key results"
+author: "Kai Zhu"
+date: "1/21/2022"
+output: 
+  html_document:
+    number_sections: true
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(patchwork)
+```
+
+# Objectives
+
+1. Replicate Josie's key results on CTI change
+1. Compare with site-level climate change
+
+# Community climate index
+
+Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`.
+
+```{r}
+cci_dat <- read_csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+  select(-`...1`) %>%
+  filter(
+    species.name != "Linanthus jepsonii",
+    species.name != "Linanthus latisectus",
+    relcov >= 0
+  )
+
+cci_plot_sum <- cci_dat %>%
+  group_by(site, plot, year) %>%
+  mutate(
+    relCTI = relcov * meanT,
+    relCPI = relcov * meanp
+  ) %>%
+  summarise(
+    plotCTI = sum(relCTI),
+    plotCPI = sum(relCPI)
+  ) %>%
+  arrange(site, plot, year)
+
+cci_site_sum <- cci_plot_sum %>% # from plot summary, can redo using indiviual obs
+  group_by(site, year) %>%
+  summarise(
+    meanCTI = mean(plotCTI),
+    seCTI = plotrix::std.error(plotCTI),
+    meanCPI = mean(plotCPI),
+    seCPI = plotrix::std.error(plotCPI)
+  )
+
+cci_site_gg <- ggplot(cci_site_sum, aes(
+  x = year,
+  y = meanCTI, ymin = meanCTI - seCTI, ymax = meanCTI + seCTI
+)) +
+  geom_pointrange() +
+  geom_line() +
+  facet_wrap(~site, scales = "free", nrow = 2)
+
+cci_site_gg +
+  labs(
+    title = "Replicate Josie's Figure CTI",
+    x = "Year",
+    y = "Community Temperature Index (CTI, degC)"
+  )
+```
+
+Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but sites seem to be mislabelled. 
+
+# Site climate data
+
+Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
+
+```{r}
+clim_dat <- read_csv("Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
+  select(-`...1`)
+
+clim_site_sum <- cci_dat %>%
+  distinct(site, year) %>%
+  left_join(clim_dat, by = c("site" = "site", "year" = "wateryear")) %>%
+  mutate(grow_meanT = (grow_minT + grow_maxT) / 2) # grow_meanT is highly correlated with mean_meanT
+
+clim_site_gg <- clim_site_sum %>%
+  ggplot(aes(x = year, y = grow_meanT)) + # ymin = grow_minT, ymax = grow_maxT
+  geom_point() +
+  geom_line() +
+  facet_wrap(~site, scales = "free", nrow = 2)
+
+clim_site_gg +
+  labs(
+    title = "Replicate Josie's Figure weather",
+    x = "Year",
+    y = "Growing season temperature (degC)"
+  )
+```
+
+Note that the goal was to replicate Josie's manuscript Figure weather and Table weather models. It looks right to me (no mislabel).
+
+# Combine climate change and community change
+
+Time-series plots of site-level climate change and site-level community climate index change.
+
+```{r fig.height = 10}
+(clim_site_gg +
+  geom_smooth(method = "lm") +
+  labs(title = "(a) Climate change", x = "", y = "Growing season temperature (degC)")) /
+  (cci_site_gg +
+    geom_smooth(method = "lm") +
+    labs(title = "(b) Community change", x = "Year", y = "Community Temperature Index (CTI, degC)"))
+```
+
+I think the comparison looks very interesting. Climate change seems to drive community composition change.
+
+Directly compare site-level climate values to community climate index seems less intuitive. 
+
+```{r}
+clim_site_sum %>%
+  full_join(cci_site_sum, by = c("site", "year")) %>%
+  ggplot(aes(
+    x = grow_meanT,
+    y = meanCTI, ymin = meanCTI - seCTI, ymax = meanCTI + seCTI
+  )) +
+  geom_pointrange() +
+  facet_wrap(~site, scales = "free", nrow = 2) +
+  geom_smooth(method = "lm") +
+  labs(
+    x = "Growing season temperature (degC)",
+    y = "Community Temperature Index (CTI, degC)"
+  )
+```
