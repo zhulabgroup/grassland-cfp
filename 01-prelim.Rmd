@@ -1,19 +1,20 @@
 # Preliminary analyses
 
-## Replicate Josie's results
+## Observational data
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 library(tidyverse)
 library(patchwork)
+library(plotly)
 ```
 
-### Objectives
+The objectives are
 
 1. Replicate Josie's key results on CTI change
 1. Compare with site-level climate change
 
-### Community climate index
+First, get community climate indexes: community temperature index (CTI) and community precipitation index (CPI).
 
 Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`.
 
@@ -25,7 +26,30 @@ cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Dat
     species.name != "Linanthus latisectus",
     relcov >= 0
   )
+```
 
+Explore species climate niches estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Note the strong negative correlation between mean temp and precip. Warmer locations are associated with drier locations? I talked with Greg and he agreed this is true in California--both geography (north-south) and elevation. The figure is interactive--Karen and Michael, can you hover your mouse to see if the data points and species names make sense?
+
+```{r}
+(cci_dat %>%
+  select(spnm = species.name, tmp = meanT, ppt = meanp) %>%
+  distinct() %>%
+  ggplot(aes(tmp, ppt,
+    text = spnm
+  )) +
+  geom_point(alpha = .5) +
+  # geom_smooth(method = "lm", aes(tmp, ppt)) +
+  labs(
+    x = "Species occurrence mean temperature (degC)",
+    y = "Species occurrence mean precipitation (mm)"
+  )
+) %>%
+  ggplotly(tooltip = "text")
+```
+
+Get plot-level and site-level summaries.
+
+```{r}
 cci_plot_sum <- cci_dat %>%
   group_by(site, plot, year) %>%
   mutate(
@@ -63,11 +87,9 @@ cci_site_gg +
   )
 ```
 
-Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but sites seem to be mislabelled. 
+Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but sites seem to be mislabeled. 
 
-### Site climate data
-
-Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
+Then, get site climate data. Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
 
 ```{r}
 clim_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
@@ -94,7 +116,7 @@ clim_site_gg +
 
 Note that the goal was to replicate Josie's manuscript Figure weather and Table weather models. It looks right to me (no mislabel).
 
-### Combine climate change and community change
+Finally, combine climate change and community change. 
 
 Time-series plots of site-level climate change and site-level community climate index change.
 
@@ -127,10 +149,24 @@ clim_site_sum %>%
   )
 ```
 
-## Analyze JRGCE functional group data
+## Experimental data
+
+Analyze JRGCE functional group data
+
+![Jasper Ridge Global Change Experiment (JRGCE)](images/jasperridge.jpg)
+
+The objectives are 
+
+1. Look at species composition change over 17 yr
+1. Compare species composition from ambient vs. elevated plots using the above community-level summary approach
+
+First, get JRGCE data.
+
+- Species abundance data: biomass, pin counts, presence/absence survey
+- Species information: species code and name
+- Treatment information: plot and treatment combinations
 
 ```{r}
-# get JRGCE data
 # community abundance data
 attach("~/Data/archives/JRGCE/Input/Biomass/FG/All abundance and environment.rdata")
 com_dat <- abund.dat %>% ungroup()
@@ -141,8 +177,11 @@ spp_dat <- read_csv("~/Data/archives/JRGCE/Input/Biomass/CSV/Species.csv")
 
 # treatment information
 trt_dat <- read_csv("~/Data/archives/JRGCE/Input/Biomass/NPP/Submission/Treatment.csv")
+```
 
-# match JGRCE species to Josie's CTI/CPI
+Then, match JGRCE species to Josie's species with CTI/CPI.
+
+```{r}
 sp_jrgce <- spp_dat %>%
   select(spcd = SPECIES_CODE, spnm = `Species or unit name`) %>%
   arrange(spnm)
@@ -159,7 +198,23 @@ cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Dat
   arrange(spnm) %>%
   inner_join(sp_jrgce, by = "spnm") %>%
   select(spcd, spnm, tmp, ppt)
+```
+Check those species climate niches. Again, strong negative correlation.
 
+```{r}
+cci_dat %>%
+  ggplot(aes(tmp, ppt)) +
+  geom_point(alpha = .5) +
+  geom_smooth(method = "lm") +
+  labs(
+    x = "Species occurrence mean temperature (degC)",
+    y = "Species occurrence mean precipitation (mm)"
+  )
+```
+
+Assign community-level temp/precip to plots.
+
+```{r}
 # assign community-level temp/precip to plots
 cci_jrgce_dat <- com_dat %>%
   select(yr, plt, spcd = sp, bio, pin, pa1, pa2) %>%
@@ -170,22 +225,80 @@ cci_jrgce_dat <- com_dat %>%
     bio_ppt = sum(bio * ppt) / sum(bio),
     pin_tmp = sum(pin * tmp) / sum(pin),
     pin_ppt = sum(pin * ppt) / sum(pin)
-  ) %>% 
+  ) %>%
   left_join(trt_dat, by = c("yr", "plt"))
+```
 
-cci_jrgce_dat %>% 
-  mutate(tmp = as.factor(tmp)) %>% 
-  filter(ppt == 0, co2 == 0, ntg == 0) %>% 
-  ggplot(aes(yr, bio_tmp, col = tmp, group = tmp)) +
-  geom_point() +
-  geom_smooth(method = MASS::rlm) +
-  scale_y_log10()
+Compare CTI from ambient vs. elevated temp plots, with all the other treatments at the ambient conditions. We can use either biomass as the weight or pin count as the weight. Greg said pin count is more commonly used to reflect community composition. 
 
-cci_jrgce_dat %>% 
-  mutate(ppt = as.factor(ppt)) %>% 
-  filter(tmp == 0, co2 == 0, ntg == 0) %>% 
-  ggplot(aes(yr, bio_ppt, col = ppt, group = ppt)) +
-  geom_point() +
-  geom_smooth(method = MASS::rlm) +
-  scale_y_log10()
+Their CTI are similar in the beginning and then diverge (warming plots have warmer species) later.
+
+```{r}
+cci_jrgce_dat %>%
+  mutate(tmp = factor(tmp, 0:1, c("Ambient", "Elevated"))) %>%
+  filter(ppt == 0, co2 == 0, ntg == 0) %>%
+  drop_na() %>% # a few plots have no estimates, due to missing species niche info
+  ggplot(aes(yr, pin_tmp, col = tmp, group = tmp)) +
+  geom_point(alpha = .5) +
+  geom_smooth() +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Boxplots to compare both treatment effects and long-term (year) effects.
+
+```{r}
+cci_jrgce_dat %>%
+  mutate(
+    tmp = factor(tmp, 0:1, c("Ambient", "Elevated")),
+    yr = as.factor(yr)
+  ) %>%
+  filter(ppt == 0, co2 == 0, ntg == 0) %>%
+  drop_na() %>%
+  ggplot(aes(yr, pin_tmp, col = tmp, group = interaction(tmp, yr))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Likewise, we can compare precipitation treatment (elevated means adding water). Note this is not a drought experiment. Plots with added water have species like high precip.
+
+```{r}
+cci_jrgce_dat %>%
+  mutate(ppt = factor(ppt, 0:1, c("Ambient", "Elevated"))) %>%
+  filter(tmp == 0, co2 == 0, ntg == 0) %>%
+  drop_na() %>% # a few plots have no estimates, due to missing species niche info
+  ggplot(aes(yr, pin_ppt, col = ppt, group = ppt)) +
+  geom_point(alpha = .5) +
+  geom_smooth() +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Add-water treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Boxplots to compare both treatment effects and long-term (year) effects.
+
+```{r}
+cci_jrgce_dat %>%
+  mutate(
+    ppt = factor(ppt, 0:1, c("Ambient", "Elevated")),
+    yr = as.factor(yr)
+  ) %>%
+  filter(tmp == 0, co2 == 0, ntg == 0) %>%
+  drop_na() %>%
+  ggplot(aes(yr, pin_ppt, col = ppt, group = interaction(ppt, yr))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Add-water treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
 ```
