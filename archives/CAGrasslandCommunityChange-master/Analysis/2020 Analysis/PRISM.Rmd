@@ -1,0 +1,142 @@
+---
+title: "PRISM"
+author: "Josie Lesage"
+date: "1/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = '../') 
+
+## CTI + PRISM
+library(raster)
+library(prism)
+
+## misc/both/other
+library(plotrix)
+library(tidyverse)
+library(reshape2)
+library(stringr)
+library(lubridate)
+
+# converts the year into the water year based on month
+wtr_yr <- function(dates, start_month=10) {
+  # Convert dates into POSIXlt
+  dates.posix = as.POSIXlt(dates)
+  # Year offset
+  offset = ifelse(dates.posix$mon >= start_month - 1, 1, 0)
+  # Water year
+  adj.year = dates.posix$year + 1900 + offset
+  # Return the water year
+  adj.year
+}
+
+
+```
+
+# PRISM DATA
+## New Data Download Method
+
+This data was downloaded directly form the PRISM website and represents all monthly PRISM data fields for the sites above. We used interpolated data for the specific site coordinates. 
+
+[PRISM dataset.](https://prism.oregonstate.edu/explorer/)
+
+```{r important downloaded PRISM data}
+ang_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Angelo_PRISM_all.csv", skip = 10) %>% mutate(site = "Angelo")
+
+car_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Carrizo_PRISM_all.csv", skip = 10) %>% mutate(site = "Carrizo")
+
+elk_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Elkhorn_PRISM_all.csv", skip = 10) %>% mutate(site = "Elkhorn")
+
+jasp_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/JasperRidge_PRISM_all.csv", skip = 10) %>% mutate(site = "Jasper")
+
+mcL_ann_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/McL_PRISM_all.csv", skip = 10) %>% mutate(site = "McL Ann")
+
+mcL_serp_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/McL_PRISM_all.csv", skip = 10) %>% mutate(site = "McL Serp")
+
+swan_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/Swanton_PRISM_all.csv", skip = 10) %>% mutate(site = "Swanton")
+
+ucsc_prism <- read.csv("Analysis/ClimData/PRISM_Downloaded/UCSC_PRISM_all.csv", skip = 10) %>% mutate(site = "UCSC")
+
+prism <- full_join(ang_prism, car_prism)
+prism <- full_join(prism, jasp_prism)
+prism <- full_join(prism, elk_prism)
+prism <- full_join(prism, mcL_ann_prism)
+prism <- full_join(prism, mcL_serp_prism)
+prism <- full_join(prism, swan_prism)
+prism <- full_join(prism, ucsc_prism)
+
+prism$ppt..inches. <- as.numeric(prism$ppt..inches.)
+```
+
+Now, we need to fix the way the dates are diplayed. 
+
+```{r clean prism data}
+prism_clean <- prism %>%
+  mutate(date = Date) %>%
+  separate(Date, into = c("year", "month")) %>%
+  mutate(full_date = parse_date_time(date, "ym"),
+         wateryear = wtr_yr(full_date)) %>%
+  rename("precip_inches" = "ppt..inches.",
+         "tmin_F" = "tmin..degrees.F.",
+         "tmean_F" = "tmean..degrees.F.",
+         "tmax_F" = "tmax..degrees.F.",
+         "vpdmin_hPa" = "vpdmin..hPa.",
+         "vpdmax_hPa" = "vpdmax..hPa.") %>%
+  mutate(precip_mm = (precip_inches*25.4),
+         tmin_c = (5/9)*(tmin_F-32),
+         tmean_c = (5/9)*(tmean_F-32),
+         tmax_c = (5/9)*(tmax_F-32),
+         vpd_mean = ((vpdmin_hPa+vpdmax_hPa)/2)) %>%
+  dplyr::select(site, date, wateryear, year, month, precip_mm, tmin_c, tmax_c, tmean_c, vpdmin_hPa, vpdmax_hPa, vpd_mean) 
+
+# calculate mean water-year values
+prism_by_wtryr <- prism_clean %>%
+  group_by(site, wateryear) %>%
+  summarise(total_precip = sum(precip_mm),
+            mean_minT = mean(tmin_c),
+            mean_maxT = mean(tmax_c),
+            mean_meanT = mean(tmean_c),
+            mean_vpdmax = mean(vpdmax_hPa),
+            mean_vpdmin = mean(vpdmin_hPa),
+            mean_vpdmean = mean(vpd_mean),)
+
+prism_win <- prism_clean %>%
+  filter(month == "12" | month == "01" | month == "02") %>%
+  group_by(site, wateryear) %>%
+  summarise(win_precip = sum(precip_mm),
+            win_minT = mean(tmin_c),
+            win_maxT = mean(tmax_c),
+            win_meanT = mean(tmean_c),
+            win_vpdmax = mean(vpdmax_hPa),
+            win_vpdmin = mean(vpdmin_hPa),
+            win_vpdmean = mean(vpd_mean))
+
+prism_grow <- prism_clean %>%
+  filter(month == "12" | month == "01" | month == "02" | month == "03" | month == "04") %>%
+  group_by(site, wateryear) %>%
+  summarise(grow_precip = sum(precip_mm),
+            grow_minT = mean(tmin_c),
+            grow_maxT = mean(tmax_c),
+            grow_vpdmax = mean(vpdmax_hPa),
+            grow_vpdmin = mean(vpdmin_hPa))
+
+prism_all <- left_join(prism_by_wtryr, prism_win)
+prism_all <- left_join(prism_all, prism_grow) %>%
+  filter(wateryear != "2020")
+
+## Graphing variables real quick
+prism_graphs <- gather(prism_all, "total_precip":"grow_vpdmin", key = "var", value = "value")
+
+ggplot(prism_graphs, aes(x = wateryear, y = value, group = site, color = site)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~var, scales = "free")
+```
+
+```{r save data}
+
+write.csv(prism_all, "Analysis/ClimData/PRISM_wtryr_alldata.csv")
+
+```
+

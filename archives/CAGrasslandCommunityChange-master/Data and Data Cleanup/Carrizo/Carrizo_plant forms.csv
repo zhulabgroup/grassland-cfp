@@ -1,0 +1,26 @@
+newform,description,nat.exo,ann.per,lifeform,guild
+a,annual grass,,annual,grass,
+f,fern,,fern,fern,
+h,annual forb,,annual,forb,
+i,invasive,,,,
+ia,invasive annual grass,exotic,annual,grass,EAG
+ib,invasive biennial forb,exotic,perennial,forb,EPF
+ih,invasive annual forb,exotic,annual,forb,EAF
+ip,invasive perennial forb,exotic,perennial,forb,EPF
+ipg,invasive perennial grass,exotic,perennial,grass,EPG
+is,invasive shrub,exotic,perennial,shrub,Eshrub
+it,invasive tree,exotic,perennial,tree,Etree
+n,native,,,,
+na,native annual grass,native,annual,grass,NAG
+nf,native fern,native,fern,fern,Fern
+nh,native annual forb,native,annual,forb,NAF
+np,native perennial forb,native,perennial,forb,NPF
+npg,native perennial grass,native,perennial,grass,NPG
+ns,native shrub,native,perennial,shrub,Nshrub
+nt,native tree,native,perennial,tree,Ntree
+nv,native vine,native,vine,vine,Nvine
+p,perennial forb,native,perennial,forb,NPF
+pg,perennial grass,,perennial,grass,
+s,"shrub, woody",,perennial,shrub,shrub
+t,tree,,perennial,tree,tree
+v,vine,,vine,vine,vine

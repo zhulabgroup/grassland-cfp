@@ -1,0 +1,401 @@
+---
+title: "Angelo Analysis"
+author: "Josie Lesage"
+date: "12/9/2019"
+output: html_document
+---
+
+
+# Setup and data import
+```{r setup, include=FALSE}
+## community analysis
+library(codyn)
+library(MASS)
+library(vegan)
+library(lme4)
+
+## CTI analysis
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+```
+
+
+```{r data import, include = FALSE}
+angelo_data <- read.csv("Analysis/ComData/angelo_data.csv")
+```
+
+
+## Preparing a species list table
+In order to get the appropriate data from gbif, we need to generate a table of species/genus information that we can reference and call from.
+
+```{r species table}
+angelo_species <- unique(angelo_data$species.name)
+ang_list <- as.data.frame(angelo_species)
+```
+
+There are a total of ~36 species in the Angelo dataset, one of which is just "Trifolium spp."
+
+
+```{r fixing species table}
+angelo_species <- unique(angelo_data$species.name)
+ang_list <- as.data.frame(angelo_species)
+
+ang_list$angelo_species <- paste0("'", ang_list$angelo_species, "',")
+  
+cat(format_delim(ang_list, delim = ""))
+
+
+ang_data_rel <- angelo_data %>%
+  select(year, plot, species.name, cover) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov)
+```
+
+**Note:** there is one species just labeled "Trifolium spp." in the dataset.
+
+
+# Community Poisson GLM
+**Look at chapter 14 of the Mixed Models book.**
+
+Before running our analysis, we should check the means and variance for the response variable over different predictor variables. 
+
+```{r Rich explore}
+ang_rich_means <- angelo_data %>%
+  group_by(year, plot) %>%
+  summarise(rich = n_distinct(species.name)) %>%
+  ungroup() %>% group_by(year) %>%
+  summarise(meanrich = mean(rich),
+            serich = (std.error(rich)))
+
+ang_rich <- angelo_data %>%
+  group_by(year, plot) %>%
+  summarise(rich = n_distinct(species.name))
+
+ggplot(ang_rich_means, aes(x = year, y = meanrich)) +
+  geom_line() 
+
+```
+
+
+# Community turnover - annual +/-
+To answer who joins and who leaves each year, we need to calculate the species in the starting year, then see how many are added and how many leave. We'll do this with Lauren Hallet's (hopefully awesome) codyn package - which has a function for turnover.
+
+```{r turnover metrics}
+ang_turnover <- turnover(df = ang_data_rel,
+                          time.var = "year",
+                          species.var = "species.name",
+                          abundance.var = "relcov",
+                          replicate.var = "plot")
+
+ang_turn_means <- ang_turnover %>%
+  group_by(year) %>%
+  summarise(meanturn = mean(total),
+            seturn = std.error(total))
+
+ggplot(ang_turn_means, aes(x = year, y = meanturn)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanturn-seturn, ymax = meanturn+seturn)) +
+  labs(title = "Elkhorn - Community Turnover (n = 3)",
+       x = "Year",
+       y = "Turnover (# spp. lost+gained / total # spp.)")
+
+```
+
+
+# Gathering & cleaning occurance data
+
+We will gather species occurrance data from GBIF through the SpOcc package. 
+
+```{r grabbing Angelo gbif data, echo = FALSE, cache = TRUE, warning=FALSE}
+
+## look at species list
+ang_list
+ang_species_list <- c('Danthonia californica ', 
+                      'Bromus hordeaceus ',
+                      'Bromus tectorum ',
+                      'Bromus diandrus ',
+                      'Aira caryophyllea',
+                      'Briza minor ',
+                      'Cynosurus echinatus ',
+                      'Vulpia myuros ',
+                      'Avena barbata ',
+                      'Dichelostemma capitatum ',
+                      'Brodiaea elegans',
+                      'Eschscholzia californica ',
+                      'Sanicula bipinnatifida ',
+                      'Rumex acetosella ',
+                      'Convolvulus arvensis',
+                      'Torilis arvensis',
+                      'Daucus pusillus ',
+                      'Lotus micranthus ',
+                      'Lotus wrangelianus ',
+                      'Lupinus bicolor ',
+                      'Galium parisiense ',
+                      'Madia gracilis ',
+                      'Hypochaeris glabra ',
+                      'Castilleja attenuata ',
+                      'Aphanes occidentalis ',
+                      'Linanthus bicolor ',
+                      'Trichostema lanceolatum ',
+                      'Eremocarpus setigerus ',
+                      'Geranium dissectum ',
+                      'Epilobium brachycarpum ',
+                      'Clarkia purpurea ',
+                      'Plagiobothrys nothofulvus ',
+                      'Cerastium glomeratum ',
+                      'Erodium cicutarium ',
+                      'Hemizonia congesta ')
+
+ang_species_data <- occ(query = ang_species_list, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+
+write_rds(ang_species_data, "AngeloSpData.rds")
+
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+ang_species_data <- fixnames(ang_species_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+ang_species_data_df <- occ2df(ang_species_data)
+
+map_ggplot(ang_species_data, map = "state", size = 0.5) 
+
+
+```
+
+We need to clean the coordinates, as it appears some are in the ocean (look @ NorCal), and there might be some that are just incorrect. To do this, we will use a coordinate cleaner package.
+
+```{r cleaning Angelo coords, echo=FALSE, cache = TRUE, dependson="grabbing Angelo gbif data"}
+flags <- clean_coordinates(x = ang_species_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros")) # most test are on by default
+
+plot(flags, lon = "longitude", lat = "latitude")
+
+```
+Most of our flagged coordinates are coastal/in the ocean. Therefore, we'll remove them from our database after taking a look at which ones (~1350 out of 15,300, so ~8.8%) were flagged.  
+
+```{r examine flagged coords, echo=FALSE, cache = TRUE, dependson="cleaning Angelo coords"}
+
+flag_df <- ang_species_data_df[!flags$.summary,]
+str(flag_df)
+summary(flag_df)
+
+# keep only the non-flagged data
+ang_species_data_df <- ang_species_data_df[flags$.summary,]
+
+```
+It appears that there were flagged instances for most of the species. For this practice run-through, I'll definitely just cut them out without taking a closer look (for now).  
+More guidance on cleaning datasets and removing bad coordinates is [available here](https://ropensci.github.io/CoordinateCleaner/articles/Tutorial_Cleaning_GBIF_data_with_CoordinateCleaner.html).  
+
+# Adding climate data
+
+Following the jcoliver webpage guides...
+
+```{r map of geo extent, echo = FALSE}
+max.lat <- ceiling(max(ang_species_data_df$latitude))
+min.lat <- floor(min(ang_species_data_df$latitude))
+max.lon <- ceiling(max(ang_species_data_df$longitude))
+min.lon <- floor(min(ang_species_data_df$longitude))
+geographic.extent <- extent(x = c(min.lon, max.lon, min.lat, max.lat))
+
+# Load the data to use for our base map
+data(wrld_simpl)
+
+# Plot the base map
+plot(wrld_simpl, 
+     xlim = c(min.lon, max.lon),
+     ylim = c(min.lat, max.lat),
+     axes = TRUE, 
+     col = "grey95")
+
+# Add the points for individual observation
+points(x = ang_species_data_df$longitude, 
+       y = ang_species_data_df$latitude, 
+       col = "olivedrab", 
+       pch = 20, 
+       cex = 0.75)
+# And draw a little box around the graph
+box()
+```
+
+```{r based on oikos page, cache = TRUE}
+xy <- ang_species_data_df[,c("longitude","latitude")]
+sp_xy <- ang_species_data_df[c("name", "longitude","latitude")]
+
+sp_xy <- sp_xy %>%
+  rename(species = name)
+
+
+env <- getData('worldclim', var='bio', res=2.5)
+
+plot(env, 1, main=NULL, axes=FALSE)
+points(xy, col='blue', pch=20)
+
+xy_bio <- raster::extract(env, xy)
+
+```
+
+Reference list for climate variables:
+ * BIO1 = Annual Mean Temperature (°C * 10) -- (i.e. 231 represents 23.1 °C)
+ * BIO2 = Mean Diurnal Range (Mean of monthly (max temp – min temp)) 
+ * BIO3 = Isothermality (BIO2/BIO7) (* 100)
+ * BIO4 = Temperature Seasonality (standard deviation *100)
+ * BIO5 = Max Temperature of Warmest Month (°C * 10)
+ * BIO6 = Min Temperature of Coldest Month (°C * 10)
+ * BIO7 = Temperature Annual Range (BIO5-BIO6)
+ * BIO8 = Mean Temperature of Wettest Quarter (°C * 10)
+ * BIO9 = Mean Temperature of Driest Quarter (°C * 10)
+ * BIO10 = Mean Temperature of Warmest Quarter (°C * 10)
+ * BIO11 = Mean Temperature of Coldest Quarter (°C * 10)
+ * BIO12 = Annual Precipitation (mm)
+ * BIO13 = Precipitation of Wettest Month (mm)
+ * BIO14 = Precipitation of Driest Month (mm)
+ * BIO15 = Precipitation Seasonality (Coeficent of Variation) 
+ * BIO16 = Precipitation of Wettest Quarter (mm)
+ * BIO17 = Precipitation of Driest Quarter (mm)
+ * BIO18 = Precipitation of Warmest Quarter (mm)
+ * BIO19 = Precipitation of Coldest Quarter (mm)
+ 
+```{r mean species temp, echo=FALSE}
+ang_species_clim <- cbind(xy_bio, sp_xy)
+
+ang_species_clim <- ang_species_clim %>%
+  group_by(species) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  rename(species.name = species)
+```
+
+### Trifolium
+```{r Angelo Trifolium}
+
+ang_trifolium <- c('Trifolium albopurpureum var. albopurpureum',
+                    'Trifolium albopurpureum var. dichotomum',
+                    'Trifolium barbigerum var. barbigerum',
+                    'Trifolium bifidum var. decipiens',
+                    'Trifolium cyathiferum',
+                    'Trifolium dubium',
+                    'Trifolium fucatum',
+                    'Trifolium microdon',
+                    'Trifolium microcephalum',
+                    'Trifolium oliganthum',
+                    'Trifolium repens',
+                    'Trifolium subterraneum',
+                    'Trifolium variegatum',
+                    'Trifolium willdenovii')
+
+ang_trifolium_data <- occ(query = ang_trifolium, from = "gbif", has_coords = TRUE, limit = 10000,
+                gbifopts = list(hasGeospatialIssue = FALSE, country = "US",
+                                stateProvince = "California"))
+
+## we can also replace all synonym taxon names with one (cuts down the number of plotted dot colors)
+## we should use the scrubr version of the function in the future
+ang_trifolium_data <- fixnames(ang_trifolium_data, how = "query")
+
+## The occ2df function should convert the data to a dataframe format
+ang_trifolium_data_df <- occ2df(ang_trifolium_data)
+
+map_ggplot(ang_trifolium_data, map = "state", size = 0.5) 
+
+flags <- clean_coordinates(x = ang_trifolium_data_df, lon = "longitude", lat = "latitude",
+                          species = "name",
+                          tests = c("capitals", "centroids", "equal","gbif", "institutions",
+                                    "seas", "zeros")) # most test are on by default
+
+# remove flagged records
+ang_trifolium_data_df <- ang_trifolium_data_df[flags$.summary,]
+
+# extract lat/long for each datapoint
+xy <- ang_trifolium_data_df[,c("longitude","latitude")]
+sp_xy <- ang_trifolium_data_df[c("name", "longitude","latitude")]
+sp_xy <- sp_xy %>%
+  rename(species = name)
+env <- getData('worldclim', var='bio', res=2.5)
+plot(env, 1, main=NULL, axes=FALSE)
+points(xy, col='blue', pch=20)
+xy_bio <- raster::extract(env, xy)
+ang_trifolium_clim <- cbind(xy_bio, sp_xy)
+
+# change all datapoints to the "species sp" format that's used in the og dataframe, calc CTI
+ang_trifolium_clim <- ang_trifolium_clim %>%
+  mutate(species.name = "Trifolium spp.") %>%
+   group_by(species.name) %>%
+   summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) 
+```
+
+
+ 
+
+# Calculating CTI
+To calculate CTI, we need to summarize the weight of each species in a community and multiply that by the TI for that species. 
+
+```{r relative cover of each spp, cache = TRUE}
+ang_data_rel <- angelo_data %>%
+  select(year, plot, species.name, cover) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov)
+```
+
+
+```{r Creating CTI table}
+
+ang_CTI <- left_join(ang_data_rel, ang_species_clim, by = "species.name") 
+ang_CTI <- left_join(ang_CTI, ang_trifolium_clim, by = "species.name") %>%
+  mutate(meant = coalesce(meant.x, meant.y),
+         meanp = coalesce(meanp.x, meanp.y),
+         meanT = coalesce(meanT.x, meanT.y),) %>% 
+        select(-meant.x, -meant.y, -meanp.x, -meanp.y, -meanT.x, -meanT.y) %>%
+  mutate(relTI = relcov*meanT,
+         relP = relcov*meanp) %>%
+  group_by(year, plot) %>%
+  summarise(CTI = sum(relTI),
+            CPI = sum(relP)) %>%
+  mutate(site = "Angelo")
+
+ang_CTI_means <- ang_CTI %>%
+  group_by(year, site) %>%
+  summarise(meanCTI = mean(CTI),
+            seCTI = std.error(CTI),
+            meanCPI = mean(CPI),
+            seCPI = std.error(CPI))
+
+ggplot(ang_CTI_means, aes(x=year, y=meanCTI)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanCTI-seCTI, ymax = meanCTI+seCTI), width=0.2)
+
+
+ggplot(ang_CTI_means, aes(x=year, y=meanCPI)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = meanCPI-seCPI, ymax = meanCPI+seCPI), width=0.2)
+
+```
+
+
+
+### Saving CTI .csv
+
+```{r CTI csv}
+write.csv(ang_CTI, "Angelo_CTI.csv")
+
+```
+

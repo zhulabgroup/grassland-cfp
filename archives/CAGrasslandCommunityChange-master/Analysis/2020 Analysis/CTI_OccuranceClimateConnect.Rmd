@@ -1,0 +1,109 @@
+---
+title: "GBIF_Clim_Connect_forCTI"
+author: "Josie Lesage"
+date: "8/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## CTI analysis
+library(CoordinateCleaner)
+library(countrycode)
+library(mapr)
+library(maptools)
+library(raster)
+library(rgbif)
+library(scrubr)
+library(sp)
+library(spocc)
+
+## misc/both/other
+library(oz)
+library(plotrix)
+library(tidyverse)
+library(gridExtra)
+```
+
+# File goal
+
+The goal of this file is to use the previously called rds data to get coordinate-specific climate data for each site. 
+
+This file will also generate histograms for all of the species in the datasets. 
+
+# Setup and data import
+
+
+```{r data import, include = FALSE}
+rel_all <- read.csv("Analysis/ComData/AllData_Relative.csv") %>%
+  dplyr::select(-X)
+rel_all$species.name <- str_trim(rel_all$species.name)
+
+ang_species_data_df <- read_rds("Analysis/GBIF_Data/AngGBIF_080720.rds")
+car_species_data_df <- read_rds("Analysis/GBIF_Data/CarGBIF_080720.rds")
+elk_species_data_df <- read_rds("Analysis/GBIF_Data/ElkGBIF_080720.rds")
+jasp_species_data_df <- read_rds("Analysis/GBIF_Data/JaspGBIF_080720.rds")
+mcLann_species_data_df <- read_rds("Analysis/GBIF_Data/mcLannGBIF_080720.rds")
+mcLserp_species_data_df <- read_rds("Analysis/GBIF_Data/mcLserpGBIF_080720.rds")
+swan_species_data_df <- read_rds("Analysis/GBIF_Data/swanGBIF_080720.rds")
+ucsc_species_data_df <- read_rds("Analysis/GBIF_Data/ucscGBIF_080720.rds")
+
+env <- raster::getData('worldclim', var='bio', res=2.5)
+
+all_spp_df <- full_join(ang_species_data_df, car_species_data_df)
+all_spp_df <- full_join(all_spp_df, elk_species_data_df)
+all_spp_df <- full_join(all_spp_df, jasp_species_data_df)
+all_spp_df <- full_join(all_spp_df, mcLann_species_data_df)
+all_spp_df <- full_join(all_spp_df, mcLserp_species_data_df)
+all_spp_df <- full_join(all_spp_df, swan_species_data_df)
+all_spp_df <- full_join(all_spp_df, ucsc_species_data_df) %>%
+  dplyr::select(-name)
+```
+
+
+```{r  data and species list}
+all_spp_df <- distinct(all_spp_df)
+
+xy <- all_spp_df %>%
+  dplyr::select(longitude,latitude)
+sp_xy <- all_spp_df %>%
+  dplyr::select(species.name, longitude, latitude, key)
+xy_bio <- raster::extract(env, xy)
+
+all_spp_clim_raw <- cbind(xy_bio, sp_xy)
+
+all_spp_clim <- all_spp_clim_raw %>%
+  group_by(species.name) %>%
+  summarise(meant = mean(bio1, na.rm = TRUE),
+         meanp = mean(bio12, na.rm = TRUE)) %>%
+  mutate(meanT = meant/10) %>%
+  dplyr::select(-meant) 
+
+all_CTI <- left_join(rel_all, all_spp_clim, by = "species.name") 
+```
+
+
+```{r write n read}
+write.csv(all_CTI, "Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+
+all_CTI <- read.csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv")
+```
+
+
+# Combine all clim data for histograms
+```{r}
+all_spp_clim_raw <- all_spp_clim_raw %>%
+  filter(!is.na(bio1),
+         !is.na(bio12))
+
+all_species_counts <- all_spp_clim_raw %>%
+  group_by(species.name) %>%
+  summarise(count = n())
+
+ggplot(all_spp_clim_raw, aes(bio1)) +   facet_wrap(~species.name, scales = "free") +  geom_histogram()
+
+ggplot(all_spp_clim_raw, aes(bio12)) +   facet_wrap(~species.name, scales = "free") +   geom_histogram()
+
+```
+

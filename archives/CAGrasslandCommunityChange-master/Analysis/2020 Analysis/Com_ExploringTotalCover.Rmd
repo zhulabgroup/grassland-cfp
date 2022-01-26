@@ -1,0 +1,282 @@
+---
+title: "Exploring Total Cover"
+author: "Josie Lesage"
+date: "8/3/2020"
+output: html_document
+---
+
+# Setup and data import
+```{r setup, include=FALSE}
+## Packages
+library(oz)
+library(plotrix)
+library(gridExtra)
+library(stringr)
+library(tidyverse)
+
+# to rip legends out of figures
+g_legend <- function(a.gplot){ 
+    tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+    leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+    legend <- tmp$grobs[[leg]] 
+    legend
+} 
+```
+
+```{r com data import, include=FALSE, echo=FALSE}
+raw_ang <- read.csv("Analysis/ComData/angelo_data.csv") %>%
+  select(-X)
+
+raw_elk <- read.csv("Analysis/ComData/elkhorn_data.csv") %>%
+  select(-X)
+
+raw_car <- read.csv("Analysis/ComData/carrizo_data.csv") %>%
+  select(-X)
+
+raw_jasp <- read.csv("Analysis/ComData/jasper_data.csv") %>%
+  select(-X)
+
+raw_mcLann <- read.csv("Analysis/ComData/mclann_data.csv") %>%
+  select(-X)
+
+raw_mcLserp <- read.csv("Analysis/ComData/mclserp_data.csv") %>%
+  select(-X)
+
+raw_swan <- read.csv("Analysis/ComData/swanton_data.csv") %>%
+  select(-X)
+
+raw_ucsc <- read.csv("Analysis/ComData/ucsc_data.csv") %>%
+  select(-X)
+
+```
+
+# File goal
+
+The goal of this file is to understand how total cover and relative cover changes at each site over time. We convert everything to relative cover to calculate CTI/CPI, but this means that in years with low total cover, we may be artificially inflating the importance of certain species.  
+
+To better understand how this may affect our CTI/CPI calculations, this file will look at the total cover and relative cover of each dataset.  
+
+
+## Angelo
+
+Angelo data was collected as % cover in 30 small quadrats across 5 replicates
+
+```{r Angelo}
+cov_ang <- raw_ang %>%
+  select(site, year, plot, cover) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover)) %>%
+  summarise(sumcov = mean(sumcov))
+hist(cov_ang$sumcov)
+
+```
+
+The 2002 data shows consistently low total cover (3 replicates), but most of the data are above 70% total cover.
+
+## Carrizo
+
+This data was collected as 9x9 point intercept quadrats, so there should be at least 81 points per quadrat.
+
+The number of quadrats collected per plot varies by year, with 8 quadrats consistently collected from 2007-2015, but a inconsistent numbers of quads collected after that point. 
+
+```{r Carrizo}
+cov_car_inclbare <- raw_car %>%
+  filter(plot != "SC5" | plot != "SC4") %>%
+  select(site, year, plot, species.name, Intercepts, guild) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(Intercepts)) %>%
+  summarise(sumcov_bare = mean(sumcov))
+
+cov_car <- raw_car %>%
+  filter(species.name != "litter",
+         species.name != "bare",
+         species.name != "hole",
+         species.name != "moss") %>%
+  filter(plot != "SC5" | plot != "SC4") %>%
+  select(site, year, plot, species.name, Intercepts, guild) %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(Intercepts)) %>%
+  summarise(sumcov = mean(sumcov))
+
+cov_car <- left_join(cov_car, cov_car_inclbare) %>%
+  mutate(prop_veg = (sumcov/sumcov_bare))
+
+hist(cov_car$prop_veg)
+```
+
+The amount of vegetation in the Carrizo plots varies considerably from plot to plot, and from year to year. Some years, the plot have very very low cover of vegetation, but other years it's near 100%.
+
+
+## Elkhorn
+
+This dataset was collected by Karen and Grey, using a 5x5 point-intercept frame within 1m2 quads, and there were 4 quads per plot.  
+
+```{r Elkhorn}
+cov_elk_inclbare <- raw_elk %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts)) %>%
+  rename(plot = rep,
+         cover = intercepts) %>%
+  summarise(sumcov_bare = mean(sumcov))
+
+cov_elk <- raw_elk %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts)) %>%
+  rename(plot = rep,
+         cover = intercepts) %>%
+  summarise(sumcov = mean(sumcov))
+
+cov_elk <- left_join(cov_elk, cov_elk_inclbare) %>%
+  mutate(prop_veg = (sumcov/sumcov_bare))
+
+hist(cov_elk$prop_veg)
+hist(cov_elk$sumcov)
+```
+
+Nothing consistently weird here -- there should be at least 100 points in each "sumcov" (for 100 points per 5x5 quad x4 quads), which most plots have.
+
+
+## Jasper
+The Jasper data was collected as 1m2 quadrats. 
+
+```{r Jasper}
+cov_jasp <- raw_jasp %>%
+  filter(cover > 0) %>%
+  group_by(uniqueID, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = cover/sumcov) %>%
+  mutate(site = "Jasper",
+         datacol = "cover") %>%
+  rename(plot = uniqueID) %>%
+  summarise(sumcov = mean(sumcov))
+
+hist(cov_jasp$sumcov)
+```
+
+There are a few plots where the total cover of vegetation is <70%, but most of the plots were well covered with vegetation.
+
+
+## McL Ann
+
+```{r McL Ann}
+cov_mcLann <- raw_mcLann %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown grass",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Ann") %>%
+  group_by(site, year, plot, species.name, guild) %>%
+  summarise(cover = sum(cover)) %>%
+  ungroup() %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = (cover/sumcov),
+         datacol = "cover") %>%
+  summarise(sumcov = mean(sumcov))
+
+hist(cov_mcLann$sumcov)
+
+```
+
+The plots look fine - most of the low cover plots were 2012, 2014. 
+
+## McL Serp
+
+```{r McL Serp}
+
+cov_mcLserp <- raw_mcLserp %>%
+  filter(species.name != "Bare",
+         species.name != "Rock",
+         species.name != "Unknown grass",
+         species.name != "Unknown forb") %>%
+  mutate(site = "McL Serp") %>%
+  group_by(site, year, plot, species.name, guild) %>%
+  summarise(cover = sum(cover)) %>%
+  ungroup() %>%
+  group_by(plot, year) %>%
+  mutate(sumcov = sum(cover),
+         relcov = (cover/sumcov),
+         datacol = "cover") %>%
+  summarise(sumcov = mean(sumcov))
+
+hist(cov_mcLserp$sumcov)
+
+```
+
+There are more low-cover plots here than in McL Ann, but that makes sense - serpentine soils.
+
+## Swanton
+
+```{r Swanton}
+cov_swan_inclbare <- raw_swan %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts)) %>%
+  rename(plot = rep,
+         cover = intercepts) %>%
+  summarise(sumcov_bare = mean(sumcov))
+
+cov_swan <- raw_swan %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts)) %>%
+  rename(plot = rep,
+         cover = intercepts) %>%
+  summarise(sumcov = mean(sumcov))
+
+cov_swan <- left_join(cov_swan, cov_swan_inclbare) %>%
+  mutate(prop_veg = (sumcov/sumcov_bare))
+
+hist(cov_swan$prop_veg)
+hist(cov_swan$sumcov)
+
+```
+
+Only 2006, rep 1 is weird (91 points, even including bare spots)
+
+## UCSC
+
+```{r UCSC}
+raw_ucsc <- raw_ucsc %>%
+  mutate(site = "UCSC")
+
+cov_ucsc_inclbare <- raw_ucsc %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts)) %>%
+  rename(plot = rep,
+         cover = intercepts) %>%
+  summarise(sumcov_bare = mean(sumcov))
+
+cov_ucsc <- raw_ucsc %>%
+  filter(species.name != "Moss",
+         species.name != "Thatch",
+         species.name != "Bare ground") %>%
+  select(site, year, rep, species.name, intercepts, guild) %>%
+  group_by(rep, year) %>%
+  mutate(sumcov = sum(intercepts)) %>%
+  rename(plot = rep,
+         cover = intercepts) %>%
+  summarise(sumcov = mean(sumcov))
+
+cov_ucsc <- left_join(cov_ucsc, cov_ucsc_inclbare) %>%
+  mutate(prop_veg = (sumcov/sumcov_bare))
+
+hist(cov_ucsc$prop_veg)
+hist(cov_ucsc$sumcov)
+```
+
+Between 60-100% cover of vegetation, nothing weird about the number of total points at this site.
+
+# Conclusions 
+
+Overll, looks fine to me. There are a very few weird places, but generally things look okay. 
+

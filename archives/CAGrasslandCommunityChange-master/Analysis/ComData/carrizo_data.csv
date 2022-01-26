@@ -1,0 +1,3198 @@
+"","plot","year","species.name","guild","site","Intercepts"
+"1","EP1",2007,"Bromus hordeaceus","EAG","Carrizo",5
+"2","EP1",2007,"Bromus rubens","EAG","Carrizo",13
+"3","EP1",2007,"Calandrinia ciliata","NAF","Carrizo",1
+"4","EP1",2007,"Dichelostemma capitatum","NPF","Carrizo",1
+"5","EP1",2007,"Erodium cicutarium","EAF","Carrizo",13
+"6","EP1",2007,"Hordeum murinum","EAG","Carrizo",34
+"7","EP1",2007,"Poa secunda ssp secunda","NPG","Carrizo",1
+"8","EP1",2007,"Schismus arabicus","EAG","Carrizo",1
+"9","EP1",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",99
+"10","EP1",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",130
+"11","EP1",2007,"bare","bare","Carrizo",91
+"12","EP1",2007,"litter","litter","Carrizo",259
+"13","EP1",2008,"Amsinckia tessellata","NAF","Carrizo",17
+"14","EP1",2008,"Athysanus pusillus","NAF","Carrizo",1
+"15","EP1",2008,"Calandrinia ciliata","NAF","Carrizo",26
+"16","EP1",2008,"Dichelostemma capitatum","NPF","Carrizo",8
+"17","EP1",2008,"Erodium cicutarium","EAF","Carrizo",360
+"18","EP1",2008,"Guillenia lasiophylla","NAF","Carrizo",8
+"19","EP1",2008,"Hordeum murinum","EAG","Carrizo",14
+"20","EP1",2008,"Lasthenia californica","NAF","Carrizo",1
+"21","EP1",2008,"Lepidium nitidum","NAF","Carrizo",29
+"22","EP1",2008,"Phlox gracilis","NAF","Carrizo",1
+"23","EP1",2008,"Schismus arabicus","EAG","Carrizo",8
+"24","EP1",2008,"Trifolium gracilentum","NAF","Carrizo",9
+"25","EP1",2008,"Tropidocarpum gracile","NAF","Carrizo",18
+"26","EP1",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",38
+"27","EP1",2008,"bare","bare","Carrizo",53
+"28","EP1",2008,"litter","litter","Carrizo",57
+"29","EP1",2009,"Amsinckia tessellata","NAF","Carrizo",9
+"30","EP1",2009,"Bromus rubens","EAG","Carrizo",2
+"31","EP1",2009,"Calandrinia ciliata","NAF","Carrizo",13
+"32","EP1",2009,"Dichelostemma capitatum","NPF","Carrizo",6
+"33","EP1",2009,"Erodium cicutarium","EAF","Carrizo",193
+"34","EP1",2009,"Guillenia lasiophylla","NAF","Carrizo",3
+"35","EP1",2009,"Hordeum murinum","EAG","Carrizo",10
+"36","EP1",2009,"Lepidium nitidum","NAF","Carrizo",45
+"37","EP1",2009,"Phlox gracilis","NAF","Carrizo",2
+"38","EP1",2009,"Poa secunda ssp secunda","NPG","Carrizo",2
+"39","EP1",2009,"Schismus arabicus","EAG","Carrizo",1
+"40","EP1",2009,"Trifolium gracilentum","NAF","Carrizo",31
+"41","EP1",2009,"Tropidocarpum gracile","NAF","Carrizo",23
+"42","EP1",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",60
+"43","EP1",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",8
+"44","EP1",2009,"bare","bare","Carrizo",139
+"45","EP1",2009,"litter","litter","Carrizo",101
+"46","EP1",2010,"Bromus rubens","EAG","Carrizo",3
+"47","EP1",2010,"Calandrinia ciliata","NAF","Carrizo",2
+"48","EP1",2010,"Dichelostemma capitatum","NPF","Carrizo",2
+"49","EP1",2010,"Erodium cicutarium","EAF","Carrizo",98
+"50","EP1",2010,"Guillenia lasiophylla","NAF","Carrizo",1
+"51","EP1",2010,"Lepidium nitidum","NAF","Carrizo",28
+"52","EP1",2010,"Phlox gracilis","NAF","Carrizo",1
+"53","EP1",2010,"Poa secunda ssp secunda","NPG","Carrizo",2
+"54","EP1",2010,"Schismus arabicus","EAG","Carrizo",14
+"55","EP1",2010,"Trifolium gracilentum","NAF","Carrizo",86
+"56","EP1",2010,"Tropidocarpum gracile","NAF","Carrizo",13
+"57","EP1",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",201
+"58","EP1",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",95
+"59","EP1",2010,"bare","bare","Carrizo",21
+"60","EP1",2011,"Bromus rubens","EAG","Carrizo",27
+"61","EP1",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"62","EP1",2011,"Erodium cicutarium","EAF","Carrizo",207
+"63","EP1",2011,"Hordeum murinum","EAG","Carrizo",41
+"64","EP1",2011,"Schismus arabicus","EAG","Carrizo",23
+"65","EP1",2011,"Trifolium gracilentum","NAF","Carrizo",54
+"66","EP1",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",200
+"67","EP1",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",44
+"68","EP1",2011,"bare","bare","Carrizo",28
+"69","EP1",2011,"litter","litter","Carrizo",23
+"70","EP1",2012,"Bromus rubens","EAG","Carrizo",12
+"71","EP1",2012,"Erodium cicutarium","EAF","Carrizo",63
+"72","EP1",2012,"Hordeum murinum","EAG","Carrizo",56
+"73","EP1",2012,"Poa secunda ssp secunda","NPG","Carrizo",3
+"74","EP1",2012,"Schismus arabicus","EAG","Carrizo",22
+"75","EP1",2012,"Trifolium gracilentum","NAF","Carrizo",1
+"76","EP1",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",80
+"77","EP1",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",7
+"78","EP1",2012,"bare","bare","Carrizo",155
+"79","EP1",2012,"litter","litter","Carrizo",249
+"80","EP1",2013,"Bromus rubens","EAG","Carrizo",16
+"81","EP1",2013,"Erodium cicutarium","EAF","Carrizo",26
+"82","EP1",2013,"Hordeum murinum","EAG","Carrizo",12
+"83","EP1",2013,"Poa secunda ssp secunda","NPG","Carrizo",2
+"84","EP1",2013,"Schismus arabicus","EAG","Carrizo",14
+"85","EP1",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"86","EP1",2013,"Vulpia myuros v hirsuta","EAG","Carrizo",5
+"87","EP1",2013,"bare","bare","Carrizo",224
+"88","EP1",2013,"hole","hole","Carrizo",1
+"89","EP1",2013,"litter","litter","Carrizo",347
+"90","EP1",2014,"Bromus rubens","EAG","Carrizo",5
+"91","EP1",2014,"Calandrinia ciliata","NAF","Carrizo",4
+"92","EP1",2014,"Dichelostemma capitatum","NPF","Carrizo",2
+"93","EP1",2014,"Erodium cicutarium","EAF","Carrizo",57
+"94","EP1",2014,"Hordeum murinum","EAG","Carrizo",3
+"95","EP1",2014,"Lepidium nitidum","NAF","Carrizo",13
+"96","EP1",2014,"Poa secunda ssp secunda","NPG","Carrizo",1
+"97","EP1",2014,"Schismus arabicus","EAG","Carrizo",2
+"98","EP1",2014,"Trifolium gracilentum","NAF","Carrizo",3
+"99","EP1",2014,"bare","bare","Carrizo",319
+"100","EP1",2014,"litter","litter","Carrizo",239
+"101","EP1",2015,"Amsinckia tessellata","NAF","Carrizo",1
+"102","EP1",2015,"Bromus rubens","EAG","Carrizo",8
+"103","EP1",2015,"Calandrinia ciliata","NAF","Carrizo",25
+"104","EP1",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"105","EP1",2015,"Erodium cicutarium","EAF","Carrizo",269
+"106","EP1",2015,"Guillenia lasiophylla","NAF","Carrizo",7
+"107","EP1",2015,"Hordeum murinum","EAG","Carrizo",11
+"108","EP1",2015,"Lepidium nitidum","NAF","Carrizo",37
+"109","EP1",2015,"Pectocarya penicillata","NAF","Carrizo",2
+"110","EP1",2015,"Schismus arabicus","EAG","Carrizo",23
+"111","EP1",2015,"Trifolium gracilentum","NAF","Carrizo",13
+"112","EP1",2015,"Tropidocarpum gracile","NAF","Carrizo",27
+"113","EP1",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",41
+"114","EP1",2015,"bare","bare","Carrizo",166
+"115","EP1",2015,"litter","litter","Carrizo",17
+"116","EP1",2016,"Bromus rubens","EAG","Carrizo",2
+"117","EP1",2016,"Calandrinia ciliata","NAF","Carrizo",1
+"118","EP1",2016,"Dichelostemma capitatum","NPF","Carrizo",1
+"119","EP1",2016,"Erodium cicutarium","EAF","Carrizo",52
+"120","EP1",2016,"Guillenia lasiophylla","NAF","Carrizo",4
+"121","EP1",2016,"Hordeum murinum","EAG","Carrizo",13
+"122","EP1",2016,"Lepidium nitidum","NAF","Carrizo",41
+"123","EP1",2016,"Schismus arabicus","EAG","Carrizo",7
+"124","EP1",2016,"Sisymbrium irio","EAF","Carrizo",1
+"125","EP1",2016,"Tropidocarpum gracile","NAF","Carrizo",10
+"126","EP1",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",18
+"127","EP1",2016,"Vulpia myuros v hirsuta","EAG","Carrizo",4
+"128","EP1",2016,"bare","bare","Carrizo",4
+"129","EP1",2016,"litter","litter","Carrizo",4
+"130","EP1",2017,"Amsinckia tessellata","NAF","Carrizo",4
+"131","EP1",2017,"Bromus rubens","EAG","Carrizo",25
+"132","EP1",2017,"Erodium cicutarium","EAF","Carrizo",27
+"133","EP1",2017,"Hordeum murinum","EAG","Carrizo",34
+"134","EP1",2017,"Lepidium nitidum","NAF","Carrizo",1
+"135","EP1",2017,"Schismus arabicus","EAG","Carrizo",3
+"136","EP1",2017,"Trifolium gracilentum","NAF","Carrizo",8
+"137","EP1",2017,"Tropidocarpum gracile","NAF","Carrizo",5
+"138","EP1",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",33
+"139","EP1",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",22
+"140","EP1",2018,"Bromus rubens","EAG","Carrizo",6
+"141","EP1",2018,"Erodium cicutarium","EAF","Carrizo",1
+"142","EP1",2018,"Hordeum murinum","EAG","Carrizo",38
+"143","EP1",2018,"Lepidium nitidum","NAF","Carrizo",8
+"144","EP1",2018,"Schismus arabicus","EAG","Carrizo",1
+"145","EP1",2018,"Tropidocarpum gracile","NAF","Carrizo",1
+"146","EP1",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",17
+"147","EP1",2018,"bare","bare","Carrizo",5
+"148","EP1",2018,"litter","litter","Carrizo",85
+"149","EP10",2007,"Erodium cicutarium","EAF","Carrizo",32
+"150","EP10",2007,"Guillenia lasiophylla","NAF","Carrizo",7
+"151","EP10",2007,"Hordeum murinum","EAG","Carrizo",1
+"152","EP10",2007,"Lasthenia californica","NAF","Carrizo",5
+"153","EP10",2007,"Lasthenia minor","NAF","Carrizo",1
+"154","EP10",2007,"Lepidium nitidum","NAF","Carrizo",4
+"155","EP10",2007,"Lotus wrangelianus","NAF","Carrizo",2
+"156","EP10",2007,"Malacothrix coulteri","NAF","Carrizo",1
+"157","EP10",2007,"Microseris elegans","NAF","Carrizo",58
+"158","EP10",2007,"Schismus arabicus","EAG","Carrizo",56
+"159","EP10",2007,"Tropidocarpum gracile","NAF","Carrizo",26
+"160","EP10",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",13
+"161","EP10",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"162","EP10",2007,"bare","bare","Carrizo",255
+"163","EP10",2007,"litter","litter","Carrizo",185
+"164","EP10",2008,"Amsinckia tessellata","NAF","Carrizo",56
+"165","EP10",2008,"Bromus rubens","EAG","Carrizo",2
+"166","EP10",2008,"Calandrinia ciliata","NAF","Carrizo",4
+"167","EP10",2008,"Dichelostemma capitatum","NPF","Carrizo",5
+"168","EP10",2008,"Eriogonum gracillimum","NAF","Carrizo",3
+"169","EP10",2008,"Erodium cicutarium","EAF","Carrizo",110
+"170","EP10",2008,"Guillenia lasiophylla","NAF","Carrizo",7
+"171","EP10",2008,"Lasthenia minor","NAF","Carrizo",25
+"172","EP10",2008,"Lepidium nitidum","NAF","Carrizo",6
+"173","EP10",2008,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"174","EP10",2008,"Malacothrix coulteri","NAF","Carrizo",4
+"175","EP10",2008,"Microseris douglasii","NAF","Carrizo",1
+"176","EP10",2008,"Microseris elegans","NAF","Carrizo",6
+"177","EP10",2008,"Monolopia lanceolata","NAF","Carrizo",3
+"178","EP10",2008,"Schismus arabicus","EAG","Carrizo",22
+"179","EP10",2008,"Trifolium gracilentum","NAF","Carrizo",1
+"180","EP10",2008,"Tropidocarpum gracile","NAF","Carrizo",62
+"181","EP10",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"182","EP10",2008,"bare","bare","Carrizo",263
+"183","EP10",2008,"litter","litter","Carrizo",53
+"184","EP10",2009,"Amsinckia tessellata","NAF","Carrizo",60
+"185","EP10",2009,"Calandrinia ciliata","NAF","Carrizo",3
+"186","EP10",2009,"Dichelostemma capitatum","NPF","Carrizo",9
+"187","EP10",2009,"Eriogonum gracillimum","NAF","Carrizo",8
+"188","EP10",2009,"Erodium cicutarium","EAF","Carrizo",180
+"189","EP10",2009,"Guillenia lasiophylla","NAF","Carrizo",1
+"190","EP10",2009,"Lasthenia minor","NAF","Carrizo",72
+"191","EP10",2009,"Lepidium nitidum","NAF","Carrizo",29
+"192","EP10",2009,"Lotus wrangelianus","NAF","Carrizo",6
+"193","EP10",2009,"Microseris elegans","NAF","Carrizo",4
+"194","EP10",2009,"Schismus arabicus","EAG","Carrizo",43
+"195","EP10",2009,"Trifolium gracilentum","NAF","Carrizo",16
+"196","EP10",2009,"Tropidocarpum gracile","NAF","Carrizo",41
+"197","EP10",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",31
+"198","EP10",2009,"bare","bare","Carrizo",207
+"199","EP10",2009,"litter","litter","Carrizo",19
+"200","EP10",2010,"Amsinckia tessellata","NAF","Carrizo",20
+"201","EP10",2010,"Calandrinia ciliata","NAF","Carrizo",10
+"202","EP10",2010,"Eriogonum gracillimum","NAF","Carrizo",1
+"203","EP10",2010,"Erodium cicutarium","EAF","Carrizo",133
+"204","EP10",2010,"Guillenia lasiophylla","NAF","Carrizo",5
+"205","EP10",2010,"Lasthenia minor","NAF","Carrizo",124
+"206","EP10",2010,"Lepidium nitidum","NAF","Carrizo",93
+"207","EP10",2010,"Lotus wrangelianus","NAF","Carrizo",27
+"208","EP10",2010,"Malacothrix coulteri","NAF","Carrizo",3
+"209","EP10",2010,"Microseris elegans","NAF","Carrizo",4
+"210","EP10",2010,"Monolopia lanceolata","NAF","Carrizo",1
+"211","EP10",2010,"Pectocarya penicillata","NAF","Carrizo",2
+"212","EP10",2010,"Schismus arabicus","EAG","Carrizo",34
+"213","EP10",2010,"Trifolium gracilentum","NAF","Carrizo",44
+"214","EP10",2010,"Tropidocarpum gracile","NAF","Carrizo",30
+"215","EP10",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",42
+"216","EP10",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"217","EP10",2010,"bare","bare","Carrizo",73
+"218","EP10",2011,"Amsinckia tessellata","NAF","Carrizo",32
+"219","EP10",2011,"Bromus rubens","EAG","Carrizo",2
+"220","EP10",2011,"Eriogonum gracillimum","NAF","Carrizo",11
+"221","EP10",2011,"Erodium cicutarium","EAF","Carrizo",208
+"222","EP10",2011,"Lasthenia minor","NAF","Carrizo",65
+"223","EP10",2011,"Lotus wrangelianus","NAF","Carrizo",59
+"224","EP10",2011,"Microseris elegans","NAF","Carrizo",1
+"225","EP10",2011,"Pectocarya penicillata","NAF","Carrizo",2
+"226","EP10",2011,"Schismus arabicus","EAG","Carrizo",85
+"227","EP10",2011,"Trifolium gracilentum","NAF","Carrizo",30
+"228","EP10",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",27
+"229","EP10",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"230","EP10",2011,"bare","bare","Carrizo",110
+"231","EP10",2011,"litter","litter","Carrizo",14
+"232","EP10",2012,"Bromus rubens","EAG","Carrizo",1
+"233","EP10",2012,"Dichelostemma capitatum","NPF","Carrizo",1
+"234","EP10",2012,"Erodium cicutarium","EAF","Carrizo",17
+"235","EP10",2012,"Hordeum murinum","EAG","Carrizo",1
+"236","EP10",2012,"Microseris elegans","NAF","Carrizo",1
+"237","EP10",2012,"Schismus arabicus","EAG","Carrizo",40
+"238","EP10",2012,"Trifolium gracilentum","NAF","Carrizo",2
+"239","EP10",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",7
+"240","EP10",2012,"bare","bare","Carrizo",341
+"241","EP10",2012,"litter","litter","Carrizo",237
+"242","EP10",2013,"Erodium cicutarium","EAF","Carrizo",19
+"243","EP10",2013,"Schismus arabicus","EAG","Carrizo",4
+"244","EP10",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"245","EP10",2013,"bare","bare","Carrizo",431
+"246","EP10",2013,"litter","litter","Carrizo",193
+"247","EP10",2014,"Amsinckia tessellata","NAF","Carrizo",3
+"248","EP10",2014,"Calandrinia ciliata","NAF","Carrizo",8
+"249","EP10",2014,"Dichelostemma capitatum","NPF","Carrizo",1
+"250","EP10",2014,"Erodium cicutarium","EAF","Carrizo",33
+"251","EP10",2014,"Lepidium nitidum","NAF","Carrizo",7
+"252","EP10",2014,"Lotus wrangelianus","NAF","Carrizo",2
+"253","EP10",2014,"Schismus arabicus","EAG","Carrizo",7
+"254","EP10",2014,"bare","bare","Carrizo",548
+"255","EP10",2014,"litter","litter","Carrizo",39
+"256","EP10",2015,"Amsinckia tessellata","NAF","Carrizo",8
+"257","EP10",2015,"Calandrinia ciliata","NAF","Carrizo",4
+"258","EP10",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"259","EP10",2015,"Eriogonum gracillimum","NAF","Carrizo",2
+"260","EP10",2015,"Erodium cicutarium","EAF","Carrizo",7
+"261","EP10",2015,"Lasthenia minor","NAF","Carrizo",5
+"262","EP10",2015,"Lotus wrangelianus","NAF","Carrizo",52
+"263","EP10",2015,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"264","EP10",2015,"Malacothrix coulteri","NAF","Carrizo",3
+"265","EP10",2015,"Microseris elegans","NAF","Carrizo",1
+"266","EP10",2015,"Schismus arabicus","EAG","Carrizo",19
+"267","EP10",2015,"Trichostema lanceolatum","NAF","Carrizo",2
+"268","EP10",2015,"Trifolium gracilentum","NAF","Carrizo",7
+"269","EP10",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"270","EP10",2015,"bare","bare","Carrizo",523
+"271","EP10",2015,"hole","hole","Carrizo",1
+"272","EP10",2015,"litter","litter","Carrizo",10
+"273","EP10",2016,"Amsinckia tessellata","NAF","Carrizo",29
+"274","EP10",2016,"Calandrinia ciliata","NAF","Carrizo",2
+"275","EP10",2016,"Erodium cicutarium","EAF","Carrizo",25
+"276","EP10",2016,"Guillenia lasiophylla","NAF","Carrizo",16
+"277","EP10",2016,"Lasthenia minor","NAF","Carrizo",2
+"278","EP10",2016,"Lepidium nitidum","NAF","Carrizo",2
+"279","EP10",2016,"Lotus wrangelianus","NAF","Carrizo",2
+"280","EP10",2016,"Monolopia lanceolata","NAF","Carrizo",2
+"281","EP10",2016,"Schismus arabicus","EAG","Carrizo",5
+"282","EP10",2016,"Tropidocarpum gracile","NAF","Carrizo",4
+"283","EP10",2016,"bare","bare","Carrizo",153
+"284","EP10",2016,"litter","litter","Carrizo",1
+"285","EP10",2017,"Amsinckia tessellata","NAF","Carrizo",8
+"286","EP10",2017,"Calandrinia ciliata","NAF","Carrizo",2
+"287","EP10",2017,"Erodium cicutarium","EAF","Carrizo",8
+"288","EP10",2017,"Guillenia lasiophylla","NAF","Carrizo",15
+"289","EP10",2017,"Hordeum murinum","EAG","Carrizo",24
+"290","EP10",2017,"Lasthenia minor","NAF","Carrizo",4
+"291","EP10",2017,"Lepidium nitidum","NAF","Carrizo",8
+"292","EP10",2017,"Lotus wrangelianus","NAF","Carrizo",3
+"293","EP10",2017,"Monolopia lanceolata","NAF","Carrizo",3
+"294","EP10",2017,"Schismus arabicus","EAG","Carrizo",21
+"295","EP10",2017,"Tropidocarpum gracile","NAF","Carrizo",2
+"296","EP10",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"297","EP10",2017,"bare","bare","Carrizo",108
+"298","EP10",2017,"litter","litter","Carrizo",36
+"299","EP10",2018,"Hordeum murinum","EAG","Carrizo",7
+"300","EP10",2018,"Lepidium nitidum","NAF","Carrizo",1
+"301","EP10",2018,"Schismus arabicus","EAG","Carrizo",9
+"302","EP10",2018,"bare","bare","Carrizo",163
+"303","EP10",2018,"litter","litter","Carrizo",63
+"304","EP2",2007,"Bromus rubens","EAG","Carrizo",14
+"305","EP2",2007,"Calandrinia ciliata","NAF","Carrizo",2
+"306","EP2",2007,"Dichelostemma capitatum","NPF","Carrizo",1
+"307","EP2",2007,"Erodium cicutarium","EAF","Carrizo",29
+"308","EP2",2007,"Guillenia lasiophylla","NAF","Carrizo",2
+"309","EP2",2007,"Hordeum murinum","EAG","Carrizo",12
+"310","EP2",2007,"Lepidium nitidum","NAF","Carrizo",6
+"311","EP2",2007,"Microseris elegans","NAF","Carrizo",2
+"312","EP2",2007,"Schismus arabicus","EAG","Carrizo",41
+"313","EP2",2007,"Tropidocarpum gracile","NAF","Carrizo",2
+"314","EP2",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",182
+"315","EP2",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",24
+"316","EP2",2007,"bare","bare","Carrizo",123
+"317","EP2",2007,"litter","litter","Carrizo",208
+"318","EP2",2008,"Amsinckia tessellata","NAF","Carrizo",9
+"319","EP2",2008,"Bromus rubens","EAG","Carrizo",1
+"320","EP2",2008,"Calandrinia ciliata","NAF","Carrizo",25
+"321","EP2",2008,"Dichelostemma capitatum","NPF","Carrizo",4
+"322","EP2",2008,"Erodium cicutarium","EAF","Carrizo",207
+"323","EP2",2008,"Hordeum murinum","EAG","Carrizo",8
+"324","EP2",2008,"Lepidium nitidum","NAF","Carrizo",5
+"325","EP2",2008,"Microseris elegans","NAF","Carrizo",4
+"326","EP2",2008,"Schismus arabicus","EAG","Carrizo",49
+"327","EP2",2008,"Trifolium gracilentum","NAF","Carrizo",1
+"328","EP2",2008,"Tropidocarpum gracile","NAF","Carrizo",24
+"329","EP2",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",79
+"330","EP2",2008,"bare","bare","Carrizo",138
+"331","EP2",2008,"litter","litter","Carrizo",94
+"332","EP2",2009,"Amsinckia tessellata","NAF","Carrizo",20
+"333","EP2",2009,"Bromus rubens","EAG","Carrizo",2
+"334","EP2",2009,"Calandrinia ciliata","NAF","Carrizo",23
+"335","EP2",2009,"Dichelostemma capitatum","NPF","Carrizo",4
+"336","EP2",2009,"Eriogonum gracillimum","NAF","Carrizo",1
+"337","EP2",2009,"Erodium cicutarium","EAF","Carrizo",182
+"338","EP2",2009,"Hordeum murinum","EAG","Carrizo",6
+"339","EP2",2009,"Lepidium nitidum","NAF","Carrizo",16
+"340","EP2",2009,"Lotus wrangelianus","NAF","Carrizo",2
+"341","EP2",2009,"Microseris elegans","NAF","Carrizo",1
+"342","EP2",2009,"Schismus arabicus","EAG","Carrizo",44
+"343","EP2",2009,"Trifolium gracilentum","NAF","Carrizo",51
+"344","EP2",2009,"Tropidocarpum gracile","NAF","Carrizo",14
+"345","EP2",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",117
+"346","EP2",2009,"bare","bare","Carrizo",126
+"347","EP2",2009,"litter","litter","Carrizo",39
+"348","EP2",2010,"Amsinckia menziesii","NAF","Carrizo",1
+"349","EP2",2010,"Amsinckia tessellata","NAF","Carrizo",37
+"350","EP2",2010,"Calandrinia ciliata","NAF","Carrizo",33
+"351","EP2",2010,"Erodium cicutarium","EAF","Carrizo",119
+"352","EP2",2010,"Guillenia lasiophylla","NAF","Carrizo",2
+"353","EP2",2010,"Hordeum murinum","EAG","Carrizo",1
+"354","EP2",2010,"Lasthenia minor","NAF","Carrizo",16
+"355","EP2",2010,"Lepidium nitidum","NAF","Carrizo",22
+"356","EP2",2010,"Lotus wrangelianus","NAF","Carrizo",7
+"357","EP2",2010,"Microseris douglasii","NAF","Carrizo",1
+"358","EP2",2010,"Microseris elegans","NAF","Carrizo",11
+"359","EP2",2010,"Pectocarya penicillata","NAF","Carrizo",1
+"360","EP2",2010,"Schismus arabicus","EAG","Carrizo",19
+"361","EP2",2010,"Trifolium albopurpureum","NAF","Carrizo",3
+"362","EP2",2010,"Trifolium gracilentum","NAF","Carrizo",135
+"363","EP2",2010,"Tropidocarpum gracile","NAF","Carrizo",12
+"364","EP2",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",184
+"365","EP2",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",3
+"366","EP2",2010,"bare","bare","Carrizo",41
+"367","EP2",2011,"Amsinckia tessellata","NAF","Carrizo",10
+"368","EP2",2011,"Bromus rubens","EAG","Carrizo",9
+"369","EP2",2011,"Erodium cicutarium","EAF","Carrizo",119
+"370","EP2",2011,"Hordeum murinum","EAG","Carrizo",38
+"371","EP2",2011,"Lasthenia minor","NAF","Carrizo",9
+"372","EP2",2011,"Lepidium nitidum","NAF","Carrizo",1
+"373","EP2",2011,"Lotus wrangelianus","NAF","Carrizo",10
+"374","EP2",2011,"Microseris douglasii","NAF","Carrizo",11
+"375","EP2",2011,"Microseris elegans","NAF","Carrizo",31
+"376","EP2",2011,"Pectocarya penicillata","NAF","Carrizo",1
+"377","EP2",2011,"Schismus arabicus","EAG","Carrizo",47
+"378","EP2",2011,"Trifolium gracilentum","NAF","Carrizo",155
+"379","EP2",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",120
+"380","EP2",2011,"bare","bare","Carrizo",56
+"381","EP2",2011,"hole","hole","Carrizo",1
+"382","EP2",2011,"litter","litter","Carrizo",30
+"383","EP2",2012,"Bromus rubens","EAG","Carrizo",16
+"384","EP2",2012,"Erodium cicutarium","EAF","Carrizo",35
+"385","EP2",2012,"Hordeum murinum","EAG","Carrizo",21
+"386","EP2",2012,"Lepidium nitidum","NAF","Carrizo",4
+"387","EP2",2012,"Pectocarya penicillata","NAF","Carrizo",1
+"388","EP2",2012,"Schismus arabicus","EAG","Carrizo",32
+"389","EP2",2012,"Trifolium gracilentum","NAF","Carrizo",1
+"390","EP2",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",25
+"391","EP2",2012,"bare","bare","Carrizo",215
+"392","EP2",2012,"litter","litter","Carrizo",298
+"393","EP2",2013,"Erodium cicutarium","EAF","Carrizo",23
+"394","EP2",2013,"Hordeum murinum","EAG","Carrizo",1
+"395","EP2",2013,"Schismus arabicus","EAG","Carrizo",4
+"396","EP2",2013,"Trifolium gracilentum","NAF","Carrizo",1
+"397","EP2",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"398","EP2",2013,"bare","bare","Carrizo",348
+"399","EP2",2013,"litter","litter","Carrizo",268
+"400","EP2",2014,"Amsinckia tessellata","NAF","Carrizo",1
+"401","EP2",2014,"Calandrinia ciliata","NAF","Carrizo",14
+"402","EP2",2014,"Erodium cicutarium","EAF","Carrizo",27
+"403","EP2",2014,"Lepidium nitidum","NAF","Carrizo",2
+"404","EP2",2014,"Lotus wrangelianus","NAF","Carrizo",1
+"405","EP2",2014,"Schismus arabicus","EAG","Carrizo",8
+"406","EP2",2014,"Trifolium gracilentum","NAF","Carrizo",6
+"407","EP2",2014,"Tropidocarpum gracile","NAF","Carrizo",1
+"408","EP2",2014,"bare","bare","Carrizo",520
+"409","EP2",2014,"litter","litter","Carrizo",68
+"410","EP2",2015,"Amsinckia tessellata","NAF","Carrizo",7
+"411","EP2",2015,"Calandrinia ciliata","NAF","Carrizo",7
+"412","EP2",2015,"Erodium cicutarium","EAF","Carrizo",47
+"413","EP2",2015,"Hordeum murinum","EAG","Carrizo",17
+"414","EP2",2015,"Lasthenia minor","NAF","Carrizo",1
+"415","EP2",2015,"Lepidium nitidum","NAF","Carrizo",2
+"416","EP2",2015,"Lotus wrangelianus","NAF","Carrizo",1
+"417","EP2",2015,"Microseris douglasii","NAF","Carrizo",1
+"418","EP2",2015,"Schismus arabicus","EAG","Carrizo",67
+"419","EP2",2015,"Trifolium gracilentum","NAF","Carrizo",1
+"420","EP2",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"421","EP2",2015,"bare","bare","Carrizo",478
+"422","EP2",2015,"litter","litter","Carrizo",5
+"423","EP2",2016,"Amsinckia tessellata","NAF","Carrizo",7
+"424","EP2",2016,"Calandrinia ciliata","NAF","Carrizo",13
+"425","EP2",2016,"Erodium cicutarium","EAF","Carrizo",48
+"426","EP2",2016,"Guillenia lasiophylla","NAF","Carrizo",7
+"427","EP2",2016,"Hordeum murinum","EAG","Carrizo",29
+"428","EP2",2016,"Lasthenia minor","NAF","Carrizo",1
+"429","EP2",2016,"Lepidium nitidum","NAF","Carrizo",7
+"430","EP2",2016,"Schismus arabicus","EAG","Carrizo",67
+"431","EP2",2016,"Tropidocarpum gracile","NAF","Carrizo",1
+"432","EP2",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",13
+"433","EP2",2016,"bare","bare","Carrizo",206
+"434","EP2",2016,"litter","litter","Carrizo",6
+"435","EP2",2017,"Amsinckia tessellata","NAF","Carrizo",46
+"436","EP2",2017,"Bromus rubens","EAG","Carrizo",2
+"437","EP2",2017,"Descurainia sophia","EAF","Carrizo",1
+"438","EP2",2017,"Erodium cicutarium","EAF","Carrizo",30
+"439","EP2",2017,"Guillenia lasiophylla","NAF","Carrizo",127
+"440","EP2",2017,"Hordeum murinum","EAG","Carrizo",43
+"441","EP2",2017,"Lasthenia minor","NAF","Carrizo",3
+"442","EP2",2017,"Lepidium nitidum","NAF","Carrizo",2
+"443","EP2",2017,"Lotus wrangelianus","NAF","Carrizo",1
+"444","EP2",2017,"Schismus arabicus","EAG","Carrizo",34
+"445","EP2",2017,"Trifolium gracilentum","NAF","Carrizo",6
+"446","EP2",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",10
+"447","EP2",2017,"bare","bare","Carrizo",19
+"448","EP2",2018,"Amsinckia tessellata","NAF","Carrizo",2
+"449","EP2",2018,"Calandrinia ciliata","NAF","Carrizo",8
+"450","EP2",2018,"Erodium cicutarium","EAF","Carrizo",20
+"451","EP2",2018,"Guillenia lasiophylla","NAF","Carrizo",40
+"452","EP2",2018,"Hordeum murinum","EAG","Carrizo",23
+"453","EP2",2018,"Lasthenia minor","NAF","Carrizo",2
+"454","EP2",2018,"Lepidium nitidum","NAF","Carrizo",8
+"455","EP2",2018,"Microseris elegans","NAF","Carrizo",3
+"456","EP2",2018,"Pectocarya penicillata","NAF","Carrizo",6
+"457","EP2",2018,"Schismus arabicus","EAG","Carrizo",39
+"458","EP2",2018,"Trifolium gracilentum","NAF","Carrizo",2
+"459","EP2",2018,"Tropidocarpum gracile","NAF","Carrizo",4
+"460","EP2",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",28
+"461","EP2",2018,"bare","bare","Carrizo",58
+"462","EP2",2018,"hole","hole","Carrizo",2
+"463","EP2",2018,"litter","litter","Carrizo",110
+"464","EP3",2007,"Bromus rubens","EAG","Carrizo",20
+"465","EP3",2007,"Calandrinia ciliata","NAF","Carrizo",1
+"466","EP3",2007,"Capsella bursa-pastoris","EAF","Carrizo",2
+"467","EP3",2007,"Erodium cicutarium","EAF","Carrizo",20
+"468","EP3",2007,"Hordeum murinum","EAG","Carrizo",9
+"469","EP3",2007,"Lasthenia californica","NAF","Carrizo",1
+"470","EP3",2007,"Lepidium nitidum","NAF","Carrizo",14
+"471","EP3",2007,"Microseris douglasii","NAF","Carrizo",1
+"472","EP3",2007,"Microseris elegans","NAF","Carrizo",3
+"473","EP3",2007,"Schismus arabicus","EAG","Carrizo",6
+"474","EP3",2007,"Tropidocarpum gracile","NAF","Carrizo",6
+"475","EP3",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",197
+"476","EP3",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",55
+"477","EP3",2007,"bare","bare","Carrizo",80
+"478","EP3",2007,"hole","hole","Carrizo",1
+"479","EP3",2007,"litter","litter","Carrizo",232
+"480","EP3",2008,"Amsinckia tessellata","NAF","Carrizo",4
+"481","EP3",2008,"Bromus rubens","EAG","Carrizo",2
+"482","EP3",2008,"Calandrinia ciliata","NAF","Carrizo",6
+"483","EP3",2008,"Dichelostemma capitatum","NPF","Carrizo",3
+"484","EP3",2008,"Erodium cicutarium","EAF","Carrizo",236
+"485","EP3",2008,"Guillenia lasiophylla","NAF","Carrizo",6
+"486","EP3",2008,"Hordeum murinum","EAG","Carrizo",4
+"487","EP3",2008,"Lasthenia minor","NAF","Carrizo",37
+"488","EP3",2008,"Lepidium nitidum","NAF","Carrizo",15
+"489","EP3",2008,"Schismus arabicus","EAG","Carrizo",21
+"490","EP3",2008,"Trifolium gracilentum","NAF","Carrizo",3
+"491","EP3",2008,"Tropidocarpum gracile","NAF","Carrizo",76
+"492","EP3",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",50
+"493","EP3",2008,"bare","bare","Carrizo",70
+"494","EP3",2008,"litter","litter","Carrizo",115
+"495","EP3",2009,"Amsinckia tessellata","NAF","Carrizo",4
+"496","EP3",2009,"Bromus rubens","EAG","Carrizo",1
+"497","EP3",2009,"Calandrinia ciliata","NAF","Carrizo",4
+"498","EP3",2009,"Dichelostemma capitatum","NPF","Carrizo",6
+"499","EP3",2009,"Erodium cicutarium","EAF","Carrizo",137
+"500","EP3",2009,"Guillenia lasiophylla","NAF","Carrizo",1
+"501","EP3",2009,"Lasthenia minor","NAF","Carrizo",82
+"502","EP3",2009,"Lepidium nitidum","NAF","Carrizo",32
+"503","EP3",2009,"Microseris elegans","NAF","Carrizo",1
+"504","EP3",2009,"Schismus arabicus","EAG","Carrizo",30
+"505","EP3",2009,"Trifolium gracilentum","NAF","Carrizo",50
+"506","EP3",2009,"Tropidocarpum gracile","NAF","Carrizo",58
+"507","EP3",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",65
+"508","EP3",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"509","EP3",2009,"bare","bare","Carrizo",141
+"510","EP3",2009,"hole","hole","Carrizo",2
+"511","EP3",2009,"litter","litter","Carrizo",32
+"512","EP3",2010,"Amsinckia tessellata","NAF","Carrizo",1
+"513","EP3",2010,"Astragalus didymocarpus","NAF","Carrizo",4
+"514","EP3",2010,"Bromus rubens","EAG","Carrizo",2
+"515","EP3",2010,"Calandrinia ciliata","NAF","Carrizo",11
+"516","EP3",2010,"Capsella bursa-pastoris","EAF","Carrizo",8
+"517","EP3",2010,"Dichelostemma capitatum","NPF","Carrizo",6
+"518","EP3",2010,"Erodium cicutarium","EAF","Carrizo",52
+"519","EP3",2010,"Guillenia lasiophylla","NAF","Carrizo",2
+"520","EP3",2010,"Lasthenia minor","NAF","Carrizo",104
+"521","EP3",2010,"Lepidium nitidum","NAF","Carrizo",72
+"522","EP3",2010,"Lotus wrangelianus","NAF","Carrizo",1
+"523","EP3",2010,"Schismus arabicus","EAG","Carrizo",49
+"524","EP3",2010,"Trifolium gracilentum","NAF","Carrizo",114
+"525","EP3",2010,"Tropidocarpum gracile","NAF","Carrizo",40
+"526","EP3",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",154
+"527","EP3",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",17
+"528","EP3",2010,"bare","bare","Carrizo",11
+"529","EP3",2011,"Bromus rubens","EAG","Carrizo",3
+"530","EP3",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"531","EP3",2011,"Erodium cicutarium","EAF","Carrizo",238
+"532","EP3",2011,"Lasthenia minor","NAF","Carrizo",28
+"533","EP3",2011,"Lepidium nitidum","NAF","Carrizo",22
+"534","EP3",2011,"Lotus wrangelianus","NAF","Carrizo",2
+"535","EP3",2011,"Microseris douglasii","NAF","Carrizo",2
+"536","EP3",2011,"Microseris elegans","NAF","Carrizo",1
+"537","EP3",2011,"Schismus arabicus","EAG","Carrizo",77
+"538","EP3",2011,"Trifolium gracilentum","NAF","Carrizo",55
+"539","EP3",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",99
+"540","EP3",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",5
+"541","EP3",2011,"bare","bare","Carrizo",62
+"542","EP3",2011,"litter","litter","Carrizo",53
+"543","EP3",2012,"Bromus rubens","EAG","Carrizo",4
+"544","EP3",2012,"Erodium cicutarium","EAF","Carrizo",35
+"545","EP3",2012,"Hordeum murinum","EAG","Carrizo",2
+"546","EP3",2012,"Poa secunda ssp secunda","NPG","Carrizo",1
+"547","EP3",2012,"Schismus arabicus","EAG","Carrizo",125
+"548","EP3",2012,"Trifolium gracilentum","NAF","Carrizo",1
+"549","EP3",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",62
+"550","EP3",2012,"bare","bare","Carrizo",161
+"551","EP3",2012,"litter","litter","Carrizo",257
+"552","EP3",2013,"Erodium cicutarium","EAF","Carrizo",44
+"553","EP3",2013,"Hordeum murinum","EAG","Carrizo",2
+"554","EP3",2013,"Schismus arabicus","EAG","Carrizo",17
+"555","EP3",2013,"Trifolium gracilentum","NAF","Carrizo",1
+"556","EP3",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",15
+"557","EP3",2013,"bare","bare","Carrizo",235
+"558","EP3",2013,"litter","litter","Carrizo",334
+"559","EP3",2014,"Bromus rubens","EAG","Carrizo",1
+"560","EP3",2014,"Calandrinia ciliata","NAF","Carrizo",13
+"561","EP3",2014,"Erodium cicutarium","EAF","Carrizo",32
+"562","EP3",2014,"Lepidium nitidum","NAF","Carrizo",1
+"563","EP3",2014,"Schismus arabicus","EAG","Carrizo",12
+"564","EP3",2014,"Trifolium gracilentum","NAF","Carrizo",4
+"565","EP3",2014,"bare","bare","Carrizo",476
+"566","EP3",2014,"litter","litter","Carrizo",109
+"567","EP3",2015,"Calandrinia ciliata","NAF","Carrizo",9
+"568","EP3",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"569","EP3",2015,"Erodium cicutarium","EAF","Carrizo",170
+"570","EP3",2015,"Guillenia lasiophylla","NAF","Carrizo",16
+"571","EP3",2015,"Lasthenia minor","NAF","Carrizo",53
+"572","EP3",2015,"Lepidium nitidum","NAF","Carrizo",55
+"573","EP3",2015,"Lotus wrangelianus","NAF","Carrizo",3
+"574","EP3",2015,"Schismus arabicus","EAG","Carrizo",63
+"575","EP3",2015,"Trifolium gracilentum","NAF","Carrizo",4
+"576","EP3",2015,"Tropidocarpum gracile","NAF","Carrizo",45
+"577","EP3",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"578","EP3",2015,"bare","bare","Carrizo",197
+"579","EP3",2015,"litter","litter","Carrizo",27
+"580","EP3",2016,"Calandrinia ciliata","NAF","Carrizo",2
+"581","EP3",2016,"Erodium cicutarium","EAF","Carrizo",83
+"582","EP3",2016,"Guillenia lasiophylla","NAF","Carrizo",18
+"583","EP3",2016,"Lasthenia minor","NAF","Carrizo",37
+"584","EP3",2016,"Lepidium nitidum","NAF","Carrizo",86
+"585","EP3",2016,"Schismus arabicus","EAG","Carrizo",59
+"586","EP3",2016,"Trifolium gracilentum","NAF","Carrizo",1
+"587","EP3",2016,"Tropidocarpum gracile","NAF","Carrizo",39
+"588","EP3",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",4
+"589","EP3",2016,"bare","bare","Carrizo",62
+"590","EP3",2016,"litter","litter","Carrizo",14
+"591","EP3",2017,"Amsinckia tessellata","NAF","Carrizo",5
+"592","EP3",2017,"Bromus rubens","EAG","Carrizo",13
+"593","EP3",2017,"Erodium cicutarium","EAF","Carrizo",124
+"594","EP3",2017,"Guillenia lasiophylla","NAF","Carrizo",28
+"595","EP3",2017,"Hordeum murinum","EAG","Carrizo",2
+"596","EP3",2017,"Lasthenia minor","NAF","Carrizo",108
+"597","EP3",2017,"Lepidium nitidum","NAF","Carrizo",49
+"598","EP3",2017,"Lotus wrangelianus","NAF","Carrizo",1
+"599","EP3",2017,"Schismus arabicus","EAG","Carrizo",27
+"600","EP3",2017,"Trifolium gracilentum","NAF","Carrizo",21
+"601","EP3",2017,"Tropidocarpum gracile","NAF","Carrizo",23
+"602","EP3",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"603","EP3",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"604","EP3",2017,"bare","bare","Carrizo",2
+"605","EP3",2018,"Bromus rubens","EAG","Carrizo",1
+"606","EP3",2018,"Calandrinia ciliata","NAF","Carrizo",2
+"607","EP3",2018,"Erodium cicutarium","EAF","Carrizo",26
+"608","EP3",2018,"Guillenia lasiophylla","NAF","Carrizo",6
+"609","EP3",2018,"Hordeum murinum","EAG","Carrizo",12
+"610","EP3",2018,"Lasthenia minor","NAF","Carrizo",27
+"611","EP3",2018,"Lepidium nitidum","NAF","Carrizo",54
+"612","EP3",2018,"Schismus arabicus","EAG","Carrizo",36
+"613","EP3",2018,"Tropidocarpum gracile","NAF","Carrizo",14
+"614","EP3",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"615","EP3",2018,"bare","bare","Carrizo",224
+"616","EP3",2018,"litter","litter","Carrizo",162
+"617","EP4",2007,"Bromus rubens","EAG","Carrizo",11
+"618","EP4",2007,"Erodium cicutarium","EAF","Carrizo",26
+"619","EP4",2007,"Lepidium nitidum","NAF","Carrizo",40
+"620","EP4",2007,"Microseris douglasii","NAF","Carrizo",2
+"621","EP4",2007,"Schismus arabicus","EAG","Carrizo",7
+"622","EP4",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",175
+"623","EP4",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",60
+"624","EP4",2007,"bare","bare","Carrizo",134
+"625","EP4",2007,"hole","hole","Carrizo",1
+"626","EP4",2007,"litter","litter","Carrizo",192
+"627","EP4",2008,"Bromus rubens","EAG","Carrizo",1
+"628","EP4",2008,"Erodium cicutarium","EAF","Carrizo",330
+"629","EP4",2008,"Lepidium nitidum","NAF","Carrizo",32
+"630","EP4",2008,"Microseris douglasii","NAF","Carrizo",1
+"631","EP4",2008,"Phlox gracilis","NAF","Carrizo",1
+"632","EP4",2008,"Schismus arabicus","EAG","Carrizo",23
+"633","EP4",2008,"Trifolium gracilentum","NAF","Carrizo",4
+"634","EP4",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",60
+"635","EP4",2008,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"636","EP4",2008,"bare","bare","Carrizo",122
+"637","EP4",2008,"hole","hole","Carrizo",2
+"638","EP4",2008,"litter","litter","Carrizo",71
+"639","EP4",2009,"Calandrinia ciliata","NAF","Carrizo",1
+"640","EP4",2009,"Erodium cicutarium","EAF","Carrizo",200
+"641","EP4",2009,"Hordeum murinum","EAG","Carrizo",1
+"642","EP4",2009,"Lasthenia californica","NAF","Carrizo",2
+"643","EP4",2009,"Lepidium nitidum","NAF","Carrizo",92
+"644","EP4",2009,"Microseris douglasii","NAF","Carrizo",1
+"645","EP4",2009,"Phlox gracilis","NAF","Carrizo",2
+"646","EP4",2009,"Schismus arabicus","EAG","Carrizo",19
+"647","EP4",2009,"Trifolium gracilentum","NAF","Carrizo",45
+"648","EP4",2009,"Tropidocarpum gracile","NAF","Carrizo",1
+"649","EP4",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",95
+"650","EP4",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",7
+"651","EP4",2009,"bare","bare","Carrizo",139
+"652","EP4",2009,"hole","hole","Carrizo",1
+"653","EP4",2009,"litter","litter","Carrizo",42
+"654","EP4",2010,"Erodium cicutarium","EAF","Carrizo",147
+"655","EP4",2010,"Lepidium nitidum","NAF","Carrizo",85
+"656","EP4",2010,"Microseris douglasii","NAF","Carrizo",2
+"657","EP4",2010,"Schismus arabicus","EAG","Carrizo",28
+"658","EP4",2010,"Trifolium gracilentum","NAF","Carrizo",155
+"659","EP4",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",192
+"660","EP4",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",14
+"661","EP4",2010,"bare","bare","Carrizo",25
+"662","EP4",2011,"Bromus rubens","EAG","Carrizo",2
+"663","EP4",2011,"Erodium cicutarium","EAF","Carrizo",209
+"664","EP4",2011,"Microseris douglasii","NAF","Carrizo",3
+"665","EP4",2011,"Schismus arabicus","EAG","Carrizo",40
+"666","EP4",2011,"Trifolium gracilentum","NAF","Carrizo",69
+"667","EP4",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",221
+"668","EP4",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",14
+"669","EP4",2011,"bare","bare","Carrizo",35
+"670","EP4",2011,"litter","litter","Carrizo",55
+"671","EP4",2012,"Bromus rubens","EAG","Carrizo",6
+"672","EP4",2012,"Erodium cicutarium","EAF","Carrizo",59
+"673","EP4",2012,"Hordeum murinum","EAG","Carrizo",2
+"674","EP4",2012,"Schismus arabicus","EAG","Carrizo",28
+"675","EP4",2012,"Trifolium gracilentum","NAF","Carrizo",3
+"676","EP4",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",33
+"677","EP4",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",3
+"678","EP4",2012,"bare","bare","Carrizo",195
+"679","EP4",2012,"litter","litter","Carrizo",319
+"680","EP4",2013,"Bromus rubens","EAG","Carrizo",4
+"681","EP4",2013,"Erodium cicutarium","EAF","Carrizo",60
+"682","EP4",2013,"Schismus arabicus","EAG","Carrizo",1
+"683","EP4",2013,"Trifolium gracilentum","NAF","Carrizo",1
+"684","EP4",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",22
+"685","EP4",2013,"bare","bare","Carrizo",226
+"686","EP4",2013,"litter","litter","Carrizo",334
+"687","EP4",2014,"Erodium cicutarium","EAF","Carrizo",51
+"688","EP4",2014,"Lepidium nitidum","NAF","Carrizo",4
+"689","EP4",2014,"Schismus arabicus","EAG","Carrizo",2
+"690","EP4",2014,"Trifolium gracilentum","NAF","Carrizo",8
+"691","EP4",2014,"bare","bare","Carrizo",368
+"692","EP4",2014,"litter","litter","Carrizo",215
+"693","EP4",2015,"Calandrinia ciliata","NAF","Carrizo",1
+"694","EP4",2015,"Capsella bursa-pastoris","EAF","Carrizo",1
+"695","EP4",2015,"Erodium cicutarium","EAF","Carrizo",271
+"696","EP4",2015,"Hordeum murinum","EAG","Carrizo",1
+"697","EP4",2015,"Lepidium nitidum","NAF","Carrizo",50
+"698","EP4",2015,"Schismus arabicus","EAG","Carrizo",32
+"699","EP4",2015,"Trifolium gracilentum","NAF","Carrizo",51
+"700","EP4",2015,"Tropidocarpum gracile","NAF","Carrizo",2
+"701","EP4",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",9
+"702","EP4",2015,"bare","bare","Carrizo",206
+"703","EP4",2015,"litter","litter","Carrizo",24
+"704","EP4",2016,"Amsinckia tessellata","NAF","Carrizo",1
+"705","EP4",2016,"Capsella bursa-pastoris","EAF","Carrizo",1
+"706","EP4",2016,"Erodium cicutarium","EAF","Carrizo",83
+"707","EP4",2016,"Guillenia lasiophylla","NAF","Carrizo",3
+"708","EP4",2016,"Hordeum murinum","EAG","Carrizo",3
+"709","EP4",2016,"Lasthenia californica","NAF","Carrizo",1
+"710","EP4",2016,"Lepidium nitidum","NAF","Carrizo",108
+"711","EP4",2016,"Schismus arabicus","EAG","Carrizo",12
+"712","EP4",2016,"Sisymbrium irio","EAF","Carrizo",2
+"713","EP4",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",12
+"714","EP4",2016,"bare","bare","Carrizo",94
+"715","EP4",2016,"litter","litter","Carrizo",4
+"716","EP4",2017,"Bromus rubens","EAG","Carrizo",34
+"717","EP4",2017,"Calandrinia ciliata","NAF","Carrizo",1
+"718","EP4",2017,"Erodium cicutarium","EAF","Carrizo",124
+"719","EP4",2017,"Guillenia lasiophylla","NAF","Carrizo",9
+"720","EP4",2017,"Hordeum murinum","EAG","Carrizo",31
+"721","EP4",2017,"Lepidium nitidum","NAF","Carrizo",24
+"722","EP4",2017,"Salsola tragus","EAF","Carrizo",1
+"723","EP4",2017,"Schismus arabicus","EAG","Carrizo",35
+"724","EP4",2017,"Trichostema lanceolatum","NAF","Carrizo",1
+"725","EP4",2017,"Trifolium gracilentum","NAF","Carrizo",12
+"726","EP4",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",17
+"727","EP4",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",8
+"728","EP4",2017,"bare","bare","Carrizo",22
+"729","EP4",2017,"litter","litter","Carrizo",5
+"730","EP4",2018,"Bromus rubens","EAG","Carrizo",3
+"731","EP4",2018,"Erodium cicutarium","EAF","Carrizo",5
+"732","EP4",2018,"Hordeum murinum","EAG","Carrizo",3
+"733","EP4",2018,"Lepidium nitidum","NAF","Carrizo",15
+"734","EP4",2018,"Schismus arabicus","EAG","Carrizo",2
+"735","EP4",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",15
+"736","EP4",2018,"bare","bare","Carrizo",127
+"737","EP4",2018,"litter","litter","Carrizo",73
+"738","EP5",2007,"Erodium cicutarium","EAF","Carrizo",28
+"739","EP5",2007,"Hordeum murinum","EAG","Carrizo",14
+"740","EP5",2007,"Lepidium dictyotum","NAF","Carrizo",23
+"741","EP5",2007,"Lepidium nitidum","NAF","Carrizo",57
+"742","EP5",2007,"Microseris elegans","NAF","Carrizo",4
+"743","EP5",2007,"Tropidocarpum gracile","NAF","Carrizo",3
+"744","EP5",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"745","EP5",2007,"bare","bare","Carrizo",257
+"746","EP5",2007,"litter","litter","Carrizo",248
+"747","EP5",2008,"Amsinckia tessellata","NAF","Carrizo",27
+"748","EP5",2008,"Athysanus pusillus","NAF","Carrizo",1
+"749","EP5",2008,"Calandrinia ciliata","NAF","Carrizo",3
+"750","EP5",2008,"Dichelostemma capitatum","NPF","Carrizo",3
+"751","EP5",2008,"Erodium cicutarium","EAF","Carrizo",107
+"752","EP5",2008,"Guillenia lasiophylla","NAF","Carrizo",5
+"753","EP5",2008,"Hordeum murinum","EAG","Carrizo",1
+"754","EP5",2008,"Lepidium nitidum","NAF","Carrizo",76
+"755","EP5",2008,"Lotus wrangelianus","NAF","Carrizo",2
+"756","EP5",2008,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"757","EP5",2008,"Microseris elegans","NAF","Carrizo",2
+"758","EP5",2008,"Schismus arabicus","EAG","Carrizo",38
+"759","EP5",2008,"Tropidocarpum gracile","NAF","Carrizo",12
+"760","EP5",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"761","EP5",2008,"bare","bare","Carrizo",315
+"762","EP5",2008,"litter","litter","Carrizo",50
+"763","EP5",2009,"Amsinckia tessellata","NAF","Carrizo",33
+"764","EP5",2009,"Calandrinia ciliata","NAF","Carrizo",4
+"765","EP5",2009,"Dichelostemma capitatum","NPF","Carrizo",3
+"766","EP5",2009,"Erodium cicutarium","EAF","Carrizo",120
+"767","EP5",2009,"Guillenia lasiophylla","NAF","Carrizo",1
+"768","EP5",2009,"Hordeum murinum","EAG","Carrizo",3
+"769","EP5",2009,"Lasthenia californica","NAF","Carrizo",1
+"770","EP5",2009,"Lepidium dictyotum","NAF","Carrizo",4
+"771","EP5",2009,"Lepidium nitidum","NAF","Carrizo",165
+"772","EP5",2009,"Lotus wrangelianus","NAF","Carrizo",7
+"773","EP5",2009,"Microseris douglasii","NAF","Carrizo",2
+"774","EP5",2009,"Microseris elegans","NAF","Carrizo",4
+"775","EP5",2009,"Schismus arabicus","EAG","Carrizo",27
+"776","EP5",2009,"Trifolium gracilentum","NAF","Carrizo",6
+"777","EP5",2009,"Tropidocarpum gracile","NAF","Carrizo",4
+"778","EP5",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",10
+"779","EP5",2009,"bare","bare","Carrizo",236
+"780","EP5",2009,"hole","hole","Carrizo",1
+"781","EP5",2009,"litter","litter","Carrizo",17
+"782","EP5",2010,"Amsinckia tessellata","NAF","Carrizo",15
+"783","EP5",2010,"Astragalus oxyphysus","NPF","Carrizo",1
+"784","EP5",2010,"Calandrinia ciliata","NAF","Carrizo",5
+"785","EP5",2010,"Dichelostemma capitatum","NPF","Carrizo",5
+"786","EP5",2010,"Eriogonum gracillimum","NAF","Carrizo",1
+"787","EP5",2010,"Erodium cicutarium","EAF","Carrizo",113
+"788","EP5",2010,"Guillenia lasiophylla","NAF","Carrizo",17
+"789","EP5",2010,"Lasthenia minor","NAF","Carrizo",2
+"790","EP5",2010,"Lepidium dictyotum","NAF","Carrizo",3
+"791","EP5",2010,"Lepidium nitidum","NAF","Carrizo",172
+"792","EP5",2010,"Lotus wrangelianus","NAF","Carrizo",8
+"793","EP5",2010,"Microseris elegans","NAF","Carrizo",2
+"794","EP5",2010,"Schismus arabicus","EAG","Carrizo",70
+"795","EP5",2010,"Trifolium gracilentum","NAF","Carrizo",29
+"796","EP5",2010,"Tropidocarpum gracile","NAF","Carrizo",25
+"797","EP5",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",19
+"798","EP5",2010,"bare","bare","Carrizo",161
+"799","EP5",2011,"Amsinckia tessellata","NAF","Carrizo",41
+"800","EP5",2011,"Astragalus oxyphysus","NPF","Carrizo",2
+"801","EP5",2011,"Bromus rubens","EAG","Carrizo",1
+"802","EP5",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"803","EP5",2011,"Eriogonum gracillimum","NAF","Carrizo",3
+"804","EP5",2011,"Erodium cicutarium","EAF","Carrizo",300
+"805","EP5",2011,"Hordeum murinum","EAG","Carrizo",7
+"806","EP5",2011,"Lasthenia minor","NAF","Carrizo",3
+"807","EP5",2011,"Lotus wrangelianus","NAF","Carrizo",8
+"808","EP5",2011,"Microseris elegans","NAF","Carrizo",7
+"809","EP5",2011,"Schismus arabicus","EAG","Carrizo",121
+"810","EP5",2011,"Trifolium gracilentum","NAF","Carrizo",3
+"811","EP5",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",15
+"812","EP5",2011,"bare","bare","Carrizo",117
+"813","EP5",2011,"litter","litter","Carrizo",19
+"814","EP5",2012,"Astragalus oxyphysus","NPF","Carrizo",9
+"815","EP5",2012,"Hordeum murinum","EAG","Carrizo",10
+"816","EP5",2012,"Schismus arabicus","EAG","Carrizo",13
+"817","EP5",2012,"bare","bare","Carrizo",326
+"818","EP5",2012,"litter","litter","Carrizo",290
+"819","EP5",2013,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",1
+"820","EP5",2013,"Erodium cicutarium","EAF","Carrizo",13
+"821","EP5",2013,"Hordeum murinum","EAG","Carrizo",3
+"822","EP5",2013,"Lepidium nitidum","NAF","Carrizo",5
+"823","EP5",2013,"Schismus arabicus","EAG","Carrizo",8
+"824","EP5",2013,"bare","bare","Carrizo",425
+"825","EP5",2013,"hole","hole","Carrizo",1
+"826","EP5",2013,"litter","litter","Carrizo",192
+"827","EP5",2014,"Calandrinia ciliata","NAF","Carrizo",7
+"828","EP5",2014,"Erodium cicutarium","EAF","Carrizo",21
+"829","EP5",2014,"Schismus arabicus","EAG","Carrizo",4
+"830","EP5",2014,"bare","bare","Carrizo",548
+"831","EP5",2014,"litter","litter","Carrizo",68
+"832","EP5",2015,"Carrizo Allium sp.","NPF","Carrizo",3
+"833","EP5",2015,"Amsinckia tessellata","NAF","Carrizo",25
+"834","EP5",2015,"Astragalus oxyphysus","NPF","Carrizo",5
+"835","EP5",2015,"Calandrinia ciliata","NAF","Carrizo",11
+"836","EP5",2015,"Dichelostemma capitatum","NPF","Carrizo",2
+"837","EP5",2015,"Eriogonum gracillimum","NAF","Carrizo",3
+"838","EP5",2015,"Erodium cicutarium","EAF","Carrizo",165
+"839","EP5",2015,"Guillenia lasiophylla","NAF","Carrizo",22
+"840","EP5",2015,"Lasthenia minor","NAF","Carrizo",2
+"841","EP5",2015,"Lepidium dictyotum","NAF","Carrizo",34
+"842","EP5",2015,"Lepidium nitidum","NAF","Carrizo",107
+"843","EP5",2015,"Lotus wrangelianus","NAF","Carrizo",21
+"844","EP5",2015,"Phlox gracilis","NAF","Carrizo",1
+"845","EP5",2015,"Schismus arabicus","EAG","Carrizo",65
+"846","EP5",2015,"Trifolium gracilentum","NAF","Carrizo",7
+"847","EP5",2015,"Tropidocarpum gracile","NAF","Carrizo",14
+"848","EP5",2015,"bare","bare","Carrizo",222
+"849","EP5",2015,"litter","litter","Carrizo",20
+"850","EP5",2016,"Calandrinia ciliata","NAF","Carrizo",3
+"851","EP5",2016,"Erodium cicutarium","EAF","Carrizo",15
+"852","EP5",2016,"Guillenia lasiophylla","NAF","Carrizo",3
+"853","EP5",2016,"Lasthenia minor","NAF","Carrizo",44
+"854","EP5",2016,"Lepidium dictyotum","NAF","Carrizo",29
+"855","EP5",2016,"Lepidium nitidum","NAF","Carrizo",7
+"856","EP5",2016,"Microseris douglasii","NAF","Carrizo",1
+"857","EP5",2016,"Tropidocarpum gracile","NAF","Carrizo",22
+"858","EP5",2016,"bare","bare","Carrizo",36
+"859","EP5",2016,"litter","litter","Carrizo",2
+"860","EP5",2017,"Amsinckia tessellata","NAF","Carrizo",2
+"861","EP5",2017,"Astragalus oxyphysus","NPF","Carrizo",20
+"862","EP5",2017,"Erodium cicutarium","EAF","Carrizo",50
+"863","EP5",2017,"Guillenia lasiophylla","NAF","Carrizo",47
+"864","EP5",2017,"Hordeum murinum","EAG","Carrizo",2
+"865","EP5",2017,"Lasthenia minor","NAF","Carrizo",54
+"866","EP5",2017,"Lepidium dictyotum","NAF","Carrizo",1
+"867","EP5",2017,"Lepidium nitidum","NAF","Carrizo",41
+"868","EP5",2017,"Lotus wrangelianus","NAF","Carrizo",2
+"869","EP5",2017,"Malacothrix coulteri","NAF","Carrizo",1
+"870","EP5",2017,"Schismus arabicus","EAG","Carrizo",2
+"871","EP5",2017,"Trifolium gracilentum","NAF","Carrizo",6
+"872","EP5",2017,"Tropidocarpum gracile","NAF","Carrizo",4
+"873","EP5",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"874","EP5",2017,"bare","bare","Carrizo",10
+"875","EP5",2018,"Calandrinia ciliata","NAF","Carrizo",1
+"876","EP5",2018,"Erodium cicutarium","EAF","Carrizo",4
+"877","EP5",2018,"Hordeum murinum","EAG","Carrizo",4
+"878","EP5",2018,"Lasthenia minor","NAF","Carrizo",1
+"879","EP5",2018,"Lepidium nitidum","NAF","Carrizo",6
+"880","EP5",2018,"Schismus arabicus","EAG","Carrizo",1
+"881","EP5",2018,"Tropidocarpum gracile","NAF","Carrizo",5
+"882","EP5",2018,"bare","bare","Carrizo",183
+"883","EP5",2018,"litter","litter","Carrizo",38
+"884","EP6",2007,"Bromus rubens","EAG","Carrizo",6
+"885","EP6",2007,"Capsella bursa-pastoris","EAF","Carrizo",1
+"886","EP6",2007,"Erodium cicutarium","EAF","Carrizo",1
+"887","EP6",2007,"Guillenia lasiophylla","NAF","Carrizo",1
+"888","EP6",2007,"Hordeum murinum","EAG","Carrizo",8
+"889","EP6",2007,"Lepidium nitidum","NAF","Carrizo",154
+"890","EP6",2007,"Microseris elegans","NAF","Carrizo",9
+"891","EP6",2007,"Schismus arabicus","EAG","Carrizo",1
+"892","EP6",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",18
+"893","EP6",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",138
+"894","EP6",2007,"bare","bare","Carrizo",134
+"895","EP6",2007,"hole","hole","Carrizo",3
+"896","EP6",2007,"litter","litter","Carrizo",174
+"897","EP6",2008,"Calandrinia ciliata","NAF","Carrizo",1
+"898","EP6",2008,"Capsella bursa-pastoris","EAF","Carrizo",2
+"899","EP6",2008,"Dichelostemma capitatum","NPF","Carrizo",5
+"900","EP6",2008,"Erodium cicutarium","EAF","Carrizo",297
+"901","EP6",2008,"Guillenia lasiophylla","NAF","Carrizo",15
+"902","EP6",2008,"Hordeum murinum","EAG","Carrizo",2
+"903","EP6",2008,"Lasthenia californica","NAF","Carrizo",6
+"904","EP6",2008,"Lepidium nitidum","NAF","Carrizo",216
+"905","EP6",2008,"Microseris douglasii","NAF","Carrizo",4
+"906","EP6",2008,"Phlox gracilis","NAF","Carrizo",2
+"907","EP6",2008,"Trifolium gracilentum","NAF","Carrizo",1
+"908","EP6",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"909","EP6",2008,"bare","bare","Carrizo",57
+"910","EP6",2008,"hole","hole","Carrizo",3
+"911","EP6",2008,"litter","litter","Carrizo",34
+"912","EP6",2009,"Dichelostemma capitatum","NPF","Carrizo",3
+"913","EP6",2009,"Erodium cicutarium","EAF","Carrizo",90
+"914","EP6",2009,"Hordeum murinum","EAG","Carrizo",2
+"915","EP6",2009,"Lasthenia californica","NAF","Carrizo",16
+"916","EP6",2009,"Lepidium nitidum","NAF","Carrizo",324
+"917","EP6",2009,"Microseris douglasii","NAF","Carrizo",10
+"918","EP6",2009,"Phlox gracilis","NAF","Carrizo",2
+"919","EP6",2009,"Trifolium gracilentum","NAF","Carrizo",11
+"920","EP6",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"921","EP6",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"922","EP6",2009,"bare","bare","Carrizo",160
+"923","EP6",2009,"litter","litter","Carrizo",25
+"924","EP6",2010,"Bromus rubens","EAG","Carrizo",1
+"925","EP6",2010,"Dichelostemma capitatum","NPF","Carrizo",1
+"926","EP6",2010,"Erodium cicutarium","EAF","Carrizo",134
+"927","EP6",2010,"Guillenia lasiophylla","NAF","Carrizo",10
+"928","EP6",2010,"Lasthenia californica","NAF","Carrizo",22
+"929","EP6",2010,"Lasthenia minor","NAF","Carrizo",4
+"930","EP6",2010,"Lepidium nitidum","NAF","Carrizo",287
+"931","EP6",2010,"Microseris douglasii","NAF","Carrizo",16
+"932","EP6",2010,"Microseris elegans","NAF","Carrizo",1
+"933","EP6",2010,"Phlox gracilis","NAF","Carrizo",2
+"934","EP6",2010,"Trifolium gracilentum","NAF","Carrizo",121
+"935","EP6",2010,"Tropidocarpum gracile","NAF","Carrizo",1
+"936","EP6",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",18
+"937","EP6",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",11
+"938","EP6",2010,"bare","bare","Carrizo",19
+"939","EP6",2011,"Bromus rubens","EAG","Carrizo",2
+"940","EP6",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"941","EP6",2011,"Erodium cicutarium","EAF","Carrizo",361
+"942","EP6",2011,"Microseris douglasii","NAF","Carrizo",37
+"943","EP6",2011,"Microseris elegans","NAF","Carrizo",7
+"944","EP6",2011,"Phlox gracilis","NAF","Carrizo",1
+"945","EP6",2011,"Schismus arabicus","EAG","Carrizo",1
+"946","EP6",2011,"Trifolium gracilentum","NAF","Carrizo",57
+"947","EP6",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",21
+"948","EP6",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",8
+"949","EP6",2011,"bare","bare","Carrizo",147
+"950","EP6",2011,"litter","litter","Carrizo",5
+"951","EP6",2012,"Bromus rubens","EAG","Carrizo",1
+"952","EP6",2012,"Erodium cicutarium","EAF","Carrizo",2
+"953","EP6",2012,"Hordeum murinum","EAG","Carrizo",9
+"954","EP6",2012,"Schismus arabicus","EAG","Carrizo",2
+"955","EP6",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",19
+"956","EP6",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"957","EP6",2012,"bare","bare","Carrizo",338
+"958","EP6",2012,"litter","litter","Carrizo",275
+"959","EP6",2013,"Bromus rubens","EAG","Carrizo",5
+"960","EP6",2013,"Erodium cicutarium","EAF","Carrizo",24
+"961","EP6",2013,"Hordeum murinum","EAG","Carrizo",12
+"962","EP6",2013,"Lepidium nitidum","NAF","Carrizo",3
+"963","EP6",2013,"Schismus arabicus","EAG","Carrizo",7
+"964","EP6",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"965","EP6",2013,"bare","bare","Carrizo",434
+"966","EP6",2013,"litter","litter","Carrizo",160
+"967","EP6",2013,"moss","moss","Carrizo",1
+"968","EP6",2014,"Bromus rubens","EAG","Carrizo",1
+"969","EP6",2014,"Calandrinia ciliata","NAF","Carrizo",6
+"970","EP6",2014,"Erodium cicutarium","EAF","Carrizo",25
+"971","EP6",2014,"Schismus arabicus","EAG","Carrizo",1
+"972","EP6",2014,"Trifolium gracilentum","NAF","Carrizo",3
+"973","EP6",2014,"bare","bare","Carrizo",522
+"974","EP6",2014,"litter","litter","Carrizo",90
+"975","EP6",2015,"Amsinckia tessellata","NAF","Carrizo",1
+"976","EP6",2015,"Calandrinia ciliata","NAF","Carrizo",2
+"977","EP6",2015,"Erodium cicutarium","EAF","Carrizo",171
+"978","EP6",2015,"Guillenia lasiophylla","NAF","Carrizo",7
+"979","EP6",2015,"Hordeum murinum","EAG","Carrizo",1
+"980","EP6",2015,"Lepidium nitidum","NAF","Carrizo",82
+"981","EP6",2015,"Phacelia ciliata","NAF","Carrizo",1
+"982","EP6",2015,"Schismus arabicus","EAG","Carrizo",8
+"983","EP6",2015,"Trifolium gracilentum","NAF","Carrizo",14
+"984","EP6",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"985","EP6",2015,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"986","EP6",2015,"bare","bare","Carrizo",338
+"987","EP6",2015,"litter","litter","Carrizo",20
+"988","EP6",2016,"Amsinckia menziesii","NAF","Carrizo",1
+"989","EP6",2016,"Amsinckia tessellata","NAF","Carrizo",10
+"990","EP6",2016,"Dichelostemma capitatum","NPF","Carrizo",1
+"991","EP6",2016,"Erodium cicutarium","EAF","Carrizo",47
+"992","EP6",2016,"Guillenia lasiophylla","NAF","Carrizo",4
+"993","EP6",2016,"Hordeum murinum","EAG","Carrizo",27
+"994","EP6",2016,"Lepidium nitidum","NAF","Carrizo",114
+"995","EP6",2016,"Microseris douglasii","NAF","Carrizo",1
+"996","EP6",2016,"Schismus arabicus","EAG","Carrizo",2
+"997","EP6",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"998","EP6",2016,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"999","EP6",2016,"bare","bare","Carrizo",437
+"1000","EP6",2016,"litter","litter","Carrizo",2
+"1001","EP6",2017,"Amsinckia menziesii v intermedia","NAF","Carrizo",4
+"1002","EP6",2017,"Amsinckia tessellata","NAF","Carrizo",9
+"1003","EP6",2017,"Bromus rubens","EAG","Carrizo",15
+"1004","EP6",2017,"Calandrinia ciliata","NAF","Carrizo",4
+"1005","EP6",2017,"Capsella bursa-pastoris","EAF","Carrizo",1
+"1006","EP6",2017,"Descurainia sophia","EAF","Carrizo",7
+"1007","EP6",2017,"Erodium cicutarium","EAF","Carrizo",221
+"1008","EP6",2017,"Guillenia lasiophylla","NAF","Carrizo",18
+"1009","EP6",2017,"Hordeum murinum","EAG","Carrizo",280
+"1010","EP6",2017,"Lepidium nitidum","NAF","Carrizo",27
+"1011","EP6",2017,"Schismus arabicus","EAG","Carrizo",8
+"1012","EP6",2017,"Trifolium gracilentum","NAF","Carrizo",6
+"1013","EP6",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1014","EP6",2017,"Vulpia myuros v hirsuta","EAG","Carrizo",3
+"1015","EP6",2017,"bare","bare","Carrizo",29
+"1016","EP6",2017,"litter","litter","Carrizo",15
+"1017","EP6",2018,"Amsinckia tessellata","NAF","Carrizo",2
+"1018","EP6",2018,"Bromus rubens","EAG","Carrizo",17
+"1019","EP6",2018,"Erodium cicutarium","EAF","Carrizo",9
+"1020","EP6",2018,"Guillenia lasiophylla","NAF","Carrizo",2
+"1021","EP6",2018,"Hordeum murinum","EAG","Carrizo",131
+"1022","EP6",2018,"Lepidium nitidum","NAF","Carrizo",35
+"1023","EP6",2018,"Microseris douglasii","NAF","Carrizo",1
+"1024","EP6",2018,"Schismus arabicus","EAG","Carrizo",3
+"1025","EP6",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",20
+"1026","EP6",2018,"bare","bare","Carrizo",205
+"1027","EP6",2018,"litter","litter","Carrizo",223
+"1028","EP7",2007,"Amsinckia tessellata","NAF","Carrizo",2
+"1029","EP7",2007,"Bromus rubens","EAG","Carrizo",5
+"1030","EP7",2007,"Erodium cicutarium","EAF","Carrizo",13
+"1031","EP7",2007,"Hordeum murinum","EAG","Carrizo",87
+"1032","EP7",2007,"Schismus arabicus","EAG","Carrizo",30
+"1033","EP7",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",146
+"1034","EP7",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",82
+"1035","EP7",2007,"bare","bare","Carrizo",122
+"1036","EP7",2007,"hole","hole","Carrizo",1
+"1037","EP7",2007,"litter","litter","Carrizo",160
+"1038","EP7",2008,"Amsinckia tessellata","NAF","Carrizo",111
+"1039","EP7",2008,"Calandrinia ciliata","NAF","Carrizo",8
+"1040","EP7",2008,"Dichelostemma capitatum","NPF","Carrizo",3
+"1041","EP7",2008,"Erodium cicutarium","EAF","Carrizo",172
+"1042","EP7",2008,"Guillenia lasiophylla","NAF","Carrizo",2
+"1043","EP7",2008,"Hordeum murinum","EAG","Carrizo",23
+"1044","EP7",2008,"Lasthenia californica","NAF","Carrizo",2
+"1045","EP7",2008,"Schismus arabicus","EAG","Carrizo",54
+"1046","EP7",2008,"Trifolium gracilentum","NAF","Carrizo",2
+"1047","EP7",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",73
+"1048","EP7",2008,"bare","bare","Carrizo",97
+"1049","EP7",2008,"litter","litter","Carrizo",101
+"1050","EP7",2009,"Amsinckia tessellata","NAF","Carrizo",87
+"1051","EP7",2009,"Calandrinia ciliata","NAF","Carrizo",3
+"1052","EP7",2009,"Dichelostemma capitatum","NPF","Carrizo",4
+"1053","EP7",2009,"Erodium cicutarium","EAF","Carrizo",144
+"1054","EP7",2009,"Hordeum murinum","EAG","Carrizo",5
+"1055","EP7",2009,"Lasthenia minor","NAF","Carrizo",1
+"1056","EP7",2009,"Schismus arabicus","EAG","Carrizo",54
+"1057","EP7",2009,"Trifolium gracilentum","NAF","Carrizo",18
+"1058","EP7",2009,"Tropidocarpum gracile","NAF","Carrizo",1
+"1059","EP7",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",108
+"1060","EP7",2009,"bare","bare","Carrizo",184
+"1061","EP7",2009,"litter","litter","Carrizo",39
+"1062","EP7",2010,"Amsinckia tessellata","NAF","Carrizo",96
+"1063","EP7",2010,"Calandrinia ciliata","NAF","Carrizo",24
+"1064","EP7",2010,"Dichelostemma capitatum","NPF","Carrizo",3
+"1065","EP7",2010,"Erodium cicutarium","EAF","Carrizo",129
+"1066","EP7",2010,"Guillenia lasiophylla","NAF","Carrizo",2
+"1067","EP7",2010,"Hordeum murinum","EAG","Carrizo",2
+"1068","EP7",2010,"Lasthenia minor","NAF","Carrizo",17
+"1069","EP7",2010,"Lepidium nitidum","NAF","Carrizo",1
+"1070","EP7",2010,"Monolopia congdonii","NAF","Carrizo",1
+"1071","EP7",2010,"Schismus arabicus","EAG","Carrizo",99
+"1072","EP7",2010,"Trifolium albopurpureum","NAF","Carrizo",3
+"1073","EP7",2010,"Trifolium gracilentum","NAF","Carrizo",94
+"1074","EP7",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",143
+"1075","EP7",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",3
+"1076","EP7",2010,"bare","bare","Carrizo",31
+"1077","EP7",2011,"Amsinckia tessellata","NAF","Carrizo",27
+"1078","EP7",2011,"Bromus rubens","EAG","Carrizo",3
+"1079","EP7",2011,"Erodium cicutarium","EAF","Carrizo",230
+"1080","EP7",2011,"Hordeum murinum","EAG","Carrizo",6
+"1081","EP7",2011,"Lasthenia minor","NAF","Carrizo",2
+"1082","EP7",2011,"Microseris elegans","NAF","Carrizo",2
+"1083","EP7",2011,"Schismus arabicus","EAG","Carrizo",154
+"1084","EP7",2011,"Trifolium gracilentum","NAF","Carrizo",34
+"1085","EP7",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",91
+"1086","EP7",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",8
+"1087","EP7",2011,"bare","bare","Carrizo",54
+"1088","EP7",2011,"litter","litter","Carrizo",37
+"1089","EP7",2012,"Erodium cicutarium","EAF","Carrizo",42
+"1090","EP7",2012,"Hordeum murinum","EAG","Carrizo",8
+"1091","EP7",2012,"Microseris elegans","NAF","Carrizo",1
+"1092","EP7",2012,"Schismus arabicus","EAG","Carrizo",85
+"1093","EP7",2012,"Trifolium gracilentum","NAF","Carrizo",1
+"1094","EP7",2012,"Tropidocarpum gracile","NAF","Carrizo",1
+"1095","EP7",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",19
+"1096","EP7",2012,"bare","bare","Carrizo",260
+"1097","EP7",2012,"litter","litter","Carrizo",231
+"1098","EP7",2013,"Erodium cicutarium","EAF","Carrizo",29
+"1099","EP7",2013,"Hordeum murinum","EAG","Carrizo",2
+"1100","EP7",2013,"Schismus arabicus","EAG","Carrizo",16
+"1101","EP7",2013,"Trifolium gracilentum","NAF","Carrizo",1
+"1102","EP7",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"1103","EP7",2013,"bare","bare","Carrizo",397
+"1104","EP7",2013,"litter","litter","Carrizo",201
+"1105","EP7",2014,"Bromus rubens","EAG","Carrizo",1
+"1106","EP7",2014,"Calandrinia ciliata","NAF","Carrizo",37
+"1107","EP7",2014,"Dichelostemma capitatum","NPF","Carrizo",1
+"1108","EP7",2014,"Erodium cicutarium","EAF","Carrizo",40
+"1109","EP7",2014,"Lepidium nitidum","NAF","Carrizo",1
+"1110","EP7",2014,"Pectocarya penicillata","NAF","Carrizo",1
+"1111","EP7",2014,"Schismus arabicus","EAG","Carrizo",7
+"1112","EP7",2014,"Trifolium gracilentum","NAF","Carrizo",5
+"1113","EP7",2014,"Tropidocarpum gracile","NAF","Carrizo",1
+"1114","EP7",2014,"Vulpia microstachys v pauciflora","NAG","Carrizo",7
+"1115","EP7",2014,"bare","bare","Carrizo",481
+"1116","EP7",2014,"hole","hole","Carrizo",1
+"1117","EP7",2014,"litter","litter","Carrizo",65
+"1118","EP7",2015,"Amsinckia tessellata","NAF","Carrizo",12
+"1119","EP7",2015,"Calandrinia ciliata","NAF","Carrizo",11
+"1120","EP7",2015,"Erodium cicutarium","EAF","Carrizo",93
+"1121","EP7",2015,"Monolopia congdonii","NAF","Carrizo",1
+"1122","EP7",2015,"Schismus arabicus","EAG","Carrizo",43
+"1123","EP7",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1124","EP7",2015,"bare","bare","Carrizo",234
+"1125","EP7",2015,"litter","litter","Carrizo",10
+"1126","EP7",2016,"Amsinckia tessellata","NAF","Carrizo",13
+"1127","EP7",2016,"Calandrinia ciliata","NAF","Carrizo",10
+"1128","EP7",2016,"Erodium cicutarium","EAF","Carrizo",7
+"1129","EP7",2016,"Guillenia lasiophylla","NAF","Carrizo",1
+"1130","EP7",2016,"Lepidium nitidum","NAF","Carrizo",1
+"1131","EP7",2016,"Schismus arabicus","EAG","Carrizo",9
+"1132","EP7",2016,"bare","bare","Carrizo",116
+"1133","EP7",2016,"litter","litter","Carrizo",5
+"1134","EP7",2017,"Amsinckia tessellata","NAF","Carrizo",9
+"1135","EP7",2017,"Calandrinia ciliata","NAF","Carrizo",10
+"1136","EP7",2017,"Erodium cicutarium","EAF","Carrizo",15
+"1137","EP7",2017,"Hordeum murinum","EAG","Carrizo",1
+"1138","EP7",2017,"Lepidium nitidum","NAF","Carrizo",1
+"1139","EP7",2017,"Schismus arabicus","EAG","Carrizo",35
+"1140","EP7",2017,"bare","bare","Carrizo",88
+"1141","EP7",2017,"litter","litter","Carrizo",3
+"1142","EP7",2018,"Amsinckia tessellata","NAF","Carrizo",11
+"1143","EP7",2018,"Calandrinia ciliata","NAF","Carrizo",5
+"1144","EP7",2018,"Erodium cicutarium","EAF","Carrizo",1
+"1145","EP7",2018,"Guillenia lasiophylla","NAF","Carrizo",9
+"1146","EP7",2018,"Lepidium nitidum","NAF","Carrizo",3
+"1147","EP7",2018,"Pectocarya penicillata","NAF","Carrizo",9
+"1148","EP7",2018,"Schismus arabicus","EAG","Carrizo",11
+"1149","EP7",2018,"Trifolium gracilentum","NAF","Carrizo",1
+"1150","EP7",2018,"Tropidocarpum gracile","NAF","Carrizo",3
+"1151","EP7",2018,"bare","bare","Carrizo",109
+"1152","EP8",2007,"Amsinckia menziesii v intermedia","NAF","Carrizo",1
+"1153","EP8",2007,"Dichelostemma capitatum","NPF","Carrizo",1
+"1154","EP8",2007,"Erodium cicutarium","EAF","Carrizo",34
+"1155","EP8",2007,"Guillenia lasiophylla","NAF","Carrizo",2
+"1156","EP8",2007,"Hordeum murinum","EAG","Carrizo",4
+"1157","EP8",2007,"Lasthenia californica","NAF","Carrizo",1
+"1158","EP8",2007,"Lepidium nitidum","NAF","Carrizo",24
+"1159","EP8",2007,"Microseris elegans","NAF","Carrizo",6
+"1160","EP8",2007,"Schismus arabicus","EAG","Carrizo",19
+"1161","EP8",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",27
+"1162","EP8",2007,"bare","bare","Carrizo",279
+"1163","EP8",2007,"hole","hole","Carrizo",1
+"1164","EP8",2007,"litter","litter","Carrizo",249
+"1165","EP8",2008,"Amsinckia tessellata","NAF","Carrizo",32
+"1166","EP8",2008,"Calandrinia ciliata","NAF","Carrizo",2
+"1167","EP8",2008,"Dichelostemma capitatum","NPF","Carrizo",6
+"1168","EP8",2008,"Erodium cicutarium","EAF","Carrizo",99
+"1169","EP8",2008,"Guillenia lasiophylla","NAF","Carrizo",21
+"1170","EP8",2008,"Lasthenia minor","NAF","Carrizo",29
+"1171","EP8",2008,"Lepidium nitidum","NAF","Carrizo",77
+"1172","EP8",2008,"Microseris elegans","NAF","Carrizo",1
+"1173","EP8",2008,"Schismus arabicus","EAG","Carrizo",43
+"1174","EP8",2008,"Tropidocarpum gracile","NAF","Carrizo",4
+"1175","EP8",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",25
+"1176","EP8",2008,"bare","bare","Carrizo",243
+"1177","EP8",2008,"litter","litter","Carrizo",66
+"1178","EP8",2009,"Amsinckia tessellata","NAF","Carrizo",26
+"1179","EP8",2009,"Calandrinia ciliata","NAF","Carrizo",2
+"1180","EP8",2009,"Dichelostemma capitatum","NPF","Carrizo",2
+"1181","EP8",2009,"Erodium cicutarium","EAF","Carrizo",104
+"1182","EP8",2009,"Guillenia lasiophylla","NAF","Carrizo",6
+"1183","EP8",2009,"Lasthenia minor","NAF","Carrizo",38
+"1184","EP8",2009,"Lepidium nitidum","NAF","Carrizo",121
+"1185","EP8",2009,"Schismus arabicus","EAG","Carrizo",33
+"1186","EP8",2009,"Trifolium gracilentum","NAF","Carrizo",6
+"1187","EP8",2009,"Tropidocarpum gracile","NAF","Carrizo",1
+"1188","EP8",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",38
+"1189","EP8",2009,"bare","bare","Carrizo",240
+"1190","EP8",2009,"litter","litter","Carrizo",31
+"1191","EP8",2010,"Amsinckia tessellata","NAF","Carrizo",1
+"1192","EP8",2010,"Astragalus oxyphysus","NPF","Carrizo",6
+"1193","EP8",2010,"Calandrinia ciliata","NAF","Carrizo",6
+"1194","EP8",2010,"Dichelostemma capitatum","NPF","Carrizo",6
+"1195","EP8",2010,"Erodium cicutarium","EAF","Carrizo",85
+"1196","EP8",2010,"Guillenia lasiophylla","NAF","Carrizo",12
+"1197","EP8",2010,"Lasthenia minor","NAF","Carrizo",84
+"1198","EP8",2010,"Lepidium nitidum","NAF","Carrizo",241
+"1199","EP8",2010,"Microseris douglasii","NAF","Carrizo",2
+"1200","EP8",2010,"Schismus arabicus","EAG","Carrizo",14
+"1201","EP8",2010,"Trifolium gracilentum","NAF","Carrizo",42
+"1202","EP8",2010,"Tropidocarpum gracile","NAF","Carrizo",8
+"1203","EP8",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",58
+"1204","EP8",2010,"bare","bare","Carrizo",82
+"1205","EP8",2010,"hole","hole","Carrizo",1
+"1206","EP8",2011,"Amsinckia tessellata","NAF","Carrizo",1
+"1207","EP8",2011,"Astragalus oxyphysus","NPF","Carrizo",35
+"1208","EP8",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"1209","EP8",2011,"Eriogonum gracillimum","NAF","Carrizo",1
+"1210","EP8",2011,"Erodium cicutarium","EAF","Carrizo",196
+"1211","EP8",2011,"Hordeum murinum","EAG","Carrizo",1
+"1212","EP8",2011,"Lasthenia minor","NAF","Carrizo",39
+"1213","EP8",2011,"Lotus wrangelianus","NAF","Carrizo",2
+"1214","EP8",2011,"Microseris elegans","NAF","Carrizo",1
+"1215","EP8",2011,"Schismus arabicus","EAG","Carrizo",164
+"1216","EP8",2011,"Trifolium gracilentum","NAF","Carrizo",8
+"1217","EP8",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",61
+"1218","EP8",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",5
+"1219","EP8",2011,"bare","bare","Carrizo",120
+"1220","EP8",2011,"litter","litter","Carrizo",13
+"1221","EP8",2012,"Astragalus oxyphysus","NPF","Carrizo",11
+"1222","EP8",2012,"Bromus rubens","EAG","Carrizo",1
+"1223","EP8",2012,"Eriogonum gracillimum","NAF","Carrizo",1
+"1224","EP8",2012,"Erodium cicutarium","EAF","Carrizo",5
+"1225","EP8",2012,"Schismus arabicus","EAG","Carrizo",68
+"1226","EP8",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",10
+"1227","EP8",2012,"bare","bare","Carrizo",312
+"1228","EP8",2012,"litter","litter","Carrizo",240
+"1229","EP8",2013,"Erodium cicutarium","EAF","Carrizo",19
+"1230","EP8",2013,"Schismus arabicus","EAG","Carrizo",19
+"1231","EP8",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"1232","EP8",2013,"bare","bare","Carrizo",417
+"1233","EP8",2013,"hole","hole","Carrizo",1
+"1234","EP8",2013,"litter","litter","Carrizo",186
+"1235","EP8",2014,"Calandrinia ciliata","NAF","Carrizo",2
+"1236","EP8",2014,"Erodium cicutarium","EAF","Carrizo",11
+"1237","EP8",2014,"Lepidium nitidum","NAF","Carrizo",3
+"1238","EP8",2014,"Schismus arabicus","EAG","Carrizo",2
+"1239","EP8",2014,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1240","EP8",2014,"bare","bare","Carrizo",480
+"1241","EP8",2014,"hole","hole","Carrizo",2
+"1242","EP8",2014,"litter","litter","Carrizo",147
+"1243","EP8",2015,"Amsinckia tessellata","NAF","Carrizo",13
+"1244","EP8",2015,"Astragalus oxyphysus","NPF","Carrizo",1
+"1245","EP8",2015,"Calandrinia ciliata","NAF","Carrizo",7
+"1246","EP8",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"1247","EP8",2015,"Erodium cicutarium","EAF","Carrizo",83
+"1248","EP8",2015,"Guillenia lasiophylla","NAF","Carrizo",11
+"1249","EP8",2015,"Lasthenia minor","NAF","Carrizo",14
+"1250","EP8",2015,"Lepidium nitidum","NAF","Carrizo",26
+"1251","EP8",2015,"Lotus wrangelianus","NAF","Carrizo",3
+"1252","EP8",2015,"Schismus arabicus","EAG","Carrizo",78
+"1253","EP8",2015,"Trifolium gracilentum","NAF","Carrizo",1
+"1254","EP8",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1255","EP8",2015,"bare","bare","Carrizo",325
+"1256","EP8",2015,"litter","litter","Carrizo",3
+"1257","EP8",2016,"Calandrinia ciliata","NAF","Carrizo",1
+"1258","EP8",2016,"Erodium cicutarium","EAF","Carrizo",3
+"1259","EP8",2016,"Guillenia lasiophylla","NAF","Carrizo",14
+"1260","EP8",2016,"Lasthenia minor","NAF","Carrizo",1
+"1261","EP8",2016,"Lepidium nitidum","NAF","Carrizo",19
+"1262","EP8",2016,"Schismus arabicus","EAG","Carrizo",1
+"1263","EP8",2016,"bare","bare","Carrizo",42
+"1264","EP8",2017,"Amsinckia tessellata","NAF","Carrizo",4
+"1265","EP8",2017,"Bromus rubens","EAG","Carrizo",1
+"1266","EP8",2017,"Guillenia lasiophylla","NAF","Carrizo",53
+"1267","EP8",2017,"Lasthenia minor","NAF","Carrizo",22
+"1268","EP8",2017,"litter","litter","Carrizo",1
+"1269","EP8",2018,"Bromus rubens","EAG","Carrizo",1
+"1270","EP8",2018,"Lasthenia minor","NAF","Carrizo",5
+"1271","EP8",2018,"Lepidium nitidum","NAF","Carrizo",1
+"1272","EP8",2018,"Tropidocarpum gracile","NAF","Carrizo",1
+"1273","EP8",2018,"bare","bare","Carrizo",17
+"1274","EP8",2018,"litter","litter","Carrizo",56
+"1275","EP9",2007,"Bromus rubens","EAG","Carrizo",4
+"1276","EP9",2007,"Calandrinia ciliata","NAF","Carrizo",3
+"1277","EP9",2007,"Erodium cicutarium","EAF","Carrizo",54
+"1278","EP9",2007,"Guillenia lasiophylla","NAF","Carrizo",1
+"1279","EP9",2007,"Hordeum murinum","EAG","Carrizo",17
+"1280","EP9",2007,"Lasthenia californica","NAF","Carrizo",6
+"1281","EP9",2007,"Lasthenia minor","NAF","Carrizo",3
+"1282","EP9",2007,"Lepidium nitidum","NAF","Carrizo",2
+"1283","EP9",2007,"Marrubium vulgare","EPF","Carrizo",4
+"1284","EP9",2007,"Microseris elegans","NAF","Carrizo",3
+"1285","EP9",2007,"Pectocarya penicillata","NAF","Carrizo",14
+"1286","EP9",2007,"Schismus arabicus","EAG","Carrizo",36
+"1287","EP9",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1288","EP9",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"1289","EP9",2007,"bare","bare","Carrizo",158
+"1290","EP9",2007,"litter","litter","Carrizo",341
+"1291","EP9",2008,"Amsinckia tessellata","NAF","Carrizo",12
+"1292","EP9",2008,"Calandrinia ciliata","NAF","Carrizo",41
+"1293","EP9",2008,"Dichelostemma capitatum","NPF","Carrizo",2
+"1294","EP9",2008,"Eriogonum gracillimum","NAF","Carrizo",3
+"1295","EP9",2008,"Erodium cicutarium","EAF","Carrizo",104
+"1296","EP9",2008,"Guillenia lasiophylla","NAF","Carrizo",2
+"1297","EP9",2008,"Hordeum murinum","EAG","Carrizo",6
+"1298","EP9",2008,"Lasthenia minor","NAF","Carrizo",86
+"1299","EP9",2008,"Microseris elegans","NAF","Carrizo",4
+"1300","EP9",2008,"Monolopia congdonii","NAF","Carrizo",9
+"1301","EP9",2008,"Monolopia lanceolata","NAF","Carrizo",2
+"1302","EP9",2008,"Pectocarya penicillata","NAF","Carrizo",24
+"1303","EP9",2008,"Schismus arabicus","EAG","Carrizo",45
+"1304","EP9",2008,"Trifolium gracilentum","NAF","Carrizo",3
+"1305","EP9",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"1306","EP9",2008,"bare","bare","Carrizo",228
+"1307","EP9",2008,"litter","litter","Carrizo",71
+"1308","EP9",2009,"Amsinckia tessellata","NAF","Carrizo",13
+"1309","EP9",2009,"Calandrinia ciliata","NAF","Carrizo",44
+"1310","EP9",2009,"Dichelostemma capitatum","NPF","Carrizo",1
+"1311","EP9",2009,"Erodium cicutarium","EAF","Carrizo",83
+"1312","EP9",2009,"Guillenia lasiophylla","NAF","Carrizo",1
+"1313","EP9",2009,"Hordeum murinum","EAG","Carrizo",1
+"1314","EP9",2009,"Lasthenia minor","NAF","Carrizo",176
+"1315","EP9",2009,"Lepidium dictyotum","NAF","Carrizo",1
+"1316","EP9",2009,"Lepidium nitidum","NAF","Carrizo",2
+"1317","EP9",2009,"Microseris elegans","NAF","Carrizo",1
+"1318","EP9",2009,"Monolopia congdonii","NAF","Carrizo",14
+"1319","EP9",2009,"Monolopia lanceolata","NAF","Carrizo",1
+"1320","EP9",2009,"Pectocarya penicillata","NAF","Carrizo",46
+"1321","EP9",2009,"Schismus arabicus","EAG","Carrizo",21
+"1322","EP9",2009,"Trifolium gracilentum","NAF","Carrizo",25
+"1323","EP9",2009,"Tropidocarpum gracile","NAF","Carrizo",2
+"1324","EP9",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",9
+"1325","EP9",2009,"bare","bare","Carrizo",188
+"1326","EP9",2009,"litter","litter","Carrizo",19
+"1327","EP9",2010,"Amsinckia tessellata","NAF","Carrizo",18
+"1328","EP9",2010,"Calandrinia ciliata","NAF","Carrizo",69
+"1329","EP9",2010,"Dichelostemma capitatum","NPF","Carrizo",5
+"1330","EP9",2010,"Erodium cicutarium","EAF","Carrizo",87
+"1331","EP9",2010,"Guillenia lasiophylla","NAF","Carrizo",1
+"1332","EP9",2010,"Hordeum murinum","EAG","Carrizo",2
+"1333","EP9",2010,"Lasthenia minor","NAF","Carrizo",271
+"1334","EP9",2010,"Lepidium dictyotum","NAF","Carrizo",1
+"1335","EP9",2010,"Lepidium nitidum","NAF","Carrizo",1
+"1336","EP9",2010,"Microseris douglasii","NAF","Carrizo",4
+"1337","EP9",2010,"Microseris elegans","NAF","Carrizo",3
+"1338","EP9",2010,"Pectocarya penicillata","NAF","Carrizo",11
+"1339","EP9",2010,"Schismus arabicus","EAG","Carrizo",29
+"1340","EP9",2010,"Trifolium gracilentum","NAF","Carrizo",33
+"1341","EP9",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",30
+"1342","EP9",2010,"bare","bare","Carrizo",83
+"1343","EP9",2011,"Amsinckia tessellata","NAF","Carrizo",58
+"1344","EP9",2011,"Bromus rubens","EAG","Carrizo",2
+"1345","EP9",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"1346","EP9",2011,"Eriogonum gracillimum","NAF","Carrizo",8
+"1347","EP9",2011,"Erodium cicutarium","EAF","Carrizo",108
+"1348","EP9",2011,"Hordeum murinum","EAG","Carrizo",14
+"1349","EP9",2011,"Lasthenia minor","NAF","Carrizo",46
+"1350","EP9",2011,"Microseris douglasii","NAF","Carrizo",2
+"1351","EP9",2011,"Microseris elegans","NAF","Carrizo",2
+"1352","EP9",2011,"Pectocarya penicillata","NAF","Carrizo",4
+"1353","EP9",2011,"Schismus arabicus","EAG","Carrizo",196
+"1354","EP9",2011,"Trifolium gracilentum","NAF","Carrizo",99
+"1355","EP9",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",28
+"1356","EP9",2011,"bare","bare","Carrizo",69
+"1357","EP9",2011,"litter","litter","Carrizo",11
+"1358","EP9",2012,"Amsinckia tessellata","NAF","Carrizo",1
+"1359","EP9",2012,"Bromus rubens","EAG","Carrizo",2
+"1360","EP9",2012,"Eriogonum gracillimum","NAF","Carrizo",7
+"1361","EP9",2012,"Erodium cicutarium","EAF","Carrizo",25
+"1362","EP9",2012,"Hordeum murinum","EAG","Carrizo",8
+"1363","EP9",2012,"Schismus arabicus","EAG","Carrizo",100
+"1364","EP9",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"1365","EP9",2012,"bare","bare","Carrizo",284
+"1366","EP9",2012,"litter","litter","Carrizo",215
+"1367","EP9",2013,"Erodium cicutarium","EAF","Carrizo",10
+"1368","EP9",2013,"Schismus arabicus","EAG","Carrizo",3
+"1369","EP9",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"1370","EP9",2013,"bare","bare","Carrizo",406
+"1371","EP9",2013,"hole","hole","Carrizo",2
+"1372","EP9",2013,"litter","litter","Carrizo",225
+"1373","EP9",2014,"Amsinckia tessellata","NAF","Carrizo",1
+"1374","EP9",2014,"Calandrinia ciliata","NAF","Carrizo",33
+"1375","EP9",2014,"Dichelostemma capitatum","NPF","Carrizo",1
+"1376","EP9",2014,"Eriogonum gracillimum","NAF","Carrizo",1
+"1377","EP9",2014,"Erodium cicutarium","EAF","Carrizo",9
+"1378","EP9",2014,"Pectocarya penicillata","NAF","Carrizo",8
+"1379","EP9",2014,"Schismus arabicus","EAG","Carrizo",9
+"1380","EP9",2014,"Trifolium gracilentum","NAF","Carrizo",5
+"1381","EP9",2014,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"1382","EP9",2014,"bare","bare","Carrizo",534
+"1383","EP9",2014,"litter","litter","Carrizo",42
+"1384","EP9",2015,"Calandrinia ciliata","NAF","Carrizo",15
+"1385","EP9",2015,"Dichelostemma capitatum","NPF","Carrizo",2
+"1386","EP9",2015,"Eriogonum gracillimum","NAF","Carrizo",3
+"1387","EP9",2015,"Erodium cicutarium","EAF","Carrizo",28
+"1388","EP9",2015,"Guillenia lasiophylla","NAF","Carrizo",1
+"1389","EP9",2015,"Lasthenia minor","NAF","Carrizo",13
+"1390","EP9",2015,"Malacothrix coulteri","NAF","Carrizo",1
+"1391","EP9",2015,"Microseris elegans","NAF","Carrizo",2
+"1392","EP9",2015,"Monolopia congdonii","NAF","Carrizo",3
+"1393","EP9",2015,"Pectocarya penicillata","NAF","Carrizo",3
+"1394","EP9",2015,"Schismus arabicus","EAG","Carrizo",126
+"1395","EP9",2015,"Trifolium gracilentum","NAF","Carrizo",1
+"1396","EP9",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"1397","EP9",2015,"bare","bare","Carrizo",362
+"1398","EP9",2015,"litter","litter","Carrizo",5
+"1399","EP9",2016,"Amsinckia tessellata","NAF","Carrizo",13
+"1400","EP9",2016,"Calandrinia ciliata","NAF","Carrizo",10
+"1401","EP9",2016,"Erodium cicutarium","EAF","Carrizo",4
+"1402","EP9",2016,"Lasthenia minor","NAF","Carrizo",6
+"1403","EP9",2016,"Lepidium dictyotum","NAF","Carrizo",2
+"1404","EP9",2016,"Pectocarya penicillata","NAF","Carrizo",2
+"1405","EP9",2016,"Schismus arabicus","EAG","Carrizo",43
+"1406","EP9",2016,"Tropidocarpum gracile","NAF","Carrizo",1
+"1407","EP9",2016,"bare","bare","Carrizo",152
+"1408","EP9",2016,"litter","litter","Carrizo",10
+"1409","EP9",2017,"Amsinckia tessellata","NAF","Carrizo",17
+"1410","EP9",2017,"Calandrinia ciliata","NAF","Carrizo",15
+"1411","EP9",2017,"Eriogonum gracillimum","NAF","Carrizo",4
+"1412","EP9",2017,"Erodium cicutarium","EAF","Carrizo",7
+"1413","EP9",2017,"Lasthenia minor","NAF","Carrizo",6
+"1414","EP9",2017,"Monolopia congdonii","NAF","Carrizo",4
+"1415","EP9",2017,"Pectocarya penicillata","NAF","Carrizo",3
+"1416","EP9",2017,"Schismus arabicus","EAG","Carrizo",58
+"1417","EP9",2017,"Trifolium gracilentum","NAF","Carrizo",2
+"1418","EP9",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",4
+"1419","EP9",2017,"bare","bare","Carrizo",116
+"1420","EP9",2017,"litter","litter","Carrizo",7
+"1421","EP9",2018,"Amsinckia tessellata","NAF","Carrizo",5
+"1422","EP9",2018,"Calandrinia ciliata","NAF","Carrizo",3
+"1423","EP9",2018,"Erodium cicutarium","EAF","Carrizo",1
+"1424","EP9",2018,"Guillenia lasiophylla","NAF","Carrizo",2
+"1425","EP9",2018,"Lasthenia minor","NAF","Carrizo",3
+"1426","EP9",2018,"Lepidium nitidum","NAF","Carrizo",1
+"1427","EP9",2018,"Pectocarya penicillata","NAF","Carrizo",10
+"1428","EP9",2018,"Schismus arabicus","EAG","Carrizo",8
+"1429","EP9",2018,"bare","bare","Carrizo",190
+"1430","EP9",2018,"litter","litter","Carrizo",20
+"1431","SC1",2007,"Bromus rubens","EAG","Carrizo",32
+"1432","SC1",2007,"Chorizanthe watsonii","NAF","Carrizo",2
+"1433","SC1",2007,"Erodium cicutarium","EAF","Carrizo",36
+"1434","SC1",2007,"Lepidium nitidum","NAF","Carrizo",7
+"1435","SC1",2007,"Linanthus liniflorus","NAF","Carrizo",1
+"1436","SC1",2007,"Poa secunda ssp secunda","NPG","Carrizo",2
+"1437","SC1",2007,"Schismus arabicus","EAG","Carrizo",43
+"1438","SC1",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",236
+"1439","SC1",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",21
+"1440","SC1",2007,"bare","bare","Carrizo",127
+"1441","SC1",2007,"hole","hole","Carrizo",1
+"1442","SC1",2007,"litter","litter","Carrizo",140
+"1443","SC1",2008,"Amsinckia tessellata","NAF","Carrizo",6
+"1444","SC1",2008,"Bromus rubens","EAG","Carrizo",5
+"1445","SC1",2008,"Calandrinia ciliata","NAF","Carrizo",12
+"1446","SC1",2008,"Dichelostemma capitatum","NPF","Carrizo",9
+"1447","SC1",2008,"Eriogonum gracillimum","NAF","Carrizo",3
+"1448","SC1",2008,"Erodium cicutarium","EAF","Carrizo",194
+"1449","SC1",2008,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1450","SC1",2008,"Hordeum murinum","EAG","Carrizo",2
+"1451","SC1",2008,"Lepidium nitidum","NAF","Carrizo",8
+"1452","SC1",2008,"Lotus wrangelianus","NAF","Carrizo",3
+"1453","SC1",2008,"Microseris elegans","NAF","Carrizo",1
+"1454","SC1",2008,"Plagiobothrys canescens","NAF","Carrizo",4
+"1455","SC1",2008,"Poa secunda ssp secunda","NPG","Carrizo",5
+"1456","SC1",2008,"Schismus arabicus","EAG","Carrizo",38
+"1457","SC1",2008,"Trifolium gracilentum","NAF","Carrizo",1
+"1458","SC1",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"1459","SC1",2008,"bare","bare","Carrizo",147
+"1460","SC1",2008,"hole","hole","Carrizo",1
+"1461","SC1",2008,"litter","litter","Carrizo",194
+"1462","SC1",2009,"Amsinckia tessellata","NAF","Carrizo",3
+"1463","SC1",2009,"Calandrinia ciliata","NAF","Carrizo",30
+"1464","SC1",2009,"Chorizanthe uniaristata","NAF","Carrizo",1
+"1465","SC1",2009,"Dichelostemma capitatum","NPF","Carrizo",16
+"1466","SC1",2009,"Erodium cicutarium","EAF","Carrizo",185
+"1467","SC1",2009,"Hollisteria lanata","NAF","Carrizo",10
+"1468","SC1",2009,"Hordeum murinum","EAG","Carrizo",5
+"1469","SC1",2009,"Lepidium dictyotum","NAF","Carrizo",1
+"1470","SC1",2009,"Lepidium nitidum","NAF","Carrizo",37
+"1471","SC1",2009,"Linanthus liniflorus","NAF","Carrizo",2
+"1472","SC1",2009,"Lotus wrangelianus","NAF","Carrizo",17
+"1473","SC1",2009,"Microseris elegans","NAF","Carrizo",3
+"1474","SC1",2009,"Plagiobothrys canescens","NAF","Carrizo",20
+"1475","SC1",2009,"Poa secunda ssp secunda","NPG","Carrizo",6
+"1476","SC1",2009,"Schismus arabicus","EAG","Carrizo",33
+"1477","SC1",2009,"Trifolium gracilentum","NAF","Carrizo",10
+"1478","SC1",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",55
+"1479","SC1",2009,"bare","bare","Carrizo",171
+"1480","SC1",2009,"hole","hole","Carrizo",5
+"1481","SC1",2009,"litter","litter","Carrizo",38
+"1482","SC1",2010,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",1
+"1483","SC1",2010,"Calandrinia ciliata","NAF","Carrizo",28
+"1484","SC1",2010,"Castilleja exserta","NAF","Carrizo",1
+"1485","SC1",2010,"Chorizanthe uniaristata","NAF","Carrizo",9
+"1486","SC1",2010,"Dichelostemma capitatum","NPF","Carrizo",5
+"1487","SC1",2010,"Erodium cicutarium","EAF","Carrizo",110
+"1488","SC1",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
+"1489","SC1",2010,"Hollisteria lanata","NAF","Carrizo",27
+"1490","SC1",2010,"Lasthenia minor","NAF","Carrizo",2
+"1491","SC1",2010,"Lepidium nitidum","NAF","Carrizo",65
+"1492","SC1",2010,"Linanthus liniflorus","NAF","Carrizo",4
+"1493","SC1",2010,"Lotus wrangelianus","NAF","Carrizo",53
+"1494","SC1",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",5
+"1495","SC1",2010,"Microseris elegans","NAF","Carrizo",7
+"1496","SC1",2010,"Plagiobothrys canescens","NAF","Carrizo",11
+"1497","SC1",2010,"Poa secunda ssp secunda","NPG","Carrizo",4
+"1498","SC1",2010,"Schismus arabicus","EAG","Carrizo",79
+"1499","SC1",2010,"Trichostema lanceolatum","NAF","Carrizo",1
+"1500","SC1",2010,"Trifolium gracilentum","NAF","Carrizo",27
+"1501","SC1",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",137
+"1502","SC1",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",4
+"1503","SC1",2010,"bare","bare","Carrizo",66
+"1504","SC1",2011,"Amsinckia tessellata","NAF","Carrizo",1
+"1505","SC1",2011,"Bromus rubens","EAG","Carrizo",6
+"1506","SC1",2011,"Chorizanthe uniaristata","NAF","Carrizo",6
+"1507","SC1",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"1508","SC1",2011,"Erodium cicutarium","EAF","Carrizo",72
+"1509","SC1",2011,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
+"1510","SC1",2011,"Hollisteria lanata","NAF","Carrizo",72
+"1511","SC1",2011,"Hordeum murinum","EAG","Carrizo",1
+"1512","SC1",2011,"Linanthus liniflorus","NAF","Carrizo",4
+"1513","SC1",2011,"Lotus wrangelianus","NAF","Carrizo",49
+"1514","SC1",2011,"Microseris elegans","NAF","Carrizo",14
+"1515","SC1",2011,"Plagiobothrys canescens","NAF","Carrizo",1
+"1516","SC1",2011,"Poa secunda ssp secunda","NPG","Carrizo",2
+"1517","SC1",2011,"Schismus arabicus","EAG","Carrizo",115
+"1518","SC1",2011,"Trifolium gracilentum","NAF","Carrizo",8
+"1519","SC1",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",59
+"1520","SC1",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"1521","SC1",2011,"bare","bare","Carrizo",172
+"1522","SC1",2011,"litter","litter","Carrizo",61
+"1523","SC1",2012,"Astragalus oxyphysus","NPF","Carrizo",1
+"1524","SC1",2012,"Bromus rubens","EAG","Carrizo",1
+"1525","SC1",2012,"Eriogonum gracillimum","NAF","Carrizo",1
+"1526","SC1",2012,"Erodium cicutarium","EAF","Carrizo",66
+"1527","SC1",2012,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
+"1528","SC1",2012,"Hollisteria lanata","NAF","Carrizo",11
+"1529","SC1",2012,"Lasthenia californica","NAF","Carrizo",1
+"1530","SC1",2012,"Microseris elegans","NAF","Carrizo",1
+"1531","SC1",2012,"Schismus arabicus","EAG","Carrizo",59
+"1532","SC1",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",28
+"1533","SC1",2012,"bare","bare","Carrizo",305
+"1534","SC1",2012,"litter","litter","Carrizo",171
+"1535","SC1",2013,"Erodium cicutarium","EAF","Carrizo",26
+"1536","SC1",2013,"Hollisteria lanata","NAF","Carrizo",2
+"1537","SC1",2013,"Lepidium dictyotum","NAF","Carrizo",1
+"1538","SC1",2013,"Lepidium nitidum","NAF","Carrizo",4
+"1539","SC1",2013,"Schismus arabicus","EAG","Carrizo",23
+"1540","SC1",2013,"Trifolium gracilentum","NAF","Carrizo",1
+"1541","SC1",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"1542","SC1",2013,"bare","bare","Carrizo",406
+"1543","SC1",2013,"litter","litter","Carrizo",183
+"1544","SC1",2014,"Carrizo Allium sp.","NPF","Carrizo",1
+"1545","SC1",2014,"Amsinckia tessellata","NAF","Carrizo",1
+"1546","SC1",2014,"Calandrinia ciliata","NAF","Carrizo",32
+"1547","SC1",2014,"Erodium cicutarium","EAF","Carrizo",25
+"1548","SC1",2014,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
+"1549","SC1",2014,"Hollisteria lanata","NAF","Carrizo",8
+"1550","SC1",2014,"Lepidium nitidum","NAF","Carrizo",16
+"1551","SC1",2014,"Lotus wrangelianus","NAF","Carrizo",3
+"1552","SC1",2014,"Schismus arabicus","EAG","Carrizo",9
+"1553","SC1",2014,"Trifolium gracilentum","NAF","Carrizo",1
+"1554","SC1",2014,"bare","bare","Carrizo",513
+"1555","SC1",2014,"hole","hole","Carrizo",1
+"1556","SC1",2014,"litter","litter","Carrizo",35
+"1557","SC1",2015,"Calandrinia ciliata","NAF","Carrizo",42
+"1558","SC1",2015,"Chorizanthe uniaristata","NAF","Carrizo",3
+"1559","SC1",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"1560","SC1",2015,"Erodium cicutarium","EAF","Carrizo",150
+"1561","SC1",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1562","SC1",2015,"Hollisteria lanata","NAF","Carrizo",22
+"1563","SC1",2015,"Lepidium nitidum","NAF","Carrizo",19
+"1564","SC1",2015,"Linanthus liniflorus","NAF","Carrizo",1
+"1565","SC1",2015,"Lotus wrangelianus","NAF","Carrizo",8
+"1566","SC1",2015,"Microseris elegans","NAF","Carrizo",5
+"1567","SC1",2015,"Plagiobothrys canescens","NAF","Carrizo",1
+"1568","SC1",2015,"Schismus arabicus","EAG","Carrizo",16
+"1569","SC1",2015,"Trifolium gracilentum","NAF","Carrizo",2
+"1570","SC1",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"1571","SC1",2015,"bare","bare","Carrizo",201
+"1572","SC1",2015,"litter","litter","Carrizo",8
+"1573","SC1",2016,"Calandrinia ciliata","NAF","Carrizo",1
+"1574","SC1",2016,"Erodium cicutarium","EAF","Carrizo",66
+"1575","SC1",2016,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1576","SC1",2016,"Hollisteria lanata","NAF","Carrizo",8
+"1577","SC1",2016,"Lepidium nitidum","NAF","Carrizo",38
+"1578","SC1",2016,"Schismus arabicus","EAG","Carrizo",41
+"1579","SC1",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",4
+"1580","SC1",2016,"bare","bare","Carrizo",81
+"1581","SC1",2016,"litter","litter","Carrizo",3
+"1582","SC1",2017,"Astragalus oxyphysus","NPF","Carrizo",1
+"1583","SC1",2017,"Bromus rubens","EAG","Carrizo",2
+"1584","SC1",2017,"Calandrinia ciliata","NAF","Carrizo",4
+"1585","SC1",2017,"Chorizanthe uniaristata","NAF","Carrizo",1
+"1586","SC1",2017,"Erodium cicutarium","EAF","Carrizo",49
+"1587","SC1",2017,"Hollisteria lanata","NAF","Carrizo",9
+"1588","SC1",2017,"Lepidium nitidum","NAF","Carrizo",71
+"1589","SC1",2017,"Lotus wrangelianus","NAF","Carrizo",6
+"1590","SC1",2017,"Lupinus bicolor","NAF","Carrizo",2
+"1591","SC1",2017,"Microseris elegans","NAF","Carrizo",3
+"1592","SC1",2017,"Schismus arabicus","EAG","Carrizo",51
+"1593","SC1",2017,"Trifolium gracilentum","NAF","Carrizo",2
+"1594","SC1",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",10
+"1595","SC1",2017,"bare","bare","Carrizo",23
+"1596","SC1",2017,"litter","litter","Carrizo",9
+"1597","SC1",2018,"Bromus rubens","EAG","Carrizo",1
+"1598","SC1",2018,"Calandrinia ciliata","NAF","Carrizo",2
+"1599","SC1",2018,"Erodium cicutarium","EAF","Carrizo",21
+"1600","SC1",2018,"Hollisteria lanata","NAF","Carrizo",1
+"1601","SC1",2018,"Lasthenia minor","NAF","Carrizo",2
+"1602","SC1",2018,"Lepidium dictyotum","NAF","Carrizo",3
+"1603","SC1",2018,"Lepidium nitidum","NAF","Carrizo",12
+"1604","SC1",2018,"Microseris douglasii","NAF","Carrizo",1
+"1605","SC1",2018,"Microseris elegans","NAF","Carrizo",3
+"1606","SC1",2018,"Plagiobothrys canescens","NAF","Carrizo",1
+"1607","SC1",2018,"Schismus arabicus","EAG","Carrizo",72
+"1608","SC1",2018,"Trifolium gracilentum","NAF","Carrizo",1
+"1609","SC1",2018,"Tropidocarpum gracile","NAF","Carrizo",1
+"1610","SC1",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1611","SC1",2018,"bare","bare","Carrizo",53
+"1612","SC1",2018,"litter","litter","Carrizo",68
+"1613","SC10",2007,"Bromus rubens","EAG","Carrizo",259
+"1614","SC10",2007,"Erodium cicutarium","EAF","Carrizo",62
+"1615","SC10",2007,"Hordeum murinum","EAG","Carrizo",3
+"1616","SC10",2007,"Lasthenia californica","NAF","Carrizo",1
+"1617","SC10",2007,"Linanthus liniflorus","NAF","Carrizo",1
+"1618","SC10",2007,"Schismus arabicus","EAG","Carrizo",1
+"1619","SC10",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",142
+"1620","SC10",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",3
+"1621","SC10",2007,"bare","bare","Carrizo",64
+"1622","SC10",2007,"litter","litter","Carrizo",112
+"1623","SC10",2008,"Amsinckia tessellata","NAF","Carrizo",65
+"1624","SC10",2008,"Bromus rubens","EAG","Carrizo",77
+"1625","SC10",2008,"Calandrinia ciliata","NAF","Carrizo",8
+"1626","SC10",2008,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
+"1627","SC10",2008,"Chorizanthe uniaristata","NAF","Carrizo",2
+"1628","SC10",2008,"Dichelostemma capitatum","NPF","Carrizo",1
+"1629","SC10",2008,"Erodium cicutarium","EAF","Carrizo",145
+"1630","SC10",2008,"Hollisteria lanata","NAF","Carrizo",1
+"1631","SC10",2008,"Hordeum murinum","EAG","Carrizo",17
+"1632","SC10",2008,"Lasthenia californica","NAF","Carrizo",6
+"1633","SC10",2008,"Lepidium nitidum","NAF","Carrizo",1
+"1634","SC10",2008,"Linanthus liniflorus","NAF","Carrizo",4
+"1635","SC10",2008,"Lotus wrangelianus","NAF","Carrizo",8
+"1636","SC10",2008,"Pectocarya penicillata","NAF","Carrizo",6
+"1637","SC10",2008,"Schismus arabicus","EAG","Carrizo",7
+"1638","SC10",2008,"Tropidocarpum gracile","NAF","Carrizo",8
+"1639","SC10",2008,"Uropappus lindleyi","NAF","Carrizo",1
+"1640","SC10",2008,"Vulpia bromoides","EAG","Carrizo",29
+"1641","SC10",2008,"bare","bare","Carrizo",96
+"1642","SC10",2008,"litter","litter","Carrizo",165
+"1643","SC10",2009,"Amsinckia tessellata","NAF","Carrizo",91
+"1644","SC10",2009,"Bromus rubens","EAG","Carrizo",71
+"1645","SC10",2009,"Calandrinia ciliata","NAF","Carrizo",3
+"1646","SC10",2009,"Chorizanthe uniaristata","NAF","Carrizo",9
+"1647","SC10",2009,"Erodium cicutarium","EAF","Carrizo",132
+"1648","SC10",2009,"Hordeum murinum","EAG","Carrizo",32
+"1649","SC10",2009,"Lasthenia californica","NAF","Carrizo",17
+"1650","SC10",2009,"Lepidium nitidum","NAF","Carrizo",4
+"1651","SC10",2009,"Linanthus liniflorus","NAF","Carrizo",32
+"1652","SC10",2009,"Lotus wrangelianus","NAF","Carrizo",28
+"1653","SC10",2009,"Microseris elegans","NAF","Carrizo",1
+"1654","SC10",2009,"Schismus arabicus","EAG","Carrizo",9
+"1655","SC10",2009,"Tropidocarpum gracile","NAF","Carrizo",2
+"1656","SC10",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",61
+"1657","SC10",2009,"bare","bare","Carrizo",87
+"1658","SC10",2009,"hole","hole","Carrizo",2
+"1659","SC10",2009,"litter","litter","Carrizo",67
+"1660","SC10",2010,"Amsinckia tessellata","NAF","Carrizo",66
+"1661","SC10",2010,"Bromus rubens","EAG","Carrizo",77
+"1662","SC10",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",4
+"1663","SC10",2010,"Chorizanthe uniaristata","NAF","Carrizo",3
+"1664","SC10",2010,"Erodium cicutarium","EAF","Carrizo",73
+"1665","SC10",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
+"1666","SC10",2010,"Hordeum murinum","EAG","Carrizo",35
+"1667","SC10",2010,"Lastarriaea coriacea","NAF","Carrizo",1
+"1668","SC10",2010,"Lasthenia californica","NAF","Carrizo",25
+"1669","SC10",2010,"Lepidium nitidum","NAF","Carrizo",6
+"1670","SC10",2010,"Linanthus liniflorus","NAF","Carrizo",25
+"1671","SC10",2010,"Lotus wrangelianus","NAF","Carrizo",64
+"1672","SC10",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",2
+"1673","SC10",2010,"Microseris elegans","NAF","Carrizo",5
+"1674","SC10",2010,"Pectocarya penicillata","NAF","Carrizo",4
+"1675","SC10",2010,"Schismus arabicus","EAG","Carrizo",7
+"1676","SC10",2010,"Tropidocarpum gracile","NAF","Carrizo",29
+"1677","SC10",2010,"Uropappus lindleyi","NAF","Carrizo",11
+"1678","SC10",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",134
+"1679","SC10",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",7
+"1680","SC10",2010,"bare","bare","Carrizo",65
+"1681","SC10",2010,"litter","litter","Carrizo",2
+"1682","SC10",2011,"Amsinckia tessellata","NAF","Carrizo",20
+"1683","SC10",2011,"Bromus rubens","EAG","Carrizo",195
+"1684","SC10",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",3
+"1685","SC10",2011,"Chorizanthe uniaristata","NAF","Carrizo",15
+"1686","SC10",2011,"Erodium cicutarium","EAF","Carrizo",70
+"1687","SC10",2011,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
+"1688","SC10",2011,"Hollisteria lanata","NAF","Carrizo",3
+"1689","SC10",2011,"Hordeum murinum","EAG","Carrizo",53
+"1690","SC10",2011,"Lasthenia californica","NAF","Carrizo",7
+"1691","SC10",2011,"Lepidium nitidum","NAF","Carrizo",3
+"1692","SC10",2011,"Linanthus liniflorus","NAF","Carrizo",15
+"1693","SC10",2011,"Lotus wrangelianus","NAF","Carrizo",34
+"1694","SC10",2011,"Microseris elegans","NAF","Carrizo",2
+"1695","SC10",2011,"Pectocarya penicillata","NAF","Carrizo",5
+"1696","SC10",2011,"Schismus arabicus","EAG","Carrizo",12
+"1697","SC10",2011,"Tropidocarpum gracile","NAF","Carrizo",6
+"1698","SC10",2011,"Uropappus lindleyi","NAF","Carrizo",1
+"1699","SC10",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",74
+"1700","SC10",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"1701","SC10",2011,"bare","bare","Carrizo",74
+"1702","SC10",2011,"litter","litter","Carrizo",51
+"1703","SC10",2012,"Amsinckia tessellata","NAF","Carrizo",9
+"1704","SC10",2012,"Bromus rubens","EAG","Carrizo",77
+"1705","SC10",2012,"Chorizanthe uniaristata","NAF","Carrizo",2
+"1706","SC10",2012,"Eriogonum gracillimum","NAF","Carrizo",1
+"1707","SC10",2012,"Erodium cicutarium","EAF","Carrizo",68
+"1708","SC10",2012,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1709","SC10",2012,"Hollisteria lanata","NAF","Carrizo",4
+"1710","SC10",2012,"Hordeum murinum","EAG","Carrizo",25
+"1711","SC10",2012,"Linanthus liniflorus","NAF","Carrizo",3
+"1712","SC10",2012,"Microseris elegans","NAF","Carrizo",2
+"1713","SC10",2012,"Pectocarya penicillata","NAF","Carrizo",5
+"1714","SC10",2012,"Schismus arabicus","EAG","Carrizo",14
+"1715","SC10",2012,"Vulpia bromoides","EAG","Carrizo",1
+"1716","SC10",2012,"bare","bare","Carrizo",132
+"1717","SC10",2012,"litter","litter","Carrizo",304
+"1718","SC10",2013,"Amsinckia tessellata","NAF","Carrizo",1
+"1719","SC10",2013,"Bromus rubens","EAG","Carrizo",40
+"1720","SC10",2013,"Erodium cicutarium","EAF","Carrizo",30
+"1721","SC10",2013,"Hordeum murinum","EAG","Carrizo",13
+"1722","SC10",2013,"Linanthus liniflorus","NAF","Carrizo",3
+"1723","SC10",2013,"Lotus wrangelianus","NAF","Carrizo",2
+"1724","SC10",2013,"Pectocarya penicillata","NAF","Carrizo",4
+"1725","SC10",2013,"Schismus arabicus","EAG","Carrizo",3
+"1726","SC10",2013,"Tropidocarpum gracile","NAF","Carrizo",2
+"1727","SC10",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"1728","SC10",2013,"bare","bare","Carrizo",208
+"1729","SC10",2013,"hole","hole","Carrizo",1
+"1730","SC10",2013,"litter","litter","Carrizo",339
+"1731","SC10",2014,"Amsinckia tessellata","NAF","Carrizo",3
+"1732","SC10",2014,"Bromus rubens","EAG","Carrizo",4
+"1733","SC10",2014,"Calandrinia ciliata","NAF","Carrizo",7
+"1734","SC10",2014,"Dichelostemma capitatum","NPF","Carrizo",3
+"1735","SC10",2014,"Erodium cicutarium","EAF","Carrizo",70
+"1736","SC10",2014,"Hollisteria lanata","NAF","Carrizo",1
+"1737","SC10",2014,"Hordeum murinum","EAG","Carrizo",1
+"1738","SC10",2014,"Lotus wrangelianus","NAF","Carrizo",8
+"1739","SC10",2014,"Pectocarya penicillata","NAF","Carrizo",5
+"1740","SC10",2014,"Schismus arabicus","EAG","Carrizo",3
+"1741","SC10",2014,"Tropidocarpum gracile","NAF","Carrizo",2
+"1742","SC10",2014,"bare","bare","Carrizo",348
+"1743","SC10",2014,"litter","litter","Carrizo",193
+"1744","SC10",2015,"Amsinckia tessellata","NAF","Carrizo",93
+"1745","SC10",2015,"Bromus rubens","EAG","Carrizo",3
+"1746","SC10",2015,"Calandrinia ciliata","NAF","Carrizo",15
+"1747","SC10",2015,"Chorizanthe uniaristata","NAF","Carrizo",2
+"1748","SC10",2015,"Eriogonum gracillimum","NAF","Carrizo",1
+"1749","SC10",2015,"Erodium cicutarium","EAF","Carrizo",185
+"1750","SC10",2015,"Guillenia lasiophylla","NAF","Carrizo",6
+"1751","SC10",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1752","SC10",2015,"Hordeum murinum","EAG","Carrizo",28
+"1753","SC10",2015,"Lasthenia californica","NAF","Carrizo",6
+"1754","SC10",2015,"Lepidium nitidum","NAF","Carrizo",7
+"1755","SC10",2015,"Linanthus liniflorus","NAF","Carrizo",3
+"1756","SC10",2015,"Lotus wrangelianus","NAF","Carrizo",5
+"1757","SC10",2015,"Pectocarya penicillata","NAF","Carrizo",17
+"1758","SC10",2015,"Schismus arabicus","EAG","Carrizo",27
+"1759","SC10",2015,"Tropidocarpum gracile","NAF","Carrizo",12
+"1760","SC10",2015,"bare","bare","Carrizo",216
+"1761","SC10",2015,"litter","litter","Carrizo",21
+"1762","SC10",2016,"Amsinckia tessellata","NAF","Carrizo",58
+"1763","SC10",2016,"Erodium cicutarium","EAF","Carrizo",28
+"1764","SC10",2016,"Hordeum murinum","EAG","Carrizo",53
+"1765","SC10",2016,"Schismus arabicus","EAG","Carrizo",6
+"1766","SC10",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1767","SC10",2016,"bare","bare","Carrizo",12
+"1768","SC10",2016,"litter","litter","Carrizo",4
+"1769","SC10",2017,"Amsinckia tessellata","NAF","Carrizo",121
+"1770","SC10",2017,"Erodium cicutarium","EAF","Carrizo",4
+"1771","SC10",2017,"Guillenia lasiophylla","NAF","Carrizo",8
+"1772","SC10",2017,"Hordeum murinum","EAG","Carrizo",28
+"1773","SC10",2017,"Schismus arabicus","EAG","Carrizo",1
+"1774","SC10",2018,"Amsinckia tessellata","NAF","Carrizo",23
+"1775","SC10",2018,"Bromus rubens","EAG","Carrizo",7
+"1776","SC10",2018,"Erodium cicutarium","EAF","Carrizo",3
+"1777","SC10",2018,"Guillenia lasiophylla","NAF","Carrizo",2
+"1778","SC10",2018,"Hordeum murinum","EAG","Carrizo",27
+"1779","SC10",2018,"Lepidium nitidum","NAF","Carrizo",5
+"1780","SC10",2018,"Pectocarya penicillata","NAF","Carrizo",2
+"1781","SC10",2018,"Schismus arabicus","EAG","Carrizo",20
+"1782","SC10",2018,"Tropidocarpum gracile","NAF","Carrizo",6
+"1783","SC10",2018,"bare","bare","Carrizo",28
+"1784","SC10",2018,"litter","litter","Carrizo",39
+"1785","SC2",2007,"Amsinckia tessellata","NAF","Carrizo",2
+"1786","SC2",2007,"Bromus rubens","EAG","Carrizo",162
+"1787","SC2",2007,"Erodium cicutarium","EAF","Carrizo",51
+"1788","SC2",2007,"Hordeum murinum","EAG","Carrizo",10
+"1789","SC2",2007,"Lepidium nitidum","NAF","Carrizo",2
+"1790","SC2",2007,"Poa secunda ssp secunda","NPG","Carrizo",86
+"1791","SC2",2007,"Schismus arabicus","EAG","Carrizo",5
+"1792","SC2",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",13
+"1793","SC2",2007,"bare","bare","Carrizo",73
+"1794","SC2",2007,"litter","litter","Carrizo",244
+"1795","SC2",2008,"Amsinckia tessellata","NAF","Carrizo",31
+"1796","SC2",2008,"Bromus rubens","EAG","Carrizo",46
+"1797","SC2",2008,"Calandrinia ciliata","NAF","Carrizo",13
+"1798","SC2",2008,"Dichelostemma capitatum","NPF","Carrizo",2
+"1799","SC2",2008,"Erodium cicutarium","EAF","Carrizo",112
+"1800","SC2",2008,"Hollisteria lanata","NAF","Carrizo",2
+"1801","SC2",2008,"Hordeum murinum","EAG","Carrizo",25
+"1802","SC2",2008,"Lasthenia californica","NAF","Carrizo",6
+"1803","SC2",2008,"Lepidium nitidum","NAF","Carrizo",6
+"1804","SC2",2008,"Microseris elegans","NAF","Carrizo",1
+"1805","SC2",2008,"Muilla maritima","NPF","Carrizo",3
+"1806","SC2",2008,"Pectocarya penicillata","NAF","Carrizo",4
+"1807","SC2",2008,"Poa secunda ssp secunda","NPG","Carrizo",46
+"1808","SC2",2008,"Schismus arabicus","EAG","Carrizo",19
+"1809","SC2",2008,"Uropappus lindleyi","NAF","Carrizo",1
+"1810","SC2",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1811","SC2",2008,"bare","bare","Carrizo",114
+"1812","SC2",2008,"litter","litter","Carrizo",216
+"1813","SC2",2009,"Amsinckia tessellata","NAF","Carrizo",52
+"1814","SC2",2009,"Bromus rubens","EAG","Carrizo",58
+"1815","SC2",2009,"Calandrinia ciliata","NAF","Carrizo",25
+"1816","SC2",2009,"Dichelostemma capitatum","NPF","Carrizo",2
+"1817","SC2",2009,"Erodium cicutarium","EAF","Carrizo",141
+"1818","SC2",2009,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1819","SC2",2009,"Hollisteria lanata","NAF","Carrizo",2
+"1820","SC2",2009,"Hordeum murinum","EAG","Carrizo",14
+"1821","SC2",2009,"Lasthenia californica","NAF","Carrizo",23
+"1822","SC2",2009,"Lepidium nitidum","NAF","Carrizo",13
+"1823","SC2",2009,"Linanthus liniflorus","NAF","Carrizo",3
+"1824","SC2",2009,"Lotus wrangelianus","NAF","Carrizo",8
+"1825","SC2",2009,"Microseris elegans","NAF","Carrizo",2
+"1826","SC2",2009,"Pectocarya penicillata","NAF","Carrizo",2
+"1827","SC2",2009,"Phlox gracilis","NAF","Carrizo",2
+"1828","SC2",2009,"Poa secunda ssp secunda","NPG","Carrizo",90
+"1829","SC2",2009,"Schismus arabicus","EAG","Carrizo",26
+"1830","SC2",2009,"Trifolium gracilentum","NAF","Carrizo",2
+"1831","SC2",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"1832","SC2",2009,"bare","bare","Carrizo",131
+"1833","SC2",2009,"litter","litter","Carrizo",50
+"1834","SC2",2010,"Amsinckia tessellata","NAF","Carrizo",34
+"1835","SC2",2010,"Bromus rubens","EAG","Carrizo",31
+"1836","SC2",2010,"Calandrinia ciliata","NAF","Carrizo",41
+"1837","SC2",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
+"1838","SC2",2010,"Dichelostemma capitatum","NPF","Carrizo",2
+"1839","SC2",2010,"Eriogonum gracillimum","NAF","Carrizo",9
+"1840","SC2",2010,"Erodium cicutarium","EAF","Carrizo",113
+"1841","SC2",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"1842","SC2",2010,"Hollisteria lanata","NAF","Carrizo",5
+"1843","SC2",2010,"Hordeum murinum","EAG","Carrizo",17
+"1844","SC2",2010,"Lasthenia californica","NAF","Carrizo",78
+"1845","SC2",2010,"Lepidium nitidum","NAF","Carrizo",27
+"1846","SC2",2010,"Linanthus liniflorus","NAF","Carrizo",1
+"1847","SC2",2010,"Lotus wrangelianus","NAF","Carrizo",19
+"1848","SC2",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",5
+"1849","SC2",2010,"Microseris elegans","NAF","Carrizo",6
+"1850","SC2",2010,"Pectocarya penicillata","NAF","Carrizo",6
+"1851","SC2",2010,"Phlox gracilis","NAF","Carrizo",2
+"1852","SC2",2010,"Plantago erecta","NAF","Carrizo",1
+"1853","SC2",2010,"Poa secunda ssp secunda","NPG","Carrizo",109
+"1854","SC2",2010,"Schismus arabicus","EAG","Carrizo",69
+"1855","SC2",2010,"Trichostema lanceolatum","NAF","Carrizo",2
+"1856","SC2",2010,"Trifolium gracilentum","NAF","Carrizo",5
+"1857","SC2",2010,"Uropappus lindleyi","NAF","Carrizo",1
+"1858","SC2",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",10
+"1859","SC2",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"1860","SC2",2010,"bare","bare","Carrizo",48
+"1861","SC2",2010,"litter","litter","Carrizo",3
+"1862","SC2",2011,"Amsinckia tessellata","NAF","Carrizo",3
+"1863","SC2",2011,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",3
+"1864","SC2",2011,"Astragalus oxyphysus","NPF","Carrizo",7
+"1865","SC2",2011,"Bromus rubens","EAG","Carrizo",92
+"1866","SC2",2011,"Eriogonum gracillimum","NAF","Carrizo",7
+"1867","SC2",2011,"Erodium cicutarium","EAF","Carrizo",101
+"1868","SC2",2011,"Hollisteria lanata","NAF","Carrizo",8
+"1869","SC2",2011,"Hordeum murinum","EAG","Carrizo",26
+"1870","SC2",2011,"Lactuca serriola","EAF","Carrizo",2
+"1871","SC2",2011,"Lasthenia californica","NAF","Carrizo",42
+"1872","SC2",2011,"Lasthenia minor","NAF","Carrizo",24
+"1873","SC2",2011,"Lepidium nitidum","NAF","Carrizo",2
+"1874","SC2",2011,"Linanthus liniflorus","NAF","Carrizo",3
+"1875","SC2",2011,"Lotus wrangelianus","NAF","Carrizo",10
+"1876","SC2",2011,"Microseris douglasii","NAF","Carrizo",2
+"1877","SC2",2011,"Microseris elegans","NAF","Carrizo",18
+"1878","SC2",2011,"Pectocarya penicillata","NAF","Carrizo",1
+"1879","SC2",2011,"Plantago erecta","NAF","Carrizo",2
+"1880","SC2",2011,"Poa secunda ssp secunda","NPG","Carrizo",42
+"1881","SC2",2011,"Schismus arabicus","EAG","Carrizo",60
+"1882","SC2",2011,"Trifolium gracilentum","NAF","Carrizo",3
+"1883","SC2",2011,"Uropappus lindleyi","NAF","Carrizo",3
+"1884","SC2",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",38
+"1885","SC2",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"1886","SC2",2011,"bare","bare","Carrizo",84
+"1887","SC2",2011,"litter","litter","Carrizo",60
+"1888","SC2",2012,"Bromus rubens","EAG","Carrizo",42
+"1889","SC2",2012,"Camissonia campestris","NAF","Carrizo",1
+"1890","SC2",2012,"Eriogonum gracillimum","NAF","Carrizo",1
+"1891","SC2",2012,"Erodium cicutarium","EAF","Carrizo",51
+"1892","SC2",2012,"Hollisteria lanata","NAF","Carrizo",1
+"1893","SC2",2012,"Hordeum murinum","EAG","Carrizo",16
+"1894","SC2",2012,"Lasthenia minor","NAF","Carrizo",1
+"1895","SC2",2012,"Plantago erecta","NAF","Carrizo",1
+"1896","SC2",2012,"Poa secunda ssp secunda","NPG","Carrizo",20
+"1897","SC2",2012,"Schismus arabicus","EAG","Carrizo",36
+"1898","SC2",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",27
+"1899","SC2",2012,"bare","bare","Carrizo",167
+"1900","SC2",2012,"litter","litter","Carrizo",284
+"1901","SC2",2013,"Bromus rubens","EAG","Carrizo",8
+"1902","SC2",2013,"Calandrinia ciliata","NAF","Carrizo",8
+"1903","SC2",2013,"Erodium cicutarium","EAF","Carrizo",27
+"1904","SC2",2013,"Hollisteria lanata","NAF","Carrizo",2
+"1905","SC2",2013,"Hordeum murinum","EAG","Carrizo",5
+"1906","SC2",2013,"Lasthenia californica","NAF","Carrizo",9
+"1907","SC2",2013,"Lepidium nitidum","NAF","Carrizo",1
+"1908","SC2",2013,"Pectocarya penicillata","NAF","Carrizo",2
+"1909","SC2",2013,"Poa secunda ssp secunda","NPG","Carrizo",13
+"1910","SC2",2013,"Schismus arabicus","EAG","Carrizo",15
+"1911","SC2",2013,"Trifolium gracilentum","NAF","Carrizo",1
+"1912","SC2",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"1913","SC2",2013,"bare","bare","Carrizo",261
+"1914","SC2",2013,"hole","hole","Carrizo",2
+"1915","SC2",2013,"litter","litter","Carrizo",289
+"1916","SC2",2014,"Amsinckia tessellata","NAF","Carrizo",1
+"1917","SC2",2014,"Calandrinia ciliata","NAF","Carrizo",22
+"1918","SC2",2014,"Erodium cicutarium","EAF","Carrizo",44
+"1919","SC2",2014,"Hollisteria lanata","NAF","Carrizo",3
+"1920","SC2",2014,"Lasthenia californica","NAF","Carrizo",2
+"1921","SC2",2014,"Lepidium nitidum","NAF","Carrizo",1
+"1922","SC2",2014,"Lotus wrangelianus","NAF","Carrizo",4
+"1923","SC2",2014,"Pectocarya penicillata","NAF","Carrizo",2
+"1924","SC2",2014,"Plantago erecta","NAF","Carrizo",4
+"1925","SC2",2014,"Poa secunda ssp secunda","NPG","Carrizo",5
+"1926","SC2",2014,"Schismus arabicus","EAG","Carrizo",10
+"1927","SC2",2014,"Trifolium gracilentum","NAF","Carrizo",1
+"1928","SC2",2014,"bare","bare","Carrizo",348
+"1929","SC2",2014,"litter","litter","Carrizo",201
+"1930","SC2",2015,"Amsinckia tessellata","NAF","Carrizo",7
+"1931","SC2",2015,"Bromus rubens","EAG","Carrizo",2
+"1932","SC2",2015,"Calandrinia ciliata","NAF","Carrizo",69
+"1933","SC2",2015,"Chorizanthe uniaristata","NAF","Carrizo",3
+"1934","SC2",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"1935","SC2",2015,"Erodium cicutarium","EAF","Carrizo",154
+"1936","SC2",2015,"Guillenia lasiophylla","NAF","Carrizo",1
+"1937","SC2",2015,"Hollisteria lanata","NAF","Carrizo",10
+"1938","SC2",2015,"Hordeum murinum","EAG","Carrizo",11
+"1939","SC2",2015,"Lasthenia californica","NAF","Carrizo",25
+"1940","SC2",2015,"Lasthenia minor","NAF","Carrizo",5
+"1941","SC2",2015,"Lepidium nitidum","NAF","Carrizo",16
+"1942","SC2",2015,"Lotus wrangelianus","NAF","Carrizo",8
+"1943","SC2",2015,"Microseris elegans","NAF","Carrizo",1
+"1944","SC2",2015,"Pectocarya penicillata","NAF","Carrizo",11
+"1945","SC2",2015,"Poa secunda ssp secunda","NPG","Carrizo",3
+"1946","SC2",2015,"Schismus arabicus","EAG","Carrizo",54
+"1947","SC2",2015,"Trifolium gracilentum","NAF","Carrizo",2
+"1948","SC2",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",8
+"1949","SC2",2015,"bare","bare","Carrizo",233
+"1950","SC2",2015,"litter","litter","Carrizo",24
+"1951","SC2",2016,"Amsinckia tessellata","NAF","Carrizo",3
+"1952","SC2",2016,"Erodium cicutarium","EAF","Carrizo",103
+"1953","SC2",2016,"Hollisteria lanata","NAF","Carrizo",2
+"1954","SC2",2016,"Hordeum murinum","EAG","Carrizo",7
+"1955","SC2",2016,"Lasthenia californica","NAF","Carrizo",3
+"1956","SC2",2016,"Lasthenia minor","NAF","Carrizo",17
+"1957","SC2",2016,"Lepidium nitidum","NAF","Carrizo",5
+"1958","SC2",2016,"Schismus arabicus","EAG","Carrizo",26
+"1959","SC2",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"1960","SC2",2016,"bare","bare","Carrizo",138
+"1961","SC2",2016,"litter","litter","Carrizo",14
+"1962","SC2",2017,"Amsinckia tessellata","NAF","Carrizo",20
+"1963","SC2",2017,"Astragalus oxyphysus","NPF","Carrizo",1
+"1964","SC2",2017,"Bromus rubens","EAG","Carrizo",5
+"1965","SC2",2017,"Calandrinia ciliata","NAF","Carrizo",2
+"1966","SC2",2017,"Chorizanthe uniaristata","NAF","Carrizo",1
+"1967","SC2",2017,"Erodium cicutarium","EAF","Carrizo",68
+"1968","SC2",2017,"Guillenia lasiophylla","NAF","Carrizo",1
+"1969","SC2",2017,"Hollisteria lanata","NAF","Carrizo",6
+"1970","SC2",2017,"Hordeum murinum","EAG","Carrizo",4
+"1971","SC2",2017,"Lasthenia glabrata ssp coulteri","NAF","Carrizo",85
+"1972","SC2",2017,"Lasthenia minor","NAF","Carrizo",1
+"1973","SC2",2017,"Lepidium nitidum","NAF","Carrizo",26
+"1974","SC2",2017,"Lotus wrangelianus","NAF","Carrizo",10
+"1975","SC2",2017,"Microseris elegans","NAF","Carrizo",1
+"1976","SC2",2017,"Poa secunda ssp secunda","NPG","Carrizo",1
+"1977","SC2",2017,"Schismus arabicus","EAG","Carrizo",61
+"1978","SC2",2017,"Trifolium gracilentum","NAF","Carrizo",3
+"1979","SC2",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",4
+"1980","SC2",2017,"bare","bare","Carrizo",22
+"1981","SC2",2017,"litter","litter","Carrizo",2
+"1982","SC2",2018,"Amsinckia tessellata","NAF","Carrizo",8
+"1983","SC2",2018,"Bromus rubens","EAG","Carrizo",5
+"1984","SC2",2018,"Calandrinia ciliata","NAF","Carrizo",3
+"1985","SC2",2018,"Erodium cicutarium","EAF","Carrizo",11
+"1986","SC2",2018,"Guillenia lasiophylla","NAF","Carrizo",2
+"1987","SC2",2018,"Hollisteria lanata","NAF","Carrizo",1
+"1988","SC2",2018,"Hordeum murinum","EAG","Carrizo",9
+"1989","SC2",2018,"Lasthenia minor","NAF","Carrizo",12
+"1990","SC2",2018,"Lepidium nitidum","NAF","Carrizo",15
+"1991","SC2",2018,"Microseris elegans","NAF","Carrizo",3
+"1992","SC2",2018,"Pectocarya penicillata","NAF","Carrizo",7
+"1993","SC2",2018,"Schismus arabicus","EAG","Carrizo",62
+"1994","SC2",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"1995","SC2",2018,"bare","bare","Carrizo",91
+"1996","SC2",2018,"litter","litter","Carrizo",92
+"1997","SC3",2007,"Amsinckia tessellata","NAF","Carrizo",4
+"1998","SC3",2007,"Astragalus oxyphysus","NPF","Carrizo",1
+"1999","SC3",2007,"Bromus rubens","EAG","Carrizo",12
+"2000","SC3",2007,"Eriogonum gracillimum","NAF","Carrizo",2
+"2001","SC3",2007,"Erodium cicutarium","EAF","Carrizo",71
+"2002","SC3",2007,"Hordeum murinum","EAG","Carrizo",1
+"2003","SC3",2007,"Lepidium nitidum","NAF","Carrizo",8
+"2004","SC3",2007,"Linanthus liniflorus","NAF","Carrizo",2
+"2005","SC3",2007,"Schismus arabicus","EAG","Carrizo",40
+"2006","SC3",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",52
+"2007","SC3",2007,"bare","bare","Carrizo",117
+"2008","SC3",2007,"litter","litter","Carrizo",338
+"2009","SC3",2008,"Amsinckia tessellata","NAF","Carrizo",21
+"2010","SC3",2008,"Calandrinia ciliata","NAF","Carrizo",6
+"2011","SC3",2008,"Dichelostemma capitatum","NPF","Carrizo",3
+"2012","SC3",2008,"Eriogonum gracillimum","NAF","Carrizo",1
+"2013","SC3",2008,"Erodium cicutarium","EAF","Carrizo",165
+"2014","SC3",2008,"Hollisteria lanata","NAF","Carrizo",1
+"2015","SC3",2008,"Hordeum murinum","EAG","Carrizo",2
+"2016","SC3",2008,"Lepidium dictyotum","NAF","Carrizo",7
+"2017","SC3",2008,"Microseris elegans","NAF","Carrizo",1
+"2018","SC3",2008,"Pectocarya penicillata","NAF","Carrizo",12
+"2019","SC3",2008,"Schismus arabicus","EAG","Carrizo",53
+"2020","SC3",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",11
+"2021","SC3",2008,"bare","bare","Carrizo",187
+"2022","SC3",2008,"litter","litter","Carrizo",178
+"2023","SC3",2009,"Amsinckia tessellata","NAF","Carrizo",45
+"2024","SC3",2009,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",1
+"2025","SC3",2009,"Calandrinia ciliata","NAF","Carrizo",23
+"2026","SC3",2009,"Eriogonum gracillimum","NAF","Carrizo",14
+"2027","SC3",2009,"Erodium cicutarium","EAF","Carrizo",106
+"2028","SC3",2009,"Hordeum murinum","EAG","Carrizo",1
+"2029","SC3",2009,"Lepidium dictyotum","NAF","Carrizo",8
+"2030","SC3",2009,"Lepidium nitidum","NAF","Carrizo",6
+"2031","SC3",2009,"Lotus wrangelianus","NAF","Carrizo",3
+"2032","SC3",2009,"Microseris elegans","NAF","Carrizo",2
+"2033","SC3",2009,"Monolopia congdonii","NAF","Carrizo",1
+"2034","SC3",2009,"Pectocarya penicillata","NAF","Carrizo",61
+"2035","SC3",2009,"Schismus arabicus","EAG","Carrizo",98
+"2036","SC3",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",26
+"2037","SC3",2009,"bare","bare","Carrizo",209
+"2038","SC3",2009,"litter","litter","Carrizo",44
+"2039","SC3",2010,"Amsinckia tessellata","NAF","Carrizo",24
+"2040","SC3",2010,"Astragalus didymocarpus","NAF","Carrizo",1
+"2041","SC3",2010,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",4
+"2042","SC3",2010,"Calandrinia ciliata","NAF","Carrizo",15
+"2043","SC3",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
+"2044","SC3",2010,"Dichelostemma capitatum","NPF","Carrizo",1
+"2045","SC3",2010,"Eriogonum gracillimum","NAF","Carrizo",21
+"2046","SC3",2010,"Erodium cicutarium","EAF","Carrizo",117
+"2047","SC3",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",6
+"2048","SC3",2010,"Hollisteria lanata","NAF","Carrizo",1
+"2049","SC3",2010,"Lasthenia californica","NAF","Carrizo",1
+"2050","SC3",2010,"Lepidium dictyotum","NAF","Carrizo",15
+"2051","SC3",2010,"Lepidium nitidum","NAF","Carrizo",21
+"2052","SC3",2010,"Lotus wrangelianus","NAF","Carrizo",11
+"2053","SC3",2010,"Microseris elegans","NAF","Carrizo",5
+"2054","SC3",2010,"Monolopia congdonii","NAF","Carrizo",4
+"2055","SC3",2010,"Pectocarya penicillata","NAF","Carrizo",36
+"2056","SC3",2010,"Schismus arabicus","EAG","Carrizo",201
+"2057","SC3",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",43
+"2058","SC3",2010,"bare","bare","Carrizo",113
+"2059","SC3",2010,"hole","hole","Carrizo",1
+"2060","SC3",2010,"litter","litter","Carrizo",6
+"2061","SC3",2011,"Carrizo Allium sp.","NPF","Carrizo",1
+"2062","SC3",2011,"Amsinckia tessellata","NAF","Carrizo",18
+"2063","SC3",2011,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",35
+"2064","SC3",2011,"Bromus rubens","EAG","Carrizo",1
+"2065","SC3",2011,"Dichelostemma capitatum","NPF","Carrizo",2
+"2066","SC3",2011,"Eriogonum gracillimum","NAF","Carrizo",25
+"2067","SC3",2011,"Erodium cicutarium","EAF","Carrizo",178
+"2068","SC3",2011,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",5
+"2069","SC3",2011,"Hollisteria lanata","NAF","Carrizo",3
+"2070","SC3",2011,"Lepidium nitidum","NAF","Carrizo",2
+"2071","SC3",2011,"Linanthus liniflorus","NAF","Carrizo",1
+"2072","SC3",2011,"Lotus wrangelianus","NAF","Carrizo",11
+"2073","SC3",2011,"Microseris elegans","NAF","Carrizo",13
+"2074","SC3",2011,"Pectocarya penicillata","NAF","Carrizo",19
+"2075","SC3",2011,"Schismus arabicus","EAG","Carrizo",202
+"2076","SC3",2011,"Trifolium gracilentum","NAF","Carrizo",1
+"2077","SC3",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",29
+"2078","SC3",2011,"bare","bare","Carrizo",143
+"2079","SC3",2011,"litter","litter","Carrizo",40
+"2080","SC3",2012,"Astragalus oxyphysus","NPF","Carrizo",5
+"2081","SC3",2012,"Dichelostemma capitatum","NPF","Carrizo",2
+"2082","SC3",2012,"Eriogonum gracillimum","NAF","Carrizo",20
+"2083","SC3",2012,"Erodium cicutarium","EAF","Carrizo",57
+"2084","SC3",2012,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2085","SC3",2012,"Lepidium nitidum","NAF","Carrizo",1
+"2086","SC3",2012,"Microseris elegans","NAF","Carrizo",1
+"2087","SC3",2012,"Pectocarya penicillata","NAF","Carrizo",20
+"2088","SC3",2012,"Schismus arabicus","EAG","Carrizo",60
+"2089","SC3",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"2090","SC3",2012,"bare","bare","Carrizo",264
+"2091","SC3",2012,"litter","litter","Carrizo",212
+"2092","SC3",2013,"Eriogonum gracillimum","NAF","Carrizo",3
+"2093","SC3",2013,"Erodium cicutarium","EAF","Carrizo",18
+"2094","SC3",2013,"Lepidium dictyotum","NAF","Carrizo",1
+"2095","SC3",2013,"Lepidium nitidum","NAF","Carrizo",3
+"2096","SC3",2013,"Lotus wrangelianus","NAF","Carrizo",1
+"2097","SC3",2013,"Schismus arabicus","EAG","Carrizo",5
+"2098","SC3",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"2099","SC3",2013,"bare","bare","Carrizo",422
+"2100","SC3",2013,"litter","litter","Carrizo",194
+"2101","SC3",2014,"Amsinckia tessellata","NAF","Carrizo",2
+"2102","SC3",2014,"Calandrinia ciliata","NAF","Carrizo",27
+"2103","SC3",2014,"Dichelostemma capitatum","NPF","Carrizo",2
+"2104","SC3",2014,"Eriogonum gracillimum","NAF","Carrizo",3
+"2105","SC3",2014,"Erodium cicutarium","EAF","Carrizo",9
+"2106","SC3",2014,"Lepidium nitidum","NAF","Carrizo",13
+"2107","SC3",2014,"Lotus wrangelianus","NAF","Carrizo",1
+"2108","SC3",2014,"Pectocarya penicillata","NAF","Carrizo",16
+"2109","SC3",2014,"Schismus arabicus","EAG","Carrizo",11
+"2110","SC3",2014,"bare","bare","Carrizo",506
+"2111","SC3",2014,"hole","hole","Carrizo",1
+"2112","SC3",2014,"litter","litter","Carrizo",57
+"2113","SC3",2015,"Amsinckia tessellata","NAF","Carrizo",10
+"2114","SC3",2015,"Calandrinia ciliata","NAF","Carrizo",53
+"2115","SC3",2015,"Dichelostemma capitatum","NPF","Carrizo",1
+"2116","SC3",2015,"Eriogonum gracillimum","NAF","Carrizo",9
+"2117","SC3",2015,"Erodium cicutarium","EAF","Carrizo",115
+"2118","SC3",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",4
+"2119","SC3",2015,"Lepidium dictyotum","NAF","Carrizo",42
+"2120","SC3",2015,"Lepidium nitidum","NAF","Carrizo",47
+"2121","SC3",2015,"Linanthus liniflorus","NAF","Carrizo",2
+"2122","SC3",2015,"Lotus wrangelianus","NAF","Carrizo",4
+"2123","SC3",2015,"Monolopia congdonii","NAF","Carrizo",3
+"2124","SC3",2015,"Pectocarya penicillata","NAF","Carrizo",52
+"2125","SC3",2015,"Schismus arabicus","EAG","Carrizo",42
+"2126","SC3",2015,"Trifolium gracilentum","NAF","Carrizo",2
+"2127","SC3",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"2128","SC3",2015,"bare","bare","Carrizo",251
+"2129","SC3",2015,"litter","litter","Carrizo",9
+"2130","SC3",2016,"Amsinckia tessellata","NAF","Carrizo",5
+"2131","SC3",2016,"Car Astragalus sp.","NAF","Carrizo",5
+"2132","SC3",2016,"Erodium cicutarium","EAF","Carrizo",23
+"2133","SC3",2016,"Guillenia lasiophylla","NAF","Carrizo",1
+"2134","SC3",2016,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
+"2135","SC3",2016,"Hollisteria lanata","NAF","Carrizo",1
+"2136","SC3",2016,"Lepidium dictyotum","NAF","Carrizo",1
+"2137","SC3",2016,"Lepidium nitidum","NAF","Carrizo",25
+"2138","SC3",2016,"Linanthus liniflorus","NAF","Carrizo",2
+"2139","SC3",2016,"Schismus arabicus","EAG","Carrizo",85
+"2140","SC3",2016,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"2141","SC3",2016,"bare","bare","Carrizo",72
+"2142","SC3",2016,"litter","litter","Carrizo",16
+"2143","SC3",2017,"Amsinckia tessellata","NAF","Carrizo",15
+"2144","SC3",2017,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",17
+"2145","SC3",2017,"Eriogonum gracillimum","NAF","Carrizo",1
+"2146","SC3",2017,"Erodium cicutarium","EAF","Carrizo",47
+"2147","SC3",2017,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",5
+"2148","SC3",2017,"Hordeum murinum","EAG","Carrizo",3
+"2149","SC3",2017,"Lepidium dictyotum","NAF","Carrizo",7
+"2150","SC3",2017,"Lepidium nitidum","NAF","Carrizo",8
+"2151","SC3",2017,"Linanthus liniflorus","NAF","Carrizo",9
+"2152","SC3",2017,"Lotus wrangelianus","NAF","Carrizo",17
+"2153","SC3",2017,"Microseris elegans","NAF","Carrizo",1
+"2154","SC3",2017,"Pectocarya penicillata","NAF","Carrizo",5
+"2155","SC3",2017,"Schismus arabicus","EAG","Carrizo",35
+"2156","SC3",2017,"Trifolium gracilentum","NAF","Carrizo",3
+"2157","SC3",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",28
+"2158","SC3",2017,"bare","bare","Carrizo",40
+"2159","SC3",2017,"litter","litter","Carrizo",2
+"2160","SC3",2018,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",16
+"2161","SC3",2018,"Dichelostemma capitatum","NPF","Carrizo",1
+"2162","SC3",2018,"Erodium cicutarium","EAF","Carrizo",12
+"2163","SC3",2018,"Guillenia lasiophylla","NAF","Carrizo",1
+"2164","SC3",2018,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2165","SC3",2018,"Hordeum murinum","EAG","Carrizo",1
+"2166","SC3",2018,"Lepidium dictyotum","NAF","Carrizo",15
+"2167","SC3",2018,"Lepidium nitidum","NAF","Carrizo",9
+"2168","SC3",2018,"Microseris elegans","NAF","Carrizo",3
+"2169","SC3",2018,"Pectocarya penicillata","NAF","Carrizo",22
+"2170","SC3",2018,"Schismus arabicus","EAG","Carrizo",46
+"2171","SC3",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"2172","SC3",2018,"bare","bare","Carrizo",69
+"2173","SC3",2018,"litter","litter","Carrizo",46
+"2174","SC4",2007,"Bromus rubens","EAG","Carrizo",44
+"2175","SC4",2007,"Erodium cicutarium","EAF","Carrizo",60
+"2176","SC4",2007,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2177","SC4",2007,"Hordeum murinum","EAG","Carrizo",1
+"2178","SC4",2007,"Lepidium nitidum","NAF","Carrizo",9
+"2179","SC4",2007,"Linanthus liniflorus","NAF","Carrizo",4
+"2180","SC4",2007,"Pectocarya penicillata","NAF","Carrizo",10
+"2181","SC4",2007,"Schismus arabicus","EAG","Carrizo",41
+"2182","SC4",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",35
+"2183","SC4",2007,"bare","bare","Carrizo",167
+"2184","SC4",2007,"litter","litter","Carrizo",276
+"2185","SC4",2008,"Amsinckia tessellata","NAF","Carrizo",9
+"2186","SC4",2008,"Bromus rubens","EAG","Carrizo",7
+"2187","SC4",2008,"Calandrinia ciliata","NAF","Carrizo",8
+"2188","SC4",2008,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
+"2189","SC4",2008,"Dichelostemma capitatum","NPF","Carrizo",1
+"2190","SC4",2008,"Erodium cicutarium","EAF","Carrizo",123
+"2191","SC4",2008,"Hollisteria lanata","NAF","Carrizo",5
+"2192","SC4",2008,"Hordeum murinum","EAG","Carrizo",2
+"2193","SC4",2008,"Lastarriaea coriacea","NAF","Carrizo",4
+"2194","SC4",2008,"Lepidium nitidum","NAF","Carrizo",9
+"2195","SC4",2008,"Linanthus liniflorus","NAF","Carrizo",1
+"2196","SC4",2008,"Lotus wrangelianus","NAF","Carrizo",2
+"2197","SC4",2008,"Microseris elegans","NAF","Carrizo",2
+"2198","SC4",2008,"Pectocarya penicillata","NAF","Carrizo",63
+"2199","SC4",2008,"Schismus arabicus","EAG","Carrizo",60
+"2200","SC4",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",7
+"2201","SC4",2008,"bare","bare","Carrizo",213
+"2202","SC4",2008,"litter","litter","Carrizo",131
+"2203","SC4",2009,"Amsinckia tessellata","NAF","Carrizo",28
+"2204","SC4",2009,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",2
+"2205","SC4",2009,"Bromus rubens","EAG","Carrizo",2
+"2206","SC4",2009,"Calandrinia ciliata","NAF","Carrizo",64
+"2207","SC4",2009,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",3
+"2208","SC4",2009,"Chorizanthe uniaristata","NAF","Carrizo",10
+"2209","SC4",2009,"Eriogonum gracillimum","NAF","Carrizo",1
+"2210","SC4",2009,"Erodium cicutarium","EAF","Carrizo",113
+"2211","SC4",2009,"Lastarriaea coriacea","NAF","Carrizo",9
+"2212","SC4",2009,"Lasthenia californica","NAF","Carrizo",3
+"2213","SC4",2009,"Lepidium nitidum","NAF","Carrizo",24
+"2214","SC4",2009,"Linanthus liniflorus","NAF","Carrizo",2
+"2215","SC4",2009,"Lotus wrangelianus","NAF","Carrizo",7
+"2216","SC4",2009,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"2217","SC4",2009,"Microseris elegans","NAF","Carrizo",5
+"2218","SC4",2009,"Pectocarya penicillata","NAF","Carrizo",64
+"2219","SC4",2009,"Schismus arabicus","EAG","Carrizo",52
+"2220","SC4",2009,"Trifolium gracilentum","NAF","Carrizo",2
+"2221","SC4",2009,"Tropidocarpum gracile","NAF","Carrizo",1
+"2222","SC4",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",15
+"2223","SC4",2009,"bare","bare","Carrizo",195
+"2224","SC4",2009,"hole","hole","Carrizo",1
+"2225","SC4",2009,"litter","litter","Carrizo",44
+"2226","SC4",2010,"Amsinckia tessellata","NAF","Carrizo",40
+"2227","SC4",2010,"Astragalus didymocarpus","NAF","Carrizo",1
+"2228","SC4",2010,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",14
+"2229","SC4",2010,"Bromus rubens","EAG","Carrizo",1
+"2230","SC4",2010,"Calandrinia ciliata","NAF","Carrizo",54
+"2231","SC4",2010,"Camissonia campestris","NAF","Carrizo",1
+"2232","SC4",2010,"Castilleja exserta","NAF","Carrizo",1
+"2233","SC4",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",13
+"2234","SC4",2010,"Chorizanthe uniaristata","NAF","Carrizo",5
+"2235","SC4",2010,"Dichelostemma capitatum","NPF","Carrizo",7
+"2236","SC4",2010,"Eriogonum gracillimum","NAF","Carrizo",3
+"2237","SC4",2010,"Erodium cicutarium","EAF","Carrizo",135
+"2238","SC4",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
+"2239","SC4",2010,"Hordeum murinum","EAG","Carrizo",2
+"2240","SC4",2010,"Lastarriaea coriacea","NAF","Carrizo",4
+"2241","SC4",2010,"Lasthenia californica","NAF","Carrizo",12
+"2242","SC4",2010,"Lepidium nitidum","NAF","Carrizo",28
+"2243","SC4",2010,"Linanthus liniflorus","NAF","Carrizo",6
+"2244","SC4",2010,"Lotus wrangelianus","NAF","Carrizo",13
+"2245","SC4",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"2246","SC4",2010,"Microseris elegans","NAF","Carrizo",3
+"2247","SC4",2010,"Pectocarya penicillata","NAF","Carrizo",18
+"2248","SC4",2010,"Poa secunda ssp secunda","NPG","Carrizo",2
+"2249","SC4",2010,"Schismus arabicus","EAG","Carrizo",76
+"2250","SC4",2010,"Trichostema lanceolatum","NAF","Carrizo",1
+"2251","SC4",2010,"Trifolium gracilentum","NAF","Carrizo",3
+"2252","SC4",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",33
+"2253","SC4",2010,"bare","bare","Carrizo",165
+"2254","SC4",2010,"litter","litter","Carrizo",3
+"2255","SC4",2011,"Carrizo Allium sp.","NPF","Carrizo",2
+"2256","SC4",2011,"Amsinckia tessellata","NAF","Carrizo",7
+"2257","SC4",2011,"Astragalus lentiginosus v nigricalycis","NPF","Carrizo",2
+"2258","SC4",2011,"Astragalus oxyphysus","NPF","Carrizo",21
+"2259","SC4",2011,"Bromus rubens","EAG","Carrizo",10
+"2260","SC4",2011,"Camissonia palmeri","NAF","Carrizo",2
+"2261","SC4",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",10
+"2262","SC4",2011,"Chorizanthe uniaristata","NAF","Carrizo",12
+"2263","SC4",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"2264","SC4",2011,"Eriogonum gracillimum","NAF","Carrizo",5
+"2265","SC4",2011,"Erodium cicutarium","EAF","Carrizo",141
+"2266","SC4",2011,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",3
+"2267","SC4",2011,"Hollisteria lanata","NAF","Carrizo",1
+"2268","SC4",2011,"Hordeum murinum","EAG","Carrizo",3
+"2269","SC4",2011,"Lastarriaea coriacea","NAF","Carrizo",9
+"2270","SC4",2011,"Lasthenia californica","NAF","Carrizo",1
+"2271","SC4",2011,"Lepidium dictyotum","NAF","Carrizo",1
+"2272","SC4",2011,"Lepidium nitidum","NAF","Carrizo",4
+"2273","SC4",2011,"Linanthus liniflorus","NAF","Carrizo",2
+"2274","SC4",2011,"Lotus wrangelianus","NAF","Carrizo",12
+"2275","SC4",2011,"Lupinus microcarpus v microcarpus","NAF","Carrizo",4
+"2276","SC4",2011,"Microseris elegans","NAF","Carrizo",8
+"2277","SC4",2011,"Pectocarya penicillata","NAF","Carrizo",23
+"2278","SC4",2011,"Schismus arabicus","EAG","Carrizo",104
+"2279","SC4",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",8
+"2280","SC4",2011,"bare","bare","Carrizo",215
+"2281","SC4",2011,"litter","litter","Carrizo",37
+"2282","SC4",2012,"Astragalus oxyphysus","NPF","Carrizo",10
+"2283","SC4",2012,"Bromus rubens","EAG","Carrizo",3
+"2284","SC4",2012,"Chorizanthe uniaristata","NAF","Carrizo",1
+"2285","SC4",2012,"Dichelostemma capitatum","NPF","Carrizo",2
+"2286","SC4",2012,"Eriogonum gracillimum","NAF","Carrizo",3
+"2287","SC4",2012,"Erodium cicutarium","EAF","Carrizo",59
+"2288","SC4",2012,"Hordeum murinum","EAG","Carrizo",1
+"2289","SC4",2012,"Lastarriaea coriacea","NAF","Carrizo",2
+"2290","SC4",2012,"Lotus wrangelianus","NAF","Carrizo",1
+"2291","SC4",2012,"Pectocarya penicillata","NAF","Carrizo",23
+"2292","SC4",2012,"Schismus arabicus","EAG","Carrizo",79
+"2293","SC4",2012,"bare","bare","Carrizo",314
+"2294","SC4",2012,"litter","litter","Carrizo",150
+"2295","SC4",2013,"Bromus rubens","EAG","Carrizo",1
+"2296","SC4",2013,"Calandrinia ciliata","NAF","Carrizo",2
+"2297","SC4",2013,"Dichelostemma capitatum","NPF","Carrizo",1
+"2298","SC4",2013,"Erodium cicutarium","EAF","Carrizo",14
+"2299","SC4",2013,"Hollisteria lanata","NAF","Carrizo",1
+"2300","SC4",2013,"Lasthenia californica","NAF","Carrizo",2
+"2301","SC4",2013,"Lepidium nitidum","NAF","Carrizo",6
+"2302","SC4",2013,"Linanthus liniflorus","NAF","Carrizo",3
+"2303","SC4",2013,"Lotus wrangelianus","NAF","Carrizo",2
+"2304","SC4",2013,"Pectocarya penicillata","NAF","Carrizo",3
+"2305","SC4",2013,"Schismus arabicus","EAG","Carrizo",9
+"2306","SC4",2013,"bare","bare","Carrizo",433
+"2307","SC4",2013,"hole","hole","Carrizo",2
+"2308","SC4",2013,"litter","litter","Carrizo",169
+"2309","SC4",2014,"Amsinckia tessellata","NAF","Carrizo",3
+"2310","SC4",2014,"Astragalus oxyphysus","NPF","Carrizo",1
+"2311","SC4",2014,"Calandrinia ciliata","NAF","Carrizo",24
+"2312","SC4",2014,"Dichelostemma capitatum","NPF","Carrizo",1
+"2313","SC4",2014,"Erodium cicutarium","EAF","Carrizo",9
+"2314","SC4",2014,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2315","SC4",2014,"Hollisteria lanata","NAF","Carrizo",1
+"2316","SC4",2014,"Lepidium dictyotum","NAF","Carrizo",1
+"2317","SC4",2014,"Lepidium nitidum","NAF","Carrizo",6
+"2318","SC4",2014,"Lotus wrangelianus","NAF","Carrizo",2
+"2319","SC4",2014,"Pectocarya penicillata","NAF","Carrizo",9
+"2320","SC4",2014,"Schismus arabicus","EAG","Carrizo",6
+"2321","SC4",2014,"bare","bare","Carrizo",547
+"2322","SC4",2014,"litter","litter","Carrizo",37
+"2323","SC4",2015,"Amsinckia tessellata","NAF","Carrizo",10
+"2324","SC4",2015,"Calandrinia ciliata","NAF","Carrizo",78
+"2325","SC4",2015,"Chorizanthe uniaristata","NAF","Carrizo",3
+"2326","SC4",2015,"Eriogonum gracillimum","NAF","Carrizo",2
+"2327","SC4",2015,"Erodium cicutarium","EAF","Carrizo",64
+"2328","SC4",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2329","SC4",2015,"Hollisteria lanata","NAF","Carrizo",1
+"2330","SC4",2015,"Lastarriaea coriacea","NAF","Carrizo",2
+"2331","SC4",2015,"Lasthenia californica","NAF","Carrizo",3
+"2332","SC4",2015,"Lepidium dictyotum","NAF","Carrizo",2
+"2333","SC4",2015,"Lepidium nitidum","NAF","Carrizo",52
+"2334","SC4",2015,"Lotus wrangelianus","NAF","Carrizo",2
+"2335","SC4",2015,"Microseris elegans","NAF","Carrizo",1
+"2336","SC4",2015,"Pectocarya penicillata","NAF","Carrizo",20
+"2337","SC4",2015,"Schismus arabicus","EAG","Carrizo",38
+"2338","SC4",2015,"Tropidocarpum gracile","NAF","Carrizo",1
+"2339","SC4",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"2340","SC4",2015,"bare","bare","Carrizo",269
+"2341","SC4",2015,"litter","litter","Carrizo",12
+"2342","SC5",2007,"Amsinckia tessellata","NAF","Carrizo",2
+"2343","SC5",2007,"Bromus rubens","EAG","Carrizo",239
+"2344","SC5",2007,"Erodium cicutarium","EAF","Carrizo",20
+"2345","SC5",2007,"Hordeum murinum","EAG","Carrizo",6
+"2346","SC5",2007,"Lasthenia californica","NAF","Carrizo",2
+"2347","SC5",2007,"Lepidium nitidum","NAF","Carrizo",4
+"2348","SC5",2007,"Poa secunda ssp secunda","NPG","Carrizo",84
+"2349","SC5",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",43
+"2350","SC5",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",15
+"2351","SC5",2007,"bare","bare","Carrizo",44
+"2352","SC5",2007,"litter","litter","Carrizo",187
+"2353","SC5",2008,"Amsinckia tessellata","NAF","Carrizo",38
+"2354","SC5",2008,"Bromus rubens","EAG","Carrizo",54
+"2355","SC5",2008,"Calandrinia ciliata","NAF","Carrizo",24
+"2356","SC5",2008,"Dichelostemma capitatum","NPF","Carrizo",1
+"2357","SC5",2008,"Erodium cicutarium","EAF","Carrizo",135
+"2358","SC5",2008,"Hordeum murinum","EAG","Carrizo",81
+"2359","SC5",2008,"Lasthenia californica","NAF","Carrizo",12
+"2360","SC5",2008,"Lepidium nitidum","NAF","Carrizo",14
+"2361","SC5",2008,"Lotus wrangelianus","NAF","Carrizo",2
+"2362","SC5",2008,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"2363","SC5",2008,"Muilla maritima","NPF","Carrizo",3
+"2364","SC5",2008,"Poa secunda ssp secunda","NPG","Carrizo",93
+"2365","SC5",2008,"Schismus arabicus","EAG","Carrizo",3
+"2366","SC5",2008,"Trifolium gracilentum","NAF","Carrizo",6
+"2367","SC5",2008,"Tropidocarpum gracile","NAF","Carrizo",8
+"2368","SC5",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"2369","SC5",2008,"bare","bare","Carrizo",37
+"2370","SC5",2008,"litter","litter","Carrizo",133
+"2371","SC5",2009,"Amsinckia tessellata","NAF","Carrizo",28
+"2372","SC5",2009,"Bromus rubens","EAG","Carrizo",89
+"2373","SC5",2009,"Calandrinia ciliata","NAF","Carrizo",15
+"2374","SC5",2009,"Chorizanthe uniaristata","NAF","Carrizo",2
+"2375","SC5",2009,"Dichelostemma capitatum","NPF","Carrizo",5
+"2376","SC5",2009,"Erodium cicutarium","EAF","Carrizo",116
+"2377","SC5",2009,"Hordeum murinum","EAG","Carrizo",41
+"2378","SC5",2009,"Lasthenia californica","NAF","Carrizo",35
+"2379","SC5",2009,"Lepidium nitidum","NAF","Carrizo",35
+"2380","SC5",2009,"Microseris elegans","NAF","Carrizo",1
+"2381","SC5",2009,"Poa secunda ssp secunda","NPG","Carrizo",140
+"2382","SC5",2009,"Schismus arabicus","EAG","Carrizo",3
+"2383","SC5",2009,"Trifolium gracilentum","NAF","Carrizo",18
+"2384","SC5",2009,"Tropidocarpum gracile","NAF","Carrizo",12
+"2385","SC5",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"2386","SC5",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",5
+"2387","SC5",2009,"bare","bare","Carrizo",52
+"2388","SC5",2009,"hole","hole","Carrizo",1
+"2389","SC5",2009,"litter","litter","Carrizo",48
+"2390","SC5",2010,"Amsinckia tessellata","NAF","Carrizo",12
+"2391","SC5",2010,"Bromus rubens","EAG","Carrizo",122
+"2392","SC5",2010,"Calandrinia ciliata","NAF","Carrizo",1
+"2393","SC5",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
+"2394","SC5",2010,"Dichelostemma capitatum","NPF","Carrizo",1
+"2395","SC5",2010,"Erodium cicutarium","EAF","Carrizo",87
+"2396","SC5",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2397","SC5",2010,"Hordeum murinum","EAG","Carrizo",19
+"2398","SC5",2010,"Lasthenia californica","NAF","Carrizo",82
+"2399","SC5",2010,"Lepidium nitidum","NAF","Carrizo",70
+"2400","SC5",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",8
+"2401","SC5",2010,"Microseris elegans","NAF","Carrizo",1
+"2402","SC5",2010,"Poa secunda ssp secunda","NPG","Carrizo",116
+"2403","SC5",2010,"Schismus arabicus","EAG","Carrizo",3
+"2404","SC5",2010,"Trichostema lanceolatum","NAF","Carrizo",1
+"2405","SC5",2010,"Trifolium gracilentum","NAF","Carrizo",44
+"2406","SC5",2010,"Tropidocarpum gracile","NAF","Carrizo",6
+"2407","SC5",2010,"Uropappus lindleyi","NAF","Carrizo",2
+"2408","SC5",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"2409","SC5",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",35
+"2410","SC5",2010,"bare","bare","Carrizo",20
+"2411","SC5",2011,"Bromus rubens","EAG","Carrizo",268
+"2412","SC5",2011,"Chorizanthe uniaristata","NAF","Carrizo",5
+"2413","SC5",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"2414","SC5",2011,"Erodium cicutarium","EAF","Carrizo",29
+"2415","SC5",2011,"Hordeum murinum","EAG","Carrizo",74
+"2416","SC5",2011,"Lasthenia californica","NAF","Carrizo",5
+"2417","SC5",2011,"Microseris elegans","NAF","Carrizo",2
+"2418","SC5",2011,"Plantago erecta","NAF","Carrizo",1
+"2419","SC5",2011,"Poa secunda ssp secunda","NPG","Carrizo",84
+"2420","SC5",2011,"Schismus arabicus","EAG","Carrizo",2
+"2421","SC5",2011,"Trifolium gracilentum","NAF","Carrizo",18
+"2422","SC5",2011,"Uropappus lindleyi","NAF","Carrizo",1
+"2423","SC5",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",30
+"2424","SC5",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",14
+"2425","SC5",2011,"bare","bare","Carrizo",40
+"2426","SC5",2011,"litter","litter","Carrizo",68
+"2427","SC5",2012,"Bromus rubens","EAG","Carrizo",86
+"2428","SC5",2012,"Chorizanthe uniaristata","NAF","Carrizo",1
+"2429","SC5",2012,"Erodium cicutarium","EAF","Carrizo",33
+"2430","SC5",2012,"Hordeum murinum","EAG","Carrizo",37
+"2431","SC5",2012,"Poa secunda ssp secunda","NPG","Carrizo",63
+"2432","SC5",2012,"Schismus arabicus","EAG","Carrizo",11
+"2433","SC5",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"2434","SC5",2012,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"2435","SC5",2012,"bare","bare","Carrizo",146
+"2436","SC5",2012,"litter","litter","Carrizo",264
+"2437","SC5",2013,"Bromus rubens","EAG","Carrizo",37
+"2438","SC5",2013,"Erodium cicutarium","EAF","Carrizo",36
+"2439","SC5",2013,"Hordeum murinum","EAG","Carrizo",13
+"2440","SC5",2013,"Lasthenia californica","NAF","Carrizo",3
+"2441","SC5",2013,"Lepidium nitidum","NAF","Carrizo",7
+"2442","SC5",2013,"Poa secunda ssp secunda","NPG","Carrizo",23
+"2443","SC5",2013,"Schismus arabicus","EAG","Carrizo",4
+"2444","SC5",2013,"Tropidocarpum gracile","NAF","Carrizo",1
+"2445","SC5",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"2446","SC5",2013,"bare","bare","Carrizo",193
+"2447","SC5",2013,"hole","hole","Carrizo",2
+"2448","SC5",2013,"litter","litter","Carrizo",324
+"2449","SC5",2014,"Bromus rubens","EAG","Carrizo",6
+"2450","SC5",2014,"Calandrinia ciliata","NAF","Carrizo",8
+"2451","SC5",2014,"Dichelostemma capitatum","NPF","Carrizo",2
+"2452","SC5",2014,"Erodium cicutarium","EAF","Carrizo",40
+"2453","SC5",2014,"Hollisteria lanata","NAF","Carrizo",1
+"2454","SC5",2014,"Lepidium nitidum","NAF","Carrizo",11
+"2455","SC5",2014,"Poa secunda ssp secunda","NPG","Carrizo",10
+"2456","SC5",2014,"Schismus arabicus","EAG","Carrizo",1
+"2457","SC5",2014,"Trifolium gracilentum","NAF","Carrizo",1
+"2458","SC5",2014,"Tropidocarpum gracile","NAF","Carrizo",1
+"2459","SC5",2014,"bare","bare","Carrizo",303
+"2460","SC5",2014,"hole","hole","Carrizo",1
+"2461","SC5",2014,"litter","litter","Carrizo",263
+"2462","SC5",2015,"Amsinckia tessellata","NAF","Carrizo",1
+"2463","SC5",2015,"Bromus rubens","EAG","Carrizo",12
+"2464","SC5",2015,"Calandrinia ciliata","NAF","Carrizo",37
+"2465","SC5",2015,"Chorizanthe uniaristata","NAF","Carrizo",6
+"2466","SC5",2015,"Erodium cicutarium","EAF","Carrizo",119
+"2467","SC5",2015,"Guillenia lasiophylla","NAF","Carrizo",2
+"2468","SC5",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2469","SC5",2015,"Hordeum murinum","EAG","Carrizo",9
+"2470","SC5",2015,"Lasthenia californica","NAF","Carrizo",10
+"2471","SC5",2015,"Lepidium nitidum","NAF","Carrizo",42
+"2472","SC5",2015,"Plantago erecta","NAF","Carrizo",1
+"2473","SC5",2015,"Poa secunda ssp secunda","NPG","Carrizo",9
+"2474","SC5",2015,"Schismus arabicus","EAG","Carrizo",8
+"2475","SC5",2015,"Trifolium gracilentum","NAF","Carrizo",10
+"2476","SC5",2015,"Tropidocarpum gracile","NAF","Carrizo",2
+"2477","SC5",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"2478","SC5",2015,"bare","bare","Carrizo",123
+"2479","SC5",2015,"litter","litter","Carrizo",10
+"2480","SC6",2007,"Bromus rubens","EAG","Carrizo",98
+"2481","SC6",2007,"Erodium cicutarium","EAF","Carrizo",46
+"2482","SC6",2007,"Hollisteria lanata","NAF","Carrizo",1
+"2483","SC6",2007,"Poa secunda ssp secunda","NPG","Carrizo",112
+"2484","SC6",2007,"Schismus arabicus","EAG","Carrizo",8
+"2485","SC6",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",25
+"2486","SC6",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",7
+"2487","SC6",2007,"bare","bare","Carrizo",51
+"2488","SC6",2007,"litter","litter","Carrizo",300
+"2489","SC6",2008,"Amsinckia tessellata","NAF","Carrizo",19
+"2490","SC6",2008,"Bromus rubens","EAG","Carrizo",20
+"2491","SC6",2008,"Calandrinia ciliata","NAF","Carrizo",3
+"2492","SC6",2008,"Dichelostemma capitatum","NPF","Carrizo",3
+"2493","SC6",2008,"Erodium cicutarium","EAF","Carrizo",119
+"2494","SC6",2008,"Hollisteria lanata","NAF","Carrizo",3
+"2495","SC6",2008,"Hordeum murinum","EAG","Carrizo",2
+"2496","SC6",2008,"Lotus wrangelianus","NAF","Carrizo",1
+"2497","SC6",2008,"Poa secunda ssp secunda","NPG","Carrizo",99
+"2498","SC6",2008,"Schismus arabicus","EAG","Carrizo",27
+"2499","SC6",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"2500","SC6",2008,"bare","bare","Carrizo",137
+"2501","SC6",2008,"litter","litter","Carrizo",209
+"2502","SC6",2009,"Amsinckia tessellata","NAF","Carrizo",49
+"2503","SC6",2009,"Astragalus didymocarpus","NAF","Carrizo",1
+"2504","SC6",2009,"Bromus rubens","EAG","Carrizo",17
+"2505","SC6",2009,"Calandrinia ciliata","NAF","Carrizo",19
+"2506","SC6",2009,"Chorizanthe uniaristata","NAF","Carrizo",4
+"2507","SC6",2009,"Dichelostemma capitatum","NPF","Carrizo",5
+"2508","SC6",2009,"Erodium cicutarium","EAF","Carrizo",92
+"2509","SC6",2009,"Hollisteria lanata","NAF","Carrizo",8
+"2510","SC6",2009,"Hordeum murinum","EAG","Carrizo",3
+"2511","SC6",2009,"Lasthenia californica","NAF","Carrizo",1
+"2512","SC6",2009,"Lepidium nitidum","NAF","Carrizo",1
+"2513","SC6",2009,"Lotus wrangelianus","NAF","Carrizo",4
+"2514","SC6",2009,"Microseris elegans","NAF","Carrizo",1
+"2515","SC6",2009,"Pectocarya penicillata","NAF","Carrizo",5
+"2516","SC6",2009,"Poa secunda ssp secunda","NPG","Carrizo",150
+"2517","SC6",2009,"Schismus arabicus","EAG","Carrizo",26
+"2518","SC6",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",13
+"2519","SC6",2009,"bare","bare","Carrizo",182
+"2520","SC6",2009,"litter","litter","Carrizo",67
+"2521","SC6",2010,"Amsinckia tessellata","NAF","Carrizo",22
+"2522","SC6",2010,"Bromus rubens","EAG","Carrizo",41
+"2523","SC6",2010,"Calandrinia ciliata","NAF","Carrizo",39
+"2524","SC6",2010,"Chorizanthe uniaristata","NAF","Carrizo",3
+"2525","SC6",2010,"Dichelostemma capitatum","NPF","Carrizo",1
+"2526","SC6",2010,"Erodium cicutarium","EAF","Carrizo",110
+"2527","SC6",2010,"Guillenia lasiophylla","NAF","Carrizo",1
+"2528","SC6",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2529","SC6",2010,"Hollisteria lanata","NAF","Carrizo",17
+"2530","SC6",2010,"Hordeum murinum","EAG","Carrizo",4
+"2531","SC6",2010,"Lasthenia californica","NAF","Carrizo",16
+"2532","SC6",2010,"Lepidium nitidum","NAF","Carrizo",4
+"2533","SC6",2010,"Lotus wrangelianus","NAF","Carrizo",21
+"2534","SC6",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",2
+"2535","SC6",2010,"Microseris elegans","NAF","Carrizo",5
+"2536","SC6",2010,"Pectocarya penicillata","NAF","Carrizo",16
+"2537","SC6",2010,"Poa secunda ssp secunda","NPG","Carrizo",163
+"2538","SC6",2010,"Schismus arabicus","EAG","Carrizo",78
+"2539","SC6",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",31
+"2540","SC6",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"2541","SC6",2010,"bare","bare","Carrizo",64
+"2542","SC6",2010,"litter","litter","Carrizo",7
+"2543","SC6",2011,"Amsinckia tessellata","NAF","Carrizo",10
+"2544","SC6",2011,"Astragalus didymocarpus","NAF","Carrizo",1
+"2545","SC6",2011,"Bromus rubens","EAG","Carrizo",67
+"2546","SC6",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",4
+"2547","SC6",2011,"Chorizanthe uniaristata","NAF","Carrizo",4
+"2548","SC6",2011,"Dichelostemma capitatum","NPF","Carrizo",1
+"2549","SC6",2011,"Eriogonum gracillimum","NAF","Carrizo",1
+"2550","SC6",2011,"Erodium cicutarium","EAF","Carrizo",108
+"2551","SC6",2011,"Hollisteria lanata","NAF","Carrizo",27
+"2552","SC6",2011,"Hordeum murinum","EAG","Carrizo",10
+"2553","SC6",2011,"Lasthenia californica","NAF","Carrizo",6
+"2554","SC6",2011,"Lotus wrangelianus","NAF","Carrizo",12
+"2555","SC6",2011,"Microseris elegans","NAF","Carrizo",10
+"2556","SC6",2011,"Pectocarya penicillata","NAF","Carrizo",13
+"2557","SC6",2011,"Poa secunda ssp secunda","NPG","Carrizo",96
+"2558","SC6",2011,"Schismus arabicus","EAG","Carrizo",94
+"2559","SC6",2011,"Uropappus lindleyi","NAF","Carrizo",1
+"2560","SC6",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"2561","SC6",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",2
+"2562","SC6",2011,"bare","bare","Carrizo",94
+"2563","SC6",2011,"hole","hole","Carrizo",1
+"2564","SC6",2011,"litter","litter","Carrizo",72
+"2565","SC6",2012,"Bromus rubens","EAG","Carrizo",17
+"2566","SC6",2012,"Dichelostemma capitatum","NPF","Carrizo",2
+"2567","SC6",2012,"Erodium cicutarium","EAF","Carrizo",44
+"2568","SC6",2012,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2569","SC6",2012,"Hollisteria lanata","NAF","Carrizo",2
+"2570","SC6",2012,"Hordeum murinum","EAG","Carrizo",6
+"2571","SC6",2012,"Lepidium nitidum","NAF","Carrizo",2
+"2572","SC6",2012,"Lotus wrangelianus","NAF","Carrizo",1
+"2573","SC6",2012,"Microseris elegans","NAF","Carrizo",2
+"2574","SC6",2012,"Pectocarya penicillata","NAF","Carrizo",5
+"2575","SC6",2012,"Poa secunda ssp secunda","NPG","Carrizo",48
+"2576","SC6",2012,"Schismus arabicus","EAG","Carrizo",30
+"2577","SC6",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",4
+"2578","SC6",2012,"bare","bare","Carrizo",208
+"2579","SC6",2012,"litter","litter","Carrizo",276
+"2580","SC6",2013,"Amsinckia tessellata","NAF","Carrizo",1
+"2581","SC6",2013,"Bromus rubens","EAG","Carrizo",3
+"2582","SC6",2013,"Eriogonum gracillimum","NAF","Carrizo",1
+"2583","SC6",2013,"Erodium cicutarium","EAF","Carrizo",44
+"2584","SC6",2013,"Pectocarya penicillata","NAF","Carrizo",1
+"2585","SC6",2013,"Poa secunda ssp secunda","NPG","Carrizo",19
+"2586","SC6",2013,"Schismus arabicus","EAG","Carrizo",3
+"2587","SC6",2013,"bare","bare","Carrizo",279
+"2588","SC6",2013,"hole","hole","Carrizo",1
+"2589","SC6",2013,"litter","litter","Carrizo",294
+"2590","SC6",2013,"moss","moss","Carrizo",2
+"2591","SC6",2014,"Amsinckia tessellata","NAF","Carrizo",1
+"2592","SC6",2014,"Calandrinia ciliata","NAF","Carrizo",7
+"2593","SC6",2014,"Dichelostemma capitatum","NPF","Carrizo",1
+"2594","SC6",2014,"Erodium cicutarium","EAF","Carrizo",33
+"2595","SC6",2014,"Lepidium nitidum","NAF","Carrizo",2
+"2596","SC6",2014,"Pectocarya penicillata","NAF","Carrizo",8
+"2597","SC6",2014,"Poa secunda ssp secunda","NPG","Carrizo",2
+"2598","SC6",2014,"Schismus arabicus","EAG","Carrizo",1
+"2599","SC6",2014,"bare","bare","Carrizo",448
+"2600","SC6",2014,"litter","litter","Carrizo",142
+"2601","SC6",2014,"moss","moss","Carrizo",3
+"2602","SC6",2015,"Amsinckia tessellata","NAF","Carrizo",14
+"2603","SC6",2015,"Bromus rubens","EAG","Carrizo",3
+"2604","SC6",2015,"Calandrinia ciliata","NAF","Carrizo",66
+"2605","SC6",2015,"Chorizanthe uniaristata","NAF","Carrizo",4
+"2606","SC6",2015,"Dichelostemma capitatum","NPF","Carrizo",5
+"2607","SC6",2015,"Eriogonum gracillimum","NAF","Carrizo",1
+"2608","SC6",2015,"Erodium cicutarium","EAF","Carrizo",169
+"2609","SC6",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2610","SC6",2015,"Hollisteria lanata","NAF","Carrizo",12
+"2611","SC6",2015,"Lasthenia californica","NAF","Carrizo",3
+"2612","SC6",2015,"Lepidium nitidum","NAF","Carrizo",2
+"2613","SC6",2015,"Linanthus liniflorus","NAF","Carrizo",1
+"2614","SC6",2015,"Lotus wrangelianus","NAF","Carrizo",1
+"2615","SC6",2015,"Microseris elegans","NAF","Carrizo",3
+"2616","SC6",2015,"Pectocarya penicillata","NAF","Carrizo",13
+"2617","SC6",2015,"Schismus arabicus","EAG","Carrizo",35
+"2618","SC6",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"2619","SC6",2015,"bare","bare","Carrizo",269
+"2620","SC6",2015,"litter","litter","Carrizo",43
+"2621","SC6",2016,"Erodium cicutarium","EAF","Carrizo",15
+"2622","SC6",2016,"Schismus arabicus","EAG","Carrizo",19
+"2623","SC6",2016,"bare","bare","Carrizo",42
+"2624","SC6",2016,"litter","litter","Carrizo",5
+"2625","SC6",2017,"Amsinckia tessellata","NAF","Carrizo",4
+"2626","SC6",2017,"Bromus rubens","EAG","Carrizo",6
+"2627","SC6",2017,"Erodium cicutarium","EAF","Carrizo",34
+"2628","SC6",2017,"Hollisteria lanata","NAF","Carrizo",1
+"2629","SC6",2017,"Hordeum murinum","EAG","Carrizo",2
+"2630","SC6",2017,"Lasthenia glabrata ssp coulteri","NAF","Carrizo",1
+"2631","SC6",2017,"Lepidium nitidum","NAF","Carrizo",4
+"2632","SC6",2017,"Lotus wrangelianus","NAF","Carrizo",2
+"2633","SC6",2017,"Malacothrix coulteri","NAF","Carrizo",2
+"2634","SC6",2017,"Monolopia lanceolata","NAF","Carrizo",8
+"2635","SC6",2017,"Schismus arabicus","EAG","Carrizo",17
+"2636","SC6",2018,"Bromus rubens","EAG","Carrizo",2
+"2637","SC6",2018,"Dichelostemma capitatum","NPF","Carrizo",1
+"2638","SC6",2018,"Erodium cicutarium","EAF","Carrizo",4
+"2639","SC6",2018,"Lepidium nitidum","NAF","Carrizo",3
+"2640","SC6",2018,"Microseris elegans","NAF","Carrizo",3
+"2641","SC6",2018,"Schismus arabicus","EAG","Carrizo",13
+"2642","SC6",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"2643","SC6",2018,"bare","bare","Carrizo",16
+"2644","SC6",2018,"litter","litter","Carrizo",36
+"2645","SC7",2007,"Bromus rubens","EAG","Carrizo",55
+"2646","SC7",2007,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
+"2647","SC7",2007,"Erodium cicutarium","EAF","Carrizo",39
+"2648","SC7",2007,"Poa secunda ssp secunda","NPG","Carrizo",98
+"2649","SC7",2007,"Schismus arabicus","EAG","Carrizo",4
+"2650","SC7",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"2651","SC7",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"2652","SC7",2007,"bare","bare","Carrizo",156
+"2653","SC7",2007,"litter","litter","Carrizo",276
+"2654","SC7",2008,"Amsinckia tessellata","NAF","Carrizo",11
+"2655","SC7",2008,"Bromus rubens","EAG","Carrizo",7
+"2656","SC7",2008,"Calandrinia ciliata","NAF","Carrizo",14
+"2657","SC7",2008,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",4
+"2658","SC7",2008,"Chorizanthe uniaristata","NAF","Carrizo",8
+"2659","SC7",2008,"Crassula connata","NAF","Carrizo",1
+"2660","SC7",2008,"Dichelostemma capitatum","NPF","Carrizo",1
+"2661","SC7",2008,"Erodium cicutarium","EAF","Carrizo",74
+"2662","SC7",2008,"Hollisteria lanata","NAF","Carrizo",4
+"2663","SC7",2008,"Hordeum murinum","EAG","Carrizo",25
+"2664","SC7",2008,"Lasthenia californica","NAF","Carrizo",19
+"2665","SC7",2008,"Pectocarya penicillata","NAF","Carrizo",5
+"2666","SC7",2008,"Poa secunda ssp secunda","NPG","Carrizo",99
+"2667","SC7",2008,"Schismus arabicus","EAG","Carrizo",7
+"2668","SC7",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",11
+"2669","SC7",2008,"bare","bare","Carrizo",207
+"2670","SC7",2008,"litter","litter","Carrizo",143
+"2671","SC7",2009,"Amsinckia tessellata","NAF","Carrizo",42
+"2672","SC7",2009,"Bromus hordeaceus","EAG","Carrizo",1
+"2673","SC7",2009,"Bromus rubens","EAG","Carrizo",1
+"2674","SC7",2009,"Calandrinia ciliata","NAF","Carrizo",38
+"2675","SC7",2009,"Camissonia campestris","NAF","Carrizo",1
+"2676","SC7",2009,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",13
+"2677","SC7",2009,"Chorizanthe uniaristata","NAF","Carrizo",9
+"2678","SC7",2009,"Dichelostemma capitatum","NPF","Carrizo",1
+"2679","SC7",2009,"Erodium cicutarium","EAF","Carrizo",61
+"2680","SC7",2009,"Hordeum murinum","EAG","Carrizo",5
+"2681","SC7",2009,"Lastarriaea coriacea","NAF","Carrizo",3
+"2682","SC7",2009,"Lasthenia californica","NAF","Carrizo",82
+"2683","SC7",2009,"Lepidium nitidum","NAF","Carrizo",6
+"2684","SC7",2009,"Lotus wrangelianus","NAF","Carrizo",4
+"2685","SC7",2009,"Pectocarya penicillata","NAF","Carrizo",29
+"2686","SC7",2009,"Poa secunda ssp secunda","NPG","Carrizo",148
+"2687","SC7",2009,"Schismus arabicus","EAG","Carrizo",24
+"2688","SC7",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",22
+"2689","SC7",2009,"bare","bare","Carrizo",145
+"2690","SC7",2009,"litter","litter","Carrizo",13
+"2691","SC7",2010,"Amsinckia tessellata","NAF","Carrizo",25
+"2692","SC7",2010,"Bromus rubens","EAG","Carrizo",6
+"2693","SC7",2010,"Calandrinia ciliata","NAF","Carrizo",5
+"2694","SC7",2010,"Camissonia palmeri","NAF","Carrizo",1
+"2695","SC7",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",27
+"2696","SC7",2010,"Chorizanthe uniaristata","NAF","Carrizo",14
+"2697","SC7",2010,"Eremocarpus setigerus","NAF","Carrizo",1
+"2698","SC7",2010,"Erodium cicutarium","EAF","Carrizo",66
+"2699","SC7",2010,"Hollisteria lanata","NAF","Carrizo",2
+"2700","SC7",2010,"Hordeum murinum","EAG","Carrizo",3
+"2701","SC7",2010,"Lastarriaea coriacea","NAF","Carrizo",4
+"2702","SC7",2010,"Lasthenia californica","NAF","Carrizo",156
+"2703","SC7",2010,"Lepidium nitidum","NAF","Carrizo",4
+"2704","SC7",2010,"Lotus wrangelianus","NAF","Carrizo",9
+"2705","SC7",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"2706","SC7",2010,"Microseris elegans","NAF","Carrizo",1
+"2707","SC7",2010,"Pectocarya penicillata","NAF","Carrizo",46
+"2708","SC7",2010,"Poa secunda ssp secunda","NPG","Carrizo",117
+"2709","SC7",2010,"Schismus arabicus","EAG","Carrizo",38
+"2710","SC7",2010,"Trichostema lanceolatum","NAF","Carrizo",2
+"2711","SC7",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",34
+"2712","SC7",2010,"bare","bare","Carrizo",84
+"2713","SC7",2010,"litter","litter","Carrizo",2
+"2714","SC7",2011,"Amsinckia tessellata","NAF","Carrizo",13
+"2715","SC7",2011,"Bromus rubens","EAG","Carrizo",37
+"2716","SC7",2011,"Camissonia palmeri","NAF","Carrizo",4
+"2717","SC7",2011,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",26
+"2718","SC7",2011,"Chorizanthe uniaristata","NAF","Carrizo",11
+"2719","SC7",2011,"Erodium cicutarium","EAF","Carrizo",86
+"2720","SC7",2011,"Hollisteria lanata","NAF","Carrizo",2
+"2721","SC7",2011,"Hordeum murinum","EAG","Carrizo",29
+"2722","SC7",2011,"Lastarriaea coriacea","NAF","Carrizo",7
+"2723","SC7",2011,"Lasthenia californica","NAF","Carrizo",71
+"2724","SC7",2011,"Lepidium nitidum","NAF","Carrizo",1
+"2725","SC7",2011,"Lotus wrangelianus","NAF","Carrizo",7
+"2726","SC7",2011,"Microseris elegans","NAF","Carrizo",4
+"2727","SC7",2011,"Pectocarya penicillata","NAF","Carrizo",20
+"2728","SC7",2011,"Poa secunda ssp secunda","NPG","Carrizo",77
+"2729","SC7",2011,"Schismus arabicus","EAG","Carrizo",50
+"2730","SC7",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",44
+"2731","SC7",2011,"bare","bare","Carrizo",109
+"2732","SC7",2011,"litter","litter","Carrizo",46
+"2733","SC7",2012,"Bromus rubens","EAG","Carrizo",15
+"2734","SC7",2012,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",1
+"2735","SC7",2012,"Erodium cicutarium","EAF","Carrizo",59
+"2736","SC7",2012,"Hordeum murinum","EAG","Carrizo",9
+"2737","SC7",2012,"Lasthenia californica","NAF","Carrizo",1
+"2738","SC7",2012,"Lotus wrangelianus","NAF","Carrizo",1
+"2739","SC7",2012,"Pectocarya penicillata","NAF","Carrizo",12
+"2740","SC7",2012,"Poa secunda ssp secunda","NPG","Carrizo",52
+"2741","SC7",2012,"Schismus arabicus","EAG","Carrizo",57
+"2742","SC7",2012,"Vulpia microstachys v pauciflora","NAG","Carrizo",12
+"2743","SC7",2012,"bare","bare","Carrizo",224
+"2744","SC7",2012,"litter","litter","Carrizo",205
+"2745","SC7",2013,"Bromus rubens","EAG","Carrizo",6
+"2746","SC7",2013,"Erodium cicutarium","EAF","Carrizo",34
+"2747","SC7",2013,"Hordeum murinum","EAG","Carrizo",2
+"2748","SC7",2013,"Lasthenia californica","NAF","Carrizo",7
+"2749","SC7",2013,"Lepidium nitidum","NAF","Carrizo",3
+"2750","SC7",2013,"Pectocarya penicillata","NAF","Carrizo",1
+"2751","SC7",2013,"Poa secunda ssp secunda","NPG","Carrizo",19
+"2752","SC7",2013,"Schismus arabicus","EAG","Carrizo",12
+"2753","SC7",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",12
+"2754","SC7",2013,"bare","bare","Carrizo",320
+"2755","SC7",2013,"hole","hole","Carrizo",1
+"2756","SC7",2013,"litter","litter","Carrizo",222
+"2757","SC7",2013,"moss","moss","Carrizo",9
+"2758","SC7",2014,"Calandrinia ciliata","NAF","Carrizo",15
+"2759","SC7",2014,"Erodium cicutarium","EAF","Carrizo",36
+"2760","SC7",2014,"Lepidium nitidum","NAF","Carrizo",9
+"2761","SC7",2014,"Pectocarya penicillata","NAF","Carrizo",9
+"2762","SC7",2014,"Poa secunda ssp secunda","NPG","Carrizo",11
+"2763","SC7",2014,"Schismus arabicus","EAG","Carrizo",3
+"2764","SC7",2014,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"2765","SC7",2014,"bare","bare","Carrizo",456
+"2766","SC7",2014,"litter","litter","Carrizo",103
+"2767","SC7",2014,"moss","moss","Carrizo",5
+"2768","SC7",2015,"Amsinckia tessellata","NAF","Carrizo",8
+"2769","SC7",2015,"Calandrinia ciliata","NAF","Carrizo",65
+"2770","SC7",2015,"Chorizanthe uniaristata","NAF","Carrizo",4
+"2771","SC7",2015,"Crassula connata","NAF","Carrizo",1
+"2772","SC7",2015,"Erodium cicutarium","EAF","Carrizo",134
+"2773","SC7",2015,"Hollisteria lanata","NAF","Carrizo",1
+"2774","SC7",2015,"Hordeum murinum","EAG","Carrizo",6
+"2775","SC7",2015,"Lastarriaea coriacea","NAF","Carrizo",1
+"2776","SC7",2015,"Lasthenia californica","NAF","Carrizo",25
+"2777","SC7",2015,"Lepidium dictyotum","NAF","Carrizo",1
+"2778","SC7",2015,"Lepidium nitidum","NAF","Carrizo",14
+"2779","SC7",2015,"Lotus wrangelianus","NAF","Carrizo",4
+"2780","SC7",2015,"Pectocarya penicillata","NAF","Carrizo",22
+"2781","SC7",2015,"Poa secunda ssp secunda","NPG","Carrizo",8
+"2782","SC7",2015,"Schismus arabicus","EAG","Carrizo",54
+"2783","SC7",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",14
+"2784","SC7",2015,"bare","bare","Carrizo",235
+"2785","SC7",2015,"litter","litter","Carrizo",46
+"2786","SC7",2015,"moss","moss","Carrizo",5
+"2787","SC7",2016,"Bromus rubens","EAG","Carrizo",1
+"2788","SC7",2016,"Erodium cicutarium","EAF","Carrizo",95
+"2789","SC7",2016,"Hordeum murinum","EAG","Carrizo",2
+"2790","SC7",2016,"Lasthenia californica","NAF","Carrizo",2
+"2791","SC7",2016,"Lepidium nitidum","NAF","Carrizo",37
+"2792","SC7",2016,"Pectocarya penicillata","NAF","Carrizo",7
+"2793","SC7",2016,"Schismus arabicus","EAG","Carrizo",266
+"2794","SC7",2016,"Vulpia bromoides","EAG","Carrizo",2
+"2795","SC7",2016,"bare","bare","Carrizo",183
+"2796","SC7",2016,"litter","litter","Carrizo",46
+"2797","SC7",2016,"moss","moss","Carrizo",7
+"2798","SC7",2017,"Amsinckia tessellata","NAF","Carrizo",6
+"2799","SC7",2017,"Bromus rubens","EAG","Carrizo",3
+"2800","SC7",2017,"Camissonia campestris","NAF","Carrizo",1
+"2801","SC7",2017,"Castilleja exserta","NAF","Carrizo",1
+"2802","SC7",2017,"Chorizanthe uniaristata","NAF","Carrizo",3
+"2803","SC7",2017,"Crassula connata","NAF","Carrizo",1
+"2804","SC7",2017,"Erodium cicutarium","EAF","Carrizo",232
+"2805","SC7",2017,"Hordeum murinum","EAG","Carrizo",2
+"2806","SC7",2017,"Lastarriaea coriacea","NAF","Carrizo",1
+"2807","SC7",2017,"Lasthenia glabrata ssp coulteri","NAF","Carrizo",30
+"2808","SC7",2017,"Lepidium nitidum","NAF","Carrizo",137
+"2809","SC7",2017,"Lotus wrangelianus","NAF","Carrizo",12
+"2810","SC7",2017,"Lupinus bicolor","NAF","Carrizo",8
+"2811","SC7",2017,"Pectocarya penicillata","NAF","Carrizo",2
+"2812","SC7",2017,"Schismus arabicus","EAG","Carrizo",133
+"2813","SC7",2017,"Vulpia microstachys v pauciflora","NAG","Carrizo",6
+"2814","SC7",2017,"bare","bare","Carrizo",50
+"2815","SC7",2017,"litter","litter","Carrizo",18
+"2816","SC7",2017,"moss","moss","Carrizo",2
+"2817","SC7",2018,"Amsinckia tessellata","NAF","Carrizo",1
+"2818","SC7",2018,"Bromus rubens","EAG","Carrizo",2
+"2819","SC7",2018,"Calandrinia ciliata","NAF","Carrizo",4
+"2820","SC7",2018,"Erodium cicutarium","EAF","Carrizo",56
+"2821","SC7",2018,"Hordeum murinum","EAG","Carrizo",11
+"2822","SC7",2018,"Lasthenia californica","NAF","Carrizo",26
+"2823","SC7",2018,"Lepidium nitidum","NAF","Carrizo",117
+"2824","SC7",2018,"Lotus wrangelianus","NAF","Carrizo",1
+"2825","SC7",2018,"Microseris douglasii","NAF","Carrizo",1
+"2826","SC7",2018,"Microseris elegans","NAF","Carrizo",4
+"2827","SC7",2018,"Pectocarya penicillata","NAF","Carrizo",31
+"2828","SC7",2018,"Poa secunda ssp secunda","NPG","Carrizo",2
+"2829","SC7",2018,"Schismus arabicus","EAG","Carrizo",131
+"2830","SC7",2018,"Tropidocarpum gracile","NAF","Carrizo",1
+"2831","SC7",2018,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"2832","SC7",2018,"bare","bare","Carrizo",121
+"2833","SC7",2018,"litter","litter","Carrizo",136
+"2834","SC8",2007,"Bromus rubens","EAG","Carrizo",273
+"2835","SC8",2007,"Erodium cicutarium","EAF","Carrizo",83
+"2836","SC8",2007,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2837","SC8",2007,"Hordeum murinum","EAG","Carrizo",5
+"2838","SC8",2007,"Lasthenia californica","NAF","Carrizo",18
+"2839","SC8",2007,"Lepidium nitidum","NAF","Carrizo",5
+"2840","SC8",2007,"Schismus arabicus","EAG","Carrizo",31
+"2841","SC8",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",24
+"2842","SC8",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"2843","SC8",2007,"bare","bare","Carrizo",48
+"2844","SC8",2007,"litter","litter","Carrizo",159
+"2845","SC8",2008,"Amsinckia tessellata","NAF","Carrizo",8
+"2846","SC8",2008,"Bromus rubens","EAG","Carrizo",61
+"2847","SC8",2008,"Calandrinia ciliata","NAF","Carrizo",12
+"2848","SC8",2008,"Crassula connata","NAF","Carrizo",1
+"2849","SC8",2008,"Delphenium sp.","NPF","Carrizo",1
+"2850","SC8",2008,"Erodium cicutarium","EAF","Carrizo",136
+"2851","SC8",2008,"Guillenia lasiophylla","NAF","Carrizo",1
+"2852","SC8",2008,"Hordeum murinum","EAG","Carrizo",33
+"2853","SC8",2008,"Lasthenia californica","NAF","Carrizo",65
+"2854","SC8",2008,"Lepidium nitidum","NAF","Carrizo",23
+"2855","SC8",2008,"Lotus wrangelianus","NAF","Carrizo",1
+"2856","SC8",2008,"Plantago erecta","NAF","Carrizo",5
+"2857","SC8",2008,"Schismus arabicus","EAG","Carrizo",19
+"2858","SC8",2008,"Trifolium gracilentum","NAF","Carrizo",1
+"2859","SC8",2008,"Vulpia microstachys v pauciflora","NAG","Carrizo",3
+"2860","SC8",2008,"bare","bare","Carrizo",119
+"2861","SC8",2008,"hole","hole","Carrizo",1
+"2862","SC8",2008,"litter","litter","Carrizo",158
+"2863","SC8",2009,"Amsinckia tessellata","NAF","Carrizo",27
+"2864","SC8",2009,"Bromus rubens","EAG","Carrizo",69
+"2865","SC8",2009,"Calandrinia ciliata","NAF","Carrizo",2
+"2866","SC8",2009,"Erodium cicutarium","EAF","Carrizo",161
+"2867","SC8",2009,"Guillenia lasiophylla","NAF","Carrizo",1
+"2868","SC8",2009,"Hordeum murinum","EAG","Carrizo",19
+"2869","SC8",2009,"Lasthenia californica","NAF","Carrizo",197
+"2870","SC8",2009,"Lepidium nitidum","NAF","Carrizo",26
+"2871","SC8",2009,"Microseris douglasii","NAF","Carrizo",1
+"2872","SC8",2009,"Plantago erecta","NAF","Carrizo",2
+"2873","SC8",2009,"Schismus arabicus","EAG","Carrizo",7
+"2874","SC8",2009,"Trifolium albopurpureum","NAF","Carrizo",1
+"2875","SC8",2009,"Trifolium gracilentum","NAF","Carrizo",22
+"2876","SC8",2009,"Tropidocarpum gracile","NAF","Carrizo",1
+"2877","SC8",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",2
+"2878","SC8",2009,"bare","bare","Carrizo",56
+"2879","SC8",2009,"litter","litter","Carrizo",54
+"2880","SC8",2010,"Bromus rubens","EAG","Carrizo",45
+"2881","SC8",2010,"Calandrinia ciliata","NAF","Carrizo",2
+"2882","SC8",2010,"Delphinium recurvatum","NPF","Carrizo",2
+"2883","SC8",2010,"Eriogonum gracillimum","NAF","Carrizo",3
+"2884","SC8",2010,"Erodium cicutarium","EAF","Carrizo",172
+"2885","SC8",2010,"Guillenia lasiophylla","NAF","Carrizo",4
+"2886","SC8",2010,"Hordeum murinum","EAG","Carrizo",11
+"2887","SC8",2010,"Lasthenia californica","NAF","Carrizo",300
+"2888","SC8",2010,"Lepidium nitidum","NAF","Carrizo",24
+"2889","SC8",2010,"Lotus wrangelianus","NAF","Carrizo",2
+"2890","SC8",2010,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"2891","SC8",2010,"Microseris douglasii","NAF","Carrizo",4
+"2892","SC8",2010,"Poa secunda ssp secunda","NPG","Carrizo",2
+"2893","SC8",2010,"Schismus arabicus","EAG","Carrizo",4
+"2894","SC8",2010,"Trifolium albopurpureum","NAF","Carrizo",1
+"2895","SC8",2010,"Trifolium gracilentum","NAF","Carrizo",41
+"2896","SC8",2010,"Uropappus lindleyi","NAF","Carrizo",4
+"2897","SC8",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",4
+"2898","SC8",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"2899","SC8",2010,"bare","bare","Carrizo",20
+"2900","SC8",2010,"litter","litter","Carrizo",1
+"2901","SC8",2011,"Amsinckia tessellata","NAF","Carrizo",5
+"2902","SC8",2011,"Bromus rubens","EAG","Carrizo",198
+"2903","SC8",2011,"Castilleja lineariloba","NAF","Carrizo",1
+"2904","SC8",2011,"Eriogonum gracillimum","NAF","Carrizo",4
+"2905","SC8",2011,"Erodium cicutarium","EAF","Carrizo",83
+"2906","SC8",2011,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"2907","SC8",2011,"Hordeum murinum","EAG","Carrizo",31
+"2908","SC8",2011,"Lotus wrangelianus","NAF","Carrizo",5
+"2909","SC8",2011,"Microseris douglasii","NAF","Carrizo",6
+"2910","SC8",2011,"Microseris elegans","NAF","Carrizo",2
+"2911","SC8",2011,"Plantago erecta","NAF","Carrizo",9
+"2912","SC8",2011,"Schismus arabicus","EAG","Carrizo",41
+"2913","SC8",2011,"Trifolium gracilentum","NAF","Carrizo",36
+"2914","SC8",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",68
+"2915","SC8",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",19
+"2916","SC8",2011,"bare","bare","Carrizo",69
+"2917","SC8",2011,"litter","litter","Carrizo",70
+"2918","SC8",2012,"Bromus rubens","EAG","Carrizo",68
+"2919","SC8",2012,"Eriogonum gracillimum","NAF","Carrizo",3
+"2920","SC8",2012,"Erodium cicutarium","EAF","Carrizo",55
+"2921","SC8",2012,"Hordeum murinum","EAG","Carrizo",27
+"2922","SC8",2012,"Lasthenia californica","NAF","Carrizo",6
+"2923","SC8",2012,"Lotus wrangelianus","NAF","Carrizo",1
+"2924","SC8",2012,"Microseris elegans","NAF","Carrizo",2
+"2925","SC8",2012,"Plantago erecta","NAF","Carrizo",7
+"2926","SC8",2012,"Schismus arabicus","EAG","Carrizo",46
+"2927","SC8",2012,"Stephanomeria pauciflora","NPF","Carrizo",1
+"2928","SC8",2012,"Trifolium gracilentum","NAF","Carrizo",5
+"2929","SC8",2012,"Vulpia bromoides","EAG","Carrizo",16
+"2930","SC8",2012,"bare","bare","Carrizo",67
+"2931","SC8",2012,"hole","hole","Carrizo",1
+"2932","SC8",2012,"litter","litter","Carrizo",343
+"2933","SC8",2013,"Bromus rubens","EAG","Carrizo",54
+"2934","SC8",2013,"Calandrinia ciliata","NAF","Carrizo",1
+"2935","SC8",2013,"Eriogonum gracillimum","NAF","Carrizo",1
+"2936","SC8",2013,"Erodium cicutarium","EAF","Carrizo",51
+"2937","SC8",2013,"Hordeum murinum","EAG","Carrizo",17
+"2938","SC8",2013,"Lasthenia californica","NAF","Carrizo",9
+"2939","SC8",2013,"Lepidium dictyotum","NAF","Carrizo",1
+"2940","SC8",2013,"Lepidium nitidum","NAF","Carrizo",5
+"2941","SC8",2013,"Lotus wrangelianus","NAF","Carrizo",2
+"2942","SC8",2013,"Plantago erecta","NAF","Carrizo",3
+"2943","SC8",2013,"Schismus arabicus","EAG","Carrizo",17
+"2944","SC8",2013,"Trifolium gracilentum","NAF","Carrizo",4
+"2945","SC8",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",5
+"2946","SC8",2013,"bare","bare","Carrizo",124
+"2947","SC8",2013,"hole","hole","Carrizo",1
+"2948","SC8",2013,"litter","litter","Carrizo",353
+"2949","SC8",2014,"Calandrinia ciliata","NAF","Carrizo",6
+"2950","SC8",2014,"Eriogonum gracillimum","NAF","Carrizo",1
+"2951","SC8",2014,"Erodium cicutarium","EAF","Carrizo",42
+"2952","SC8",2014,"Lasthenia californica","NAF","Carrizo",2
+"2953","SC8",2014,"Lepidium nitidum","NAF","Carrizo",6
+"2954","SC8",2014,"Lotus wrangelianus","NAF","Carrizo",1
+"2955","SC8",2014,"Schismus arabicus","EAG","Carrizo",2
+"2956","SC8",2014,"Trifolium gracilentum","NAF","Carrizo",1
+"2957","SC8",2014,"Tropidocarpum gracile","NAF","Carrizo",1
+"2958","SC8",2014,"bare","bare","Carrizo",279
+"2959","SC8",2014,"litter","litter","Carrizo",307
+"2960","SC8",2015,"Amsinckia tessellata","NAF","Carrizo",1
+"2961","SC8",2015,"Bromus rubens","EAG","Carrizo",4
+"2962","SC8",2015,"Calandrinia ciliata","NAF","Carrizo",6
+"2963","SC8",2015,"Eriogonum gracillimum","NAF","Carrizo",9
+"2964","SC8",2015,"Erodium cicutarium","EAF","Carrizo",75
+"2965","SC8",2015,"Guillenia lasiophylla","NAF","Carrizo",24
+"2966","SC8",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
+"2967","SC8",2015,"Hordeum murinum","EAG","Carrizo",23
+"2968","SC8",2015,"Lasthenia californica","NAF","Carrizo",30
+"2969","SC8",2015,"Lepidium nitidum","NAF","Carrizo",17
+"2970","SC8",2015,"Malacothrix coulteri","NAF","Carrizo",4
+"2971","SC8",2015,"Schismus arabicus","EAG","Carrizo",49
+"2972","SC8",2015,"Trifolium gracilentum","NAF","Carrizo",4
+"2973","SC8",2015,"Tropidocarpum gracile","NAF","Carrizo",1
+"2974","SC8",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",1
+"2975","SC8",2015,"bare","bare","Carrizo",195
+"2976","SC8",2015,"litter","litter","Carrizo",41
+"2977","SC8",2016,"Erodium cicutarium","EAF","Carrizo",10
+"2978","SC8",2016,"Schismus arabicus","EAG","Carrizo",10
+"2979","SC8",2016,"bare","bare","Carrizo",126
+"2980","SC8",2016,"litter","litter","Carrizo",16
+"2981","SC8",2017,"Bromus rubens","EAG","Carrizo",3
+"2982","SC8",2017,"Calandrinia ciliata","NAF","Carrizo",1
+"2983","SC8",2017,"Erodium cicutarium","EAF","Carrizo",37
+"2984","SC8",2017,"Guillenia lasiophylla","NAF","Carrizo",3
+"2985","SC8",2017,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",5
+"2986","SC8",2017,"Hordeum murinum","EAG","Carrizo",1
+"2987","SC8",2017,"Lepidium nitidum","NAF","Carrizo",3
+"2988","SC8",2017,"Malacothrix coulteri","NAF","Carrizo",1
+"2989","SC8",2017,"Schismus arabicus","EAG","Carrizo",11
+"2990","SC8",2017,"bare","bare","Carrizo",88
+"2991","SC8",2017,"hole","hole","Carrizo",1
+"2992","SC8",2017,"litter","litter","Carrizo",8
+"2993","SC8",2018,"Bromus rubens","EAG","Carrizo",4
+"2994","SC8",2018,"Erodium cicutarium","EAF","Carrizo",26
+"2995","SC8",2018,"Guillenia lasiophylla","NAF","Carrizo",12
+"2996","SC8",2018,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
+"2997","SC8",2018,"Hordeum murinum","EAG","Carrizo",2
+"2998","SC8",2018,"Lepidium nitidum","NAF","Carrizo",23
+"2999","SC8",2018,"Schismus arabicus","EAG","Carrizo",26
+"3000","SC8",2018,"Tropidocarpum gracile","NAF","Carrizo",1
+"3001","SC8",2018,"bare","bare","Carrizo",65
+"3002","SC8",2018,"litter","litter","Carrizo",1
+"3003","SC9",2007,"Amsinckia tessellata","NAF","Carrizo",3
+"3004","SC9",2007,"Bromus rubens","EAG","Carrizo",281
+"3005","SC9",2007,"Erodium cicutarium","EAF","Carrizo",54
+"3006","SC9",2007,"Hordeum murinum","EAG","Carrizo",2
+"3007","SC9",2007,"Lepidium nitidum","NAF","Carrizo",5
+"3008","SC9",2007,"Schismus arabicus","EAG","Carrizo",1
+"3009","SC9",2007,"Trifolium gracilentum","NAF","Carrizo",1
+"3010","SC9",2007,"Tropidocarpum gracile","NAF","Carrizo",1
+"3011","SC9",2007,"Vulpia microstachys v pauciflora","NAG","Carrizo",155
+"3012","SC9",2007,"Vulpia myuros v hirsuta","EAG","Carrizo",5
+"3013","SC9",2007,"bare","bare","Carrizo",21
+"3014","SC9",2007,"litter","litter","Carrizo",118
+"3015","SC9",2008,"Amsinckia tessellata","NAF","Carrizo",77
+"3016","SC9",2008,"Bromus rubens","EAG","Carrizo",46
+"3017","SC9",2008,"Dichelostemma capitatum","NPF","Carrizo",2
+"3018","SC9",2008,"Erodium cicutarium","EAF","Carrizo",161
+"3019","SC9",2008,"Guillenia lasiophylla","NAF","Carrizo",1
+"3020","SC9",2008,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"3021","SC9",2008,"Hordeum murinum","EAG","Carrizo",16
+"3022","SC9",2008,"Lasthenia californica","NAF","Carrizo",3
+"3023","SC9",2008,"Lepidium nitidum","NAF","Carrizo",3
+"3024","SC9",2008,"Lupinus microcarpus v microcarpus","NAF","Carrizo",1
+"3025","SC9",2008,"Plagiobothrys canescens","NAF","Carrizo",7
+"3026","SC9",2008,"Schismus arabicus","EAG","Carrizo",13
+"3027","SC9",2008,"Trifolium gracilentum","NAF","Carrizo",13
+"3028","SC9",2008,"Tropidocarpum gracile","NAF","Carrizo",5
+"3029","SC9",2008,"Vulpia bromoides","EAG","Carrizo",31
+"3030","SC9",2008,"Vulpia myuros v hirsuta","EAG","Carrizo",1
+"3031","SC9",2008,"bare","bare","Carrizo",52
+"3032","SC9",2008,"litter","litter","Carrizo",215
+"3033","SC9",2009,"Amsinckia tessellata","NAF","Carrizo",92
+"3034","SC9",2009,"Bromus rubens","EAG","Carrizo",41
+"3035","SC9",2009,"Chorizanthe uniaristata","NAF","Carrizo",1
+"3036","SC9",2009,"Dichelostemma capitatum","NPF","Carrizo",1
+"3037","SC9",2009,"Erodium cicutarium","EAF","Carrizo",150
+"3038","SC9",2009,"Hordeum murinum","EAG","Carrizo",11
+"3039","SC9",2009,"Lasthenia californica","NAF","Carrizo",2
+"3040","SC9",2009,"Lepidium nitidum","NAF","Carrizo",7
+"3041","SC9",2009,"Pectocarya penicillata","NAF","Carrizo",1
+"3042","SC9",2009,"Plagiobothrys canescens","NAF","Carrizo",24
+"3043","SC9",2009,"Schismus arabicus","EAG","Carrizo",8
+"3044","SC9",2009,"Trifolium gracilentum","NAF","Carrizo",41
+"3045","SC9",2009,"Tropidocarpum gracile","NAF","Carrizo",5
+"3046","SC9",2009,"Vulpia microstachys v pauciflora","NAG","Carrizo",62
+"3047","SC9",2009,"Vulpia myuros v hirsuta","EAG","Carrizo",4
+"3048","SC9",2009,"bare","bare","Carrizo",90
+"3049","SC9",2009,"litter","litter","Carrizo",108
+"3050","SC9",2010,"Amsinckia tessellata","NAF","Carrizo",74
+"3051","SC9",2010,"Bromus rubens","EAG","Carrizo",35
+"3052","SC9",2010,"Calandrinia ciliata","NAF","Carrizo",3
+"3053","SC9",2010,"Chaenactis glabriuscula v glabriuscula","NAF","Carrizo",2
+"3054","SC9",2010,"Chorizanthe uniaristata","NAF","Carrizo",1
+"3055","SC9",2010,"Dichelostemma capitatum","NPF","Carrizo",1
+"3056","SC9",2010,"Erodium cicutarium","EAF","Carrizo",115
+"3057","SC9",2010,"Guillenia lasiophylla","NAF","Carrizo",11
+"3058","SC9",2010,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",4
+"3059","SC9",2010,"Hordeum murinum","EAG","Carrizo",30
+"3060","SC9",2010,"Lasthenia californica","NAF","Carrizo",20
+"3061","SC9",2010,"Lepidium nitidum","NAF","Carrizo",17
+"3062","SC9",2010,"Lotus wrangelianus","NAF","Carrizo",1
+"3063","SC9",2010,"Microseris elegans","NAF","Carrizo",5
+"3064","SC9",2010,"Pectocarya penicillata","NAF","Carrizo",8
+"3065","SC9",2010,"Plagiobothrys canescens","NAF","Carrizo",45
+"3066","SC9",2010,"Schismus arabicus","EAG","Carrizo",40
+"3067","SC9",2010,"Trifolium gracilentum","NAF","Carrizo",36
+"3068","SC9",2010,"Tropidocarpum gracile","NAF","Carrizo",15
+"3069","SC9",2010,"Uropappus lindleyi","NAF","Carrizo",1
+"3070","SC9",2010,"Vulpia microstachys v pauciflora","NAG","Carrizo",97
+"3071","SC9",2010,"Vulpia myuros v hirsuta","EAG","Carrizo",28
+"3072","SC9",2010,"bare","bare","Carrizo",51
+"3073","SC9",2010,"litter","litter","Carrizo",8
+"3074","SC9",2011,"Amsinckia tessellata","NAF","Carrizo",116
+"3075","SC9",2011,"Bromus rubens","EAG","Carrizo",113
+"3076","SC9",2011,"Chorizanthe uniaristata","NAF","Carrizo",12
+"3077","SC9",2011,"Eriogonum gracillimum","NAF","Carrizo",2
+"3078","SC9",2011,"Erodium cicutarium","EAF","Carrizo",43
+"3079","SC9",2011,"Hollisteria lanata","NAF","Carrizo",3
+"3080","SC9",2011,"Hordeum murinum","EAG","Carrizo",37
+"3081","SC9",2011,"Lasthenia californica","NAF","Carrizo",14
+"3082","SC9",2011,"Lepidium nitidum","NAF","Carrizo",5
+"3083","SC9",2011,"Microseris elegans","NAF","Carrizo",1
+"3084","SC9",2011,"Pectocarya penicillata","NAF","Carrizo",12
+"3085","SC9",2011,"Plagiobothrys canescens","NAF","Carrizo",9
+"3086","SC9",2011,"Schismus arabicus","EAG","Carrizo",28
+"3087","SC9",2011,"Trichostema lanceolatum","NAF","Carrizo",1
+"3088","SC9",2011,"Trifolium gracilentum","NAF","Carrizo",32
+"3089","SC9",2011,"Tropidocarpum gracile","NAF","Carrizo",2
+"3090","SC9",2011,"Vulpia microstachys v pauciflora","NAG","Carrizo",93
+"3091","SC9",2011,"Vulpia myuros v hirsuta","EAG","Carrizo",4
+"3092","SC9",2011,"bare","bare","Carrizo",67
+"3093","SC9",2011,"litter","litter","Carrizo",54
+"3094","SC9",2012,"Amsinckia tessellata","NAF","Carrizo",1
+"3095","SC9",2012,"Bromus rubens","EAG","Carrizo",47
+"3096","SC9",2012,"Erodium cicutarium","EAF","Carrizo",61
+"3097","SC9",2012,"Hordeum murinum","EAG","Carrizo",33
+"3098","SC9",2012,"Lepidium nitidum","NAF","Carrizo",1
+"3099","SC9",2012,"Microseris elegans","NAF","Carrizo",2
+"3100","SC9",2012,"Pectocarya penicillata","NAF","Carrizo",7
+"3101","SC9",2012,"Plagiobothrys canescens","NAF","Carrizo",3
+"3102","SC9",2012,"Schismus arabicus","EAG","Carrizo",18
+"3103","SC9",2012,"Trifolium gracilentum","NAF","Carrizo",5
+"3104","SC9",2012,"Vulpia bromoides","EAG","Carrizo",62
+"3105","SC9",2012,"bare","bare","Carrizo",112
+"3106","SC9",2012,"litter","litter","Carrizo",296
+"3107","SC9",2013,"Amsinckia tessellata","NAF","Carrizo",1
+"3108","SC9",2013,"Bromus rubens","EAG","Carrizo",17
+"3109","SC9",2013,"Eriogonum gracillimum","NAF","Carrizo",1
+"3110","SC9",2013,"Erodium cicutarium","EAF","Carrizo",52
+"3111","SC9",2013,"Hordeum murinum","EAG","Carrizo",12
+"3112","SC9",2013,"Lasthenia californica","NAF","Carrizo",1
+"3113","SC9",2013,"Lepidium dictyotum","NAF","Carrizo",6
+"3114","SC9",2013,"Pectocarya penicillata","NAF","Carrizo",3
+"3115","SC9",2013,"Schismus arabicus","EAG","Carrizo",13
+"3116","SC9",2013,"Trifolium gracilentum","NAF","Carrizo",4
+"3117","SC9",2013,"Vulpia microstachys v pauciflora","NAG","Carrizo",13
+"3118","SC9",2013,"bare","bare","Carrizo",155
+"3119","SC9",2013,"hole","hole","Carrizo",2
+"3120","SC9",2013,"litter","litter","Carrizo",368
+"3121","SC9",2014,"Amsinckia tessellata","NAF","Carrizo",1
+"3122","SC9",2014,"Bromus rubens","EAG","Carrizo",1
+"3123","SC9",2014,"Calandrinia ciliata","NAF","Carrizo",5
+"3124","SC9",2014,"Chorizanthe uniaristata","NAF","Carrizo",4
+"3125","SC9",2014,"Erodium cicutarium","EAF","Carrizo",55
+"3126","SC9",2014,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"3127","SC9",2014,"Lepidium nitidum","NAF","Carrizo",8
+"3128","SC9",2014,"Pectocarya penicillata","NAF","Carrizo",16
+"3129","SC9",2014,"Schismus arabicus","EAG","Carrizo",1
+"3130","SC9",2014,"Trifolium gracilentum","NAF","Carrizo",11
+"3131","SC9",2014,"bare","bare","Carrizo",302
+"3132","SC9",2014,"litter","litter","Carrizo",243
+"3133","SC9",2015,"Amsinckia tessellata","NAF","Carrizo",52
+"3134","SC9",2015,"Bromus rubens","EAG","Carrizo",6
+"3135","SC9",2015,"Calandrinia ciliata","NAF","Carrizo",8
+"3136","SC9",2015,"Chorizanthe uniaristata","NAF","Carrizo",12
+"3137","SC9",2015,"Erodium cicutarium","EAF","Carrizo",167
+"3138","SC9",2015,"Guillenia lasiophylla","NAF","Carrizo",1
+"3139","SC9",2015,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",2
+"3140","SC9",2015,"Hollisteria lanata","NAF","Carrizo",1
+"3141","SC9",2015,"Hordeum murinum","EAG","Carrizo",8
+"3142","SC9",2015,"Lasthenia californica","NAF","Carrizo",1
+"3143","SC9",2015,"Lepidium nitidum","NAF","Carrizo",37
+"3144","SC9",2015,"Pectocarya penicillata","NAF","Carrizo",36
+"3145","SC9",2015,"Schismus arabicus","EAG","Carrizo",13
+"3146","SC9",2015,"Trifolium gracilentum","NAF","Carrizo",19
+"3147","SC9",2015,"Tropidocarpum gracile","NAF","Carrizo",12
+"3148","SC9",2015,"Vulpia microstachys v pauciflora","NAG","Carrizo",22
+"3149","SC9",2015,"bare","bare","Carrizo",221
+"3150","SC9",2015,"litter","litter","Carrizo",30
+"3151","SC9",2016,"Amsinckia tessellata","NAF","Carrizo",46
+"3152","SC9",2016,"Erodium cicutarium","EAF","Carrizo",34
+"3153","SC9",2016,"Guillenia lasiophylla","NAF","Carrizo",3
+"3154","SC9",2016,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",9
+"3155","SC9",2016,"Hordeum murinum","EAG","Carrizo",7
+"3156","SC9",2016,"Lepidium nitidum","NAF","Carrizo",30
+"3157","SC9",2016,"Pectocarya penicillata","NAF","Carrizo",13
+"3158","SC9",2016,"Schismus arabicus","EAG","Carrizo",4
+"3159","SC9",2016,"Tropidocarpum gracile","NAF","Carrizo",3
+"3160","SC9",2016,"Vulpia bromoides","EAG","Carrizo",5
+"3161","SC9",2016,"bare","bare","Carrizo",148
+"3162","SC9",2016,"litter","litter","Carrizo",22
+"3163","SC9",2017,"Amsinckia tessellata","NAF","Carrizo",58
+"3164","SC9",2017,"Bromus rubens","EAG","Carrizo",2
+"3165","SC9",2017,"Calandrinia ciliata","NAF","Carrizo",1
+"3166","SC9",2017,"Chorizanthe uniaristata","NAF","Carrizo",2
+"3167","SC9",2017,"Erodium cicutarium","EAF","Carrizo",47
+"3168","SC9",2017,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",7
+"3169","SC9",2017,"Hollisteria lanata","NAF","Carrizo",3
+"3170","SC9",2017,"Lasthenia glabrata ssp coulteri","NAF","Carrizo",13
+"3171","SC9",2017,"Lepidium nitidum","NAF","Carrizo",76
+"3172","SC9",2017,"Microseris elegans","NAF","Carrizo",2
+"3173","SC9",2017,"Pectocarya penicillata","NAF","Carrizo",5
+"3174","SC9",2017,"Schismus arabicus","EAG","Carrizo",23
+"3175","SC9",2017,"Trifolium gracilentum","NAF","Carrizo",19
+"3176","SC9",2017,"Tropidocarpum gracile","NAF","Carrizo",6
+"3177","SC9",2017,"Vulpia bromoides","EAG","Carrizo",19
+"3178","SC9",2017,"bare","bare","Carrizo",36
+"3179","SC9",2017,"litter","litter","Carrizo",5
+"3180","SC9",2018,"Amsinckia tessellata","NAF","Carrizo",22
+"3181","SC9",2018,"Bromus rubens","EAG","Carrizo",3
+"3182","SC9",2018,"Chorizanthe uniaristata","NAF","Carrizo",1
+"3183","SC9",2018,"Erodium cicutarium","EAF","Carrizo",26
+"3184","SC9",2018,"Guillenia lasiophylla","NAF","Carrizo",39
+"3185","SC9",2018,"Herniaria hirsuta ssp. cinerea","EAF","Carrizo",1
+"3186","SC9",2018,"Hollisteria lanata","NAF","Carrizo",2
+"3187","SC9",2018,"Hordeum murinum","EAG","Carrizo",2
+"3188","SC9",2018,"Lasthenia californica","NAF","Carrizo",3
+"3189","SC9",2018,"Lepidium nitidum","NAF","Carrizo",82
+"3190","SC9",2018,"Microseris elegans","NAF","Carrizo",2
+"3191","SC9",2018,"Pectocarya penicillata","NAF","Carrizo",21
+"3192","SC9",2018,"Plagiobothrys canescens","NAF","Carrizo",3
+"3193","SC9",2018,"Schismus arabicus","EAG","Carrizo",28
+"3194","SC9",2018,"Trifolium gracilentum","NAF","Carrizo",2
+"3195","SC9",2018,"Tropidocarpum gracile","NAF","Carrizo",26
+"3196","SC9",2018,"bare","bare","Carrizo",75
+"3197","SC9",2018,"litter","litter","Carrizo",67

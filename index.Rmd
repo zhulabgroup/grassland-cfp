@@ -1,0 +1,14 @@
+--- 
+title: "Grassland community shift and climate change"
+author: "Kai Zhu"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib]
+biblio-style: apalike
+link-citations: yes
+---
+
+# Welcome {-}
+
