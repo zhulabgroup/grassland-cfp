@@ -3,7 +3,7 @@ title: "Climate-driven grassland community shift from long-term experiments and 
 author: "Kai Zhu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
+output: bookdown::html_document2
 documentclass: book
 bibliography: [book.bib]
 biblio-style: apalike

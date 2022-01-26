@@ -30,7 +30,7 @@ cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Dat
 
 Explore species climate niches estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Note the strong negative correlation between mean temp and precip. Warmer locations are associated with drier locations? I talked with Greg and he agreed this is true in California--both geography (north-south) and elevation. The figure is interactive--Karen and Michael, can you hover your mouse to see if the data points and species names make sense?
 
-```{r}
+```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
 (cci_dat %>%
   select(spnm = species.name, tmp = meanT, ppt = meanp) %>%
   distinct() %>%
@@ -49,7 +49,7 @@ Explore species climate niches estimated from [GBIF](https://www.gbif.org/) occu
 
 Get plot-level and site-level summaries.
 
-```{r}
+```{r, fig.cap="Replicate Josie's Figure CTI"}
 cci_plot_sum <- cci_dat %>%
   group_by(site, plot, year) %>%
   mutate(
@@ -81,7 +81,6 @@ cci_site_gg <- ggplot(cci_site_sum, aes(
 
 cci_site_gg +
   labs(
-    title = "Replicate Josie's Figure CTI",
     x = "Year",
     y = "Community Temperature Index (CTI, degC)"
   )
@@ -91,7 +90,7 @@ Note that the goal was to replicate Josie's manuscript Figure CTI. The data look
 
 Then, get site climate data. Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
 
-```{r}
+```{r, fig.cap="Replicate Josie's Figure weather"}
 clim_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
   select(-`...1`)
 
@@ -108,7 +107,6 @@ clim_site_gg <- clim_site_sum %>%
 
 clim_site_gg +
   labs(
-    title = "Replicate Josie's Figure weather",
     x = "Year",
     y = "Growing season temperature (degC)"
   )
@@ -120,7 +118,7 @@ Finally, combine climate change and community change.
 
 Time-series plots of site-level climate change and site-level community climate index change.
 
-```{r fig.height = 10}
+```{r, fig.cap="Compare long-term climate change vs. community change summarized by CTI", fig.height=10}
 (clim_site_gg +
   geom_smooth(method = "lm") +
   labs(title = "(a) Climate change", x = "", y = "Growing season temperature (degC)")) /
@@ -133,7 +131,7 @@ I think the comparison looks very interesting. Climate change seems to drive com
 
 Directly compare site-level climate values to community climate index seems less intuitive. 
 
-```{r}
+```{r, fig.cap="Compare site average temperature vs. CTI"}
 clim_site_sum %>%
   full_join(cci_site_sum, by = c("site", "year")) %>%
   ggplot(aes(
@@ -199,9 +197,10 @@ cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Dat
   inner_join(sp_jrgce, by = "spnm") %>%
   select(spcd, spnm, tmp, ppt)
 ```
+
 Check those species climate niches. Again, strong negative correlation.
 
-```{r}
+```{r, fig.cap="Species climate niches for a subset of species in Jasper Ridge"}
 cci_dat %>%
   ggplot(aes(tmp, ppt)) +
   geom_point(alpha = .5) +
@@ -233,7 +232,7 @@ Compare CTI from ambient vs. elevated temp plots, with all the other treatments 
 
 Their CTI are similar in the beginning and then diverge (warming plots have warmer species) later.
 
-```{r}
+```{r, fig.cap="Compare CTI in ambient vs. elevated warming treatments over years"}
 cci_jrgce_dat %>%
   mutate(tmp = factor(tmp, 0:1, c("Ambient", "Elevated"))) %>%
   filter(ppt == 0, co2 == 0, ntg == 0) %>%
@@ -250,7 +249,7 @@ cci_jrgce_dat %>%
 
 Boxplots to compare both treatment effects and long-term (year) effects.
 
-```{r}
+```{r, fig.cap="Compare CTI in ambient vs. elevated warming treatments over years"}
 cci_jrgce_dat %>%
   mutate(
     tmp = factor(tmp, 0:1, c("Ambient", "Elevated")),
@@ -269,7 +268,7 @@ cci_jrgce_dat %>%
 
 Likewise, we can compare precipitation treatment (elevated means adding water). Note this is not a drought experiment. Plots with added water have species like high precip.
 
-```{r}
+```{r, fig.cap="Compare CPI in ambient vs. elevated adding water treatments over years"}
 cci_jrgce_dat %>%
   mutate(ppt = factor(ppt, 0:1, c("Ambient", "Elevated"))) %>%
   filter(tmp == 0, co2 == 0, ntg == 0) %>%
@@ -286,7 +285,7 @@ cci_jrgce_dat %>%
 
 Boxplots to compare both treatment effects and long-term (year) effects.
 
-```{r}
+```{r, fig.cap="Compare CPI in ambient vs. elevated adding water treatments over years"}
 cci_jrgce_dat %>%
   mutate(
     ppt = factor(ppt, 0:1, c("Ambient", "Elevated")),
