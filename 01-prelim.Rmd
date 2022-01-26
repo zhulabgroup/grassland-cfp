@@ -1,13 +1,6 @@
----
-title: "Replicate key results"
-author: "Kai Zhu"
-date: "1/21/2022"
-output: 
-  html_document:
-    number_sections: true
-    toc: true
-    toc_float: true
----
+# Preliminary analyses
+
+## Replicate Josie's results
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -15,17 +8,17 @@ library(tidyverse)
 library(patchwork)
 ```
 
-# Objectives
+### Objectives
 
 1. Replicate Josie's key results on CTI change
 1. Compare with site-level climate change
 
-# Community climate index
+### Community climate index
 
 Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`.
 
 ```{r}
-cci_dat <- read_csv("Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   select(-`...1`) %>%
   filter(
     species.name != "Linanthus jepsonii",
@@ -72,12 +65,12 @@ cci_site_gg +
 
 Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but sites seem to be mislabelled. 
 
-# Site climate data
+### Site climate data
 
 Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
 
 ```{r}
-clim_dat <- read_csv("Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
+clim_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
   select(-`...1`)
 
 clim_site_sum <- cci_dat %>%
@@ -101,7 +94,7 @@ clim_site_gg +
 
 Note that the goal was to replicate Josie's manuscript Figure weather and Table weather models. It looks right to me (no mislabel).
 
-# Combine climate change and community change
+### Combine climate change and community change
 
 Time-series plots of site-level climate change and site-level community climate index change.
 
@@ -132,4 +125,67 @@ clim_site_sum %>%
     x = "Growing season temperature (degC)",
     y = "Community Temperature Index (CTI, degC)"
   )
+```
+
+## Analyze JRGCE functional group data
+
+```{r}
+# get JRGCE data
+# community abundance data
+attach("~/Data/archives/JRGCE/Input/Biomass/FG/All abundance and environment.rdata")
+com_dat <- abund.dat %>% ungroup()
+detach()
+
+# species information
+spp_dat <- read_csv("~/Data/archives/JRGCE/Input/Biomass/CSV/Species.csv")
+
+# treatment information
+trt_dat <- read_csv("~/Data/archives/JRGCE/Input/Biomass/NPP/Submission/Treatment.csv")
+
+# match JGRCE species to Josie's CTI/CPI
+sp_jrgce <- spp_dat %>%
+  select(spcd = SPECIES_CODE, spnm = `Species or unit name`) %>%
+  arrange(spnm)
+
+cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+  select(-`...1`) %>%
+  filter(
+    species.name != "Linanthus jepsonii",
+    species.name != "Linanthus latisectus",
+    relcov >= 0
+  ) %>%
+  select(spnm = species.name, tmp = meanT, ppt = meanp) %>%
+  distinct(spnm, tmp, ppt) %>%
+  arrange(spnm) %>%
+  inner_join(sp_jrgce, by = "spnm") %>%
+  select(spcd, spnm, tmp, ppt)
+
+# assign community-level temp/precip to plots
+cci_jrgce_dat <- com_dat %>%
+  select(yr, plt, spcd = sp, bio, pin, pa1, pa2) %>%
+  inner_join(cci_dat, by = "spcd") %>%
+  group_by(yr, plt) %>%
+  summarize(
+    bio_tmp = sum(bio * tmp) / sum(bio),
+    bio_ppt = sum(bio * ppt) / sum(bio),
+    pin_tmp = sum(pin * tmp) / sum(pin),
+    pin_ppt = sum(pin * ppt) / sum(pin)
+  ) %>% 
+  left_join(trt_dat, by = c("yr", "plt"))
+
+cci_jrgce_dat %>% 
+  mutate(tmp = as.factor(tmp)) %>% 
+  filter(ppt == 0, co2 == 0, ntg == 0) %>% 
+  ggplot(aes(yr, bio_tmp, col = tmp, group = tmp)) +
+  geom_point() +
+  geom_smooth(method = MASS::rlm) +
+  scale_y_log10()
+
+cci_jrgce_dat %>% 
+  mutate(ppt = as.factor(ppt)) %>% 
+  filter(tmp == 0, co2 == 0, ntg == 0) %>% 
+  ggplot(aes(yr, bio_ppt, col = ppt, group = ppt)) +
+  geom_point() +
+  geom_smooth(method = MASS::rlm) +
+  scale_y_log10()
 ```
