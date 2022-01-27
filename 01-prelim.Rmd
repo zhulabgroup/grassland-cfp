@@ -30,19 +30,26 @@ cci_dat <- read_csv("archives/CAGrasslandCommunityChange-master/Analysis/CTI Dat
 
 Explore species climate niches estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Note the strong negative correlation between mean temp and precip. Warmer locations are associated with drier locations? I talked with Greg and he agreed this is true in California--both geography (north-south) and elevation. The figure is interactive--Karen and Michael, can you hover your mouse to see if the data points and species names make sense?
 
+Update: Karen said it would be helpful to plot native vs. exotic species. I found Josie had a column "guild" with some codes: `r unique(cci_dat$guild)`. From Josie's code `ComComp Data Cleanup/Data_CleanupOnly.Rmd` lines 697-699, it looks like the 1st letter is **N**ative vs. **E**xotic, the 2nd letter is **A**nnual vs. **P**erennial, and the 3rd letter is lifeform **G**rass vs. **F**orb (but what are other characters?). So I extracted the 1st letter and recoded them into native vs. exotic. Karan and Michael, you can click the guild names on the legend to turn data points on and off.
+
 ```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
 (cci_dat %>%
-  select(spnm = species.name, tmp = meanT, ppt = meanp) %>%
+  select(spnm = species.name, guild, tmp = meanT, ppt = meanp) %>%
   distinct() %>%
+  mutate(nat_ext = str_sub(guild, 1, 1) %>%
+    factor(levels = c("N", "E"), labels = c("Native", "Exotic"))) %>%
   ggplot(aes(tmp, ppt,
+    color = nat_ext,
     text = spnm
   )) +
   geom_point(alpha = .5) +
   # geom_smooth(method = "lm", aes(tmp, ppt)) +
   labs(
+    color = "Species",
     x = "Species occurrence mean temperature (degC)",
     y = "Species occurrence mean precipitation (mm)"
-  )
+  ) +
+  scale_color_manual(values = c("black", "red"))
 ) %>%
   ggplotly(tooltip = "text")
 ```
