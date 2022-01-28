@@ -163,7 +163,7 @@ clim_site_sum %>%
 
 Analyze JRGCE functional group data
 
-![Jasper Ridge Global Change Experiment (JRGCE)](images/jasperridge.jpg)
+![Jasper Ridge Global Change Experiment (JRGCE)](images/jasper-ridge.jpg)
 
 The objectives are 
 
