@@ -178,15 +178,15 @@ First, get JRGCE data.
 
 ```{r}
 # community abundance data
-attach("~/Data/archives/JRGCE/Input/Biomass/FG/All abundance and environment.rdata")
+attach("data/archives/JRGCE/Input/Biomass/FG/All abundance and environment.rdata")
 com_dat <- abund.dat %>% ungroup()
 detach()
 
 # species information
-spp_dat <- read_csv("~/Data/archives/JRGCE/Input/Biomass/CSV/Species.csv")
+spp_dat <- read_csv("data/archives/JRGCE/Input/Biomass/CSV/Species.csv")
 
 # treatment information
-trt_dat <- read_csv("~/Data/archives/JRGCE/Input/Biomass/NPP/Submission/Treatment.csv")
+trt_dat <- read_csv("data/archives/JRGCE/Input/Biomass/NPP/Submission/Treatment.csv")
 ```
 
 Then, match JGRCE species to Josie's species with CTI/CPI.
