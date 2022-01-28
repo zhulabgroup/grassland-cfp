@@ -1,13 +1,18 @@
 # Preliminary analyses
 
-## Observational data
+Setup and load packages
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+```{r}
 library(tidyverse)
 library(patchwork)
 library(plotly)
 ```
+
+## Observational data
 
 The objectives are
 
