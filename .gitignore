@@ -1,5 +1,5 @@
-# Created by https://www.gitignore.io/api/r
-# Edit at https://www.gitignore.io/?templates=r
+# data -> /data/ZHULAB/grassland/
+data
 
 # bookdown
 *.rds
@@ -10,25 +10,12 @@ _book
 _bookdown_files
 rsconnect
 
-### R ###
-# Directories
-wc2-5
-wc10
-prism
-Analysis/wc2-5
-Analysis/wc10
-Analysis/prism
-Analysis/ClimData/prism
-PRISM
-NULL
-
 # History files
 .Rhistory
 .Rapp.history
 
 # Session Data files
 .RData
-.RDataTmp
 
 # User-specific files
 .Ruserdata
@@ -60,8 +47,5 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
-### R.Bookdown Stack ###
-# R package: bookdown caching files
-/*_files/
-
-# End of https://www.gitignore.io/api/r
+# R Environment Variables
+.Renviron
