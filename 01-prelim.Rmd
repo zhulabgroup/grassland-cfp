@@ -98,7 +98,11 @@ cci_site_gg +
   )
 ```
 
-Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but sites seem to be mislabeled. 
+```{r, echo = F}
+knitr::include_url('https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.9hwhiklx2jp')
+```
+
+Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but two sites, Jasper and UCSC, seem to be mislabeled. 
 
 Then, get site climate data. Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
 
@@ -122,6 +126,10 @@ clim_site_gg +
     x = "Year",
     y = "Growing season temperature (degC)"
   )
+```
+
+```{r, echo=FALSE}
+knitr::include_url('https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.l2cvtag9lu5y')
 ```
 
 Note that the goal was to replicate Josie's manuscript Figure weather and Table weather models. It looks right to me (no mislabel).
