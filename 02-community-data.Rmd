@@ -1660,15 +1660,15 @@ rel_all <- full_join(rel_all, rel_ucsc)
 Saving to CSV files.
 
 ```{r, saving CSV}
-write.csv(angelo_data, "data/community/clean/angelo_data.csv")
-write.csv(carrizo_data, "data/community/clean/carrizo_data.csv")
-write.csv(jasper_data, "data/community/clean/jasper_data.csv")
-write.csv(elkhorn_data, "data/community/clean/elkhorn_data.csv")
-write.csv(mclann_data, "data/community/clean/mclann_data.csv")
-write.csv(mclserp_data, "data/community/clean/mclserp_data.csv")
-write.csv(swanton_data, "data/community/clean/swanton_data.csv")
-write.csv(ucsc_data, "data/community/clean/ucsc_data.csv")
-write.csv(rel_all, "data/community/clean/AllData_Relative.csv")
+write.csv(angelo_data, "data/community/tidy/angelo_data.csv")
+write.csv(carrizo_data, "data/community/tidy/carrizo_data.csv")
+write.csv(jasper_data, "data/community/tidy/jasper_data.csv")
+write.csv(elkhorn_data, "data/community/tidy/elkhorn_data.csv")
+write.csv(mclann_data, "data/community/tidy/mclann_data.csv")
+write.csv(mclserp_data, "data/community/tidy/mclserp_data.csv")
+write.csv(swanton_data, "data/community/tidy/swanton_data.csv")
+write.csv(ucsc_data, "data/community/tidy/ucsc_data.csv")
+write.csv(rel_all, "data/community/tidy/AllData_Relative.csv")
 ```
 
 Removing all objects.
