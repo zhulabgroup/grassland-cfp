@@ -1501,7 +1501,9 @@ remove(UCSC_guilds)
 Incomplete at this time.
 
 
-### Final step: merging, making relative, and saving data
+### Final steps
+
+Merging, making relative cover, and saving data.
 
 ```{r Post-import tidying and relative cover data}
 ## angelo
