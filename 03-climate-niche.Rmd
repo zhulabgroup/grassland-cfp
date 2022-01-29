@@ -1,1 +1,68 @@
 # Climate niche estimation
+
+Setup and load packages
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(sf)
+# library(patchwork)
+library(plotly)
+```
+
+## GBIF
+
+Explore GBIF data extracted by Josie.
+
+```{r}
+niche_dat <- read_rds('data/archives/CAGrasslandCommunityChange-master/Analysis/GBIF_Data/AllKaren_GBIF.rds')
+niche_sf <- st_as_sf(niche_dat, coords = c("longitude", "latitude"))
+niche_sf %>% 
+  st_geometry() %>% 
+  plot()
+```
+Get all species from cover data.
+
+```{r}
+spp_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/ComData/AllData_Relative.csv") %>%
+  select(-`...1`) %>% 
+  group_by(site, species.name) %>% 
+  replace_na(list(cover = 0)) %>% 
+  summarize(cov = mean(cover)) %>% 
+  ungroup() %>% 
+  group_by(site) %>% 
+  mutate(relcov = cov/sum(cov)) %>% 
+  select(site, spnm = species.name, relcov) %>% 
+  pivot_wider(names_from = site, values_from = relcov, values_fill = 0) %>% 
+  arrange(spnm)
+```
+
+
+```{r}
+spp_dat %>%
+  pull(spnm)
+
+gbif_occ <- "Brachypodium distachyon" %>%
+  spocc::occ(
+    query = ., from = "gbif", has_coords = TRUE, limit = 1e6,
+    gbifopts = list(
+      continent = "north_america",
+      # country = "US",
+      # stateProvince = "California",
+      hasGeospatialIssue = FALSE
+    )
+  )
+mapr::map_leaflet(gbif_occ)
+```
+
+An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
+
+![NEON domians](images/neon-domains.png)
+
+
+
+
+
