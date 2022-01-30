@@ -99,7 +99,7 @@ cci_site_gg +
 ```
 
 ```{r, echo = F}
-knitr::include_url('https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.9hwhiklx2jp')
+knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.9hwhiklx2jp")
 ```
 
 Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but two sites, Jasper and UCSC, seem to be mislabeled. 
@@ -129,7 +129,7 @@ clim_site_gg +
 ```
 
 ```{r, echo=FALSE}
-knitr::include_url('https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.l2cvtag9lu5y')
+knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.l2cvtag9lu5y")
 ```
 
 Note that the goal was to replicate Josie's manuscript Figure weather and Table weather models. It looks right to me (no mislabel).
@@ -321,3 +321,65 @@ cci_jrgce_dat %>%
   ) +
   scale_color_manual(values = c("black", "blue"))
 ```
+
+Put CTI and CPI together.
+
+Treatment combinations: symbol "_" means ambient, "T" means elevated temperature, "P" means elevated precipitation (added water), etc.
+
+```{r, fig.cap="Median community weighted temperature and precipitation indexes from ambient and elevated temp and preip treatments over years"}
+cci_jrgce_avg <- cci_jrgce_dat %>% 
+  mutate(trt = paste0( # single tag for treatment combinations
+    ifelse(tmp == 0, "_", "T"),
+    ifelse(ppt == 0, "_", "P"),
+    ifelse(co2 == 0, "_", "C"),
+    ifelse(ntg == 0, "_", "N")
+  )) %>%
+  group_by(yr, trt) %>% # average by year and treatment combo
+  summarize(pin_tmp = mean(pin_tmp), pin_ppt = mean(pin_ppt))
+
+cci_jrgce_avg %>%
+  filter(trt %in% c("____", "T___", "_P__")) %>%
+  ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
+  geom_path() +
+  facet_wrap(~trt) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  )
+```
+The above figure shows comparing to ambient plots, added water treatment makes community shift to wetter species, and warming treatment makes community shift to warmer species. It's almost like an ordination plot, but even better with biologically meaningful values (CTI, CPI).
+
+What about elevated CO2 treatment?
+
+```{r, fig.cap="Compare temp and precip treatment effects for elevated CO2 plots"}
+cci_jrgce_avg %>%
+  filter(trt %in% c("__C_", "T_C_", "_PC_")) %>%
+  ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
+  geom_path() +
+  facet_wrap(~trt) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  )
+```
+
+From the above figure, we can see preip effect dampens, but temp effect is still strong.
+
+What about elevated nitrogen plots?
+
+```{r, fig.cap="Compare temp and precip treatment effects for elevated nitrogen plots"}
+cci_jrgce_avg %>%
+  filter(trt %in% c("___N", "T__N", "_P_N")) %>%
+  ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
+  geom_path() +
+  facet_wrap(~trt) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  )
+```
+
+Same story. Precip effect weakens, but temp effect stay strong.
