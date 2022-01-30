@@ -167,6 +167,21 @@ clim_site_sum %>%
   )
 ```
 
+Joint CTI and CPI analysis.
+
+```{r}
+cci_site_sum %>% 
+  ggplot() +
+  geom_path(aes(meanCTI, meanCPI, col = year)) +
+  facet_wrap(~site) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  )
+```
+
+
 ## Experimental data
 
 Analyze JRGCE functional group data
