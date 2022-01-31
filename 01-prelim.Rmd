@@ -11,13 +11,7 @@ library(tidyverse)
 library(patchwork)
 library(plotly)
 ```
-
-## Observational data
-
-The objectives are
-
-1. Replicate Josie's key results on CTI change
-1. Compare with site-level climate change
+## Species climate niches
 
 First, get community climate indexes: community temperature index (CTI) and community precipitation index (CPI).
 
@@ -58,6 +52,15 @@ Update: Karen said it would be helpful to plot native vs. exotic species. I foun
 ) %>%
   ggplotly(tooltip = "text")
 ```
+
+
+## Observational data
+
+The objectives are
+
+1. Replicate Josie's key results on CTI change
+1. Compare with site-level climate change
+
 
 Get plot-level and site-level summaries.
 
