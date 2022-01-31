@@ -13,11 +13,9 @@ library(patchwork)
 
 ## Species climate niches
 
-First, get community climate indexes: community temperature index (CTI) and community precipitation index (CPI).
+First, let's get community climate indexes: community temperature index (CTI) and community precipitation index (CPI) estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`. Then plot CTI and CPI for all species.
 
-Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`.
-
-```{r}
+```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
 gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   select(-`...1`) %>%
   filter(
@@ -27,13 +25,7 @@ gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/C
   ) %>%
   select(spnm = species.name, guild, tmp = meanT, ppt = meanp) %>%
   distinct()
-```
 
-Explore species climate niches estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Note the strong negative correlation between mean temp and precip. Warmer locations are associated with drier locations? I talked with Greg and he agreed this is true in California--both geography (north-south) and elevation. The figure is interactive--Karen and Michael, can you hover your mouse to see if the data points and species names make sense?
-
-Update: Karen said it would be helpful to plot native vs. exotic species. I found Josie had a column "guild" with some codes: `r unique(gbif_dat$guild)`. From Josie's code `ComComp Data Cleanup/Data_CleanupOnly.Rmd` lines 697-699, it looks like the 1st letter is **N**ative vs. **E**xotic, the 2nd letter is **A**nnual vs. **P**erennial, and the 3rd letter is lifeform **G**rass vs. **F**orb (but what are other characters?). So I extracted the 1st letter and recoded them into native vs. exotic. Karan and Michael, you can click the guild names on the legend to turn data points on and off.
-
-```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
 (gbif_dat %>%
   mutate(nat_ext = str_sub(guild, 1, 1) %>%
     factor(levels = c("N", "E"), labels = c("Native", "Exotic"))) %>%
@@ -53,11 +45,13 @@ Update: Karen said it would be helpful to plot native vs. exotic species. I foun
   plotly::ggplotly(tooltip = "text")
 ```
 
+Note the strong negative correlation between mean temp and precip. Warmer locations are associated with drier locations. I talked with Greg and he agreed this is true in California--both geography (north-south) and elevation. The figure is interactive--you can hover your mouse to see if the data points and species names make sense.
 
+Update: Karen said it would be helpful to plot native vs. exotic species. I found Josie had a column "guild" with some codes: `r unique(gbif_dat$guild)`. From Josie's code `ComComp Data Cleanup/Data_CleanupOnly.Rmd` lines 697-699, it looks like the 1st letter is **N**ative vs. **E**xotic, the 2nd letter is **A**nnual vs. **P**erennial, and the 3rd letter is lifeform **G**rass vs. **F**orb (but what are other characters?). So I extracted the 1st letter and recoded them into native vs. exotic. Karen confirmed that "The species that I know look correct as far as what I know about their temperature and precipitation distribution." (email 1/26/22)
 
 ## Experimental data
 
-Analyze JRGCE functional group data
+Analyze JRGCE species/community data.
 
 ![Jasper Ridge Global Change Experiment (JRGCE)](images/jasper-ridge.jpg)
 
@@ -78,20 +72,18 @@ attach("data/archives/JRGCE/Input/Biomass/FG/All abundance and environment.rdata
 com_dat <- abund.dat %>% ungroup()
 detach()
 
-# species information
-spp_dat <- read_csv("data/archives/JRGCE/Input/Biomass/CSV/Species.csv")
-
 # treatment information
 trt_dat <- read_csv("data/archives/JRGCE/Input/Biomass/NPP/Submission/Treatment.csv")
-```
 
-Then, match JGRCE species to Josie's species with CTI/CPI.
-
-```{r}
-sp_jrgce <- spp_dat %>%
+# species information
+sp_jrgce <- read_csv("data/archives/JRGCE/Input/Biomass/CSV/Species.csv") %>%
   select(spcd = SPECIES_CODE, spnm = `Species or unit name`) %>%
   arrange(spnm)
+```
 
+Then, match JGRCE species to Josie's species with CTI/CPI to get community climate index (CCI) data.
+
+```{r}
 cci_dat <- gbif_dat %>%
   distinct(spnm, tmp, ppt) %>%
   arrange(spnm) %>%
@@ -102,14 +94,16 @@ cci_dat <- gbif_dat %>%
 Check those species climate niches. Again, strong negative correlation.
 
 ```{r, fig.cap="Species climate niches for a subset of species in Jasper Ridge"}
-cci_dat %>%
-  ggplot(aes(tmp, ppt)) +
+(cci_dat %>%
+  ggplot(aes(tmp, ppt, text = spnm)) +
   geom_point(alpha = .5) +
   geom_smooth(method = "lm") +
   labs(
     x = "Species occurrence mean temperature (degC)",
     y = "Species occurrence mean precipitation (mm)"
   )
+) %>%
+  plotly::ggplotly(tooltip = "text")
 ```
 
 Assign community-level temp/precip to plots.
