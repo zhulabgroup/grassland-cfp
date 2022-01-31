@@ -398,3 +398,31 @@ cci_jrgce_avg %>%
 ```
 
 Same story. Precip effect weakens, but temp effect stay strong.
+
+Change in environmental variables, focusing on temp and precip.
+
+```{r}
+env_dat <- read_csv("data/archives/JRGCE/Input/Biomass/NPP/Submission/Environment.csv") %>%
+  pivot_wider(names_from = "var", values_from = "env") %>%
+  select(yr, trt, tmp, ppt) %>%
+  mutate(
+    tmp_trt = ifelse(trt == 0, "_", "T"),
+    ppt_trt = ifelse(trt == 0, "_", "P")
+  )
+
+tmp_dat <- select(env_dat, yr, tmp_trt, tmp)
+ppt_dat <- select(env_dat, yr, ppt_trt, ppt)
+
+tmp_ppt_dat <- expand_grid(yr = 1998:2014, tmp_trt = c("_", "T"), ppt_trt = c("_", "P")) %>%
+  left_join(tmp_dat, by = c("yr", "tmp_trt")) %>%
+  left_join(ppt_dat, by = c("yr", "ppt_trt")) %>%
+  drop_na() %>%
+  unite("trt", tmp_trt:ppt_trt, sep = "")
+
+tmp_ppt_dat %>%
+  ggplot(aes(tmp, ppt, col = yr)) +
+  geom_path() +
+  facet_wrap(~trt) +
+  labs(x = "Temperature (deg C)", y = "Precipitation (mm)",
+       col = "Year")
+```
