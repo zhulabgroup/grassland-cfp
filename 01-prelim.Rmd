@@ -13,7 +13,7 @@ library(patchwork)
 
 ## Species climate niches
 
-First, let's get community climate indexes: community temperature index (CTI) and community precipitation index (CPI) estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`. Then plot CTI and CPI for all species.
+Let's get community climate indexes: community temperature index (CTI) and community precipitation index (CPI) estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`. Then plot CTI and CPI for all species.
 
 ```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
 gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
@@ -435,7 +435,7 @@ clim_site_sum %>%
 
 Joint CTI and CPI analysis.
 
-```{r}
+```{r, fig.cap="Community shift across all sites"}
 cci_site_sum %>%
   ggplot() +
   geom_path(aes(meanCTI, meanCPI, col = year)) +
