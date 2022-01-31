@@ -9,7 +9,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```{r}
 library(tidyverse)
 library(patchwork)
-library(plotly)
 ```
 ## Species climate niches
 
@@ -18,23 +17,23 @@ First, get community climate indexes: community temperature index (CTI) and comm
 Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`.
 
 ```{r}
-cci_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   select(-`...1`) %>%
   filter(
     species.name != "Linanthus jepsonii",
     species.name != "Linanthus latisectus",
     relcov >= 0
-  )
+  ) %>%
+  select(spnm = species.name, guild, tmp = meanT, ppt = meanp) %>%
+  distinct()
 ```
 
 Explore species climate niches estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Note the strong negative correlation between mean temp and precip. Warmer locations are associated with drier locations? I talked with Greg and he agreed this is true in California--both geography (north-south) and elevation. The figure is interactive--Karen and Michael, can you hover your mouse to see if the data points and species names make sense?
 
-Update: Karen said it would be helpful to plot native vs. exotic species. I found Josie had a column "guild" with some codes: `r unique(cci_dat$guild)`. From Josie's code `ComComp Data Cleanup/Data_CleanupOnly.Rmd` lines 697-699, it looks like the 1st letter is **N**ative vs. **E**xotic, the 2nd letter is **A**nnual vs. **P**erennial, and the 3rd letter is lifeform **G**rass vs. **F**orb (but what are other characters?). So I extracted the 1st letter and recoded them into native vs. exotic. Karan and Michael, you can click the guild names on the legend to turn data points on and off.
+Update: Karen said it would be helpful to plot native vs. exotic species. I found Josie had a column "guild" with some codes: `r unique(gbif_dat$guild)`. From Josie's code `ComComp Data Cleanup/Data_CleanupOnly.Rmd` lines 697-699, it looks like the 1st letter is **N**ative vs. **E**xotic, the 2nd letter is **A**nnual vs. **P**erennial, and the 3rd letter is lifeform **G**rass vs. **F**orb (but what are other characters?). So I extracted the 1st letter and recoded them into native vs. exotic. Karan and Michael, you can click the guild names on the legend to turn data points on and off.
 
 ```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
-(cci_dat %>%
-  select(spnm = species.name, guild, tmp = meanT, ppt = meanp) %>%
-  distinct() %>%
+(gbif_dat %>%
   mutate(nat_ext = str_sub(guild, 1, 1) %>%
     factor(levels = c("N", "E"), labels = c("Native", "Exotic"))) %>%
   ggplot(aes(tmp, ppt,
@@ -50,7 +49,7 @@ Update: Karen said it would be helpful to plot native vs. exotic species. I foun
   ) +
   scale_color_manual(values = c("black", "red"))
 ) %>%
-  ggplotly(tooltip = "text")
+  plotly::ggplotly(tooltip = "text")
 ```
 
 
@@ -65,7 +64,15 @@ The objectives are
 Get plot-level and site-level summaries.
 
 ```{r, fig.cap="Replicate Josie's Figure CTI"}
-cci_plot_sum <- cci_dat %>%
+josie_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+  select(-`...1`) %>%
+  filter(
+    species.name != "Linanthus jepsonii",
+    species.name != "Linanthus latisectus",
+    relcov >= 0
+  )
+
+cci_plot_sum <- josie_dat %>%
   group_by(site, plot, year) %>%
   mutate(
     relCTI = relcov * meanT,
@@ -113,7 +120,7 @@ Then, get site climate data. Modified from Josie's code `Com_MajorAnalyses.Rmd` 
 clim_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
   select(-`...1`)
 
-clim_site_sum <- cci_dat %>%
+clim_site_sum <- josie_dat %>%
   distinct(site, year) %>%
   left_join(clim_dat, by = c("site" = "site", "year" = "wateryear")) %>%
   mutate(grow_meanT = (grow_minT + grow_maxT) / 2) # grow_meanT is highly correlated with mean_meanT
@@ -222,14 +229,7 @@ sp_jrgce <- spp_dat %>%
   select(spcd = SPECIES_CODE, spnm = `Species or unit name`) %>%
   arrange(spnm)
 
-cci_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
-  select(-`...1`) %>%
-  filter(
-    species.name != "Linanthus jepsonii",
-    species.name != "Linanthus latisectus",
-    relcov >= 0
-  ) %>%
-  select(spnm = species.name, tmp = meanT, ppt = meanp) %>%
+cci_dat <- gbif_dat %>%
   distinct(spnm, tmp, ppt) %>%
   arrange(spnm) %>%
   inner_join(sp_jrgce, by = "spnm") %>%
@@ -441,6 +441,8 @@ tmp_ppt_dat %>%
   ggplot(aes(tmp, ppt, col = yr)) +
   geom_path() +
   facet_wrap(~trt) +
-  labs(x = "Temperature (deg C)", y = "Precipitation (mm)",
-       col = "Year")
+  labs(
+    x = "Temperature (deg C)", y = "Precipitation (mm)",
+    col = "Year"
+  )
 ```
