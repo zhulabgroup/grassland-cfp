@@ -353,7 +353,7 @@ cci_jrgce_avg <- cci_jrgce_dat %>%
   summarize(pin_tmp = mean(pin_tmp), pin_ppt = mean(pin_ppt))
 
 cci_jrgce_avg %>%
-  filter(trt %in% c("____", "T___", "_P__")) %>%
+  filter(trt %in% c("____", "T___", "_P__", "TP__")) %>%
   ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
   geom_path() +
   facet_wrap(~trt) +
@@ -369,7 +369,7 @@ What about elevated CO2 treatment?
 
 ```{r, fig.cap="Compare temp and precip treatment effects for elevated CO2 plots"}
 cci_jrgce_avg %>%
-  filter(trt %in% c("__C_", "T_C_", "_PC_")) %>%
+  filter(trt %in% c("__C_", "T_C_", "_PC_", "TPC_")) %>%
   ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
   geom_path() +
   facet_wrap(~trt) +
@@ -386,7 +386,7 @@ What about elevated nitrogen plots?
 
 ```{r, fig.cap="Compare temp and precip treatment effects for elevated nitrogen plots"}
 cci_jrgce_avg %>%
-  filter(trt %in% c("___N", "T__N", "_P_N")) %>%
+  filter(trt %in% c("___N", "T__N", "_P_N", "TP_N")) %>%
   ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
   geom_path() +
   facet_wrap(~trt) +
@@ -398,6 +398,21 @@ cci_jrgce_avg %>%
 ```
 
 Same story. Precip effect weakens, but temp effect stay strong.
+
+What about both elevated CO2 and nitrogen plots?
+
+```{r, fig.cap="Compare temp and precip treatment effects for elevated CO2 and nitrogen plots"}
+cci_jrgce_avg %>%
+  filter(trt %in% c("__CN", "T_CN", "_PCN", "TPCN")) %>%
+  ggplot(aes(pin_tmp, pin_ppt, col = yr)) +
+  geom_path() +
+  facet_wrap(~trt) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  )
+```
 
 Change in environmental variables, focusing on temp and precip.
 
