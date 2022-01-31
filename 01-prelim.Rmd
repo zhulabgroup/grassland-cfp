@@ -221,7 +221,8 @@ cci_jrgce_avg %>%
     x = "Community Temperature Index (CTI, degC)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
-  )
+  ) +
+  scale_color_viridis_c()
 ```
 The above figure shows comparing to ambient plots, added water treatment makes community shift to wetter species, and warming treatment makes community shift to warmer species. It's almost like an ordination plot, but even better with biologically meaningful values (CTI, CPI).
 
@@ -237,7 +238,8 @@ cci_jrgce_avg %>%
     x = "Community Temperature Index (CTI, degC)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
-  )
+  ) +
+  scale_color_viridis_c()
 ```
 
 From the above figure, we can see preip effect dampens, but temp effect is still strong.
@@ -254,7 +256,8 @@ cci_jrgce_avg %>%
     x = "Community Temperature Index (CTI, degC)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
-  )
+  ) +
+  scale_color_viridis_c()
 ```
 
 Same story. Precip effect weakens, but temp effect stay strong.
@@ -271,7 +274,8 @@ cci_jrgce_avg %>%
     x = "Community Temperature Index (CTI, degC)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
-  )
+  ) +
+  scale_color_viridis_c()
 ```
 
 Change in environmental variables, focusing on temp and precip.
@@ -301,7 +305,8 @@ tmp_ppt_dat %>%
   labs(
     x = "Temperature (deg C)", y = "Precipitation (mm)",
     col = "Year"
-  )
+  ) +
+  scale_color_viridis_c()
 ```
 
 ## Observational data
@@ -439,5 +444,6 @@ cci_site_sum %>%
     x = "Community Temperature Index (CTI, degC)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
-  )
+  ) +
+  scale_color_viridis_c()
 ```
