@@ -439,7 +439,7 @@ Joint CTI and CPI analysis.
 cci_site_sum %>%
   ggplot() +
   geom_path(aes(meanCTI, meanCPI, col = year)) +
-  facet_wrap(~site) +
+  facet_wrap(~site, scales = "free") +
   labs(
     x = "Community Temperature Index (CTI, degC)",
     y = "Community Precipitation Index (CPI, mm)",
