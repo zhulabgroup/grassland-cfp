@@ -57,15 +57,18 @@ unique(angelo_data$species.name)
 unique(angelo_data$guild)
 remove(Angelo)
 remove(Angelo_spp)
+
+angelo_data %>%
+  write.csv("data/community/tidy/angelo_data.csv")
 ```
 
 ### Carrizo
 
 This data represents Carrizo, from 2007 to 2018. The data are taken in plots, with a variable number of plots measured annually. However, for each plot, 81 pin drops (9x9 frame) were used to assess the community structure of the site. 
 
-In the raw data, there should be be 8 1x1m plots per site (e.g. EP1, EP2) and ten of those sites per Site.Type (EP, SC) through 2014. After 2015 that level of replication decreases to 4 sites per Site.Type. This reduction is due to the addition of a new experiment involving precipitation that some plots were cannibalized for. 
+In the raw data, there should be be eight 1x1m plots per site (e.g. EP1, EP2) and ten of those sites per Site.Type (EP, SC) through 2014. After 2015 that level of replication decreases to four sites per Site.Type. This reduction is due to the addition of a new experiment involving precipitation that some plots were cannibalized for. 
 
-**At a later date, we may want to consider changing the level of analysis. For now, I will treat each plot as a separate replicate.**
+**At a later date, we may want to consider changing the level of analysis. For now, we will treat each plot as a separate replicate.**
 
 ```{r Import & clean Carrizo}
 ## importing all of the files
@@ -136,14 +139,21 @@ carrizo_data <- carrizo_data %>%
 carrizo_data <- carrizo_data %>%
   group_by(Site, year, species.name, guild, site) %>%
   summarise(Intercepts = sum(Intercepts)) %>%
-  rename(plot = Site)
+  rename(plot = Site) %>%
+  filter(
+    species.name != "litter",
+    species.name != "bare",
+    species.name != "hole",
+    species.name != "moss"
+  )
+
+carrizo_data %>%
+  write.csv("data/community/tidy/carrizo_data.csv")
 ```
 
 ### Elkhorn
 
-Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, I am using on the control plots (n=3), and removing all other treatments from the dataset. *Karen has suggested combining all of the Bromus species into one group*. 
-
-Note that most of the code in the cleanup process was written before transitioning to R markdown and GitHub. 
+Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. *Karen suggested combining all of the Bromus species into one group*. 
 
 ```{r Importing Elkhorn, warning=FALSE}
 elkspp <- read.csv("data/community/raw/HollData/ElkhornSpecies.csv")
@@ -171,9 +181,9 @@ elk17 <- read.csv("data/community/raw/HollData/Elk_2017.csv", skip = 1)
 elk18 <- read.csv("data/community/raw/HollData/Elk_2018.csv", skip = 1)
 ```
 
-Because these data are in separate files (one year per file), I need to clean the data and compile all of the years into a single object. To clean the data, I selected only the Elkhorn plots (these files also contained the data from two other sites; UCSC and Swanton, removed the non-control plots, restructured the data to make sure only non-zero datapoints were included, and added the year.
+Because these data are in separate files (one year per file), we need to clean the data and compile all of the years into a single object. To clean the data, we selected only the Elkhorn plots (these files also contained the data from two other sites; UCSC and Swanton, removed the non-control plots, restructured the data to make sure only non-zero datapoints were included, and added the year.
 
-I then combined the file with species guild information to each yearly object. 
+We then combined the file with species guild information to each yearly object. 
 
 ```{r Cleaning Elkhorn, warning=FALSE}
 elk99 <- elk99 %>%
@@ -617,14 +627,24 @@ elk_99_18_guilds <- elk_99_18_species %>%
   ungroup() %>%
   group_by(year, guild) %>%
   summarize(mean.intercepts = mean(guildtotal))
-```
 
-```{r Removing extra elkhorn objects}
+elkhorn_data <- elkhorn_data %>%
+  filter(
+    species.name != "Moss",
+    species.name != "Thatch",
+    species.name != "Bare ground"
+  ) %>%
+  mutate(site = "Elkhorn")
+
+# removing extra elkhorn objects
 remove(elk_99_18_guilds)
 remove(elk_99_18_species)
 remove(elk_guilds)
 remove(elkspp)
 remove(elk_99_18)
+
+elkhorn_data %>%
+  write.csv("data/community/tidy/elkhorn_data.csv")
 ```
 
 ### Jasper
@@ -658,11 +678,14 @@ remove(Jasper_species)
 remove(Jasper_Veg)
 remove(JR_spp)
 remove(jasper_spp_check)
+
+jasper_data %>%
+  write.csv("data/community/tidy/jasper_data.csv")
 ```
 
 ### McLaughlin Annual
 
-Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrats. Data is richness only from 2000-2005, but full community data 2006-2014. 
+Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrants. Data is richness only from 2000-2005, but full community data 2006-2014. 
 
 ```{r McLaughlin Importing and Cleaning Data}
 ## importing the data
@@ -705,15 +728,26 @@ mclann_data <- McLAnn %>%
     "Zeltnera trichantha" = "Centaurium trichanthum",
     "Elymus repens" = "Elytrigia repens",
     "Packera eurycephala" = "Senecio eurycephalus"
-  ))
+  )) %>%
+  filter(
+    species.name != "Bare",
+    species.name != "Rock",
+    species.name != "Unknown grass",
+    species.name != "Unknown forb"
+  ) %>%
+  mutate(site = "McL Ann")
+
 remove(McL_Sites)
 remove(McL_spp)
 remove(McLAnn)
+
+mclann_data %>%
+  write.csv("data/community/tidy/mclann_data.csv")
 ```
 
 ### McLaughlin Serpentine
 
-These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern Californa. These data are for 38 plots that were measured using 1m^2^ quadrats. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
+These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern California. These data are for 38 plots that were measured using 1m^2^ quadrants. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
 
 ```{r Import and Clean McL Serpentine}
 ## importing the data
@@ -759,17 +793,27 @@ mclserp_data <- McLSerp %>%
     "Packera eurycephala" = "Senecio eurycephalus",
     "mcLserp Allium sp." = "Allium sp.",
     "mcLserp Astragalus sp." = "Astragalus sp."
-  ))
+  )) %>%
+  filter(
+    species.name != "Bare",
+    species.name != "Rock",
+    species.name != "Unknown forb"
+  ) %>%
+  mutate(site = "McL Serp")
+
 remove(McL_Sites)
 remove(McL_spp)
 remove(McLSerp)
+
+mclserp_data %>%
+  write.csv("data/community/tidy/mclserp_data.csv")
 ```
 
 ### Santa Rosa
 
 Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very inconsistent. Data collected via point-intercept. Richness available for more years (2000-2011) than point-intercept (2000-2006). 
 
-**Kai note: this dataset was not used.**
+**Note: this dataset was not used in the analysis.**
 
 ```{r SR Importing and Cleaning Data}
 ## importing the data
@@ -1111,10 +1155,12 @@ Swan_99_12_species$species.name <- as.character(Swan_99_12_species$species.name)
 Swan_99_12_species$species.name <- as.factor(Swan_99_12_species$species.name)
 Swan_99_12_species$year <- as.integer(Swan_99_12_species$year)
 Swan_99_12_species$year <- as.numeric(Swan_99_12_species$year)
+
 swanton_data <- Swan_99_12_species %>%
   mutate(species.name = fct_recode(species.name,
     "Vulpia myuros" = "Festuca myuros"
   ))
+
 Swan_99_12_species <- Swan_99_12_species %>%
   group_by(rep, year, guild, species.name) %>%
   summarize(intercepts = sum(intercepts))
@@ -1135,20 +1181,32 @@ Swan_Richness <- Swan_99_12_species %>%
   summarize(rich = n_distinct(species.name))
 ```
 
-__Something I may want to consider is combining all of the *Bromus* species into one group.__
+__We may want to consider combining all of the *Bromus* species into one group.__
 
-```{r Removing extra Swanton objects}
+```{r Removing extra Swanton objects and saving final data}
 remove(Swan_99_12)
 remove(Swan_99_12_species)
 remove(Swan_99_12_guilds)
 remove(Swan_Richness)
 remove(Swanspp)
 remove(Swan_guilds)
+
+swanton_data <- swanton_data %>%
+  filter(
+    species.name != "Moss",
+    species.name != "Thatch",
+    species.name != "Bare ground"
+  ) %>%
+  mutate(site = "Swanton")
+
+swanton_data %>% 
+  write.csv("data/community/tidy/swanton_data.csv")
+
 ```
 
 ### UCSC
 
-These are data for grassland plots at UCSC. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, I am using on the control plots (n=3), and removing all other treatments from the dataset. 
+These are data for grassland plots at UCSC. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
 ```{r Importing UCSC, warning=FALSE}
 UCSCspp <- read.csv("data/community/raw/HollData/ElkhornSpecies.csv")
@@ -1487,23 +1545,34 @@ ucsc_data <- UCSC_99_12_species %>%
   ))
 ```
 
-__Something I may want to consider is combining all of the *Bromus* species into one group.__  
+__We may want to consider combining all of the *Bromus* species into one group.__  
 
-```{r Removing extra UCSC objects}
+```{r Removing extra UCSC objects and saving data}
 remove(UCSC_99_12)
 remove(UCSC_99_12_species)
 remove(UCSCspp)
 remove(UCSC_guilds)
+
+ucsc_data <- ucsc_data %>%
+  filter(
+    species.name != "Thatch",
+    species.name != "Bare ground"
+  ) %>%
+  mutate(site = "UCSC")
+
+ucsc_data %>% 
+  write.csv("data/community/tidy/ucsc_data.csv")
+
 ```
 
 ### Vasco Caves
 
-Incomplete at this time.
+Incomplete data that is not used.
 
 
 ### Final steps
 
-Merging, making relative cover, and saving data.
+Merging, making relative cover, and saving data files.
 
 ```{r Post-import tidying and relative cover data}
 ## angelo
@@ -1517,13 +1586,6 @@ rel_ang <- angelo_data %>%
   )
 rel_ang$plot <- as.factor(rel_ang$plot)
 ## carrizo
-carrizo_data <- carrizo_data %>%
-  filter(
-    species.name != "litter",
-    species.name != "bare",
-    species.name != "hole",
-    species.name != "moss"
-  )
 rel_car <- carrizo_data %>%
   select(site, year, plot, species.name, Intercepts, guild) %>%
   group_by(plot, year) %>%
@@ -1535,13 +1597,6 @@ rel_car <- carrizo_data %>%
   rename(cover = Intercepts)
 rel_car$plot <- as.factor(rel_car$plot)
 ## elkhorn
-elkhorn_data <- elkhorn_data %>%
-  filter(
-    species.name != "Moss",
-    species.name != "Thatch",
-    species.name != "Bare ground"
-  ) %>%
-  mutate(site = "Elkhorn")
 rel_elk <- elkhorn_data %>%
   select(site, year, rep, species.name, intercepts, guild) %>%
   group_by(rep, year) %>%
@@ -1569,14 +1624,6 @@ rel_jasp <- jasper_data %>%
   ) %>%
   rename(plot = uniqueID)
 ## mcL ann
-mclann_data <- mclann_data %>%
-  filter(
-    species.name != "Bare",
-    species.name != "Rock",
-    species.name != "Unknown grass",
-    species.name != "Unknown forb"
-  ) %>%
-  mutate(site = "McL Ann")
 rel_mcLann <- mclann_data %>%
   group_by(site, year, plot, species.name, guild) %>%
   summarise(cover = sum(cover)) %>%
@@ -1589,13 +1636,6 @@ rel_mcLann <- mclann_data %>%
   )
 rel_mcLann$plot <- as.factor(rel_mcLann$plot)
 ## mcL serp
-mclserp_data <- mclserp_data %>%
-  filter(
-    species.name != "Bare",
-    species.name != "Rock",
-    species.name != "Unknown forb"
-  ) %>%
-  mutate(site = "McL Serp")
 rel_mcLserp <- mclserp_data %>%
   group_by(site, year, plot, species.name, guild) %>%
   summarise(cover = sum(cover)) %>%
@@ -1608,13 +1648,6 @@ rel_mcLserp <- mclserp_data %>%
   )
 rel_mcLserp$plot <- as.factor(rel_mcLserp$plot)
 ## swanton
-swanton_data <- swanton_data %>%
-  filter(
-    species.name != "Moss",
-    species.name != "Thatch",
-    species.name != "Bare ground"
-  ) %>%
-  mutate(site = "Swanton")
 rel_swan <- swanton_data %>%
   select(site, year, rep, species.name, intercepts, guild) %>%
   group_by(rep, year) %>%
@@ -1629,12 +1662,6 @@ rel_swan <- swanton_data %>%
   )
 rel_swan$plot <- as.factor(rel_swan$plot)
 ## ucsc
-ucsc_data <- ucsc_data %>%
-  filter(
-    species.name != "Thatch",
-    species.name != "Bare ground"
-  ) %>%
-  mutate(site = "UCSC")
 rel_ucsc <- ucsc_data %>%
   select(site, year, rep, species.name, intercepts, guild) %>%
   group_by(rep, year) %>%
@@ -1655,19 +1682,11 @@ rel_all <- full_join(rel_all, rel_jasp)
 rel_all <- full_join(rel_all, rel_mcLann)
 rel_all <- full_join(rel_all, rel_mcLserp)
 rel_all <- full_join(rel_all, rel_swan)
-rel_all <- full_join(rel_all, rel_ucsc)
+rel_all <- full_join(rel_all, rel_ucsc) 
 ```
 Saving to CSV files.
 
 ```{r, saving CSV}
-write.csv(angelo_data, "data/community/tidy/angelo_data.csv")
-write.csv(carrizo_data, "data/community/tidy/carrizo_data.csv")
-write.csv(jasper_data, "data/community/tidy/jasper_data.csv")
-write.csv(elkhorn_data, "data/community/tidy/elkhorn_data.csv")
-write.csv(mclann_data, "data/community/tidy/mclann_data.csv")
-write.csv(mclserp_data, "data/community/tidy/mclserp_data.csv")
-write.csv(swanton_data, "data/community/tidy/swanton_data.csv")
-write.csv(ucsc_data, "data/community/tidy/ucsc_data.csv")
 write.csv(rel_all, "data/community/tidy/AllData_Relative.csv")
 ```
 
