@@ -58,8 +58,12 @@ unique(angelo_data$guild)
 remove(Angelo)
 remove(Angelo_spp)
 
-angelo_data %>%
-  write.csv("data/community/tidy/angelo_data.csv")
+angelo_data <- angelo_data %>%
+  as_tibble() %>%
+  select(site, year, plot, species = species.name, guild, abund = cover) %>%
+  mutate(species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
+  arrange(site, year, plot, species)
+write_csv(angelo_data, "data/community/tidy/angelo.csv")
 ```
 
 ### Carrizo
@@ -147,8 +151,15 @@ carrizo_data <- carrizo_data %>%
     species.name != "moss"
   )
 
-carrizo_data %>%
-  write.csv("data/community/tidy/carrizo_data.csv")
+carrizo_data <- carrizo_data %>%
+  as_tibble() %>%
+  select(site, year, plot, species = species.name, guild, abund = Intercepts) %>%
+  mutate(
+    plot = as.character(plot), species = as.character(species) %>% str_trim(),
+    guild = as.character(guild), abund_type = "intercept"
+  ) %>%
+  arrange(site, year, plot, species)
+write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 ```
 
 ### Elkhorn
@@ -643,8 +654,12 @@ remove(elk_guilds)
 remove(elkspp)
 remove(elk_99_18)
 
-elkhorn_data %>%
-  write.csv("data/community/tidy/elkhorn_data.csv")
+elkhorn_data <- elkhorn_data %>%
+  as_tibble() %>%
+  select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "intercept") %>%
+  arrange(site, year, plot, species)
+write_csv(elkhorn_data, "data/community/tidy/elkhorn.csv")
 ```
 
 ### Jasper
@@ -679,8 +694,12 @@ remove(Jasper_Veg)
 remove(JR_spp)
 remove(jasper_spp_check)
 
-jasper_data %>%
-  write.csv("data/community/tidy/jasper_data.csv")
+jasper_data <- jasper_data %>%
+  as_tibble() %>%
+  select(site, year, plot = uniqueID, species = species.name, guild, abund = cover) %>%
+  mutate(plot = as.character(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
+  arrange(site, year, plot, species)
+write_csv(jasper_data, "data/community/tidy/jasper.csv")
 ```
 
 ### McLaughlin Annual
@@ -741,8 +760,13 @@ remove(McL_Sites)
 remove(McL_spp)
 remove(McLAnn)
 
-mclann_data %>%
-  write.csv("data/community/tidy/mclann_data.csv")
+mclann_data <- mclann_data %>%
+  as_tibble() %>%
+  ungroup() %>%
+  select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
+  mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
+  arrange(site, year, plot, species)
+write_csv(mclann_data, "data/community/tidy/mclann.csv")
 ```
 
 ### McLaughlin Serpentine
@@ -805,8 +829,13 @@ remove(McL_Sites)
 remove(McL_spp)
 remove(McLSerp)
 
-mclserp_data %>%
-  write.csv("data/community/tidy/mclserp_data.csv")
+mclserp_data <- mclserp_data %>%
+  as_tibble() %>%
+  ungroup() %>%
+  select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
+  mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
+  arrange(site, year, plot, species)
+write_csv(mclserp_data, "data/community/tidy/mclserp.csv")
 ```
 
 ### Santa Rosa
@@ -816,13 +845,13 @@ Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very in
 **Note: this dataset was not used in the analysis.**
 
 ```{r SR Importing and Cleaning Data}
-## importing the data
-saro_rich <- read.csv("data/community/raw/Santa Rosa/SantaRosa_Richness.csv")
-saro_cov <- read.csv("data/community/raw/Santa Rosa/SantaRosa_Cover00_06_raw.csv")
-saro_spp <- read.csv("data/community/raw/Santa Rosa/SantaRosa_SpeciesList.csv") %>%
-  rename("Species" = "Codes")
-## combining the guild information, creating a "guild" column, selecting only the desired info
-saro_rich <- left_join(saro_rich, saro_spp, by = "Species")
+# ## importing the data
+# saro_rich <- read.csv("data/community/raw/Santa Rosa/SantaRosa_Richness.csv")
+# saro_cov <- read.csv("data/community/raw/Santa Rosa/SantaRosa_Cover00_06_raw.csv")
+# saro_spp <- read.csv("data/community/raw/Santa Rosa/SantaRosa_SpeciesList.csv") %>%
+#   rename("Species" = "Codes")
+# ## combining the guild information, creating a "guild" column, selecting only the desired info
+# saro_rich <- left_join(saro_rich, saro_spp, by = "Species")
 ```
 
 ### Swanton
@@ -1199,9 +1228,12 @@ swanton_data <- swanton_data %>%
   ) %>%
   mutate(site = "Swanton")
 
-swanton_data %>% 
-  write.csv("data/community/tidy/swanton_data.csv")
-
+swanton_data <- swanton_data %>%
+  as_tibble() %>%
+  select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "intercept") %>%
+  arrange(site, year, plot, species)
+write_csv(swanton_data, "data/community/tidy/swanton.csv")
 ```
 
 ### UCSC
@@ -1560,154 +1592,33 @@ ucsc_data <- ucsc_data %>%
   ) %>%
   mutate(site = "UCSC")
 
-ucsc_data %>% 
-  write.csv("data/community/tidy/ucsc_data.csv")
-
+ucsc_data <- ucsc_data %>%
+  as_tibble() %>%
+  select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "intercept") %>%
+  arrange(site, year, plot, species)
+write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
 ```
 
 ### Vasco Caves
 
 Incomplete data that is not used.
 
-
-### Final steps
-
-Merging, making relative cover, and saving data files.
-
-```{r Post-import tidying and relative cover data}
-## angelo
-rel_ang <- angelo_data %>%
-  select(site, year, plot, species.name, cover, guild) %>%
-  group_by(plot, year) %>%
-  mutate(
-    sumcov = sum(cover),
-    relcov = cover / sumcov,
-    datacol = "cover"
-  )
-rel_ang$plot <- as.factor(rel_ang$plot)
-## carrizo
-rel_car <- carrizo_data %>%
-  select(site, year, plot, species.name, Intercepts, guild) %>%
-  group_by(plot, year) %>%
-  mutate(
-    sumcov = sum(Intercepts),
-    relcov = Intercepts / sumcov,
-    datacol = "pt_intercept"
-  ) %>%
-  rename(cover = Intercepts)
-rel_car$plot <- as.factor(rel_car$plot)
-## elkhorn
-rel_elk <- elkhorn_data %>%
-  select(site, year, rep, species.name, intercepts, guild) %>%
-  group_by(rep, year) %>%
-  mutate(
-    sumcov = sum(intercepts),
-    relcov = intercepts / sumcov,
-    datacol = "pt_intercept"
-  ) %>%
-  rename(
-    plot = rep,
-    cover = intercepts
-  )
-rel_elk$plot <- as.factor(rel_elk$plot)
-## jasper
-rel_jasp <- jasper_data %>%
-  filter(cover > 0) %>%
-  group_by(uniqueID, year) %>%
-  mutate(
-    sumcov = sum(cover),
-    relcov = cover / sumcov
-  ) %>%
-  mutate(
-    site = "Jasper",
-    datacol = "cover"
-  ) %>%
-  rename(plot = uniqueID)
-## mcL ann
-rel_mcLann <- mclann_data %>%
-  group_by(site, year, plot, species.name, guild) %>%
-  summarise(cover = sum(cover)) %>%
-  ungroup() %>%
-  group_by(plot, year) %>%
-  mutate(
-    sumcov = sum(cover),
-    relcov = (cover / sumcov),
-    datacol = "cover"
-  )
-rel_mcLann$plot <- as.factor(rel_mcLann$plot)
-## mcL serp
-rel_mcLserp <- mclserp_data %>%
-  group_by(site, year, plot, species.name, guild) %>%
-  summarise(cover = sum(cover)) %>%
-  ungroup() %>%
-  group_by(plot, year) %>%
-  mutate(
-    sumcov = sum(cover),
-    relcov = (cover / sumcov),
-    datacol = "cover"
-  )
-rel_mcLserp$plot <- as.factor(rel_mcLserp$plot)
-## swanton
-rel_swan <- swanton_data %>%
-  select(site, year, rep, species.name, intercepts, guild) %>%
-  group_by(rep, year) %>%
-  mutate(
-    sumcov = sum(intercepts),
-    relcov = intercepts / sumcov,
-    datacol = "pt_intercept"
-  ) %>%
-  rename(
-    cover = intercepts,
-    plot = rep
-  )
-rel_swan$plot <- as.factor(rel_swan$plot)
-## ucsc
-rel_ucsc <- ucsc_data %>%
-  select(site, year, rep, species.name, intercepts, guild) %>%
-  group_by(rep, year) %>%
-  mutate(
-    sumcov = sum(intercepts),
-    relcov = intercepts / sumcov,
-    datacol = "pt_intercept"
-  ) %>%
-  rename(
-    cover = intercepts,
-    plot = rep
-  )
-rel_ucsc$plot <- as.factor(rel_ucsc$plot)
-## combining all relative cover objects
-rel_all <- full_join(rel_ang, rel_car)
-rel_all <- full_join(rel_all, rel_elk)
-rel_all <- full_join(rel_all, rel_jasp)
-rel_all <- full_join(rel_all, rel_mcLann)
-rel_all <- full_join(rel_all, rel_mcLserp)
-rel_all <- full_join(rel_all, rel_swan)
-rel_all <- full_join(rel_all, rel_ucsc) 
-```
-Saving to CSV files.
-
-```{r, saving CSV}
-write.csv(rel_all, "data/community/tidy/AllData_Relative.csv")
-```
-
-Removing all objects.
+## Combine all data
 
 ```{r}
-remove(angelo_data)
-remove(carrizo_data)
-remove(elkhorn_data)
-remove(jasper_data)
-remove(mclann_data)
-remove(mclserp_data)
-remove(swanton_data)
-remove(ucsc_data)
-remove(rel_ang)
-remove(rel_car)
-remove(rel_elk)
-remove(rel_jasp)
-remove(rel_mcLann)
-remove(rel_mcLserp)
-remove(rel_swan)
-remove(rel_ucsc)
-remove(rel_all)
+# remove all "data" objects
+rm(list = ls(pattern = "data"))
+
+# read from CSV again to ensure correct typing
+(read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
+  bind_rows(read_csv("data/community/tidy/carrizo.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/elkhorn.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/jasper.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/mclann.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/mclserp.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc"))
+) %>%
+  write_rds("data/community/all-obs.rds")
 ```
