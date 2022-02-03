@@ -70,14 +70,14 @@ trt_tbl <- read_csv("data/community/raw/JRGCE/Treatment.csv", col_types = "iiiic
     ntg = if_else(year == 1998, FALSE, ntg)
   ) %>%
   mutate(
-    trt = str_c(
+    treat = str_c(
       ifelse(tmp, "T", "_"),
       ifelse(ppt, "P", "_"),
       ifelse(co2, "C", "_"),
       ifelse(ntg, "N", "_")
     )
   ) %>%
-  select(year, plot, trt) %>%
+  select(year, plot, treat) %>%
   arrange(year, plot)
 ```
 
@@ -88,7 +88,7 @@ jrgce_data <- pin_tbl %>%
   left_join(spp_tbl, by = "species") %>%
   left_join(trt_tbl, by = c("year", "plot")) %>%
   mutate(site = "JRGCE", abund_type = "point_intercept") %>%
-  select(site, year, plot, trt, species, guild, abund, abund_type) %>%
+  select(site, year, plot, treat, species, guild, abund, abund_type) %>%
   arrange(year, plot, species)
 
 rm(list = ls(pattern = "_tbl"))
@@ -235,7 +235,7 @@ carrizo_data <- carrizo_data %>%
   select(site, year, plot, species = species.name, guild, abund = Intercepts) %>%
   mutate(
     plot = as.character(plot), species = as.character(species) %>% str_trim(),
-    guild = as.character(guild), abund_type = "intercept"
+    guild = as.character(guild), abund_type = "point_intercept"
   ) %>%
   arrange(site, year, plot, species)
 write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
@@ -736,7 +736,7 @@ remove(elk_99_18)
 elkhorn_data <- elkhorn_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "intercept") %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
 write_csv(elkhorn_data, "data/community/tidy/elkhorn.csv")
 ```
@@ -1310,7 +1310,7 @@ swanton_data <- swanton_data %>%
 swanton_data <- swanton_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "intercept") %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
 write_csv(swanton_data, "data/community/tidy/swanton.csv")
 ```
@@ -1674,7 +1674,7 @@ ucsc_data <- ucsc_data %>%
 ucsc_data <- ucsc_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "intercept") %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
 write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
 ```
@@ -1685,11 +1685,22 @@ Incomplete data that is not used.
 
 ## Combine all data
 
-```{r}
-# remove all "data" objects
-rm(list = ls(pattern = "data"))
+First, remove all "data" objects generated from this script. 
 
-# read from CSV again to ensure correct typing
+```{r}
+rm(list = ls(pattern = "data"))
+```
+
+Second, read directly from CSV file(s) for all experimental data. Make sure data types are correct. Then, save it to an RDS file.
+
+```{r}
+read_csv("data/community/tidy/jrgce.csv", col_types = "ciicccic") %>%
+  write_rds("data/community/all-experimental-data.rds")
+```
+
+Third, read directly from CSV file(s) for all observational data. Make sure data types are correct. Then, save it to an RDS file.
+
+```{r}
 (read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
   bind_rows(read_csv("data/community/tidy/carrizo.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/elkhorn.csv", col_types = "cicccdc")) %>%
@@ -1699,5 +1710,5 @@ rm(list = ls(pattern = "data"))
   bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc"))
 ) %>%
-  write_rds("data/community/all-obs.rds")
+  write_rds("data/community/all-observational-data.rds")
 ```
