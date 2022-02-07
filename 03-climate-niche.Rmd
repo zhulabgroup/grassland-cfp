@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 library(tidyverse)
 library(sf)
 # library(patchwork)
-library(plotly)
+# library(plotly)
 ```
 
 ## GBIF
@@ -18,11 +18,14 @@ library(plotly)
 Explore GBIF data extracted by Josie.
 
 ```{r}
-niche_dat <- read_rds('data/archives/CAGrasslandCommunityChange-master/Analysis/GBIF_Data/AllKaren_GBIF.rds')
-niche_sf <- st_as_sf(niche_dat, coords = c("longitude", "latitude"))
-niche_sf %>% 
-  st_geometry() %>% 
-  plot()
+gbif_josie <- read_rds('data/archives/CAGrasslandCommunityChange-master/Analysis/GBIF_Data/AllKaren_GBIF.rds')
+
+gbif_josie %>% distinct(species.name)
+
+gbif_josie %>% 
+  st_as_sf(coords = c("longitude", "latitude")) %>% 
+  ggplot() +
+  geom_sf()
 ```
 Get all species from cover data.
 
