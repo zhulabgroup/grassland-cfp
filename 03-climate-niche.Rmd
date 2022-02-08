@@ -77,6 +77,15 @@ gbif_tib <- gbif_occ$gbif$data %>%
 write_rds(gbif_tib, "data/occurrence/gbif/obs-spp-gbif.rds")
 ```
 
+Make maps to visualize species.
+
+```{r}
+gbif_tib <- read_rds("data/occurrence/gbif/obs-spp-gbif.rds")
+gbif_tib %>%
+  select(queryName, name, longitude, latitude, locality) %>% 
+  filter(queryName == "Achillea millefolium") %>%
+  mapr::map_leaflet(size = 1)
+```
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
 
 ![NEON domians](images/neon-domains.png)
