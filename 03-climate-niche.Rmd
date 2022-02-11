@@ -74,13 +74,13 @@ gbif_tib <- gbif_occ$gbif$data %>%
   tibble(queryName = species_vec, gbif = .) %>%
   unnest(cols = c(gbif))
 
-write_rds(gbif_tib, "data/occurrence/gbif/obs-spp-gbif.rds")
+write_rds(gbif_tib, "data/occurrence/gbif/obs-spp-gbif-california.rds")
 ```
 
 Make maps to visualize species.
 
 ```{r, fig.cap="GBIF occurrence map for all species"}
-gbif_tib <- read_rds("data/occurrence/gbif/obs-spp-gbif.rds") %>%
+gbif_tib <- read_rds("data/occurrence/gbif/obs-spp-gbif-california.rds") %>%
   select(name = queryName, sci_name = name, longitude, latitude, locality)
 
 mapr::map_leaflet(gbif_tib, size = 1)
