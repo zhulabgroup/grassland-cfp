@@ -79,13 +79,23 @@ write_rds(gbif_tib, "data/occurrence/gbif/obs-spp-gbif.rds")
 
 Make maps to visualize species.
 
-```{r}
-gbif_tib <- read_rds("data/occurrence/gbif/obs-spp-gbif.rds")
-gbif_tib %>%
-  select(queryName, name, longitude, latitude, locality) %>% 
-  filter(queryName == "Achillea millefolium") %>%
-  mapr::map_leaflet(size = 1)
+```{r, fig.cap="GBIF occurrence map for all species"}
+gbif_tib <- read_rds("data/occurrence/gbif/obs-spp-gbif.rds") %>%
+  select(name = queryName, sci_name = name, longitude, latitude, locality)
+
+mapr::map_leaflet(gbif_tib, size = 1)
 ```
+
+```{r, fig.cap="GBIF occurrence map for most frequently occurred 9 species (`map_leaflet()` can only show 9 colors)"}
+mapr::map_leaflet(gbif_tib %>%
+  filter(name %in% (
+    gbif_tib %>%
+      count(name) %>%
+      top_n(9) %>%
+      pull(name)
+  )), size = 1)
+```
+
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
 
 ![NEON domians](images/neon-domains.png)
