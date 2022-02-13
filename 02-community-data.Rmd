@@ -925,9 +925,9 @@ Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very in
 
 ```{r SR Importing and Cleaning Data}
 # ## importing the data
-# saro_rich <- read.csv("data/community/raw/Santa Rosa/SantaRosa_Richness.csv")
-# saro_cov <- read.csv("data/community/raw/Santa Rosa/SantaRosa_Cover00_06_raw.csv")
-# saro_spp <- read.csv("data/community/raw/Santa Rosa/SantaRosa_SpeciesList.csv") %>%
+# saro_rich <- read.csv("data/community/raw/SantaRosa/SantaRosa_Richness.csv")
+# saro_cov <- read.csv("data/community/raw/SantaRosa/SantaRosa_Cover00_06_raw.csv")
+# saro_spp <- read.csv("data/community/raw/SantaRosa/SantaRosa_SpeciesList.csv") %>%
 #   rename("Species" = "Codes")
 # ## combining the guild information, creating a "guild" column, selecting only the desired info
 # saro_rich <- left_join(saro_rich, saro_spp, by = "Species")
