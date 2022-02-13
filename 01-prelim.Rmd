@@ -91,6 +91,8 @@ cci_dat <- gbif_dat %>%
   select(spcd, spnm, tmp, ppt)
 ```
 
+Note that GBIF has only 41 species available out of 98 species in JRGCE. 
+
 Check those species climate niches. Again, strong negative correlation.
 
 ```{r, fig.cap="Species climate niches for a subset of species in Jasper Ridge"}
