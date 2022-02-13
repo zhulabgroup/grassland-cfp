@@ -309,6 +309,77 @@ tmp_ppt_dat %>%
   scale_color_viridis_c()
 ```
 
+Now, let's explore the Santa Cruz International Drought Experiment (SCIDE).
+
+```{r fig.cap="Species climate niches for a subset of species in SCIDE"}
+(gbif_dat %>%
+  select(species = spnm, guild, tmp, ppt) %>%
+  distinct() %>%
+  inner_join(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc") %>%
+    select(species) %>%
+    distinct(), by = "species") %>%
+  ggplot(aes(tmp, ppt, text = species)) +
+  geom_point(alpha = .5) +
+  labs(
+    x = "Species occurrence mean temperature (degC)",
+    y = "Species occurrence mean precipitation (mm)"
+  )
+) %>%
+  plotly::ggplotly(tooltip = "text")
+```
+
+Note that only 38 species have data from GBIF out of 73 species in SCIDE.
+
+Calculate CTI and CPI for year-site-plot-treatment combinations.
+
+```{r}
+cci_scide_dat <- read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc") %>%
+  select(site, year, plot, treat, species, guild, cover = abund) %>%
+  inner_join(select(gbif_dat, species = spnm, tmp, ppt) %>% distinct(), by = "species") %>%
+  group_by(year, site, plot, treat) %>%
+  summarize(
+    cover_tmp = sum(cover * tmp) / sum(cover),
+    cover_ppt = sum(cover * ppt) / sum(cover)
+  )
+```
+
+Plot CTI and CPI wrt year and treatment.
+
+```{r fig.cap="Compare CTI in ambient vs. drought treatments over years"}
+cci_scide_dat %>%
+  mutate(treat = case_when(
+    treat == "_" ~ "Ambient",
+    treat == "D" ~ "Drought"
+  )) %>%
+  ggplot(aes(year, cover_tmp, col = treat, group = treat)) +
+  geom_point(alpha = .5) +
+  geom_smooth() +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+```{r fig.cap="Compare CPI in ambient vs. drought treatments over years"}
+cci_scide_dat %>%
+  mutate(treat = case_when(
+    treat == "_" ~ "Ambient",
+    treat == "D" ~ "Drought"
+  )) %>%
+  ggplot(aes(year, cover_ppt, col = treat, group = treat)) +
+  geom_point(alpha = .5) +
+  geom_smooth() +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+
 ## Observational data
 
 The objectives are
