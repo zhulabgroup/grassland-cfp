@@ -12,7 +12,9 @@ Processed data path: `data/community/`
 Setup and load packages
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, 
+                      eval = FALSE, # not run
+                      message = FALSE)
 ```
 
 ```{r}
@@ -101,6 +103,49 @@ write_csv(jrgce_data, "data/community/tidy/jrgce.csv")
 ![Michael Loik and the Santa Cruz International Drought Experiment (IDE). Image credit: Lobsang Wangdu. Source: https://ucnrs.org/doctor-drought/](images/santa-cruz-ide.jpeg)
 
 Data provided by Michael Loik. 
+
+```{r}
+scide_data <- read_csv("data/community/raw/SantaCruzIDE/IDESpeciesComp_LongFormat_2015_2021.csv",
+  col_types = c("ciicdicdcc")
+) %>%
+  mutate(
+    site = str_c("IDE ", Site),
+    year = Year,
+    plot = str_c(Plot, Block, sep = "-"),
+    treat = case_when(
+      Treatment == "Ambient" ~ "_",
+      Treatment == "Drought" ~ "D"
+    ),
+    species = Species,
+    guild = str_c(
+      case_when( # origin
+        Origin == "Native" ~ "N",
+        Origin == "Non-native" ~ "E", # exotic
+        is.na(Origin) ~ "U" # unknown
+      ),
+      case_when( # lifeform
+        Lifeform == "Annual" ~ "AU", # annual unknown
+        Lifeform == "Annual forb" ~ "AF",
+        Lifeform == "Annual grass" ~ "AG",
+        Lifeform == "Annual rush" ~ "AR",
+        Lifeform == "N-fixer" ~ "NF",
+        Lifeform == "Perennial forb" ~ "PF",
+        Lifeform == "Perennial grass" ~ "PG",
+        Lifeform == "Perennial sedge" ~ "PS",
+        Lifeform == "Rhizomatous forb" ~ "RF",
+        Lifeform == "Rhizomatous grass" ~ "RG",
+        Lifeform == "Rhizomatous rush" ~ "RR",
+        Lifeform %in% c("Shrub", "Shurb") ~ "S",
+        is.na(Lifeform) ~ "U" # unknown
+      )
+    ),
+    abund = Cover,
+    abund_type = "cover"
+  ) %>%
+  select(site, year, plot, treat, species, guild, abund, abund_type)
+
+write_csv(scide_data, "data/community/tidy/scide.csv")
+```
 
 ## Observational community data
 
@@ -1700,7 +1745,9 @@ rm(list = ls(pattern = "data"))
 Second, read directly from CSV file(s) for all experimental data. Make sure data types are correct. Then, save it to an RDS file.
 
 ```{r}
-read_csv("data/community/tidy/jrgce.csv", col_types = "ciicccic") %>%
+(read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
+  bind_rows(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc"))
+) %>%
   write_rds("data/community/all-experimental-data.rds")
 ```
 
