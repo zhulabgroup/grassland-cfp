@@ -39,7 +39,7 @@ all_spp <- c(exp_spp, obs_spp) %>%
 
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 gbif_occ <- all_spp %>%
   spocc::occ(
     query = ., from = "gbif", has_coords = TRUE, limit = 1e6,
