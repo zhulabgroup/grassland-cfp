@@ -96,6 +96,12 @@ rm(list = ls(pattern = "_tbl"))
 write_csv(jrgce_data, "data/community/tidy/jrgce.csv")
 ```
 
+### Santa Cruz International Drought Experiment
+
+![Michael Loik and the Santa Cruz International Drought Experiment (IDE). Image credit: Lobsang Wangdu. Source: https://ucnrs.org/doctor-drought/](images/santa-cruz-ide.jpeg)
+
+Data provided by Michael Loik. 
+
 ## Observational community data
 
 Site description by Josie.
