@@ -15,18 +15,6 @@ library(sf)
 
 ## GBIF
 
-Explore GBIF data extracted by Josie.
-
-```{r eval=FALSE}
-gbif_josie <- read_rds("data/archives/CAGrasslandCommunityChange-master/Analysis/GBIF_Data/AllKaren_GBIF.rds")
-
-gbif_josie %>% distinct(species.name)
-
-gbif_josie %>%
-  st_as_sf(coords = c("longitude", "latitude")) %>%
-  ggplot() +
-  geom_sf()
-```
 Get all species from newly tidy cover data.
 
 ```{r}
@@ -99,3 +87,18 @@ mapr::map_leaflet(gbif_tib %>%
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
 
 ![NEON domians](images/neon-domains.png)
+
+## Compare with Josie's estimates
+
+Explore GBIF data extracted by Josie.
+
+```{r eval=FALSE}
+gbif_josie <- read_rds("data/archives/CAGrasslandCommunityChange-master/Analysis/GBIF_Data/AllKaren_GBIF.rds")
+
+gbif_josie %>% distinct(species.name)
+
+gbif_josie %>%
+  st_as_sf(coords = c("longitude", "latitude")) %>%
+  ggplot() +
+  geom_sf()
+```
