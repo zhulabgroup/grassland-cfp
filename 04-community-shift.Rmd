@@ -1,1 +1,19 @@
 # Community shift analyses
+
+```{r eval=FALSE}
+obs_cover <- read_rds("data/community/all-observational-data.rds") %>%
+  # replace_na(list(abund = 0)) %>%
+  filter(abund > 0) %>%
+  group_by(site, year, plot) %>%
+  mutate(rel_cover = abund / sum(abund)) %>%
+  ungroup() %>%
+  select(site, year, plot, species, guild, rel_cover)
+
+site_spp_tbl <- obs_cover %>%
+  group_by(site, species) %>%
+  summarize(avg_rel_cover = mean(rel_cover)) %>%
+  pivot_wider(names_from = site, values_from = avg_rel_cover, values_fill = 0) %>%
+  rowwise() %>%
+  mutate(avg_site = mean(c_across(Angelo:UCSC))) %>%
+  arrange(desc(avg_site))
+```
