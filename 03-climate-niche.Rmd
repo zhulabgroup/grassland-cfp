@@ -1,8 +1,8 @@
 # Climate niche estimation
 
-Setup and load packages
+Setup and load packages.
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
 
@@ -110,7 +110,7 @@ niche_tbl <- occ_tbl %>%
 
 Visualize species niches in climate space.
 
-```{r fig.cap="Species climate niches"}
+```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)", eval = TRUE}
 (niche_tbl %>%
   ggplot(aes(tmp_mean, ppt_mean, text = name)) +
   geom_point(alpha = .9) +
@@ -124,18 +124,4 @@ Visualize species niches in climate space.
   plotly::ggplotly(tooltip = "text")
 ```
 
-
-## Compare with Josie's estimates
-
-Explore GBIF data extracted by Josie.
-
-```{r eval=FALSE}
-gbif_josie <- read_rds("data/archives/CAGrasslandCommunityChange-master/Analysis/GBIF_Data/AllKaren_GBIF.rds")
-
-gbif_josie %>% distinct(species.name)
-
-gbif_josie %>%
-  st_as_sf(coords = c("longitude", "latitude")) %>%
-  ggplot() +
-  geom_sf()
-```
+This figure compares well with Josie's estimates. 

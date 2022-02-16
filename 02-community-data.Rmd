@@ -1,5 +1,15 @@
 # Community data preparation 
 
+Setup and load packages.
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+```
+
 Objectives:
 
 1. Clean up experimental community data (JRGCE, Santa Cruz IDE)
@@ -10,18 +20,6 @@ Tidy data path: `data/community/tidy/`
 Processed data path: `data/community/`
 
 Setup and load packages
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  echo = TRUE,
-  eval = FALSE, # not run
-  message = FALSE
-)
-```
-
-```{r}
-library(tidyverse)
-```
 
 ## Experimental community data
 

@@ -18,6 +18,8 @@ link-citations: yes
 knitr::include_url("https://docs.google.com/document/d/1k9JTjaROKfu16cNn-e27wjiY7kDUM4Zptw5wc3hIvdw/edit?usp=sharing")
 ```
 
+Show session information.
+
 ```{r}
 sessionInfo()
 ```

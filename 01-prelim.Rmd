@@ -1,8 +1,8 @@
 # Preliminary analyses
 
-Setup and load packages
+Setup and load packages.
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 ```
 
@@ -15,7 +15,7 @@ library(patchwork)
 
 Let's get community climate indexes: community temperature index (CTI) and community precipitation index (CPI) estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`. Then plot CTI and CPI for all species.
 
-```{r, fig.cap = "Species climate niches estimated from GBIF by Josie"}
+```{r josie-niche-plot, fig.cap = "Species climate niches estimated from GBIF by Josie"}
 gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   select(-`...1`) %>%
   filter(
