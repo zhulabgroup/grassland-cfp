@@ -26,7 +26,7 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
 
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
-```{r eval=FALSE}
+```{r, eval = FALSE}
 gbif_occ <- spp_tbl$canonicalname %>%
   spocc::occ(
     query = ., from = "gbif", has_coords = TRUE, limit = 1e6,
@@ -47,16 +47,16 @@ Make maps to visualize species.
 
 ```{r}
 occ_tbl <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
-  select(name = queryName, longitude, latitude, locality)
+  select(species = queryName, longitude, latitude, locality)
 ```
 
 ```{r, fig.cap="GBIF occurrence map for most frequently occurred 9 species (`map_leaflet()` can only show 9 colors)", eval = FALSE}
 mapr::map_leaflet(occ_tbl %>%
-  filter(name %in% (
+  filter(species %in% (
     occ_tbl %>%
-      count(name) %>%
+      count(species) %>%
       top_n(9) %>%
-      pull(name)
+      pull(species)
   )), size = 1)
 ```
 
@@ -99,7 +99,7 @@ Estimate species climate niches.
 
 ```{r}
 niche_tbl <- occ_tbl %>%
-  group_by(name) %>%
+  group_by(species) %>%
   summarize(
     tmp_mean = mean(tmp, na.rm = TRUE), tmp_sd = sd(tmp, na.rm = TRUE), tmp_se = plotrix::std.error(tmp, na.rm = TRUE),
     ppt_mean = mean(ppt, na.rm = TRUE), ppt_sd = sd(ppt, na.rm = TRUE), ppt_se = plotrix::std.error(ppt, na.rm = TRUE)
@@ -110,7 +110,7 @@ Visualize species niches in climate space.
 
 ```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)", eval = TRUE}
 (niche_tbl %>%
-  ggplot(aes(tmp_mean, ppt_mean, text = name)) +
+  ggplot(aes(tmp_mean, ppt_mean, text = species)) +
   geom_point(alpha = .9) +
   geom_errorbarh(aes(xmin = tmp_mean - tmp_se, xmax = tmp_mean + tmp_se), alpha = .3) +
   geom_errorbar(aes(ymin = ppt_mean - ppt_se, ymax = ppt_mean + ppt_se), alpha = .3) +
