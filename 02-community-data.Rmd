@@ -2,7 +2,7 @@
 
 Objectives:
 
-1. Clean up experimental community data (JRGCE)
+1. Clean up experimental community data (JRGCE, Santa Cruz IDE)
 1. Clean up observational community data (~10 datasets)
 
 Raw data path: `data/community/raw/`
