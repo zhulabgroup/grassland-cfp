@@ -12,9 +12,11 @@ Processed data path: `data/community/`
 Setup and load packages
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, 
-                      eval = FALSE, # not run
-                      message = FALSE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = FALSE, # not run
+  message = FALSE
+)
 ```
 
 ```{r}
@@ -1734,7 +1736,7 @@ write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
 
 Incomplete data that is not used.
 
-## Combine all data
+## Combine data and clean species names
 
 First, remove all "data" objects generated from this script. 
 
@@ -1742,19 +1744,13 @@ First, remove all "data" objects generated from this script.
 rm(list = ls(pattern = "data"))
 ```
 
-Second, read directly from CSV file(s) for all experimental data. Make sure data types are correct. Then, save it to an RDS file.
+Second, read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
 
 ```{r}
-(read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
+all_exp_data <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
   bind_rows(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc"))
-) %>%
-  write_rds("data/community/all-experimental-data.rds")
-```
 
-Third, read directly from CSV file(s) for all observational data. Make sure data types are correct. Then, save it to an RDS file.
-
-```{r}
-(read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
+all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
   bind_rows(read_csv("data/community/tidy/carrizo.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/elkhorn.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/jasper.csv", col_types = "cicccdc")) %>%
@@ -1762,45 +1758,54 @@ Third, read directly from CSV file(s) for all observational data. Make sure data
   bind_rows(read_csv("data/community/tidy/mclserp.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc"))
-) %>%
-  write_rds("data/community/all-observational-data.rds")
 ```
 
-## Clean species names
-
-Load all experimental and observational data to prepare a master species list.
+Thrid, prepare a master species list.
 
 ```{r}
-all_exp_data <- read_rds("data/community/all-experimental-data.rds")
-all_obs_data <- read_rds("data/community/all-observational-data.rds")
-
-all_spp <- c(all_exp_data$species, all_obs_data$species) %>% 
+all_spp <- c(all_exp_data$species, all_obs_data$species) %>%
   unique() %>%
   sort()
 ```
 
-Resolve duplicated/misspelling species names. First download using the taxize package. 
+Resolve duplicated/misspelling species names. Download using the taxize package. 
 
 ```{r eval=FALSE}
-match_spp <- taxize::get_gbifid_(all_spp) %>% 
-  as_tibble_col(column_name = "gbif") %>% 
-  mutate(queryname = all_spp) %>% 
-  unnest(cols = c(gbif)) %>% 
+match_spp <- taxize::get_gbifid_(all_spp) %>%
+  as_tibble_col(column_name = "gbif") %>%
+  mutate(queryname = all_spp) %>%
+  unnest(cols = c(gbif)) %>%
   select(queryname, everything())
 write_rds(match_spp, "data/community/match-species-table.rds")
 ```
 
-Then, choose match based on (conversation with Justin Luong, 2/15/22)
+Choose match based on (conversation with Justin Luong, 2/15/22)
 
 1. Filter plants (kingdom == "Plantae").
 1. For each query, choose the top row (highest confidence).
 1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
 ```{r}
-match_spp_tbl <- read_rds("data/community/match-species-table.rds") %>% 
-  filter(kingdom == "Plantae") %>% 
-  group_by(queryname) %>% 
+match_spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
+  filter(kingdom == "Plantae") %>%
+  group_by(queryname) %>%
   slice_head(n = 1) %>% # choose the top 1
-  ungroup() %>% 
+  ungroup() %>%
   select(queryname, canonicalname, everything())
+```
+
+Finally, replace clean species names in all data and save to RDS.
+
+```{r}
+all_exp_data %>%
+  inner_join(match_spp_tbl %>% select(queryname, canonicalname), by = c("species" = "queryname")) %>%
+  select(site, year, plot, treat, species = canonicalname, guild, abund, abund_type) %>%
+  filter(abund > 0) %>%
+  write_rds("data/community/all-experimental-data.rds")
+
+all_obs_data %>%
+  inner_join(match_spp_tbl %>% select(queryname, canonicalname), by = c("species" = "queryname")) %>%
+  select(site, year, plot, species = canonicalname, species_original = species, guild, abund, abund_type) %>%
+  filter(abund > 0) %>%
+  write_rds("data/community/all-observational-data.rds")
 ```
