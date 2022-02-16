@@ -137,15 +137,35 @@ Visualize species niches in climate space.
 ```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)", eval = TRUE}
 (niche_tbl %>%
   ggplot(aes(tmp_mean, ppt_mean, text = species)) +
-  geom_point(alpha = .9) +
-  geom_errorbarh(aes(xmin = tmp_mean - tmp_se, xmax = tmp_mean + tmp_se), alpha = .3) +
-  geom_errorbar(aes(ymin = ppt_mean - ppt_se, ymax = ppt_mean + ppt_se), alpha = .3) +
+  geom_point(alpha = .5) +
+  # geom_errorbarh(aes(xmin = tmp_mean - tmp_se, xmax = tmp_mean + tmp_se), alpha = .3) +
+  # geom_errorbar(aes(ymin = ppt_mean - ppt_se, ymax = ppt_mean + ppt_se), alpha = .3) +
   labs(
-    x = "Species occurrence temperature (degC)",
-    y = "Species occurrence precipitation (mm)"
+    x = "Species occurrence mean temperature (degC)",
+    y = "Species occurrence mean precipitation (mm)"
   )
 ) %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
 This figure compares well with Josie's estimates. 
+
+```{r josie-niche-plot, fig.cap="Species climate niches (mean and standard error) estimated by Josie"}
+(read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+  filter(
+    species.name != "Linanthus jepsonii",
+    species.name != "Linanthus latisectus",
+    relcov >= 0
+  ) %>%
+  select(species = species.name, guild, tmp = meanT, ppt = meanp) %>%
+  distinct() %>%
+  ggplot(aes(tmp, ppt, text = species)) +
+  geom_point(alpha = .5) +
+  # geom_smooth(method = "lm", aes(tmp, ppt)) +
+  labs(
+    x = "Species occurrence mean temperature (degC)",
+    y = "Species occurrence mean precipitation (mm)"
+  )
+) %>%
+  plotly::ggplotly(tooltip = "text")
+```
