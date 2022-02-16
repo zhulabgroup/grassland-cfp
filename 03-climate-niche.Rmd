@@ -3,7 +3,7 @@
 Setup and load packages.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 ```
 
 ```{r}
@@ -134,7 +134,7 @@ niche_tbl <- occ_tbl %>%
 
 Visualize species niches in climate space.
 
-```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)", eval = TRUE}
+```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)"}
 (niche_tbl %>%
   ggplot(aes(tmp_mean, ppt_mean, text = species)) +
   geom_point(alpha = .5) +
@@ -169,3 +169,12 @@ This figure compares well with Josie's estimates.
 ) %>%
   plotly::ggplotly(tooltip = "text")
 ```
+
+Save niche estimates.
+
+```{r}
+if (!dir.exists("data/climate/niche/"))
+  dir.create("data/climate/niche/")
+write_csv(niche_tbl, "data/climate/niche/gbif_prism_estimates.csv")
+```
+
