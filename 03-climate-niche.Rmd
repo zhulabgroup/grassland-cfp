@@ -46,16 +46,16 @@ tibble(queryName = spp_tbl$canonicalname, gbif = gbif_occ$gbif$data) %>%
 Make maps to visualize species.
 
 ```{r, fig.cap="GBIF occurrence map for all species"}
-gbif_tbl <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
+occ_tbl <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
   select(name = queryName, longitude, latitude, locality)
 
-mapr::map_leaflet(gbif_tbl, size = 1)
+mapr::map_leaflet(occ_tbl, size = 1)
 ```
 
 ```{r, fig.cap="GBIF occurrence map for most frequently occurred 9 species (`map_leaflet()` can only show 9 colors)"}
-mapr::map_leaflet(gbif_tbl %>%
+mapr::map_leaflet(occ_tbl %>%
   filter(name %in% (
-    gbif_tbl %>%
+    occ_tbl %>%
       count(name) %>%
       top_n(9) %>%
       pull(name)
