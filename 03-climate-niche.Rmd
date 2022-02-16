@@ -95,7 +95,33 @@ occ_tbl <- occ_tbl %>%
   )
 ```
 
-Estimate species climate niches.
+## Species climate niches
+
+Visualize individual species occurrence in climate space.
+
+```{r, warning=FALSE, eval=FALSE}
+pdf("figures/species-climate-niche.pdf", width = 10, height = 10)
+
+for (sp in unique(occ_tbl$species)) {
+  (occ_tbl %>%
+    filter(species == sp) %>%
+    ggplot(aes(tmp, ppt)) +
+    geom_point(alpha = .5) +
+    geom_rug(alpha = .5) +
+    stat_ellipse() +
+    labs(
+      x = "Temperature (degC)", y = "Precipitation (mm)",
+      title = sp
+    ) +
+    theme(plot.title = element_text(face = "italic"))
+  ) %>%
+    print()
+}
+
+dev.off()
+```
+
+Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
 niche_tbl <- occ_tbl %>%
