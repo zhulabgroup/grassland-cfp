@@ -173,8 +173,6 @@ This figure compares well with Josie's estimates.
 Save niche estimates.
 
 ```{r}
-if (!dir.exists("data/climate/niche/"))
-  dir.create("data/climate/niche/")
-write_csv(niche_tbl, "data/climate/niche/gbif_prism_estimates.csv")
+write_rds(niche_tbl, "data/climate/niche_estimates.rds")
 ```
 
