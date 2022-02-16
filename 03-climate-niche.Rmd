@@ -8,12 +8,9 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 ```{r}
 library(tidyverse)
-library(sf)
-# library(patchwork)
-# library(plotly)
 ```
 
-## GBIF
+## GBIF occurrence data
 
 Load the master species list.
 
@@ -68,6 +65,27 @@ mapr::map_leaflet(gbif_tib %>%
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
 
 ![NEON domians](images/neon-domains.png)
+
+## PRISM climate data
+
+Download and process PRISM using the prism package.
+
+```{r}
+prism::prism_set_dl_dir("data/climate/prism/")
+prism::get_prism_normals("tmean", "800m", annual = TRUE, keepZip = FALSE)
+prism::get_prism_normals("ppt", "800m", annual = TRUE, keepZip = FALSE)
+```
+
+Load raster data using the raster package.
+
+```{r}
+tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>% 
+  prism::pd_to_file() %>% 
+  raster::raster()
+ppt_ras <- prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>% 
+  prism::pd_to_file() %>% 
+  raster::raster()
+```
 
 ## Compare with Josie's estimates
 
