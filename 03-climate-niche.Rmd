@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Climate niche estimation
 
 Setup and load packages
@@ -37,10 +42,30 @@ all_spp <- c(exp_spp, obs_spp) %>%
   sort()
 ```
 
+Resolve duplicated/misspelling species names. First download using the taxize package. 
+
+```{r eval=FALSE}
+gbif_spp <- taxize::get_gbifid_(all_spp) %>% 
+  as_tibble_col(column_name = "gbif") %>% 
+  mutate(queryname = all_spp) %>% 
+  unnest(cols = c(gbif)) %>% 
+  select(queryname, everything())
+write_rds(gbif_spp, "data/occurrence/gbif/gbif-spp.rds")
+```
+
+Then, choose the top match.
+
+```{r}
+gbif_spp <- read_rds("data/occurrence/gbif/gbif-spp.rds") %>% 
+  group_by(queryname) %>% 
+  slice_head(n = 1) %>% # choose the top 1
+  ungroup()
+```
+
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
 ```{r eval=FALSE}
-gbif_occ <- all_spp %>%
+gbif_occ <- gbif_spp$scientificname %>%
   spocc::occ(
     query = ., from = "gbif", has_coords = TRUE, limit = 1e6,
     gbifopts = list(
@@ -52,7 +77,7 @@ gbif_occ <- all_spp %>%
   )
 
 gbif_tib <- gbif_occ$gbif$data %>%
-  tibble(queryName = all_spp, gbif = .) %>%
+  tibble(queryName = gbif_spp$scientificname, gbif = .) %>%
   unnest(cols = c(gbif))
 
 write_rds(gbif_tib, "data/occurrence/gbif/all-spp-california.rds")
