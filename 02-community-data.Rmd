@@ -3,7 +3,7 @@
 Setup and load packages.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = FALSE)
 ```
 
 ```{r}
