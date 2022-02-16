@@ -34,7 +34,9 @@ expcom_tbl <- expdat_tbl %>%
             ppt_com = sum(abund * ppt_mean) / sum(abund))
 ```
 
-JRGCE warming vs. ambient plots.
+### JRGCE 
+
+Warming vs. ambient plots.
 
 ```{r, fig.cap = "Compare CTI in ambient vs. elevated warming treatments over years"}
 expcom_tbl %>% 
