@@ -79,13 +79,49 @@ prism::get_prism_normals("ppt", "800m", annual = TRUE, keepZip = FALSE)
 Load raster data using the raster package.
 
 ```{r}
-tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>% 
-  prism::pd_to_file() %>% 
+tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
+  prism::pd_to_file() %>%
   raster::raster()
-ppt_ras <- prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>% 
-  prism::pd_to_file() %>% 
+ppt_ras <- prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>%
+  prism::pd_to_file() %>%
   raster::raster()
 ```
+
+Extract climate values using longitude and latitude.
+
+```{r}
+occ_tbl <- occ_tbl %>%
+  mutate(
+    tmp = raster::extract(tmean_ras, select(occ_tbl, longitude, latitude)),
+    ppt = raster::extract(ppt_ras, select(occ_tbl, longitude, latitude))
+  )
+```
+
+Estimate species climate niches.
+
+```{r}
+niche_tbl <- occ_tbl %>%
+  group_by(name) %>%
+  summarize(
+    tmp_mean = mean(tmp, na.rm = TRUE), tmp_sd = sd(tmp, na.rm = TRUE),
+    ppt_mean = mean(ppt, na.rm = TRUE), ppt_sd = sd(ppt, na.rm = TRUE)
+  )
+```
+
+Visualize species niches in climate space.
+
+```{r fig.cap="Species climate niches"}
+(niche_tbl %>%
+  ggplot(aes(tmp_mean, ppt_mean, text = name)) +
+  geom_point(alpha = .5) +
+  labs(
+    x = "Species occurrence mean temperature (degC)",
+    y = "Species occurrence mean precipitation (mm)"
+  )
+) %>%
+  plotly::ggplotly(tooltip = "text")
+```
+
 
 ## Compare with Josie's estimates
 
