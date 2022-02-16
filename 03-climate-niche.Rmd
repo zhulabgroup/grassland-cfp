@@ -1,8 +1,3 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Climate niche estimation
 
 Setup and load packages
@@ -20,10 +15,22 @@ library(sf)
 
 ## GBIF
 
+Load the master species list.
+
+```{r}
+spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
+  filter(kingdom == "Plantae") %>%
+  group_by(queryname) %>%
+  slice_head(n = 1) %>% # choose the top 1
+  ungroup() %>%
+  select(queryname, canonicalname, everything()) %>%
+  distinct(canonicalname, scientificname)
+```
+
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
 ```{r eval=FALSE}
-gbif_occ <- gbif_spp$scientificname %>%
+gbif_occ <- spp_tbl$canonicalname %>%
   spocc::occ(
     query = ., from = "gbif", has_coords = TRUE, limit = 1e6,
     gbifopts = list(
@@ -34,18 +41,16 @@ gbif_occ <- gbif_spp$scientificname %>%
     )
   )
 
-gbif_tib <- gbif_occ$gbif$data %>%
-  tibble(queryName = gbif_spp$scientificname, gbif = .) %>%
-  unnest(cols = c(gbif))
-
-write_rds(gbif_tib, "data/occurrence/gbif/all-spp-california.rds")
+tibble(queryName = spp_tbl$canonicalname, gbif = gbif_occ$gbif$data) %>%
+  unnest(cols = c(gbif)) %>%
+  write_rds("data/occurrence/gbif/all-spp-california.rds")
 ```
 
 Make maps to visualize species.
 
 ```{r, fig.cap="GBIF occurrence map for all species"}
 gbif_tib <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
-  select(name = queryName, sci_name = name, longitude, latitude, locality)
+  select(name = queryName, longitude, latitude, locality)
 
 mapr::map_leaflet(gbif_tib, size = 1)
 ```
