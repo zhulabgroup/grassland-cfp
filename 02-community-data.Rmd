@@ -1771,21 +1771,10 @@ Third, read directly from CSV file(s) for all observational data. Make sure data
 Load all experimental and observational data to prepare a master species list.
 
 ```{r}
-exp_spp <- read_rds("data/community/all-experimental-data.rds") %>%
-  filter(abund > 0) %>%
-  select(species) %>%
-  distinct() %>%
-  arrange(species) %>% 
-  pull(species)
+all_exp_data <- read_rds("data/community/all-experimental-data.rds")
+all_obs_data <- read_rds("data/community/all-observational-data.rds")
 
-obs_spp <- read_rds("data/community/all-observational-data.rds") %>%
-  filter(abund > 0) %>%
-  select(species) %>%
-  distinct() %>%
-  arrange(species) %>% 
-  pull(species)
-
-all_spp <- c(exp_spp, obs_spp) %>%
+all_spp <- c(all_exp_data$species, all_obs_data$species) %>% 
   unique() %>%
   sort()
 ```
@@ -1793,19 +1782,25 @@ all_spp <- c(exp_spp, obs_spp) %>%
 Resolve duplicated/misspelling species names. First download using the taxize package. 
 
 ```{r eval=FALSE}
-gbif_spp <- taxize::get_gbifid_(all_spp) %>% 
+match_spp <- taxize::get_gbifid_(all_spp) %>% 
   as_tibble_col(column_name = "gbif") %>% 
   mutate(queryname = all_spp) %>% 
   unnest(cols = c(gbif)) %>% 
   select(queryname, everything())
-write_rds(gbif_spp, "data/occurrence/gbif/gbif-spp.rds")
+write_rds(match_spp, "data/community/match-species-table.rds")
 ```
 
-Then, choose the top match.
+Then, choose match based on (conversation with Justin Luong, 2/15/22)
+
+1. Filter plants (kingdom == "Plantae").
+1. For each query, choose the top row (highest confidence).
+1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
 ```{r}
-gbif_spp <- read_rds("data/occurrence/gbif/gbif-spp.rds") %>% 
+match_spp_tbl <- read_rds("data/community/match-species-table.rds") %>% 
+  filter(kingdom == "Plantae") %>% 
   group_by(queryname) %>% 
   slice_head(n = 1) %>% # choose the top 1
-  ungroup()
+  ungroup() %>% 
+  select(queryname, canonicalname, everything())
 ```
