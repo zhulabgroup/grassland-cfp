@@ -34,6 +34,78 @@ expcom_tbl <- expdat_tbl %>%
             ppt_com = sum(abund * ppt_mean) / sum(abund))
 ```
 
+JRGCE warming vs. ambient plots.
+
+```{r, fig.cap = "Compare CTI in ambient vs. elevated warming treatments over years"}
+expcom_tbl %>% 
+  filter(site == "JRGCE",
+         treat %in% c("____", "T___")) %>% 
+  ggplot(aes(year, tmp_com, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Watered vs. ambient plots.
+
+```{r, fig.cap = "Compare CPI in ambient vs. elevated adding water treatments over years"}
+expcom_tbl %>% 
+  filter(site == "JRGCE",
+         treat %in% c("____", "_P__")) %>% 
+  ggplot(aes(year, ppt_com, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+For both warming and watering treatments, show replicates as raw data.
+
+```{r, fig.cap="Plot (replicate) level community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
+expcom_tbl %>% 
+  filter(site == "JRGCE",
+         treat %in% c("____", "T___", "_P__", "TP__")) %>% 
+  mutate(year = as.factor(year)) %>% 
+  ggplot(aes(tmp_com, ppt_com, group = interaction(treat, year))) +
+  geom_point(aes(color = year), alpha = .5) +
+  # stat_ellipse() +
+  facet_wrap(~treat) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  ) +
+  scale_color_viridis_d()
+```
+
+Because of outliers, summarize by median (same as boxplot, not mean) values of replicates from the same treatment.
+
+```{r, fig.cap="Median community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
+expcom_tbl %>% 
+  filter(site == "JRGCE",
+         treat %in% c("____", "T___", "_P__", "TP__")) %>% 
+  group_by(year, treat) %>% 
+  summarize(tmp_com = median(tmp_com), ppt_com = median(ppt_com)) %>% 
+  # mutate(year = as.factor(year)) %>% 
+  ggplot(aes(tmp_com, ppt_com, col = year)) +
+  geom_path() +
+  facet_wrap(~treat) +
+  labs(
+    x = "Community Temperature Index (CTI, degC)",
+    y = "Community Precipitation Index (CPI, mm)",
+    col = "Year"
+  ) +
+  scale_color_viridis_c()
+```
+
+
+
+
 ```{r eval=FALSE}
 obs_cover <- read_rds("data/community/all-observational-data.rds") %>%
   # replace_na(list(abund = 0)) %>%
