@@ -103,8 +103,8 @@ Estimate species climate niches.
 niche_tbl <- occ_tbl %>%
   group_by(name) %>%
   summarize(
-    tmp_mean = mean(tmp, na.rm = TRUE), tmp_sd = sd(tmp, na.rm = TRUE),
-    ppt_mean = mean(ppt, na.rm = TRUE), ppt_sd = sd(ppt, na.rm = TRUE)
+    tmp_mean = mean(tmp, na.rm = TRUE), tmp_sd = sd(tmp, na.rm = TRUE), tmp_se = plotrix::std.error(tmp, na.rm = TRUE),
+    ppt_mean = mean(ppt, na.rm = TRUE), ppt_sd = sd(ppt, na.rm = TRUE), ppt_se = plotrix::std.error(ppt, na.rm = TRUE)
   )
 ```
 
@@ -113,10 +113,12 @@ Visualize species niches in climate space.
 ```{r fig.cap="Species climate niches"}
 (niche_tbl %>%
   ggplot(aes(tmp_mean, ppt_mean, text = name)) +
-  geom_point(alpha = .5) +
+  geom_point(alpha = .9) +
+  geom_errorbarh(aes(xmin = tmp_mean - tmp_se, xmax = tmp_mean + tmp_se), alpha = .3) +
+  geom_errorbar(aes(ymin = ppt_mean - ppt_se, ymax = ppt_mean + ppt_se), alpha = .3) +
   labs(
-    x = "Species occurrence mean temperature (degC)",
-    y = "Species occurrence mean precipitation (mm)"
+    x = "Species occurrence temperature (degC)",
+    y = "Species occurrence precipitation (mm)"
   )
 ) %>%
   plotly::ggplotly(tooltip = "text")
