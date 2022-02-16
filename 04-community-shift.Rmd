@@ -1,5 +1,39 @@
 # Community shift analyses
 
+Setup and load packages.
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+Load niche estimates.
+
+```{r}
+niche_tbl <- read_rds("data/climate/niche_estimates.rds")
+```
+
+## Experimental data
+
+Load all experimental community data
+
+```{r}
+expdat_tbl <- read_rds("data/community/all-experimental-data.rds")
+```
+
+Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temp and precip, weighted by abundance.
+
+```{r}
+expcom_tbl <- expdat_tbl %>% 
+  inner_join(niche_tbl, by = "species") %>% 
+  group_by(site, year, plot, treat) %>% 
+  summarize(tmp_com = sum(abund * tmp_mean) / sum(abund),
+            ppt_com = sum(abund * ppt_mean) / sum(abund))
+```
+
 ```{r eval=FALSE}
 obs_cover <- read_rds("data/community/all-observational-data.rds") %>%
   # replace_na(list(abund = 0)) %>%
