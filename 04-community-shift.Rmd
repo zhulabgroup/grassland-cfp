@@ -32,7 +32,8 @@ expcom_tbl <- expdat_tbl %>%
   group_by(site, year, plot, treat) %>%
   summarize(
     tmp_com = sum(abund * tmp_mean) / sum(abund),
-    ppt_com = sum(abund * ppt_mean) / sum(abund)
+    ppt_com = sum(abund * ppt_mean) / sum(abund),
+    vpdmax_com = sum(abund * vpdmax_mean) / sum(abund)
   )
 ```
 
@@ -133,6 +134,21 @@ expcom_tbl %>%
 ```
 
 Michael said Marshall Field has lots of native species, while Arboretum and YLR are highly invaded (2/16/22). That might explain the difference among those sites. 
+
+Use VPDmax to replace total precip.
+
+```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
+expcom_tbl %>%
+  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  ggplot(aes(year, vpdmax_com, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, hPa)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
 
 ```{r eval=FALSE}
 obs_cover <- read_rds("data/community/all-observational-data.rds") %>%
