@@ -31,7 +31,7 @@ expcom_tbl <- expdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    tmp_com = sum(abund * tmp_mean) / sum(abund),
+    tmean_com = sum(abund * tmean_mean) / sum(abund),
     ppt_com = sum(abund * ppt_mean) / sum(abund),
     vpdmax_com = sum(abund * vpdmax_mean) / sum(abund)
   )
@@ -47,7 +47,7 @@ expcom_tbl %>%
     site == "JRGCE",
     treat %in% c("____", "T___")
   ) %>%
-  ggplot(aes(year, tmp_com, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmean_com, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
@@ -82,7 +82,7 @@ expcom_tbl %>%
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   mutate(year = as.factor(year)) %>%
-  ggplot(aes(tmp_com, ppt_com, group = interaction(treat, year))) +
+  ggplot(aes(tmean_com, ppt_com, group = interaction(treat, year))) +
   geom_point(aes(color = year), alpha = .5) +
   # stat_ellipse() +
   facet_wrap(~treat) +
@@ -103,9 +103,9 @@ expcom_tbl %>%
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   group_by(year, treat) %>%
-  summarize(tmp_com = median(tmp_com), ppt_com = median(ppt_com)) %>%
+  summarize(tmean_com = median(tmean_com), ppt_com = median(ppt_com)) %>%
   # mutate(year = as.factor(year)) %>%
-  ggplot(aes(tmp_com, ppt_com, col = year)) +
+  ggplot(aes(tmean_com, ppt_com, col = year)) +
   geom_path() +
   facet_wrap(~treat) +
   labs(

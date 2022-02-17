@@ -94,7 +94,7 @@ Extract climate values using longitude and latitude.
 ```{r}
 occ_tbl <- occ_tbl %>%
   mutate(
-    tmp = raster::extract(tmean_ras, select(occ_tbl, longitude, latitude)),
+    tmean = raster::extract(tmean_ras, select(occ_tbl, longitude, latitude)),
     ppt = raster::extract(ppt_ras, select(occ_tbl, longitude, latitude)),
     vpdmax = raster::extract(vpdmax_ras, select(occ_tbl, longitude, latitude))
   )
@@ -110,7 +110,7 @@ pdf("figures/species-climate-niche.pdf", width = 10, height = 10)
 for (sp in unique(occ_tbl$species)) {
   (occ_tbl %>%
     filter(species == sp) %>%
-    ggplot(aes(tmp, ppt)) +
+    ggplot(aes(tmean, ppt)) +
     geom_point(alpha = .5) +
     geom_rug(alpha = .5) +
     stat_ellipse() +
@@ -132,7 +132,7 @@ Summarize species climate niches (mean, sd, etc.).
 niche_tbl <- occ_tbl %>%
   group_by(species) %>%
   summarize(
-    tmp_mean = mean(tmp, na.rm = TRUE), tmp_sd = sd(tmp, na.rm = TRUE), tmp_se = plotrix::std.error(tmp, na.rm = TRUE),
+    tmean_mean = mean(tmean, na.rm = TRUE), tmean_sd = sd(tmean, na.rm = TRUE), tmean_se = plotrix::std.error(tmean, na.rm = TRUE),
     ppt_mean = mean(ppt, na.rm = TRUE), ppt_sd = sd(ppt, na.rm = TRUE), ppt_se = plotrix::std.error(ppt, na.rm = TRUE),
     vpdmax_mean = mean(vpdmax, na.rm = TRUE), vpdmax_sd = sd(vpdmax, na.rm = TRUE), vpdmax_se = plotrix::std.error(vpdmax, na.rm = TRUE)
   )
@@ -142,9 +142,9 @@ Visualize species niches in climate space.
 
 ```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)"}
 (niche_tbl %>%
-  ggplot(aes(tmp_mean, ppt_mean, text = species)) +
+  ggplot(aes(tmean_mean, ppt_mean, text = species)) +
   geom_point(alpha = .5) +
-  # geom_errorbarh(aes(xmin = tmp_mean - tmp_se, xmax = tmp_mean + tmp_se), alpha = .3) +
+  # geom_errorbarh(aes(xmin = tmean_mean - tmean_se, xmax = tmean_mean + tmean_se), alpha = .3) +
   # geom_errorbar(aes(ymin = ppt_mean - ppt_se, ymax = ppt_mean + ppt_se), alpha = .3) +
   labs(
     x = "Species occurrence mean temperature (degC)",
@@ -180,9 +180,9 @@ Add VPDmax visualization.
 
 ```{r}
 (niche_tbl %>%
-  ggplot(aes(tmp_mean, vpdmax_mean, text = species)) +
+  ggplot(aes(tmean_mean, vpdmax_mean, text = species)) +
   geom_point(alpha = .5) +
-  # geom_errorbarh(aes(xmin = tmp_mean - tmp_se, xmax = tmp_mean + tmp_se), alpha = .3) +
+  # geom_errorbarh(aes(xmin = tmean_mean - tmean_se, xmax = tmean_mean + tmean_se), alpha = .3) +
   # geom_errorbar(aes(ymin = ppt_mean - ppt_se, ymax = ppt_mean + ppt_se), alpha = .3) +
   labs(
     x = "Species occurrence mean temperature (degC)",
