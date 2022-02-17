@@ -132,8 +132,7 @@ expcom_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-
-
+Michael said Marshall Field has lots of native species, while Arboretum and YLR are highly invaded (2/16/22). That might explain the difference among those sites. 
 
 ```{r eval=FALSE}
 obs_cover <- read_rds("data/community/all-observational-data.rds") %>%
