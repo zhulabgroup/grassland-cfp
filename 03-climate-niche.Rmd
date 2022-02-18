@@ -8,6 +8,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 
 ```{r}
 library(tidyverse)
+library(patchwork)
 ```
 
 ## GBIF occurrence data
@@ -105,22 +106,36 @@ occ_tbl <- occ_tbl %>%
 Visualize individual species occurrence in climate space.
 
 ```{r, warning=FALSE, eval=FALSE}
-pdf("figures/species-climate-niche.pdf", width = 10, height = 10)
+pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
 
 for (sp in unique(occ_tbl$species)) {
-  (occ_tbl %>%
+  occ_geog <- ggplot(map_data("county", "california")) +
+    geom_polygon(aes(long, lat, group = group),
+      fill = "white", colour = "grey50"
+    ) +
+    geom_point(
+      data = occ_tbl %>%
+        filter(species == sp),
+      aes(x = longitude, y = latitude),
+      alpha = .5
+    ) +
+    coord_quickmap() +
+    xlim(-124.5, -114.0) +
+    ylim(32.44, 42.12) +
+    labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
+    theme(plot.title = element_text(face = "italic"))
+
+  occ_clim <- occ_tbl %>%
     filter(species == sp) %>%
     ggplot(aes(tmean, ppt)) +
     geom_point(alpha = .5) +
     geom_rug(alpha = .5) +
     stat_ellipse() +
-    labs(
-      x = "Temperature (degC)", y = "Precipitation (mm)",
-      title = sp
-    ) +
-    theme(plot.title = element_text(face = "italic"))
-  ) %>%
-    print()
+    xlim(-6, 25.27) +
+    ylim(46.71, 3870.49) +
+    labs(x = "Mean annual temperature (degC)", y = "Annual precipitation (mm)")
+
+  print(occ_geog + occ_clim)
 }
 
 dev.off()
