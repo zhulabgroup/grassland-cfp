@@ -49,7 +49,7 @@ Make maps to visualize species.
 
 ```{r}
 occ_sf <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
@@ -85,7 +85,7 @@ Extract climate values using longitude and latitude. But first, convert GBIF coo
 
 ```{r}
 occ_sf <- occ_sf %>%
-  st_transform(crs = st_crs(tmean_ras)) %>%
+  st_transform(crs = st_crs(tmean_ras)) %>% # NAD83
   select(species = queryName)
 ```
 
