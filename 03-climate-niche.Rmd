@@ -105,10 +105,16 @@ occ_tbl <- occ_tbl %>%
 
 Visualize individual species occurrence in climate space.
 
-```{r, warning=FALSE, eval=FALSE}
-pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
+```{r calc-spp-niche-parallel, eval=FALSE}
+library(foreach)
+library(doParallel)
+num_cores <- 22 # socs-stats has 44 cores
+registerDoParallel(num_cores)
 
-for (sp in unique(occ_tbl$species)) {
+niche_gg <- foreach(
+  sp = unique(occ_tbl$species),
+  .packages = "tidyverse"
+) %dopar% {
   occ_geog <- ggplot(map_data("county", "california")) +
     geom_polygon(aes(long, lat, group = group),
       fill = "white", colour = "grey50"
@@ -135,11 +141,19 @@ for (sp in unique(occ_tbl$species)) {
     ylim(46.71, 3870.49) +
     labs(x = "Mean annual temperature (degC)", y = "Annual precipitation (mm)")
 
-  print(occ_geog + occ_clim)
+  occ_geog + occ_clim # no need to print(); will slow down
 }
 
+names(niche_gg) <- unique(occ_tbl$species)
+
+stopImplicitCluster()
+
+# runtime ~= 4 min
+pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
+niche_gg %>% lmap(print)
 dev.off()
 ```
+
 
 Summarize species climate niches (mean, sd, etc.).
 
