@@ -9,6 +9,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 ```{r}
 library(tidyverse)
 library(patchwork)
+library(sf)
 ```
 
 ## GBIF occurrence data
@@ -90,14 +91,19 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
   raster::raster()
 ```
 
-Extract climate values using longitude and latitude.
+Extract climate values using longitude and latitude. But first, convert GBIF coordinates in WGS84 to PRISM coordinates in NAD83.
 
 ```{r}
-occ_tbl <- occ_tbl %>%
+occ_sf <- occ_tbl %>% st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>% 
+  st_transform(crs = st_crs(tmean_ras))
+```
+
+```{r}
+occ_sf <- occ_sf %>%
   mutate(
-    tmean = raster::extract(tmean_ras, select(occ_tbl, longitude, latitude)),
-    ppt = raster::extract(ppt_ras, select(occ_tbl, longitude, latitude)),
-    vpdmax = raster::extract(vpdmax_ras, select(occ_tbl, longitude, latitude))
+    tmean = raster::extract(tmean_ras, occ_sf),
+    ppt = raster::extract(ppt_ras, occ_sf),
+    vpdmax = raster::extract(vpdmax_ras, occ_sf)
   )
 ```
 
