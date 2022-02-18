@@ -48,18 +48,8 @@ tibble(queryName = spp_tbl$canonicalname, gbif = gbif_occ$gbif$data) %>%
 Make maps to visualize species.
 
 ```{r}
-occ_tbl <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
-  select(species = queryName, longitude, latitude, locality)
-```
-
-```{r, fig.cap="GBIF occurrence map for most frequently occurred 9 species (`map_leaflet()` can only show 9 colors)", eval = FALSE}
-mapr::map_leaflet(occ_tbl %>%
-  filter(species %in% (
-    occ_tbl %>%
-      count(species) %>%
-      top_n(9) %>%
-      pull(species)
-  )), size = 1)
+occ_sf <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 ```
 
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
@@ -94,8 +84,9 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
 Extract climate values using longitude and latitude. But first, convert GBIF coordinates in WGS84 to PRISM coordinates in NAD83.
 
 ```{r}
-occ_sf <- occ_tbl %>% st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>% 
-  st_transform(crs = st_crs(tmean_ras))
+occ_sf <- occ_sf %>%
+  st_transform(crs = st_crs(tmean_ras)) %>%
+  select(species = queryName)
 ```
 
 ```{r}
@@ -118,26 +109,25 @@ num_cores <- 22 # socs-stats has 44 cores
 registerDoParallel(num_cores)
 
 niche_gg <- foreach(
-  sp = unique(occ_tbl$species),
+  sp = unique(occ_sf$species),
   .packages = "tidyverse"
 ) %dopar% {
   occ_geog <- ggplot(map_data("county", "california")) +
     geom_polygon(aes(long, lat, group = group),
       fill = "white", colour = "grey50"
     ) +
-    geom_point(
-      data = occ_tbl %>%
+    geom_sf(
+      data = occ_sf %>%
         filter(species == sp),
-      aes(x = longitude, y = latitude),
       alpha = .5
     ) +
-    coord_quickmap() +
+    coord_sf() +
     xlim(-124.5, -114.0) +
     ylim(32.44, 42.12) +
     labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
     theme(plot.title = element_text(face = "italic"))
 
-  occ_clim <- occ_tbl %>%
+  occ_clim <- occ_sf %>%
     filter(species == sp) %>%
     ggplot(aes(tmean, ppt)) +
     geom_point(alpha = .5) +
@@ -150,21 +140,25 @@ niche_gg <- foreach(
   occ_geog + occ_clim # no need to print(); will slow down
 }
 
-names(niche_gg) <- unique(occ_tbl$species)
+names(niche_gg) <- unique(occ_sf$species)
 
 stopImplicitCluster()
+```
 
+Print all species into a multi-page PDF.
+
+```{r, eval=FALSE}
 # runtime ~= 4 min
 pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
 niche_gg %>% lmap(print)
 dev.off()
 ```
 
-
 Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
-niche_tbl <- occ_tbl %>%
+niche_tbl <- occ_sf %>%
+  as_tibble() %>% # drop sf geometry--too slow and not needed for this summary
   group_by(species) %>%
   summarize(
     n = n(),
