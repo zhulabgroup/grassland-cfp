@@ -52,6 +52,14 @@ occ_sf <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
+Optional step: filter out non-California locations.
+
+```{r}
+occ_sf <- occ_sf %>%
+  # select(which(st_agr(.) == "constant")) %>%
+  st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
+```
+
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
 
 ![NEON domians](images/neon-domains.png)
@@ -108,34 +116,55 @@ library(doParallel)
 num_cores <- 22 # socs-stats has 44 cores
 registerDoParallel(num_cores)
 
+# gbif summary
+tmean_rng <- range(occ_sf$tmean)
+ppt_rng <- range(occ_sf$ppt)
+n_occ_tot <- nrow(occ_sf)
+
+# exp data summary
+exp_tbl <- read_rds("data/community/all-experimental-data.rds")
+n_exp_tot <- nrow(exp_tbl)
+
+# obs data summary
+obs_tbl <- read_rds("data/community/all-observational-data.rds")
+n_obs_tot <- nrow(obs_tbl)
+
 niche_gg <- foreach(
   sp = unique(occ_sf$species),
   .packages = "tidyverse"
 ) %dopar% {
+  occ_sp_sf <- filter(occ_sf, species == sp)
+  n_occ_sp <- nrow(occ_sp_sf)
+
+  n_exp_sp <- exp_tbl %>%
+    filter(species == sp) %>%
+    nrow()
+  n_obs_sp <- obs_tbl %>%
+    filter(species == sp) %>%
+    nrow()
+
   occ_geog <- ggplot(map_data("county", "california")) +
     geom_polygon(aes(long, lat, group = group),
       fill = "white", colour = "grey50"
     ) +
-    geom_sf(
-      data = occ_sf %>%
-        filter(species == sp),
-      alpha = .5
-    ) +
-    coord_sf() +
-    xlim(-124.5, -114.0) +
-    ylim(32.44, 42.12) +
+    geom_sf(data = occ_sp_sf, alpha = .5) +
     labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
     theme(plot.title = element_text(face = "italic"))
 
-  occ_clim <- occ_sf %>%
-    filter(species == sp) %>%
-    ggplot(aes(tmean, ppt)) +
+  occ_clim <- ggplot(occ_sp_sf, aes(tmean, ppt)) +
     geom_point(alpha = .5) +
     geom_rug(alpha = .5) +
     stat_ellipse() +
-    xlim(-6, 25.27) +
-    ylim(46.71, 3870.49) +
-    labs(x = "Mean annual temperature (degC)", y = "Annual precipitation (mm)")
+    lims(x = tmean_rng, y = ppt_rng) +
+    # scale_y_log10() + # log scale ppt
+    labs(
+      x = "Mean annual temperature (degC)", y = "Annual precipitation (mm)",
+      title = str_c(
+        "n_occ = ", n_occ_sp, " (", round(n_occ_sp / n_occ_tot * 100, digits = 3), "%)\n",
+        "n_exp = ", n_exp_sp, " (", round(n_exp_sp / n_exp_tot * 100, digits = 3), "%)\n",
+        "n_obs = ", n_obs_sp, " (", round(n_obs_sp / n_obs_tot * 100, digits = 3), "%)"
+      )
+    )
 
   occ_geog + occ_clim # no need to print(); will slow down
 }
@@ -150,7 +179,7 @@ Print all species into a multi-page PDF.
 ```{r, eval=FALSE}
 # runtime ~= 4 min
 pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
-niche_gg %>% lmap(print)
+print(niche_gg)
 dev.off()
 ```
 
