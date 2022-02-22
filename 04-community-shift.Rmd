@@ -227,28 +227,25 @@ exp_com_tbl %>%
 
 ## Observational data
 
-Load all experimental community data
+Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temp and precip, weighted by abundance.
 
 ```{r}
-obsdat_tbl <- read_rds("data/community/all-observational-data.rds")
-```
-
-Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temp and precip, weighted by abundance.
-
-```{r}
-obs_com_tbl <- obsdat_tbl %>%
+obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
     tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
+    tmean_com_var = sum(abund * tmean_occ_mean^2) / sum(abund) - tmean_com_mean^2,
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund)
+    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund),
+    vpdmax_com_var = sum(abund * vpdmax_occ_mean^2) / sum(abund) - vpdmax_com_mean^2
   )
 ```
 
-CTI in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
+CTI community-level mean in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
-```{r, fig.cap = "Compare CTI across sites over years"}
+```{r, fig.cap = "Compare mean(CTI) across sites over years"}
 obs_com_tbl %>%
   ggplot(aes(year, tmean_com_mean, group = year)) +
   geom_boxplot() +
@@ -258,11 +255,35 @@ obs_com_tbl %>%
   )
 ```
 
-CPI in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
+CTI community-level standard deviation.
 
-```{r, fig.cap = "Compare CPI across sites over years"}
+```{r, fig.cap = "Compare sd(CTI) across sites over years"}
+obs_com_tbl %>%
+  ggplot(aes(year, sqrt(tmean_com_var), group = year)) +
+  geom_boxplot() +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, degC)"
+  )
+```
+
+CPI community-level mean in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
+
+```{r, fig.cap = "Compare mean(CPI) across sites over years"}
 obs_com_tbl %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
+  geom_boxplot() +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)"
+  )
+```
+
+CPI community-level standard deviation.
+
+```{r, fig.cap = "Compare mean(CPI) across sites over years"}
+obs_com_tbl %>%
+  ggplot(aes(year, sqrt(ppt_com_var), group = year)) +
   geom_boxplot() +
   facet_wrap(~site, scales = "free_y") +
   labs(
