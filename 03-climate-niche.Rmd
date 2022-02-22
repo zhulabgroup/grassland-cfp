@@ -190,10 +190,10 @@ niche_tbl <- occ_sf %>%
   as_tibble() %>% # drop sf geometry--too slow and not needed for this summary
   group_by(species) %>%
   summarize(
-    n = n(),
-    tmean_mean = mean(tmean, na.rm = TRUE), tmean_sd = sd(tmean, na.rm = TRUE),
-    ppt_mean = mean(ppt, na.rm = TRUE), ppt_sd = sd(ppt, na.rm = TRUE),
-    vpdmax_mean = mean(vpdmax, na.rm = TRUE), vpdmax_sd = sd(vpdmax, na.rm = TRUE),
+    occ_n = n(),
+    tmean_occ_mean = mean(tmean, na.rm = TRUE), tmean_occ_sd = sd(tmean, na.rm = TRUE),
+    ppt_occ_mean = mean(ppt, na.rm = TRUE), ppt_occ_sd = sd(ppt, na.rm = TRUE),
+    vpdmax_occ_mean = mean(vpdmax, na.rm = TRUE), vpdmax_occ_sd = sd(vpdmax, na.rm = TRUE),
   )
 ```
 
@@ -201,10 +201,10 @@ Visualize species niches in climate space.
 
 ```{r kai-niche-plot, fig.cap="Species climate niches (mean and standard error)"}
 (niche_tbl %>%
-  ggplot(aes(tmean_mean, ppt_mean, text = species)) +
+  ggplot(aes(tmean_occ_mean, ppt_occ_mean, text = species)) +
   geom_point(alpha = .5) +
-  geom_errorbarh(aes(xmin = tmean_mean - tmean_sd / sqrt(n), xmax = tmean_mean + tmean_sd / sqrt(n)), alpha = .3) +
-  geom_errorbar(aes(ymin = ppt_mean - ppt_sd / sqrt(n), ymax = ppt_mean + ppt_sd / sqrt(n)), alpha = .3) +
+  geom_errorbarh(aes(xmin = tmean_occ_mean - tmean_occ_sd / sqrt(occ_n), xmax = tmean_occ_mean + tmean_occ_sd / sqrt(occ_n)), alpha = .3) +
+  geom_errorbar(aes(ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
   labs(
     x = "Species occurrence mean temperature (degC)",
     y = "Species occurrence mean precipitation (mm)"
@@ -239,7 +239,7 @@ Add VPDmax visualization.
 
 ```{r}
 (niche_tbl %>%
-  ggplot(aes(tmean_mean, vpdmax_mean, text = species)) +
+  ggplot(aes(tmean_occ_mean, vpdmax_occ_mean, text = species)) +
   geom_point(alpha = .5) +
   labs(
     x = "Species occurrence mean temperature (degC)",

@@ -45,9 +45,9 @@ exp_com_tbl <- expdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    tmean_com_mean = sum(abund * tmean_mean) / sum(abund),
-    ppt_com_mean = sum(abund * ppt_mean) / sum(abund),
-    vpdmax_com_mean = sum(abund * vpdmax_mean) / sum(abund)
+    tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
+    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund)
   )
 ```
 
@@ -179,9 +179,9 @@ obs_com_tbl <- obsdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
-    tmean_com_mean = sum(abund * tmean_mean) / sum(abund),
-    ppt_com_mean = sum(abund * ppt_mean) / sum(abund),
-    vpdmax_com_mean = sum(abund * vpdmax_mean) / sum(abund)
+    tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
+    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund)
   )
 ```
 
