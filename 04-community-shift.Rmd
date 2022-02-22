@@ -11,6 +11,7 @@ Furthermore, the trait variance (i.e., second central moment), using the varianc
 $$
 \mathrm{Var}(T_i) = \mathrm{E}[T_i^2] - \mathrm{E}[T_i]^2 = \frac{\sum_j A_{ij}T_j^2}{\sum_j A_{ij}} - \bar{T_i}^2.
 $$
+
 A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) =  \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
 
 Setup and load packages.
