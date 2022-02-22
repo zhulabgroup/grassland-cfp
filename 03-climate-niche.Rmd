@@ -62,7 +62,24 @@ occ_sf <- occ_sf %>%
 
 An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
 
+We can try NEON domains.
+
 ![NEON domians](images/neon-domains.png)
+
+We can also try biodiversity hotspots---California Floristic Province.
+
+```{r}
+cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>% 
+  filter(NAME == "California Floristic Province",
+         Type == "hotspot area")
+
+ggplot(map_data("county", "california")) +
+    geom_polygon(aes(long, lat, group = group),
+      fill = "white", colour = "grey50"
+    ) +
+    geom_sf(data = cfp_sf, alpha = .5) +
+    labs(x = "Longitude (deg)", y = "Latitude (deg)")
+```
 
 ## PRISM climate data
 
