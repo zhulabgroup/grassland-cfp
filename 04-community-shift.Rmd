@@ -32,30 +32,27 @@ niche_tbl <- read_rds("data/climate/niche_estimates.rds")
 
 ## Experimental data
 
-Load all experimental community data
+Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temp and precip, weighted by abundance.
 
 ```{r}
-expdat_tbl <- read_rds("data/community/all-experimental-data.rds")
-```
-
-Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temp and precip, weighted by abundance.
-
-```{r}
-exp_com_tbl <- expdat_tbl %>%
+exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
     tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
+    tmean_com_var = sum(abund * tmean_occ_mean^2) / sum(abund) - tmean_com_mean^2,
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund)
+    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund),
+    vpdmax_com_var = sum(abund * vpdmax_occ_mean^2) / sum(abund) - vpdmax_com_mean^2
   )
 ```
 
 ### JRGCE 
 
-Warming vs. ambient plots.
+Community-level mean CTI in warming vs. ambient plots.
 
-```{r, fig.cap = "Compare CTI in ambient vs. elevated warming treatments over years"}
+```{r, fig.cap = "Compare mean(CTI) in ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
   filter(
     site == "JRGCE",
@@ -70,15 +67,49 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Watered vs. ambient plots.
+Community-level CTI standard deviation in warming vs. ambient plots.
 
-```{r, fig.cap = "Compare CPI in ambient vs. elevated adding water treatments over years"}
+```{r, fig.cap = "Compare sd(CTI) in ambient vs. elevated warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "JRGCE",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level mean CPI in watered vs. ambient plots.
+
+```{r, fig.cap = "Compare mean(CPI) in ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
   filter(
     site == "JRGCE",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CPI standard deviation in watered vs. ambient plots.
+
+```{r, fig.cap = "Compare sd(CPI) in ambient vs. elevated adding water treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "JRGCE",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
@@ -132,9 +163,9 @@ exp_com_tbl %>%
 
 ### Santa Cruz IDE
 
-Plot (replicate) level CPI in ambient vs. drought treatments.
+Plot (replicate) level mean CPI in ambient vs. drought treatments.
 
-```{r, fig.cap="Compare CPI in ambient vs. drought treatments over years"}
+```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
@@ -149,12 +180,42 @@ exp_com_tbl %>%
 
 Michael said Marshall Field has lots of native species, while Arboretum and YLR are highly invaded (2/16/22). That might explain the difference among those sites. 
 
-Use VPDmax to replace total precip.
+Plot (replicate) level CPI standard deviation in ambient vs. drought treatments.
+
+```{r, fig.cap="Compare sd(CPI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Use mean VPDmax to replace total precip.
 
 ```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
   ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, hPa)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Use VPDmax standard deviation to replace total precip.
+
+```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   facet_wrap(~site) +
   labs(
