@@ -44,9 +44,9 @@ expcom_tbl <- expdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    tmean_com = sum(abund * tmean_mean) / sum(abund),
-    ppt_com = sum(abund * ppt_mean) / sum(abund),
-    vpdmax_com = sum(abund * vpdmax_mean) / sum(abund)
+    tmean_com_mean = sum(abund * tmean_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_mean) / sum(abund),
+    vpdmax_com_mean = sum(abund * vpdmax_mean) / sum(abund)
   )
 ```
 
@@ -60,7 +60,7 @@ expcom_tbl %>%
     site == "JRGCE",
     treat %in% c("____", "T___")
   ) %>%
-  ggplot(aes(year, tmean_com, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
@@ -77,7 +77,7 @@ expcom_tbl %>%
     site == "JRGCE",
     treat %in% c("____", "_P__")
   ) %>%
-  ggplot(aes(year, ppt_com, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
@@ -95,7 +95,7 @@ expcom_tbl %>%
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   mutate(year = as.factor(year)) %>%
-  ggplot(aes(tmean_com, ppt_com, group = interaction(treat, year))) +
+  ggplot(aes(tmean_com_mean, ppt_com_mean, group = interaction(treat, year))) +
   geom_point(aes(color = year), alpha = .5) +
   # stat_ellipse() +
   facet_wrap(~treat) +
@@ -116,9 +116,9 @@ expcom_tbl %>%
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   group_by(year, treat) %>%
-  summarize(tmean_com = median(tmean_com), ppt_com = median(ppt_com)) %>%
+  summarize(tmean_com_mean = median(tmean_com_mean), ppt_com_mean = median(ppt_com_mean)) %>%
   # mutate(year = as.factor(year)) %>%
-  ggplot(aes(tmean_com, ppt_com, col = year)) +
+  ggplot(aes(tmean_com_mean, ppt_com_mean, col = year)) +
   geom_path() +
   facet_wrap(~treat) +
   labs(
@@ -136,7 +136,7 @@ Plot (replicate) level CPI in ambient vs. drought treatments.
 ```{r, fig.cap="Compare CPI in ambient vs. drought treatments over years"}
 expcom_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
-  ggplot(aes(year, ppt_com, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   facet_wrap(~site) +
   labs(
@@ -153,7 +153,7 @@ Use VPDmax to replace total precip.
 ```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
 expcom_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
-  ggplot(aes(year, vpdmax_com, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   facet_wrap(~site) +
   labs(
@@ -178,9 +178,9 @@ obscom_tbl <- obsdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
-    tmean_com = sum(abund * tmean_mean) / sum(abund),
-    ppt_com = sum(abund * ppt_mean) / sum(abund),
-    vpdmax_com = sum(abund * vpdmax_mean) / sum(abund)
+    tmean_com_mean = sum(abund * tmean_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_mean) / sum(abund),
+    vpdmax_com_mean = sum(abund * vpdmax_mean) / sum(abund)
   )
 ```
 
@@ -188,7 +188,7 @@ CTI in several sites increases over years, suggesting communities are becoming "
 
 ```{r, fig.cap = "Compare CTI across sites over years"}
 obscom_tbl %>%
-  ggplot(aes(year, tmean_com, group = year)) +
+  ggplot(aes(year, tmean_com_mean, group = year)) +
   geom_boxplot() +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -200,7 +200,7 @@ CPI in several sites decreases over years, suggesting communities are becoming "
 
 ```{r, fig.cap = "Compare CPI across sites over years"}
 obscom_tbl %>%
-  ggplot(aes(year, ppt_com, group = year)) +
+  ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
   facet_wrap(~site, scales = "free_y") +
   labs(
