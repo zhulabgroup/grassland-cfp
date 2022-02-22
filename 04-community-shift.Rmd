@@ -40,7 +40,7 @@ expdat_tbl <- read_rds("data/community/all-experimental-data.rds")
 Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temp and precip, weighted by abundance.
 
 ```{r}
-expcom_tbl <- expdat_tbl %>%
+exp_com_tbl <- expdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -55,7 +55,7 @@ expcom_tbl <- expdat_tbl %>%
 Warming vs. ambient plots.
 
 ```{r, fig.cap = "Compare CTI in ambient vs. elevated warming treatments over years"}
-expcom_tbl %>%
+exp_com_tbl %>%
   filter(
     site == "JRGCE",
     treat %in% c("____", "T___")
@@ -72,7 +72,7 @@ expcom_tbl %>%
 Watered vs. ambient plots.
 
 ```{r, fig.cap = "Compare CPI in ambient vs. elevated adding water treatments over years"}
-expcom_tbl %>%
+exp_com_tbl %>%
   filter(
     site == "JRGCE",
     treat %in% c("____", "_P__")
@@ -89,7 +89,7 @@ expcom_tbl %>%
 For both warming and watering treatments, show replicates as raw data.
 
 ```{r, fig.cap="Plot (replicate) level community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
-expcom_tbl %>%
+exp_com_tbl %>%
   filter(
     site == "JRGCE",
     treat %in% c("____", "T___", "_P__", "TP__")
@@ -110,7 +110,7 @@ expcom_tbl %>%
 Because of outliers, summarize by median (same as boxplot, not mean) values of replicates from the same treatment.
 
 ```{r, fig.cap="Median community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
-expcom_tbl %>%
+exp_com_tbl %>%
   filter(
     site == "JRGCE",
     treat %in% c("____", "T___", "_P__", "TP__")
@@ -134,7 +134,7 @@ expcom_tbl %>%
 Plot (replicate) level CPI in ambient vs. drought treatments.
 
 ```{r, fig.cap="Compare CPI in ambient vs. drought treatments over years"}
-expcom_tbl %>%
+exp_com_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
@@ -151,7 +151,7 @@ Michael said Marshall Field has lots of native species, while Arboretum and YLR 
 Use VPDmax to replace total precip.
 
 ```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
-expcom_tbl %>%
+exp_com_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
   ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
@@ -174,7 +174,7 @@ obsdat_tbl <- read_rds("data/community/all-observational-data.rds")
 Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temp and precip, weighted by abundance.
 
 ```{r}
-obscom_tbl <- obsdat_tbl %>%
+obs_com_tbl <- obsdat_tbl %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
@@ -187,7 +187,7 @@ obscom_tbl <- obsdat_tbl %>%
 CTI in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
 ```{r, fig.cap = "Compare CTI across sites over years"}
-obscom_tbl %>%
+obs_com_tbl %>%
   ggplot(aes(year, tmean_com_mean, group = year)) +
   geom_boxplot() +
   facet_wrap(~site, scales = "free_y") +
@@ -199,7 +199,7 @@ obscom_tbl %>%
 CPI in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
 
 ```{r, fig.cap = "Compare CPI across sites over years"}
-obscom_tbl %>%
+obs_com_tbl %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
   facet_wrap(~site, scales = "free_y") +
