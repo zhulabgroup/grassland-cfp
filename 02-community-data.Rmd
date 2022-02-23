@@ -1734,7 +1734,9 @@ write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
 
 Incomplete data that is not used.
 
-## Combine data and clean species names
+## Finalize data preparation 
+
+### Combine data
 
 First, remove all "data" objects generated from this script. 
 
@@ -1758,7 +1760,9 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc"))
 ```
 
-Thrid, prepare a master species list.
+### Clean species names
+
+Prepare a master species list.
 
 ```{r}
 all_spp <- c(all_exp_data$species, all_obs_data$species) %>%
