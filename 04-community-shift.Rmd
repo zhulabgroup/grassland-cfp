@@ -57,6 +57,26 @@ Show as a markdown table.
 knitr::kable(site_sf)
 ```
 
+Make a map overlaying with CFP and admin boundaries. 
+
+```{r}
+cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+
+(ggplot(map_data("county", c("california", "nevada", "oregon"))) +
+  geom_polygon(aes(long, lat, group = group),
+    fill = "white", color = "grey75"
+  ) +
+  geom_sf(data = cfp_sf, alpha = .5) +
+  geom_sf(data = site_sf, color = "red", aes(text = name)) +
+  labs(x = "Longitude (deg)", y = "Latitude (deg)")
+) %>%
+  plotly::ggplotly(tooltip = "text")
+```
+
 Load niche estimates.
 
 ```{r}
