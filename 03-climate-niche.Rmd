@@ -14,6 +14,39 @@ library(sf)
 
 ## GBIF occurrence data
 
+The first question is what the geographic extent we search for occurrence records from GBIF. Joise used California for convenience, but it seems to make more sense using an ecological, not administrative, boundary.
+
+We can try NEON domains.
+
+![NEON domians](images/neon-domains.png)
+
+We can also try [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely within CFP. 
+```{r}
+site_sf <- read_rds("data/community/site-info.rds")
+knitr::kable(site_sf)
+```
+
+
+Make a map overlaying with CFP and admin boundaries. 
+
+```{r}
+cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+
+(ggplot(map_data("county", c("california", "nevada", "oregon"))) +
+  geom_polygon(aes(long, lat, group = group),
+    fill = "white", color = "grey75"
+  ) +
+  geom_sf(data = cfp_sf, alpha = .5) +
+  geom_sf(data = site_sf, color = "red", aes(text = name)) +
+  labs(x = "Longitude (deg)", y = "Latitude (deg)")
+) %>%
+  plotly::ggplotly(tooltip = "text")
+```
+
 Load the master species list.
 
 ```{r}
@@ -25,6 +58,7 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
   select(queryname, canonicalname, everything()) %>%
   distinct(canonicalname, scientificname)
 ```
+
 
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
@@ -58,27 +92,6 @@ Optional step: filter out non-California locations.
 occ_sf <- occ_sf %>%
   # select(which(st_agr(.) == "constant")) %>%
   st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
-```
-
-An outstanding question is the geographic extent to pull out GBIF data. Joise used California, but it seems to make more sense using an ecological, not administrative, boundary.
-
-We can try NEON domains.
-
-![NEON domians](images/neon-domains.png)
-
-We can also try biodiversity hotspots---California Floristic Province.
-
-```{r}
-cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>% 
-  filter(NAME == "California Floristic Province",
-         Type == "hotspot area")
-
-ggplot(map_data("county", "california")) +
-    geom_polygon(aes(long, lat, group = group),
-      fill = "white", colour = "grey50"
-    ) +
-    geom_sf(data = cfp_sf, alpha = .5) +
-    labs(x = "Longitude (deg)", y = "Latitude (deg)")
 ```
 
 ## PRISM climate data
