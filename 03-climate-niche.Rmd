@@ -21,13 +21,13 @@ We can try NEON domains.
 ![NEON domians](images/neon-domains.png)
 
 We can also try [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely within CFP. 
+
 ```{r}
 site_sf <- read_rds("data/community/site-info.rds")
 knitr::kable(site_sf)
 ```
 
-
-Make a map overlaying with CFP and admin boundaries. 
+Make a map overlaying sites with CFP and admin boundaries. 
 
 ```{r}
 cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
