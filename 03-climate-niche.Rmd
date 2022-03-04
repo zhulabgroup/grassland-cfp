@@ -267,7 +267,7 @@ This figure compares well with Josie's estimates.
 
 Add VPDmax visualization.
 
-```{r, fig.cap="Temp and VPDmax niche"}
+```{r, fig.cap="Temp and VPD niches"}
 (niche_tbl %>%
   ggplot(aes(tmean_occ_mean, vpdmax_occ_mean, text = species)) +
   geom_point(alpha = .5) +
