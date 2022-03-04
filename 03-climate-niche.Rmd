@@ -245,7 +245,7 @@ Visualize species niches in climate space.
 
 This figure compares well with Josie's estimates. 
 
-```{r josie-niche-plot, fig.cap="Species climate niches (mean and standard error) estimated by Josie"}
+```{r, fig.cap="Species climate niches (mean and standard error) estimated by Josie"}
 (read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   filter(
     species.name != "Linanthus jepsonii",
@@ -267,7 +267,7 @@ This figure compares well with Josie's estimates.
 
 Add VPDmax visualization.
 
-```{r}
+```{r, fig.cap="Temp and VPDmax niche"}
 (niche_tbl %>%
   ggplot(aes(tmean_occ_mean, vpdmax_occ_mean, text = species)) +
   geom_point(alpha = .5) +
