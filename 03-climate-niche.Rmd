@@ -12,7 +12,9 @@ library(patchwork)
 library(sf)
 ```
 
-## GBIF occurrence data
+## Get occurrence data
+
+### GBIF
 
 The first question is what the geographic extent we search for occurrence records from GBIF. Joise used California for convenience, but it seems to make more sense using an ecological, not administrative, boundary.
 
@@ -103,10 +105,14 @@ gbif_occ_df <- gbif_occ_box_df %>%
 
 write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-noissue.rds")
 ```
-## iNaturalist
-## BIEN
-## eJepson (might be more accurate compared to iNat and GBIF)
 
+### iNaturalist
+
+### BIEN
+
+### eJepson
+
+eJepson might be more accurate compared to iNat and GBIF.
 
 Make maps to visualize species.
 
@@ -123,10 +129,12 @@ Optional step: filter out non-California locations.
 #   st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
 ```
 
-## Climate data
-comment: try hydrological year
+## Get climate data
 
-# CHELSA
+TODO: try hydrological year
+
+### CHELSA
+
 Download and process CHELSA climatology data v2.1. # https://chelsa-climate.org/downloads/
 
 shortname: bio1
@@ -169,8 +177,9 @@ vpdmax_ras <- raster::raster(paste0(chelsa_path, "vpd_max.tif"))
 raster::proj4string(tmean_ras) # check that projection is WGS84
 ```
 
-# Daymet (not running)
-Download and process Daymet data.
+### Daymet
+
+Download and process Daymet data (not running).
 
 ```{r,eval=F}
 bbox <- st_bbox(cfp_sf)
@@ -199,9 +208,9 @@ for (param in param_list) {
 }
 ```
 
-## PRISM (not running)
+### PRISM
 
-Download and process PRISM using the prism package.
+Download and process PRISM using the prism package (not running).
 
 ```{r, eval=F}
 prism::prism_set_dl_dir("data/climate/prism/")
@@ -224,7 +233,7 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
   raster::raster()
 ```
 
-# Extract data at specific sites
+## Extract data at specific sites
 
 Extract climate values using longitude and latitude. But first, convert GBIF coordinates in WGS84 to the projection of climate data.
 
@@ -243,7 +252,7 @@ occ_sf <- occ_sf %>%
   )
 ```
 
-## Species climate niches
+## Quantify species climate niches
 
 Visualize individual species occurrence in climate space.
 
