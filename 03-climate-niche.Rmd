@@ -55,7 +55,7 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
   group_by(queryname) %>%
   slice_head(n = 1) %>% # choose the top 1
   ungroup() %>%
-  select(queryname, canonicalname, everything()) %>%
+  dplyr::select(queryname, canonicalname, everything()) %>%
   distinct(canonicalname, scientificname)
 ```
 
@@ -63,42 +63,147 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
 ```{r, eval = FALSE}
-gbif_occ <- spp_tbl$canonicalname %>%
-  spocc::occ(
-    query = ., from = "gbif", has_coords = TRUE, limit = 1e6,
-    gbifopts = list(
-      continent = "north_america",
-      country = "US",
-      stateProvince = "California",
-      hasGeospatialIssue = FALSE
-    )
-  )
 
-tibble(queryName = spp_tbl$canonicalname, gbif = gbif_occ$gbif$data) %>%
-  unnest(cols = c(gbif)) %>%
-  write_rds("data/occurrence/gbif/all-spp-california.rds")
+library(foreach)
+library(doSNOW)
+num_cores <- 22 # socs-stats has 44 cores
+cl <- makeCluster(num_cores)
+registerDoSNOW(cl)
+
+gbif_occ_box_list <-
+  foreach(
+    i = 1:length(spp_tbl$canonicalname),
+    .packages = c("spocc", "sf", "tidyverse")
+  ) %dopar% {
+    sp <- spp_tbl$canonicalname[i]
+    res <- occ(
+      query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
+      geometry = st_bbox(cfp_sf),
+      gbifopts = list(
+        hasGeospatialIssue = FALSE
+      )
+    )
+    print(i)
+    tibble(queryName = sp, gbif = res$gbif$data) %>%
+      unnest(cols = c(gbif))
+  }
+
+gbif_occ_box_df <- bind_rows(gbif_occ_box_list)
+
+occ_sf_box <- st_as_sf(
+  x = gbif_occ_box_df %>% dplyr::select(key, longitude, latitude),
+  coords = c("longitude", "latitude"),
+  crs = 4326
+)
+
+occ_sf <- st_intersection(occ_sf_box, cfp_sf)
+
+gbif_occ_df <- gbif_occ_box_df %>%
+  right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
+
+write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-noissue.rds")
 ```
+## iNaturalist
+## BIEN
+## eJepson (might be more accurate compared to iNat and GBIF)
+
 
 Make maps to visualize species.
 
 ```{r}
-occ_sf <- read_rds("data/occurrence/gbif/all-spp-california.rds") %>%
+occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-noissue.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
 Optional step: filter out non-California locations.
 
 ```{r}
-occ_sf <- occ_sf %>%
-  # select(which(st_agr(.) == "constant")) %>%
-  st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
+# occ_sf <- occ_sf %>%
+#   # select(which(st_agr(.) == "constant")) %>%
+#   st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
 ```
 
-## PRISM climate data
+## Climate data
+comment: try hydrological year
+
+# CHELSA
+Download and process CHELSA climatology data v2.1. # https://chelsa-climate.org/downloads/
+
+shortname: bio1
+longname: mean annual air temperature
+unit: °C
+scale: 0.1
+offset: -273.15
+explanation: mean annual daily mean air temperatures averaged over 1 year
+
+shortname: bio12
+longname: annual precipitation amount
+unit: kg m-2 year-1
+scale: 0.1
+offset: 0
+explanation: Accumulated precipitation amount over 1 year
+
+shortname: vpd_max
+longname: Max monthly vapor pressure deficit
+unit: Pa
+scale: 0.1
+offset: 0
+explanation: The highest monthly vapor pressure deficit
+```{r, eval=F}
+param_list <- c("bio1", "bio12", "vpd_max")
+chelsa_path <- "data/climate/chelsa/"
+for (param in param_list) {
+  url <- paste0("https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V2/GLOBAL/climatologies/1981-2010/bio/CHELSA_", param, "_1981-2010_V.2.1.tif")
+  httr::GET(url = url, httr::write_disk(path = paste0(chelsa_path, param, ".tif"), overwrite = TRUE))
+  print(param)
+}
+```
+Daily and monthly CHELSA data also available.
+
+Load raster data using the raster package.
+```{r}
+chelsa_path <- "data/climate/chelsa/"
+tmean_ras <- raster::raster(paste0(chelsa_path, "bio1.tif"))
+ppt_ras <- raster::raster(paste0(chelsa_path, "bio12.tif"))
+vpdmax_ras <- raster::raster(paste0(chelsa_path, "vpd_max.tif"))
+raster::proj4string(tmean_ras) # check that projection is WGS84
+```
+
+# Daymet (not running)
+Download and process Daymet data.
+
+```{r,eval=F}
+bbox <- st_bbox(cfp_sf)
+param_list <- c("tmax", "tmin", "prcp")
+for (param in param_list) {
+  daymet_param_path <- paste0("data/climate/daymet/", param, "/")
+  if (!dir.exists(daymet_param_path)) {
+    dir.create(daymet_param_path, recursive = T)
+  }
+  for (year in 1980:2020) {
+    # url<-paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1840/daymet_v4_daily_na_",param,"_",year,".nc") # daily data are probably too much. takes too long to download and process.
+    url <- paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1855/daymet_v4_", param, "_monavg_na_", year, ".nc")
+    httr::GET(url = url, httr::write_disk(path = paste0(daymet_param_path, year, ".nc"), overwrite = TRUE))
+    print(paste0(param, ",", year))
+  }
+}
+
+for (param in param_list) {
+  daymet_param_path <- paste0("data/climate/daymet/", param, "/")
+  files <- list.files(daymet_param_path, full.names = T)
+  for (i in 1:length(files)) {
+    file <- files[i]
+    bri <- raster::brick(file)
+    # potentially do other calculations
+  }
+}
+```
+
+## PRISM (not running)
 
 Download and process PRISM using the prism package.
 
-```{r}
+```{r, eval=F}
 prism::prism_set_dl_dir("data/climate/prism/")
 prism::get_prism_normals("tmean", "800m", annual = TRUE, keepZip = FALSE)
 prism::get_prism_normals("ppt", "800m", annual = TRUE, keepZip = FALSE)
@@ -107,7 +212,7 @@ prism::get_prism_normals("vpdmax", "800m", annual = TRUE, keepZip = FALSE)
 
 Load raster data using the raster package.
 
-```{r}
+```{r, eval=F}
 tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
   prism::pd_to_file() %>%
   raster::raster()
@@ -119,12 +224,14 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
   raster::raster()
 ```
 
-Extract climate values using longitude and latitude. But first, convert GBIF coordinates in WGS84 to PRISM coordinates in NAD83.
+# Extract data at specific sites
+
+Extract climate values using longitude and latitude. But first, convert GBIF coordinates in WGS84 to the projection of climate data.
 
 ```{r}
 occ_sf <- occ_sf %>%
-  st_transform(crs = st_crs(tmean_ras)) %>% # NAD83
-  select(species = queryName)
+  st_transform(crs = st_crs(tmean_ras)) %>% # WGS84 for CHELSA, NAD83 for PRISM
+  dplyr::select(species = queryName)
 ```
 
 ```{r}
@@ -141,10 +248,6 @@ occ_sf <- occ_sf %>%
 Visualize individual species occurrence in climate space.
 
 ```{r calc-spp-niche-parallel, eval=FALSE}
-library(foreach)
-library(doParallel)
-num_cores <- 22 # socs-stats has 44 cores
-registerDoParallel(num_cores)
 
 # gbif summary
 tmean_rng <- range(occ_sf$tmean)
@@ -159,10 +262,9 @@ n_exp_tot <- nrow(exp_tbl)
 obs_tbl <- read_rds("data/community/all-observational-data.rds")
 n_obs_tot <- nrow(obs_tbl)
 
-niche_gg <- foreach(
-  sp = unique(occ_sf$species),
-  .packages = "tidyverse"
-) %dopar% {
+niche_gg <- vector(mode = "list")
+for (i in 1:length(unique(occ_sf$species))) {
+  sp <- unique(occ_sf$species)[i]
   occ_sp_sf <- filter(occ_sf, species == sp)
   n_occ_sp <- nrow(occ_sp_sf)
 
@@ -173,18 +275,21 @@ niche_gg <- foreach(
     filter(species == sp) %>%
     nrow()
 
-  occ_geog <- ggplot(map_data("county", "california")) +
-    geom_polygon(aes(long, lat, group = group),
-      fill = "white", colour = "grey50"
-    ) +
+  occ_geog <- ggplot(
+    # map_data("county",c( "california","nevada","oregon"))
+  ) +
+    # geom_polygon(aes(long, lat, group = group),
+    #   fill = "white", colour = "grey50"
+    # ) +
     geom_sf(data = occ_sp_sf, alpha = .5) +
+    geom_sf(data = cfp_sf, alpha = 0, col = "red") +
     labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
     theme(plot.title = element_text(face = "italic"))
 
   occ_clim <- ggplot(occ_sp_sf, aes(tmean, ppt)) +
     geom_point(alpha = .5) +
     geom_rug(alpha = .5) +
-    stat_ellipse() +
+    stat_ellipse(col = "red") +
     lims(x = tmean_rng, y = ppt_rng) +
     # scale_y_log10() + # log scale ppt
     labs(
@@ -196,26 +301,25 @@ niche_gg <- foreach(
       )
     )
 
-  occ_geog + occ_clim # no need to print(); will slow down
+  print(sp)
+  niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
 }
 
 names(niche_gg) <- unique(occ_sf$species)
-
-stopImplicitCluster()
 ```
 
 Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-chelsa.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
 
 Summarize species climate niches (mean, sd, etc.).
 
-```{r}
+```{r, eval=F}
 niche_tbl <- occ_sf %>%
   as_tibble() %>% # drop sf geometry--too slow and not needed for this summary
   group_by(species) %>%
@@ -225,6 +329,10 @@ niche_tbl <- occ_sf %>%
     ppt_occ_mean = mean(ppt, na.rm = TRUE), ppt_occ_sd = sd(ppt, na.rm = TRUE),
     vpdmax_occ_mean = mean(vpdmax, na.rm = TRUE), vpdmax_occ_sd = sd(vpdmax, na.rm = TRUE),
   )
+```
+
+```{r}
+niche_tbl <- read_rds("data/climate/niche_estimates_cfp.rds")
 ```
 
 Visualize species niches in climate space.
@@ -252,7 +360,7 @@ This figure compares well with Josie's estimates.
     species.name != "Linanthus latisectus",
     relcov >= 0
   ) %>%
-  select(species = species.name, guild, tmp = meanT, ppt = meanp) %>%
+  dplyr::select(species = species.name, guild, tmp = meanT, ppt = meanp) %>%
   distinct() %>%
   ggplot(aes(tmp, ppt, text = species)) +
   geom_point(alpha = .5) +
@@ -282,5 +390,5 @@ Add VPDmax visualization.
 Save niche estimates.
 
 ```{r}
-write_rds(niche_tbl, "data/climate/niche_estimates.rds")
+write_rds(niche_tbl, "data/climate/niche_estimates_cfp.rds")
 ```
