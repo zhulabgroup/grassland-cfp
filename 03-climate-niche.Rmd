@@ -37,7 +37,6 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
     NAME == "California Floristic Province",
     Type == "hotspot area"
   )
-
 (ggplot(map_data("county", c("california", "nevada", "oregon"))) +
   geom_polygon(aes(long, lat, group = group),
     fill = "white", color = "grey75"
@@ -65,13 +64,11 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
 
 ```{r, eval = FALSE}
-
 library(foreach)
 library(doSNOW)
 num_cores <- 22 # socs-stats has 44 cores
 cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
-
 gbif_occ_box_list <-
   foreach(
     i = 1:length(spp_tbl$canonicalname),
@@ -89,20 +86,15 @@ gbif_occ_box_list <-
     tibble(queryName = sp, gbif = res$gbif$data) %>%
       unnest(cols = c(gbif))
   }
-
 gbif_occ_box_df <- bind_rows(gbif_occ_box_list)
-
 occ_sf_box <- st_as_sf(
   x = gbif_occ_box_df %>% dplyr::select(key, longitude, latitude),
   coords = c("longitude", "latitude"),
   crs = 4326
 )
-
 occ_sf <- st_intersection(occ_sf_box, cfp_sf)
-
 gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-
 write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-noissue.rds")
 ```
 
@@ -191,12 +183,16 @@ for (param in param_list) {
   }
   for (year in 1980:2020) {
     # url<-paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1840/daymet_v4_daily_na_",param,"_",year,".nc") # daily data are probably too much. takes too long to download and process.
-    url <- paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1855/daymet_v4_", param, "_monavg_na_", year, ".nc")
+    if (param == "prcp") {
+    url<-paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1855/daymet_v4_",param,"_monttl_na_",year,".nc")
+  }
+    if (param %in% c("tmax", "tmin")) {
+      url<-paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1855/daymet_v4_",param,"_monavg_na_",year,".nc")
+    }
     httr::GET(url = url, httr::write_disk(path = paste0(daymet_param_path, year, ".nc"), overwrite = TRUE))
     print(paste0(param, ",", year))
   }
 }
-
 for (param in param_list) {
   daymet_param_path <- paste0("data/climate/daymet/", param, "/")
   files <- list.files(daymet_param_path, full.names = T)
@@ -257,33 +253,27 @@ occ_sf <- occ_sf %>%
 Visualize individual species occurrence in climate space.
 
 ```{r calc-spp-niche-parallel, eval=FALSE}
-
 # gbif summary
 tmean_rng <- range(occ_sf$tmean)
 ppt_rng <- range(occ_sf$ppt)
 n_occ_tot <- nrow(occ_sf)
-
 # exp data summary
 exp_tbl <- read_rds("data/community/all-experimental-data.rds")
 n_exp_tot <- nrow(exp_tbl)
-
 # obs data summary
 obs_tbl <- read_rds("data/community/all-observational-data.rds")
 n_obs_tot <- nrow(obs_tbl)
-
 niche_gg <- vector(mode = "list")
 for (i in 1:length(unique(occ_sf$species))) {
   sp <- unique(occ_sf$species)[i]
   occ_sp_sf <- filter(occ_sf, species == sp)
   n_occ_sp <- nrow(occ_sp_sf)
-
   n_exp_sp <- exp_tbl %>%
     filter(species == sp) %>%
     nrow()
   n_obs_sp <- obs_tbl %>%
     filter(species == sp) %>%
     nrow()
-
   occ_geog <- ggplot(
     # map_data("county",c( "california","nevada","oregon"))
   ) +
@@ -294,7 +284,6 @@ for (i in 1:length(unique(occ_sf$species))) {
     geom_sf(data = cfp_sf, alpha = 0, col = "red") +
     labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
     theme(plot.title = element_text(face = "italic"))
-
   occ_clim <- ggplot(occ_sp_sf, aes(tmean, ppt)) +
     geom_point(alpha = .5) +
     geom_rug(alpha = .5) +
@@ -309,11 +298,9 @@ for (i in 1:length(unique(occ_sf$species))) {
         "n_obs = ", n_obs_sp, " (", round(n_obs_sp / n_obs_tot * 100, digits = 3), "%)"
       )
     )
-
   print(sp)
   niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
 }
-
 names(niche_gg) <- unique(occ_sf$species)
 ```
 
