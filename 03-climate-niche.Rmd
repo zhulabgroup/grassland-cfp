@@ -115,10 +115,10 @@ occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-noissue.rds") %>%
 
 Optional step: filter out non-California locations.
 
-```{r}
-# occ_sf <- occ_sf %>%
-#   # select(which(st_agr(.) == "constant")) %>%
-#   st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
+```{r, eval=FALSE}
+occ_sf <- occ_sf %>%
+  # select(which(st_agr(.) == "constant")) %>%
+  st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
 ```
 
 ## Get climate data

@@ -27,7 +27,7 @@ library(tidyverse)
 Load niche estimates.
 
 ```{r}
-niche_tbl <- read_rds("data/climate/niche_estimates.rds")
+niche_tbl <- read_rds("data/climate/niche-estimates-cfp.rds")
 ```
 
 ## Experimental data
@@ -311,7 +311,7 @@ obs_com_tbl %>%
 
 CPI community-level standard deviation.
 
-```{r, fig.cap="Compare mean(CPI) across sites over years"}
+```{r, fig.cap="Compare sd(CPI) across sites over years"}
 obs_com_tbl %>%
   ggplot(aes(year, sqrt(ppt_com_var), group = year)) +
   geom_boxplot() +
