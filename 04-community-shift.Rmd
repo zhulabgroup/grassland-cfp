@@ -41,8 +41,10 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   summarize(
     tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
     tmean_com_var = sum(abund * tmean_occ_mean^2) / sum(abund) - tmean_com_mean^2,
+    tmean_occ_upr_com_mean = sum(abund * tmean_occ_upr) / sum(abund),
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
     ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    ppt_occ_lwr_com_mean = sum(abund * ppt_occ_lwr) / sum(abund),
     vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund),
     vpdmax_com_var = sum(abund * vpdmax_occ_mean^2) / sum(abund) - vpdmax_com_mean^2
   )
@@ -79,6 +81,23 @@ exp_com_tbl %>%
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level mean upper temp niche limit in warming vs. ambient plots.
+
+```{r, fig.cap="Compare mean(upper temp) in ambient vs. elevated warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "JRGCE",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, tmean_occ_upr_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community average upper temperature (degC)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -128,6 +147,23 @@ exp_com_tbl %>%
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level mean lower precip niche limit in watered vs. ambient plots.
+
+```{r, fig.cap="Compare mean(upper temp) in ambient vs. elevated warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "JRGCE",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, ppt_occ_lwr_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community average lower precipitation (mm)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
