@@ -323,26 +323,43 @@ niche_tbl <- occ_sf %>%
     occ_n = n(),
     tmean_occ_mean = mean(tmean, na.rm = TRUE),
     tmean_occ_median = median(tmean, na.rm = TRUE),
-    tmean_occ_sd = sd(tmean, na.rm = TRUE),
+    tmean_occ_lwr = quantile(tmean, .05, na.rm = TRUE),
     tmean_occ_upr = quantile(tmean, .95, na.rm = TRUE), # hot limit, suggested by Susan Harrison
+    tmean_occ_sd = sd(tmean, na.rm = TRUE),
     ppt_occ_mean = mean(ppt, na.rm = TRUE),
     ppt_occ_median = median(ppt, na.rm = TRUE),
-    ppt_occ_sd = sd(ppt, na.rm = TRUE),
     ppt_occ_lwr = quantile(ppt, .05, na.rm = TRUE), # dry limit, suggested by Susan Harrison
+    ppt_occ_upr = quantile(ppt, .95, na.rm = TRUE),
+    ppt_occ_sd = sd(ppt, na.rm = TRUE),
     vpdmax_occ_mean = mean(vpdmax, na.rm = TRUE),
     vpdmax_occ_sd = sd(vpdmax, na.rm = TRUE),
   )
 ```
 
+How correlated are these different summary statistics (mean, median, upper, and lower quantiles)?
+
+```{r fig.cap="Species temperature niche statistics (degC)"}
+GGally::ggpairs(niche_tbl %>%
+  select(tmean_occ_mean, tmean_occ_median, tmean_occ_lwr, tmean_occ_upr),
+columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+)
+```
+
+```{r fig.cap="Species precipitation niche statistics (mm)"}
+GGally::ggpairs(niche_tbl %>%
+  select(ppt_occ_mean, ppt_occ_median, ppt_occ_lwr, ppt_occ_upr),
+columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+)
+```
+
 Visualize species niches in climate space.
 
-```{r kai-niche-mean-sd, fig.cap="Species climate niches; black: mean and standard error, red: upper temp (hot) limit and lower precip (dry) limit"}
+```{r kai-niche-mean-sd, fig.cap="Species climate niches; mean and standard error"}
 (niche_tbl %>%
   ggplot(aes(text = species)) +
   geom_point(aes(tmean_occ_mean, ppt_occ_mean), alpha = .5) +
   geom_errorbarh(aes(xmin = tmean_occ_mean - tmean_occ_sd / sqrt(occ_n), xmax = tmean_occ_mean + tmean_occ_sd / sqrt(occ_n), y = ppt_occ_mean), alpha = .3) +
   geom_errorbar(aes(x = tmean_occ_mean, ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
-  geom_point(aes(tmean_occ_upr, ppt_occ_lwr), col = "red", alpha = .5) + # hot and dry limits, suggested by Susan Harrison
   labs(
     x = "Species occurrence mean temperature (degC)",
     y = "Species occurrence mean precipitation (mm)"
