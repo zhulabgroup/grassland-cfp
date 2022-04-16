@@ -95,7 +95,7 @@ occ_sf_box <- st_as_sf(
 occ_sf <- st_intersection(occ_sf_box, cfp_sf)
 gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-noissue.rds")
+write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-03-23.rds")
 ```
 
 ### iNaturalist
@@ -109,7 +109,7 @@ eJepson might be more accurate compared to iNat and GBIF.
 Make maps to visualize species.
 
 ```{r}
-occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-noissue.rds") %>%
+occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-03-23.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
