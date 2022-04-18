@@ -128,28 +128,19 @@ TODO: try hydrological year
 
 ### CHELSA
 
-Download and process [CHELSA climatology data v2.1](https://chelsa-climate.org/downloads/). We used annual data of temperature and precipitation (see metadata below). Daily and monthly data are also available.
+Download and process [CHELSA climatology data v2.1](https://chelsa-climate.org/downloads/). We used annual data of temperature and precipitation (see [metadata](https://chelsa-climate.org/bioclim/) below). Daily and monthly data are also available.
 
-shortname: bio1
-longname: mean annual air temperature
-unit: °C
-scale: 0.1
-offset: -273.15
-explanation: mean annual daily mean air temperatures averaged over 1 year
+```{r, echo=FALSE}
+tribble(
+  ~shortname, ~longname, ~unit, ~scale, ~offset, ~explanation,
+  "bio1", "mean annual air temperature", "°C", "0.1", "-273.15", "mean annual daily mean air temperatures averaged over 1 year",
+  "bio12", "annual precipitation amount", "kg m^-2^ year^-1^", "0.1", "0", "accumulated precipitation amount over 1 year",
+  "vpd_max", "max monthly vapor pressure deficit", "Pa", "0.1", "0", "the highest monthly vapor pressure deficit"
+) %>%
+  knitr::kable(caption = "CHELSA climatology data used in the project")
+```
 
-shortname: bio12
-longname: annual precipitation amount
-unit: kg m-2 year-1
-scale: 0.1
-offset: 0
-explanation: Accumulated precipitation amount over 1 year
-
-shortname: vpd_max
-longname: Max monthly vapor pressure deficit
-unit: Pa
-scale: 0.1
-offset: 0
-explanation: The highest monthly vapor pressure deficit
+Download data (not running).
 
 ```{r, eval=FALSE}
 param_list <- c("bio1", "bio12", "vpd_max")
@@ -164,10 +155,9 @@ for (param in param_list) {
 Load raster data using the raster package.
 
 ```{r}
-chelsa_path <- "data/climate/chelsa/"
-tmean_ras <- raster::raster(paste0(chelsa_path, "bio1.tif"))
-ppt_ras <- raster::raster(paste0(chelsa_path, "bio12.tif"))
-vpdmax_ras <- raster::raster(paste0(chelsa_path, "vpd_max.tif"))
+tmean_ras <- raster::raster("data/climate/chelsa/bio1.tif")
+ppt_ras <- raster::raster("data/climate/chelsa/bio12.tif")
+vpdmax_ras <- raster::raster("data/climate/chelsa/vpd_max.tif")
 raster::proj4string(tmean_ras) # check that projection is WGS84
 ```
 
@@ -252,6 +242,8 @@ occ_sf <- occ_sf %>%
 
 ## Quantify species climate niches
 
+### Individual species
+
 Visualize individual species occurrence in climate space.
 
 ```{r, eval=FALSE}
@@ -332,6 +324,8 @@ print(niche_gg)
 dev.off()
 ```
 
+### All species
+
 Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
@@ -387,6 +381,17 @@ niche_tbl %>%
   )
 ```
 
+How correlated are these different dimensions of the niche space (using mean as summary)?
+
+```{r}
+niche_tbl %>%
+  select(tmean_occ_mean, ppt_occ_mean, vpdmax_occ_mean) %>%
+  GGally::ggpairs(
+    title = "Species niche dimensions",
+    columnLabels = c("Temperature (degC)", "Precipitation (mm)", "VPDmax (Pa)")
+  )
+```
+
 Visualize species niches in climate space.
 
 ```{r kai-niche-mean-sd, fig.cap="Species climate niches; mean and standard error"}
@@ -425,22 +430,10 @@ This figure compares well with Josie's estimates.
   plotly::ggplotly(tooltip = "text")
 ```
 
-Add VPDmax visualization.
-
-```{r, fig.cap="Temp and VPD niches"}
-(niche_tbl %>%
-  ggplot(aes(tmean_occ_mean, vpdmax_occ_mean, text = species)) +
-  geom_point(alpha = .5) +
-  labs(
-    x = "Species occurrence mean temperature (degC)",
-    y = "Species occurrence max VPD (hPa)"
-  )
-) %>%
-  plotly::ggplotly(tooltip = "text")
-```
-
-Save niche estimates.
+Save niche estimates with mean and SD statistics.
 
 ```{r}
-write_rds(niche_tbl, "data/climate/niche-estimates-cfp.rds")
+niche_tbl %>%
+  select(occ_n, tmean_occ_mean, tmean_occ_sd, ppt_occ_mean, ppt_occ_sd, vpdmax_occ_mean, vpdmax_occ_sd) %>%
+  write_rds("data/occurrence/niche-estimates-cfp-2022-04-18.rds")
 ```
