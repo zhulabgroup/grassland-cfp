@@ -14,15 +14,7 @@ library(sf)
 
 ## Get occurrence data
 
-### GBIF
-
-The first question is what the geographic extent we search for occurrence records from GBIF. Joise used California for convenience, but it seems to make more sense using an ecological, not administrative, boundary.
-
-We can try NEON domains.
-
-![NEON domians](images/neon-domains.png)
-
-We can also try [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely within CFP. 
+The first question is what the geographic extent that we search for occurrence records. Joise used the state of California for convenience, but it seems to make more sense using an ecological, not administrative, boundary. We thought about using NEON domains. After much discussion, we decided to use the [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely across CFP. 
 
 ```{r}
 site_sf <- read_rds("data/community/site-info.rds")
@@ -47,6 +39,8 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
 ) %>%
   plotly::ggplotly(tooltip = "text")
 ```
+
+### GBIF
 
 Load the master species list.
 
