@@ -128,7 +128,7 @@ TODO: try hydrological year
 
 ### CHELSA
 
-Download and process CHELSA climatology data v2.1. # https://chelsa-climate.org/downloads/
+Download and process [CHELSA climatology data v2.1](https://chelsa-climate.org/downloads/). We used annual data of temperature and precipitation (see metadata below). Daily and monthly data are also available.
 
 shortname: bio1
 longname: mean annual air temperature
@@ -150,7 +150,8 @@ unit: Pa
 scale: 0.1
 offset: 0
 explanation: The highest monthly vapor pressure deficit
-```{r, eval=F}
+
+```{r, eval=FALSE}
 param_list <- c("bio1", "bio12", "vpd_max")
 chelsa_path <- "data/climate/chelsa/"
 for (param in param_list) {
@@ -159,9 +160,9 @@ for (param in param_list) {
   print(param)
 }
 ```
-Daily and monthly CHELSA data also available.
 
 Load raster data using the raster package.
+
 ```{r}
 chelsa_path <- "data/climate/chelsa/"
 tmean_ras <- raster::raster(paste0(chelsa_path, "bio1.tif"))
@@ -174,7 +175,7 @@ raster::proj4string(tmean_ras) # check that projection is WGS84
 
 Download and process Daymet data (not running).
 
-```{r,eval=F}
+```{r,eval=FALSE}
 bbox <- st_bbox(cfp_sf)
 param_list <- c("tmax", "tmin", "prcp")
 for (param in param_list) {
@@ -209,7 +210,7 @@ for (param in param_list) {
 
 Download and process PRISM using the prism package (not running).
 
-```{r, eval=F}
+```{r, eval=FALSE}
 prism::prism_set_dl_dir("data/climate/prism/")
 prism::get_prism_normals("tmean", "800m", annual = TRUE, keepZip = FALSE)
 prism::get_prism_normals("ppt", "800m", annual = TRUE, keepZip = FALSE)
@@ -218,7 +219,7 @@ prism::get_prism_normals("vpdmax", "800m", annual = TRUE, keepZip = FALSE)
 
 Load raster data using the raster package.
 
-```{r, eval=F}
+```{r, eval=FALSE}
 tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
   prism::pd_to_file() %>%
   raster::raster()
@@ -232,7 +233,7 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
 
 ## Extract data at specific sites
 
-Extract climate values using longitude and latitude. But first, convert GBIF coordinates in WGS84 to the projection of climate data.
+Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA rasters
 
 ```{r}
 occ_sf <- occ_sf %>%
