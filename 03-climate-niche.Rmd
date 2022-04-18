@@ -18,7 +18,9 @@ The first question is what the geographic extent that we search for occurrence r
 
 ```{r}
 site_sf <- read_rds("data/community/site-info.rds")
-knitr::kable(site_sf)
+site_sf %>% 
+  as_tibble() %>% # drop geometry
+  knitr::kable()
 ```
 
 Make a map overlaying sites with CFP and admin boundaries. 
@@ -221,7 +223,7 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
   raster::raster()
 ```
 
-## Extract data at specific sites
+## Extract data at occurrence sites
 
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA rasters
 
