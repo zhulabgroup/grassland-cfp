@@ -300,9 +300,11 @@ for (i in 1:length(unique(occ_sf$species))) {
     geom_point(alpha = .5, size = .5) +
     geom_rug(alpha = .5) +
     stat_ellipse(col = "red") +
-    geom_point(data = occ_sp_stat, 
-               aes(x = tmean_occ_mean, y = ppt_occ_mean), 
-               shape = 3, col = "red", size = 10) +
+    geom_point(
+      data = occ_sp_stat,
+      aes(x = tmean_occ_mean, y = ppt_occ_mean),
+      shape = 3, col = "red", size = 10
+    ) +
     lims(x = tmean_rng, y = ppt_rng) +
     # scale_y_log10() + # log scale ppt
     labs(
@@ -332,7 +334,7 @@ dev.off()
 
 Summarize species climate niches (mean, sd, etc.).
 
-```{r, eval=T}
+```{r}
 niche_tbl <- occ_sf %>%
   as_tibble() %>% # drop sf geometry--too slow and not needed for this summary
   group_by(species) %>%
@@ -356,17 +358,21 @@ niche_tbl <- occ_sf %>%
 How correlated are these different summary statistics (mean, median, upper, and lower quantiles)?
 
 ```{r fig.cap="Species temperature niche statistics (degC)"}
-GGally::ggpairs(niche_tbl %>%
-  select(tmean_occ_mean, tmean_occ_median, tmean_occ_lwr, tmean_occ_upr),
-columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
-)
+niche_tbl %>%
+  select(tmean_occ_mean, tmean_occ_median, tmean_occ_lwr, tmean_occ_upr) %>%
+  GGally::ggpairs(
+    title = "Species temperature niche (degC)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)"),
+  )
 ```
 
 ```{r fig.cap="Species precipitation niche statistics (mm)"}
-GGally::ggpairs(niche_tbl %>%
-  select(ppt_occ_mean, ppt_occ_median, ppt_occ_lwr, ppt_occ_upr),
-columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
-)
+niche_tbl %>%
+  select(ppt_occ_mean, ppt_occ_median, ppt_occ_lwr, ppt_occ_upr) %>%
+  GGally::ggpairs(
+    title = "Species precipitation niche (mm)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+  )
 ```
 
 Visualize species niches in climate space.
