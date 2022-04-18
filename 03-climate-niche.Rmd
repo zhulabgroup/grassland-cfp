@@ -99,6 +99,21 @@ occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-03-23.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
+Make a map to show all occurrence locations (randomly sample 10% to save render time).
+
+```{r, eval=FALSE}
+ggplot(map_data("county", c("california", "nevada", "oregon"))) +
+  geom_polygon(aes(long, lat, group = group),
+    fill = "white", color = "grey75"
+  ) +
+  geom_sf(data = cfp_sf, alpha = .5) +
+  geom_sf(
+    data = occ_sf %>% slice_sample(prop = .1), # randomly sample 10%, otherwise too slow to render
+    color = "black", alpha = .1, size = .1
+  ) +
+  labs(x = "Longitude (deg)", y = "Latitude (deg)")
+```
+
 ### iNaturalist
 
 ### BIEN
