@@ -18,7 +18,7 @@ The first question is what the geographic extent that we search for occurrence r
 
 ```{r}
 site_sf <- read_rds("data/community/site-info.rds")
-site_sf %>% 
+site_sf %>%
   as_tibble() %>% # drop geometry
   knitr::kable()
 ```
