@@ -29,6 +29,7 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
     NAME == "California Floristic Province",
     Type == "hotspot area"
   )
+
 (ggplot(map_data("county", c("california", "nevada", "oregon"))) +
   geom_polygon(aes(long, lat, group = group),
     fill = "white", color = "grey75"
@@ -54,8 +55,7 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
   distinct(canonicalname, scientificname)
 ```
 
-
-Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data.
+Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
 
 ```{r, eval = FALSE}
 library(foreach)
@@ -92,6 +92,13 @@ gbif_occ_df <- gbif_occ_box_df %>%
 write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-03-23.rds")
 ```
 
+Read GBIF occurrence data as a sf object. 
+
+```{r}
+occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-03-23.rds") %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+```
+
 ### iNaturalist
 
 ### BIEN
@@ -99,21 +106,6 @@ write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-03-23.rds")
 ### eJepson
 
 eJepson might be more accurate compared to iNat and GBIF.
-
-Make maps to visualize species.
-
-```{r}
-occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-03-23.rds") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
-```
-
-Optional step: filter out non-California locations.
-
-```{r, eval=FALSE}
-occ_sf <- occ_sf %>%
-  # select(which(st_agr(.) == "constant")) %>%
-  st_intersection(USAboundaries::us_states(states = "California") %>% st_geometry()) # WGS 84
-```
 
 ## Get climate data
 
