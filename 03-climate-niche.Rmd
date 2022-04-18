@@ -89,19 +89,19 @@ occ_sf_box <- st_as_sf(
 occ_sf <- st_intersection(occ_sf_box, cfp_sf)
 gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-03-23.rds")
+write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-18.rds")
 ```
 
 Read GBIF occurrence data as a sf object. 
 
 ```{r}
-occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-03-23.rds") %>%
+occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-18.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
 Make a map to show all occurrence locations (randomly sample 10% to save render time).
 
-```{r, eval=FALSE}
+```{r}
 ggplot(map_data("county", c("california", "nevada", "oregon"))) +
   geom_polygon(aes(long, lat, group = group),
     fill = "white", color = "grey75"
@@ -254,7 +254,7 @@ occ_sf <- occ_sf %>%
 
 Visualize individual species occurrence in climate space.
 
-```{r calc-spp-niche-parallel, eval=FALSE}
+```{r, eval=FALSE}
 # gbif summary
 tmean_rng <- range(occ_sf$tmean)
 ppt_rng <- range(occ_sf$ppt)
@@ -266,43 +266,58 @@ n_exp_tot <- nrow(exp_tbl)
 obs_tbl <- read_rds("data/community/all-observational-data.rds")
 n_obs_tot <- nrow(obs_tbl)
 niche_gg <- vector(mode = "list")
+
 for (i in 1:length(unique(occ_sf$species))) {
   sp <- unique(occ_sf$species)[i]
   occ_sp_sf <- filter(occ_sf, species == sp)
-  n_occ_sp <- nrow(occ_sp_sf)
+
+  occ_sp_stat <- occ_sp_sf %>%
+    as_tibble() %>%
+    summarise(
+      occ_n = n(),
+      tmean_occ_mean = mean(tmean, na.rm = TRUE),
+      tmean_occ_sd = sd(tmean, na.rm = TRUE),
+      ppt_occ_mean = mean(ppt, na.rm = TRUE),
+      ppt_occ_sd = sd(ppt, na.rm = TRUE)
+    )
   n_exp_sp <- exp_tbl %>%
     filter(species == sp) %>%
     nrow()
   n_obs_sp <- obs_tbl %>%
     filter(species == sp) %>%
     nrow()
-  occ_geog <- ggplot(
-    # map_data("county",c( "california","nevada","oregon"))
-  ) +
-    # geom_polygon(aes(long, lat, group = group),
-    #   fill = "white", colour = "grey50"
-    # ) +
-    geom_sf(data = occ_sp_sf, alpha = .5) +
-    geom_sf(data = cfp_sf, alpha = 0, col = "red") +
+
+  occ_geog <- ggplot(map_data("county", c("california", "nevada", "oregon"))) +
+    geom_polygon(aes(long, lat, group = group),
+      fill = "white", color = "grey75"
+    ) +
+    geom_sf(data = cfp_sf, alpha = .5) +
+    geom_sf(data = occ_sp_sf, alpha = .1, size = .5) +
     labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
     theme(plot.title = element_text(face = "italic"))
+
   occ_clim <- ggplot(occ_sp_sf, aes(tmean, ppt)) +
-    geom_point(alpha = .5) +
+    geom_point(alpha = .5, size = .5) +
     geom_rug(alpha = .5) +
     stat_ellipse(col = "red") +
+    geom_point(data = occ_sp_stat, 
+               aes(x = tmean_occ_mean, y = ppt_occ_mean), 
+               shape = 3, col = "red", size = 10) +
     lims(x = tmean_rng, y = ppt_rng) +
     # scale_y_log10() + # log scale ppt
     labs(
       x = "Mean annual temperature (degC)", y = "Annual precipitation (mm)",
       title = str_c(
-        "n_occ = ", n_occ_sp, " (", round(n_occ_sp / n_occ_tot * 100, digits = 3), "%)\n",
+        "n_occ = ", occ_sp_stat$occ_n, " (", round(occ_sp_stat$occ_n / n_occ_tot * 100, digits = 3), "%)\n",
         "n_exp = ", n_exp_sp, " (", round(n_exp_sp / n_exp_tot * 100, digits = 3), "%)\n",
         "n_obs = ", n_obs_sp, " (", round(n_obs_sp / n_obs_tot * 100, digits = 3), "%)"
       )
     )
+
   print(sp)
   niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
 }
+
 names(niche_gg) <- unique(occ_sf$species)
 ```
 
@@ -310,7 +325,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-chelsa.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-04-18.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
