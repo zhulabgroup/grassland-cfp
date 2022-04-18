@@ -351,6 +351,9 @@ niche_tbl <- occ_sf %>%
     ppt_occ_upr = quantile(ppt, .95, na.rm = TRUE),
     ppt_occ_sd = sd(ppt, na.rm = TRUE),
     vpdmax_occ_mean = mean(vpdmax, na.rm = TRUE),
+    vpdmax_occ_median = median(vpdmax, na.rm = TRUE),
+    vpdmax_occ_lwr = quantile(vpdmax, .05, na.rm = TRUE),
+    vpdmax_occ_upr = quantile(vpdmax, .95, na.rm = TRUE),
     vpdmax_occ_sd = sd(vpdmax, na.rm = TRUE),
   )
 ```
@@ -371,6 +374,15 @@ niche_tbl %>%
   select(ppt_occ_mean, ppt_occ_median, ppt_occ_lwr, ppt_occ_upr) %>%
   GGally::ggpairs(
     title = "Species precipitation niche (mm)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+  )
+```
+
+```{r fig.cap="Species VPDmax niche statistics (Pa)"}
+niche_tbl %>%
+  select(vpdmax_occ_mean, vpdmax_occ_median, vpdmax_occ_lwr, vpdmax_occ_upr) %>%
+  GGally::ggpairs(
+    title = "Species VPDmax niche (Pa)",
     columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
   )
 ```
