@@ -60,6 +60,10 @@ exp_com_tbl %>%
   ) %>%
   ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "t.test", label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
     color = "Warming treatment"
@@ -92,6 +96,10 @@ exp_com_tbl %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
   ggplot(aes(year, tmean_com_mean, col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "t.test", label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
     color = "Warming treatment"
