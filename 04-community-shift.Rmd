@@ -50,7 +50,7 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
 
 ### JRGCE 
 
-#### Temperature treatment
+#### Temperature
 
 Community-level mean CTI in warming vs. ambient plots.
 
@@ -124,7 +124,7 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-#### Precipitation treatment
+#### Precipitation
 
 Community-level mean CPI in watered vs. ambient plots.
 
