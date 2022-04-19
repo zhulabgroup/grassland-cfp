@@ -143,6 +143,21 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
+Community-level mean CPI in all 64 warming vs. ambient plots (lumping other T, C, N treatments together).
+
+```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. elevated adding water treatments over years"}
+exp_com_tbl %>%
+  filter(site == "JRGCE") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
 Community-level CPI standard deviation in watered vs. ambient plots.
 
 ```{r, fig.cap="Compare sd(CPI) in ambient vs. elevated adding water treatments over years"}
@@ -152,21 +167,6 @@ exp_com_tbl %>%
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
-```
-
-Community-level mean CPI in all 64 warming vs. ambient plots (lumping other T, C, N treatments together).
-
-```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. elevated adding water treatments over years"}
-exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
-  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
