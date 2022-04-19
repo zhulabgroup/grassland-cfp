@@ -243,6 +243,8 @@ exp_com_tbl %>%
 
 ### Santa Cruz IDE
 
+#### Precipitation
+
 Plot (replicate) level mean CPI in ambient vs. drought treatments.
 
 ```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
@@ -278,6 +280,8 @@ exp_com_tbl %>%
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
+
+#### VPD max
 
 Use mean VPDmax to replace total precip.
 
