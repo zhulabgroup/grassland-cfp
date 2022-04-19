@@ -183,6 +183,21 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
+Community-level CPI standard deviation in all 64 warming vs. ambient plots (lumping other T, C, N treatments together).
+
+```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. elevated warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "JRGCE") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
 For both warming and watering treatments, show replicates as raw data.
 
 ```{r, fig.cap="Plot (replicate) level community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
