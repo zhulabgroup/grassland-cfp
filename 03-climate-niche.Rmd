@@ -101,7 +101,7 @@ occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-18.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
-Make a map to show all occurrence locations (randomly sample 10% to save render time).
+In total, GBIF has `r nrow(occ_sf) %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` records for `r unique(occ_sf$species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` species. Make a map to show all occurrence locations (randomly sample 10% records to save render time).
 
 ```{r}
 ggplot(map_data("county", c("california", "nevada", "oregon"))) +
