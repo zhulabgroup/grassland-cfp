@@ -50,6 +50,8 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
 
 ### JRGCE 
 
+#### Temperature treatment
+
 Community-level mean CTI in warming vs. ambient plots.
 
 ```{r, fig.cap="Compare mean(CTI) in ambient vs. elevated warming treatments over years"}
@@ -121,6 +123,8 @@ exp_com_tbl %>%
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
+
+#### Precipitation treatment
 
 Community-level mean CPI in watered vs. ambient plots.
 
