@@ -198,6 +198,8 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
+#### Joint analyses
+
 For both warming and watering treatments, show replicates as raw data.
 
 ```{r, fig.cap="Plot (replicate) level community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
