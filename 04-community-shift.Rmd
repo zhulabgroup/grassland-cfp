@@ -250,6 +250,10 @@ exp_com_tbl %>%
   filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "t.test", label = "p.signif", hide.ns = FALSE
+  ) +
   facet_wrap(~site) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
