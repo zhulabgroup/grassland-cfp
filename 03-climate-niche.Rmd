@@ -436,6 +436,6 @@ Save niche estimates with mean and SD statistics.
 
 ```{r}
 niche_tbl %>%
-  select(occ_n, tmean_occ_mean, tmean_occ_sd, ppt_occ_mean, ppt_occ_sd, vpdmax_occ_mean, vpdmax_occ_sd) %>%
+  select(species, occ_n, tmean_occ_mean, tmean_occ_sd, ppt_occ_mean, ppt_occ_sd, vpdmax_occ_mean, vpdmax_occ_sd) %>%
   write_rds("data/occurrence/niche-estimates-cfp-2022-04-18.rds")
 ```
