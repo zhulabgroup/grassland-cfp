@@ -298,7 +298,7 @@ exp_com_tbl %>%
   ) +
   facet_wrap(~site) +
   labs(
-    x = "Year", y = "Community VPDmax Index (CVI, hPa)",
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
     color = "Drought treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -313,7 +313,7 @@ exp_com_tbl %>%
   geom_boxplot() +
   facet_wrap(~site) +
   labs(
-    x = "Year", y = "Community VPDmax Index (CVI, hPa)",
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
     color = "Drought treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
