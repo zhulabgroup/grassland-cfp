@@ -136,6 +136,10 @@ exp_com_tbl %>%
   ) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "t.test", label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Watering treatment"
@@ -151,6 +155,10 @@ exp_com_tbl %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
   ggplot(aes(year, tmean_com_mean, col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "t.test", label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Watering treatment"
