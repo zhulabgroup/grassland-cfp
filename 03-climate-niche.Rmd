@@ -356,7 +356,7 @@ niche_tbl <- occ_sf %>%
   )
 ```
 
-How correlated are these different summary statistics (mean, median, upper, and lower quantiles)?
+These different summary statistics (mean, median, upper, and lower quantiles) are highly and significantly correlated.
 
 ```{r fig.cap="Species temperature niche statistics (degC)"}
 niche_tbl %>%
@@ -385,9 +385,9 @@ niche_tbl %>%
   )
 ```
 
-How correlated are these different dimensions of the niche space (using mean as summary)?
+Different dimensions of the niche space (temperature, precipitation, and VPD max) are also correlated (using mean as summary).
 
-```{r}
+```{r fig.cap="Correlation of species niche dimensions"}
 niche_tbl %>%
   select(tmean_occ_mean, ppt_occ_mean, vpdmax_occ_mean) %>%
   GGally::ggpairs(
