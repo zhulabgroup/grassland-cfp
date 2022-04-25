@@ -59,7 +59,7 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
 
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 library(foreach)
 library(doSNOW)
 num_cores <- 22 # socs-stats has 44 cores
