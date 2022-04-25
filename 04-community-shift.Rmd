@@ -443,7 +443,7 @@ exp_com_tbl %>%
 
 ## Observational data
 
-Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temp and precip, weighted by abundance.
+Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
 obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
@@ -465,6 +465,12 @@ CTI community-level mean in several sites increases over years, suggesting commu
 obs_com_tbl %>%
   ggplot(aes(year, tmean_com_mean, group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)"
@@ -477,6 +483,12 @@ CTI community-level standard deviation.
 obs_com_tbl %>%
   ggplot(aes(year, sqrt(tmean_com_var), group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)"
@@ -489,6 +501,12 @@ CPI community-level mean in several sites decreases over years, suggesting commu
 obs_com_tbl %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
@@ -501,6 +519,12 @@ CPI community-level standard deviation.
 obs_com_tbl %>%
   ggplot(aes(year, sqrt(ppt_com_var), group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
