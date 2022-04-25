@@ -470,7 +470,10 @@ obs_com_tbl %>%
     color = "red", lty = "dashed",
     aes(group = 1)
   ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)"
@@ -488,7 +491,10 @@ obs_com_tbl %>%
     color = "red", lty = "dashed",
     aes(group = 1)
   ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)"
@@ -506,7 +512,10 @@ obs_com_tbl %>%
     color = "red", lty = "dashed",
     aes(group = 1)
   ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
@@ -524,7 +533,10 @@ obs_com_tbl %>%
     color = "red", lty = "dashed",
     aes(group = 1)
   ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..), color = "red") +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
