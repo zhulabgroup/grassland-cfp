@@ -107,6 +107,83 @@ Susan's notes (email on 4/22/22):
 - Treatments began in Fall 2015 and ended in Winter 2020.   The years in the datasheets refer to Spring sampling.   Thus, sampling year 2015 is pre-treatment data, and sampling year 2021 is one full year post-treatment.
 - In practice it’s best to treat this as three separate sub-experiments.    On non-serpentine soil, the treatments are Watering and Watering Control.   On serpentine soil, there is also a watering experiment with treatments Watering and Watering Control.   On serpentine soil there is also a drought shelter experiment with treatments Shelter and Shelter Control.    The design was not conducive to analyzing these three sub-experiments all together.
 
+Read in raw data. Note 2020 data is missing.
+
+```{r}
+cover_2015_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2015")
+cover_2016_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2016")
+cover_2017_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2017")
+cover_2018_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2018")
+cover_2019_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2019")
+# cover_2020_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2020")
+cover_2021_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2021")
+plot_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "Plot codes")
+```
+
+Combine cover data across years and join with plot-treatment data.
+
+```{r}
+cover_long_tbl <- (
+  cover_2015_tbl %>%
+    rename(species = "Plots") %>%
+    pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+    mutate(year = 2015)
+) %>%
+  bind_rows(
+    cover_2016_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2016)
+  ) %>%
+  bind_rows(
+    cover_2017_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2017)
+  ) %>%
+  bind_rows(
+    cover_2018_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2018)
+  ) %>%
+  bind_rows(
+    cover_2019_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2019)
+  ) %>%
+  bind_rows(
+    cover_2021_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2021)
+  ) %>%
+  select(year, plot, species, abund) %>%
+  mutate(plot = as.integer(plot))
+
+mclexp_data <- plot_tbl %>%
+  mutate(
+    plot = as.integer(Site),
+    treat = case_when(
+      Trt == "W" ~ "W", # watering
+      Trt == "S" ~ "D", # shelter -> drought
+      Trt %in% c("WC", "SC") ~ "_" # control
+    ) %>%
+      str_c(Soil) # S = serpentine soil, N = non-serpentine soil
+  ) %>%
+  select(plot, treat) %>%
+  full_join(cover_long_tbl, by = "plot") %>%
+  mutate(site = "McLaughlinExperiment", guild = NA, abund_type = "cover") %>%
+  select(site, year, plot, treat, species, guild, abund, abund_type) %>%
+  filter(abund > 0) %>%
+  arrange(year, plot, species)
+
+rm(list = ls(pattern = "_tbl"))
+
+write_csv(mclexp_data, "data/community/tidy/mclexp.csv")
+```
+
 ### Santa Cruz International Drought Experiment
 
 ![Michael Loik and the Santa Cruz International Drought Experiment (IDE). Image credit: Lobsang Wangdu. Source: https://ucnrs.org/doctor-drought/](images/santa-cruz-ide.jpeg)
@@ -1853,4 +1930,3 @@ Save it to RDS.
 ```{r}
 write_rds(site_sf, file = "data/community/site-info.rds")
 ```
-
