@@ -27,7 +27,7 @@ library(tidyverse)
 Load niche estimates.
 
 ```{r}
-niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-04-18.rds")
+niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-04-25.rds")
 ```
 
 ## Experimental data

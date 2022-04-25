@@ -60,6 +60,7 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
 
 ```{r, eval=FALSE}
+# ~ 2 h to run
 library(foreach)
 library(doSNOW)
 num_cores <- 22 # socs-stats has 44 cores
@@ -91,13 +92,13 @@ occ_sf_box <- st_as_sf(
 occ_sf <- st_intersection(occ_sf_box, cfp_sf)
 gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-18.rds")
+write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-25.rds")
 ```
 
 Read GBIF occurrence data as a sf object. 
 
 ```{r}
-occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-18.rds") %>%
+occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
@@ -323,7 +324,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-2022-04-18.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-04-25.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
@@ -439,5 +440,5 @@ Save niche estimates with mean and SD statistics.
 ```{r}
 niche_tbl %>%
   select(species, occ_n, tmean_occ_mean, tmean_occ_sd, ppt_occ_mean, ppt_occ_sd, vpdmax_occ_mean, vpdmax_occ_sd) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-04-18.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-04-25.rds")
 ```
