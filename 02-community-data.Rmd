@@ -1834,6 +1834,7 @@ Second, read directly from CSV file(s) for all experimental and observational da
 
 ```{r}
 all_exp_data <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
+  bind_rows(read_csv("data/community/tidy/mclexp.csv", col_types = "ciccccdc")) %>%
   bind_rows(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc"))
 
 all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
