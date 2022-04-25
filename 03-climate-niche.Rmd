@@ -227,7 +227,7 @@ vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution
 
 ## Extract data at occurrence sites
 
-Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA rasters
+Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA rasters.
 
 ```{r}
 occ_sf <- occ_sf %>%
