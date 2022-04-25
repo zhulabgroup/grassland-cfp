@@ -98,6 +98,15 @@ rm(list = ls(pattern = "_tbl"))
 write_csv(jrgce_data, "data/community/tidy/jrgce.csv")
 ```
 
+### McLaughlin Water Experiment
+
+The experiment was introduced in Harrison, Susan P., Marina L. LaForgia, and Andrew M. Latimer. “Climate‐driven Diversity Change in Annual Grasslands: Drought plus Deluge Does Not Equal Normal.” Global Change Biology 24, no. 4 (April 2018): 1782–92. https://doi.org/10.1111/gcb.14018.
+
+Susan's notes (email on 4/22/22):
+
+- Treatments began in Fall 2015 and ended in Winter 2020.   The years in the datasheets refer to Spring sampling.   Thus, sampling year 2015 is pre-treatment data, and sampling year 2021 is one full year post-treatment.
+- In practice it’s best to treat this as three separate sub-experiments.    On non-serpentine soil, the treatments are Watering and Watering Control.   On serpentine soil, there is also a watering experiment with treatments Watering and Watering Control.   On serpentine soil there is also a drought shelter experiment with treatments Shelter and Shelter Control.    The design was not conducive to analyzing these three sub-experiments all together.
+
 ### Santa Cruz International Drought Experiment
 
 ![Michael Loik and the Santa Cruz International Drought Experiment (IDE). Image credit: Lobsang Wangdu. Source: https://ucnrs.org/doctor-drought/](images/santa-cruz-ide.jpeg)
