@@ -142,6 +142,8 @@ tribble(
   knitr::kable(caption = "CHELSA climatology data used in the project")
 ```
 
+Note that precipitation unit, kg m^-2^ year^-1^, is equivalent to mm yr^-1^. 
+
 Download data (not running).
 
 ```{r, eval=FALSE}
