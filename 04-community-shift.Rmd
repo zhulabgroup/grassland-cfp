@@ -32,7 +32,7 @@ niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-04-18.rds")
 
 ## Experimental data
 
-Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temp and precip, weighted by abundance.
+Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
 exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
@@ -73,7 +73,7 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level mean CTI in all 64 warming vs. ambient plots (lumping other P, C, N treatments together).
+Community-level mean CTI in all 64 warming vs. ambient plots (pooling together all the other P, C, N treatments).
 
 ```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
