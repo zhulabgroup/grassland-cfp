@@ -64,7 +64,8 @@ exp_com_tbl %>%
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
-    method = "t.test", label = "p.signif", hide.ns = FALSE
+    method = "wilcox.test", 
+    label = "p.signif", hide.ns = FALSE
   ) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
@@ -83,7 +84,8 @@ exp_com_tbl %>%
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_T),
-    method = "t.test", label = "p.signif", hide.ns = FALSE
+    method = "wilcox.test", 
+    label = "p.signif", hide.ns = FALSE
   ) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
