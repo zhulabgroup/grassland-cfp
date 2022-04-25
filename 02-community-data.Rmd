@@ -166,9 +166,10 @@ mclexp_data <- plot_tbl %>%
   mutate(
     plot = as.integer(Site),
     treat = case_when(
-      Trt == "W" ~ "W", # watering
-      Trt == "S" ~ "D", # shelter -> drought
-      Trt %in% c("WC", "SC") ~ "_" # control
+      Trt == "W" ~ "W_", # watering
+      Trt == "WC" ~ "__", # watering control
+      Trt == "S" ~ "_D", # shelter -> drought
+      Trt == "SC" ~ "__" # shelter control -> drought control
     ) %>%
       str_c(Soil) # S = serpentine soil, N = non-serpentine soil
   ) %>%
