@@ -355,6 +355,8 @@ exp_com_tbl %>%
 
 ### McLaughlin Water Experiment
 
+#### Precipitation
+
 Examine CPI change with respect to treatments. First, watering treatments.
 
 ```{r, fig.cap="Compare mean(CPI) in control vs. watering treatments over years"}
