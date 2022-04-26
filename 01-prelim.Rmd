@@ -156,6 +156,11 @@ cci_jrgce_dat %>%
   drop_na() %>%
   ggplot(aes(yr, pin_tmp, col = tmp, group = interaction(tmp, yr))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = tmp),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
     color = "Warming treatment"
@@ -192,6 +197,11 @@ cci_jrgce_dat %>%
   drop_na() %>%
   ggplot(aes(yr, pin_ppt, col = ppt, group = interaction(ppt, yr))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = ppt),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Add-water treatment"
@@ -226,6 +236,7 @@ cci_jrgce_avg %>%
   ) +
   scale_color_viridis_c()
 ```
+
 The above figure shows comparing to ambient plots, added water treatment makes community shift to wetter species, and warming treatment makes community shift to warmer species. It's almost like an ordination plot, but even better with biologically meaningful values (CTI, CPI).
 
 What about elevated CO2 treatment?
