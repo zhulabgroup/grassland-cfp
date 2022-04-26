@@ -891,7 +891,7 @@ site_clim_tbl <- site_tmean_tbl %>%
 
 Plot temperature change.
 
-```{r}
+```{r, fig.cap="Observational site temperature change across years"}
 site_clim_tbl %>%
   ggplot(aes(year, tmean)) +
   geom_point() +
@@ -911,7 +911,7 @@ site_clim_tbl %>%
 
 Plot precipitation change.
 
-```{r}
+```{r, fig.cap="Observational site precipitation change across years"}
 site_clim_tbl %>%
   ggplot(aes(year, ppt)) +
   geom_point() +
@@ -931,7 +931,7 @@ site_clim_tbl %>%
 
 Plot VPDmax change.
 
-```{r}
+```{r, fig.cap="Observational site VPDmax change across years"}
 site_clim_tbl %>%
   ggplot(aes(year, vpdmax)) +
   geom_point() +
