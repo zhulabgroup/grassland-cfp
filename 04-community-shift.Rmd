@@ -409,6 +409,60 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
+Second, drought treatments.
+
+```{r, fig.cap="Compare mean(CPI) in control vs. drought (shelter) treatments over years"}
+exp_com_tbl %>%
+  filter(site == "McLaughlinExperiment") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+```{r, fig.cap="Compare sd(CPI) in control vs. drought (shelter) treatments over years"}
+exp_com_tbl %>%
+  filter(site == "McLaughlinExperiment") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
 ### Santa Cruz IDE
 
 #### Precipitation
