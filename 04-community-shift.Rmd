@@ -876,8 +876,76 @@ site_vpdmax_tbl <- prism::prism_archive_subset(
   mutate(year = year %>%
     str_sub(start = -8L, end = -5L) %>%
     as.integer())
+```
 
-site_clim_tbl <- site_tmean_tbl %>% 
-  full_join(site_ppt_tbl, by = c("site", "year")) %>% 
-  full_join(site_vpdmax_tbl, by = c("site", "year"))
+Assemble site climate data.
+
+```{r}
+site_clim_tbl <- site_tmean_tbl %>%
+  full_join(site_ppt_tbl, by = c("site", "year")) %>%
+  full_join(site_vpdmax_tbl, by = c("site", "year")) %>%
+  right_join(obs_com_tbl %>%
+    distinct(site, year) %>%
+    mutate(site = tolower(site)), by = c("site", "year")) %>%
+  arrange(site, year)
+```
+
+Plot temperature change.
+
+```{r}
+site_clim_tbl %>%
+  ggplot(aes(year, tmean)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed"
+  ) +
+  ggpubr::stat_cor(aes(label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Mean annual temperature (degC)"
+  )
+```
+
+Plot precipitation change.
+
+```{r}
+site_clim_tbl %>%
+  ggplot(aes(year, ppt)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed"
+  ) +
+  ggpubr::stat_cor(aes(label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Mean annual precipitation (mm)"
+  )
+```
+
+Plot VPDmax change.
+
+```{r}
+site_clim_tbl %>%
+  ggplot(aes(year, vpdmax)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed"
+  ) +
+  ggpubr::stat_cor(aes(label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Mean VPDmax (hPa)"
+  )
 ```
