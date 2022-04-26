@@ -364,9 +364,13 @@ cci_scide_dat %>%
     treat == "_" ~ "Ambient",
     treat == "D" ~ "Drought"
   )) %>%
-  ggplot(aes(year, cover_tmp, col = treat, group = treat)) +
-  geom_point(alpha = .5) +
-  geom_smooth() +
+  ggplot(aes(year, cover_tmp, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   facet_wrap(~site) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
@@ -381,9 +385,13 @@ cci_scide_dat %>%
     treat == "_" ~ "Ambient",
     treat == "D" ~ "Drought"
   )) %>%
-  ggplot(aes(year, cover_ppt, col = treat, group = treat)) +
-  geom_point(alpha = .5) +
-  geom_smooth() +
+  ggplot(aes(year, cover_ppt, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   facet_wrap(~site) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
@@ -391,7 +399,6 @@ cci_scide_dat %>%
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
-
 
 ## Observational data
 
