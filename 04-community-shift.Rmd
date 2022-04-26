@@ -367,7 +367,7 @@ exp_com_tbl %>%
       soil == "N" ~ "Non-serpentine soil"
     )
   ) %>%
-  filter(treat %in% c("WX", "_X")) %>%
+  filter(treat %in% c("_X", "WX")) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
@@ -393,7 +393,7 @@ exp_com_tbl %>%
       soil == "N" ~ "Non-serpentine soil"
     )
   ) %>%
-  filter(treat %in% c("WX", "_X")) %>%
+  filter(treat %in% c("_X", "WX")) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
