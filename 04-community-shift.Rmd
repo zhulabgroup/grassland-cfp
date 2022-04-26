@@ -768,3 +768,47 @@ obs_com_tbl %>%
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
   )
 ```
+
+### Community VPDmax index
+
+CVI community-level mean in several sites changes over years, but no clear direction.
+
+```{r, fig.cap="Compare mean(CVI) across sites over years"}
+obs_com_tbl %>%
+  ggplot(aes(year, vpdmax_com_mean, group = year)) +
+  geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)"
+  )
+```
+
+CPI community-level standard deviation.
+
+```{r, fig.cap="Compare sd(CVI) across sites over years"}
+obs_com_tbl %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), group = year)) +
+  geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)"
+  )
+```
