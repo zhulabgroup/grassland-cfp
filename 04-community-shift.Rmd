@@ -681,6 +681,8 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   )
 ```
 
+### Community temperature index
+
 CTI community-level mean in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
 ```{r, fig.cap="Compare mean(CTI) across sites over years"}
@@ -722,6 +724,8 @@ obs_com_tbl %>%
     x = "Year", y = "Community Temperature Index (CTI, degC)"
   )
 ```
+
+### Community precipitation index
 
 CPI community-level mean in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
 
