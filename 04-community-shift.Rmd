@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 
 ```{r}
 library(tidyverse)
+library(sf)
 ```
 
 Load niche estimates.
@@ -811,4 +812,72 @@ obs_com_tbl %>%
   labs(
     x = "Year", y = "Community VPDmax Index (CVI, Pa)"
   )
+```
+
+### Site climate change
+
+Observational site climate change over the study period.
+
+```{r}
+site_tbl <- read_rds("data/community/site-info.rds")
+```
+
+Download PRISM data (to be updated with Chelsa). Set PRISM dir first.
+
+```{r}
+prism::prism_set_dl_dir("data/climate/prism/")
+```
+
+Download (not run, only once).
+
+```{r, eval=FALSE}
+range(exp_com_tbl$year) # 1998:2021
+range(obs_com_tbl$year) # 1983:2019
+prism::get_prism_annual("tmean", years = 1983:2021, keepZip = FALSE)
+prism::get_prism_annual("ppt", years = 1983:2021, keepZip = FALSE)
+prism::get_prism_annual("vpdmax", years = 1983:2021, keepZip = FALSE)
+```
+
+Extract site climate from PRISM.
+
+```{r}
+site_tmean_tbl <- prism::prism_archive_subset(
+  "tmean", "annual",
+  years = 1983:2020
+) %>%
+  prism::pd_stack() %>%
+  raster::extract(site_tbl) %>%
+  bind_cols(site = site_tbl$abbr, .) %>%
+  pivot_longer(-site, names_to = "year", values_to = "tmean") %>%
+  mutate(year = year %>%
+    str_sub(start = -8L, end = -5L) %>%
+    as.integer())
+
+site_ppt_tbl <- prism::prism_archive_subset(
+  "ppt", "annual",
+  years = 1983:2020
+) %>%
+  prism::pd_stack() %>%
+  raster::extract(site_tbl) %>%
+  bind_cols(site = site_tbl$abbr, .) %>%
+  pivot_longer(-site, names_to = "year", values_to = "ppt") %>%
+  mutate(year = year %>%
+    str_sub(start = -8L, end = -5L) %>%
+    as.integer())
+
+site_vpdmax_tbl <- prism::prism_archive_subset(
+  "vpdmax", "annual",
+  years = 1983:2020
+) %>%
+  prism::pd_stack() %>%
+  raster::extract(site_tbl) %>%
+  bind_cols(site = site_tbl$abbr, .) %>%
+  pivot_longer(-site, names_to = "year", values_to = "vpdmax") %>%
+  mutate(year = year %>%
+    str_sub(start = -8L, end = -5L) %>%
+    as.integer())
+
+site_clim_tbl <- site_tmean_tbl %>% 
+  full_join(site_ppt_tbl, by = c("site", "year")) %>% 
+  full_join(site_vpdmax_tbl, by = c("site", "year"))
 ```
