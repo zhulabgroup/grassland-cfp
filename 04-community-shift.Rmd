@@ -58,7 +58,7 @@ Community-level mean CTI in warming vs. ambient plots.
 ```{r, fig.cap="Compare mean(CTI) in ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
   ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
@@ -79,7 +79,7 @@ Community-level mean CTI in all 64 warming vs. ambient plots (pooling together a
 
 ```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
   ggplot(aes(year, tmean_com_mean, col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
@@ -100,7 +100,7 @@ Community-level CTI standard deviation in warming vs. ambient plots.
 ```{r, fig.cap="Compare sd(CTI) in ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
   ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
@@ -121,7 +121,7 @@ Community-level CTI standard deviation in all 64 warming vs. ambient plots (pool
 
 ```{r, fig.cap="Compare sd(CTI) in all 64 ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
   ggplot(aes(year, sqrt(tmean_com_var), col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
@@ -144,7 +144,7 @@ Community-level mean CPI in watered vs. ambient plots.
 ```{r, fig.cap="Compare mean(CPI) in ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
@@ -165,7 +165,7 @@ Community-level mean CPI in all 64 warming vs. ambient plots (pooling together a
 
 ```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
   ggplot(aes(year, ppt_com_mean, col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
@@ -186,7 +186,7 @@ Community-level CPI standard deviation in watered vs. ambient plots.
 ```{r, fig.cap="Compare sd(CPI) in ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
@@ -207,7 +207,7 @@ Community-level CPI standard deviation in all 64 warming vs. ambient plots (pool
 
 ```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
@@ -230,7 +230,7 @@ Community-level mean VPDmax index (CVI) in watered vs. ambient plots.
 ```{r, fig.cap="Compare mean(CVI) in ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
@@ -251,7 +251,7 @@ Community-level mean CVI in all 64 warming vs. ambient plots (pooling together a
 
 ```{r, fig.cap="Compare mean(CVI) in all 64 ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
   ggplot(aes(year, vpdmax_com_mean, col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
@@ -272,7 +272,7 @@ Community-level CVI standard deviation in watered vs. ambient plots.
 ```{r, fig.cap="Compare sd(CVI) in ambient vs. elevated adding water treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
@@ -293,7 +293,7 @@ Community-level CVI standard deviation in all 64 warming vs. ambient plots (pool
 
 ```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. elevated warming treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
   ggplot(aes(year, sqrt(vpdmax_com_var), col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
@@ -316,7 +316,7 @@ For both warming and watering treatments, show replicates as raw data.
 ```{r, fig.cap="Plot (replicate) level community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   mutate(year = as.factor(year)) %>%
@@ -337,7 +337,7 @@ Because of outliers, summarize by median (same as boxplot, not mean) values of r
 ```{r, fig.cap="Median community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   group_by(year, treat) %>%
@@ -362,7 +362,7 @@ Examine CPI change with respect to treatments. First, watering treatments.
 
 ```{r, fig.cap="Compare mean(CPI) in control vs. watering treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -388,7 +388,7 @@ exp_com_tbl %>%
 
 ```{r, fig.cap="Compare sd(CPI) in control vs. watering treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -416,7 +416,7 @@ Second, drought treatments.
 
 ```{r, fig.cap="Compare mean(CPI) in control vs. drought (shelter) treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -442,7 +442,7 @@ exp_com_tbl %>%
 
 ```{r, fig.cap="Compare sd(CPI) in control vs. drought (shelter) treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -472,7 +472,7 @@ Examine CVI change with respect to treatments. First, watering treatments.
 
 ```{r, fig.cap="Compare mean(CVI) in control vs. watering treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -498,7 +498,7 @@ exp_com_tbl %>%
 
 ```{r, fig.cap="Compare sd(CVI) in control vs. watering treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -526,7 +526,7 @@ Second, drought treatments.
 
 ```{r, fig.cap="Compare mean(CVI) in control vs. drought (shelter) treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -552,7 +552,7 @@ exp_com_tbl %>%
 
 ```{r, fig.cap="Compare sd(CVI) in control vs. drought (shelter) treatments over years"}
 exp_com_tbl %>%
-  filter(site == "McLaughlinExperiment") %>%
+  filter(site == "mclexp") %>%
   separate(treat, c("treat", "soil"), sep = 2) %>%
   mutate(
     soil = case_when(
@@ -584,7 +584,7 @@ Plot (replicate) level mean CPI in ambient vs. drought treatments.
 
 ```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
@@ -606,7 +606,7 @@ Plot (replicate) level CPI standard deviation in ambient vs. drought treatments.
 
 ```{r, fig.cap="Compare sd(CPI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
@@ -628,7 +628,7 @@ Use mean VPDmax to replace total precip.
 
 ```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
   ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
@@ -648,7 +648,7 @@ Use VPDmax standard deviation to replace total precip.
 
 ```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
   ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
@@ -885,8 +885,7 @@ site_clim_tbl <- site_tmean_tbl %>%
   full_join(site_ppt_tbl, by = c("site", "year")) %>%
   full_join(site_vpdmax_tbl, by = c("site", "year")) %>%
   right_join(obs_com_tbl %>%
-    distinct(site, year) %>%
-    mutate(site = tolower(site)), by = c("site", "year")) %>%
+    distinct(site, year), by = c("site", "year")) %>%
   arrange(site, year)
 ```
 

@@ -89,7 +89,7 @@ Join all tables, remove intermediate objects, and save the tidy data.
 jrgce_data <- pin_tbl %>%
   left_join(spp_tbl, by = "species") %>%
   left_join(trt_tbl, by = c("year", "plot")) %>%
-  mutate(site = "JRGCE", abund_type = "point_intercept") %>%
+  mutate(site = "jrgce", abund_type = "point_intercept") %>%
   select(site, year, plot, treat, species, guild, abund, abund_type) %>%
   arrange(year, plot, species)
 
@@ -175,7 +175,7 @@ mclexp_data <- plot_tbl %>%
   ) %>%
   select(plot, treat) %>%
   full_join(cover_long_tbl, by = "plot") %>%
-  mutate(site = "McLaughlinExperiment", guild = NA, abund_type = "cover") %>%
+  mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
   select(site, year, plot, treat, species, guild, abund, abund_type) %>%
   filter(abund > 0) %>%
   arrange(year, plot, species)
@@ -196,7 +196,10 @@ scide_data <- read_csv("data/community/raw/SantaCruzIDE/IDESpeciesComp_LongForma
   col_types = c("ciicdicdcc")
 ) %>%
   mutate(
-    site = str_c("IDE ", Site),
+    site = Site %>%
+      str_replace(" ", "") %>%
+      tolower() %>%
+      str_c("scide_", .),
     year = Year,
     plot = str_c(Plot, Block, sep = "-"),
     treat = case_when(
@@ -253,17 +256,17 @@ Angelo <- read.csv("data/community/raw/Angelo/Angelo_CommCompData.csv") %>%
 names(Angelo) <- tolower(names(Angelo))
 Angelo_spp <- read.csv("data/community/raw/Angelo/Angelo_spp_guilds.csv")
 Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
-  mutate(Site = "Angelo") %>%
+  mutate(Site = "angelo") %>%
   filter(cover > 0)
 angelo_data <- Angelo %>%
   select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "Angelo") %>%
+  mutate(site = "angelo") %>%
   filter(
     guild != "Bare",
     guild != "Moss",
     guild != "Litter"
   ) %>%
-  mutate(site = "Angelo") %>%
+  mutate(site = "angelo") %>%
   mutate(species.name = fct_recode(species.name,
     "Brodiaea elegans" = "Broadia elegans ",
     "Convolvulus arvensis" = "Convulvus arvensis ",
@@ -321,7 +324,7 @@ carrizo_data <- carrizo_data %>%
     Intercepts > 0,
     !is.na(guild)
   ) %>%
-  mutate(site = "Carrizo")
+  mutate(site = "carrizo")
 unique(carrizo_data$Species.Name)
 unique(carrizo_data$guild)
 ## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset.
@@ -829,7 +832,7 @@ remove(elk18)
 elk_99_18_species <- elk_99_18 %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "Elkhorn")
+  mutate(site = "elkhorn")
 elk_99_18_species$species.name <- as.character(elk_99_18_species$species.name)
 elk_99_18_species$species.name <- as.factor(elk_99_18_species$species.name)
 elk_99_18_species$year <- as.integer(elk_99_18_species$year)
@@ -862,7 +865,7 @@ elkhorn_data <- elkhorn_data %>%
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
-  mutate(site = "Elkhorn")
+  mutate(site = "elkhorn")
 
 # removing extra elkhorn objects
 remove(elk_99_18_guilds)
@@ -895,7 +898,7 @@ JR_spp <- read.csv("data/community/raw/Jasper/JR_speciesnames2.csv")
 Jasper <- left_join(Jasper_Veg, JR_spp, by = "species")
 Jasper_species <- Jasper %>%
   select("uniqueID", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "Jasper") %>%
+  mutate(site = "jasper") %>%
   filter(cover > 0)
 jasper_data <- Jasper_species %>%
   mutate(species.name = fct_recode(species.name,
@@ -948,7 +951,7 @@ McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   ) %>%
   unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
   unite(Guild1, Guild3, col = "guild", sep = "") %>%
-  mutate(Site = "McLAnn") %>%
+  mutate(Site = "mclann") %>%
   select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   summarise(cover = mean(Cover))
@@ -971,7 +974,7 @@ mclann_data <- McLAnn %>%
     species.name != "Unknown grass",
     species.name != "Unknown forb"
   ) %>%
-  mutate(site = "McL Ann")
+  mutate(site = "mclann")
 
 remove(McL_Sites)
 remove(McL_spp)
@@ -1015,7 +1018,7 @@ McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   ) %>%
   unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
   unite(Guild1, Guild3, col = "guild", sep = "") %>%
-  mutate(Site = "McLSerp") %>%
+  mutate(Site = "mclserp") %>%
   select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   summarise(cover = mean(Cover))
@@ -1040,7 +1043,7 @@ mclserp_data <- McLSerp %>%
     species.name != "Rock",
     species.name != "Unknown forb"
   ) %>%
-  mutate(site = "McL Serp")
+  mutate(site = "mclserp")
 
 remove(McL_Sites)
 remove(McL_spp)
@@ -1396,7 +1399,7 @@ remove(Swan12)
 Swan_99_12_species <- Swan_99_12 %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "Swan")
+  mutate(site = "swanton")
 Swan_99_12_species$species.name <- as.character(Swan_99_12_species$species.name)
 Swan_99_12_species$species.name <- as.factor(Swan_99_12_species$species.name)
 Swan_99_12_species$year <- as.integer(Swan_99_12_species$year)
@@ -1443,7 +1446,7 @@ swanton_data <- swanton_data %>%
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
-  mutate(site = "Swanton")
+  mutate(site = "swanton")
 
 swanton_data <- swanton_data %>%
   as_tibble() %>%
@@ -1780,7 +1783,7 @@ remove(UCSC12)
 UCSC_99_12_species <- UCSC_99_12 %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "UCSC")
+  mutate(site = "ucsc")
 UCSC_99_12_species$species.name <- as.character(UCSC_99_12_species$species.name)
 UCSC_99_12_species$species.name <- as.factor(UCSC_99_12_species$species.name)
 UCSC_99_12_species$year <- as.integer(UCSC_99_12_species$year)
@@ -1807,7 +1810,7 @@ ucsc_data <- ucsc_data %>%
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
-  mutate(site = "UCSC")
+  mutate(site = "ucsc")
 
 ucsc_data <- ucsc_data %>%
   as_tibble() %>%
