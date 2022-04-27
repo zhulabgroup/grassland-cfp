@@ -938,11 +938,13 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-#### VPD max
+#### CVI ~ drought treatment
 
-Use mean VPDmax to replace total precip.
+Community VPDmax niches responding to drought treatments.
 
-```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
+Community-level mean CVI in ambient vs. drought plots.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
   ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
@@ -960,9 +962,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Use VPDmax standard deviation to replace total precip.
+Community-level CVI standard deviation in ambient vs. drought plots.
 
-```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
+```{r, fig.cap="Compare sd(CVI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
   ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
