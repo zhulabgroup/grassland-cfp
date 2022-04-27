@@ -228,6 +228,95 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
+
+#### CVI ~ warming treatment
+
+Community VPDmax niches responding to warming treatments.
+
+Community-level mean CVI in ambient vs. warming plots, controlling other treatments.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level mean CVI in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
+
+```{r, fig.cap="Compare mean(CVI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CVI standard deviation in ambient vs. warming plots.
+
+```{r, fig.cap="Compare sd(CVI) in ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CVI standard deviation in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
+
+```{r, fig.cap="Compare sd(CVI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
 #### Precipitation
 
 Community-level mean CPI in watered vs. ambient plots.
