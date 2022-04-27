@@ -894,6 +894,50 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
+#### CPI ~ drought treatment
+
+Community precipitation niches responding to drought treatments.
+
+Community-level mean CPI in ambient vs. drought plots.
+
+```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CPI standard deviation in ambient vs. drought plots.
+
+```{r, fig.cap="Compare sd(CPI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
 #### VPD max
 
 Use mean VPDmax to replace total precip.
