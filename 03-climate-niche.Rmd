@@ -305,7 +305,7 @@ for (i in 1:length(unique(occ_sf$species))) {
     lims(x = tmean_rng, y = ppt_rng) +
     # scale_y_log10() + # log scale ppt
     labs(
-      x = "Mean annual temperature (degC)", y = "Annual precipitation (mm)",
+      x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)",
       title = str_c(
         "n_occ = ", occ_sp_stat$occ_n, " (", round(occ_sp_stat$occ_n / n_occ_tot * 100, digits = 3), "%)\n",
         "n_exp = ", n_exp_sp, " (", round(n_exp_sp / n_exp_tot * 100, digits = 3), "%)\n",
@@ -359,11 +359,11 @@ niche_tbl <- occ_sf %>%
 
 These different summary statistics (mean, median, upper, and lower quantiles) are highly and significantly correlated.
 
-```{r fig.cap="Species temperature niche statistics (degC)"}
+```{r fig.cap="Species temperature niche statistics (°C)"}
 niche_tbl %>%
   select(tmean_occ_mean, tmean_occ_median, tmean_occ_lwr, tmean_occ_upr) %>%
   GGally::ggpairs(
-    title = "Species temperature niche (degC)",
+    title = "Species temperature niche (°C)",
     columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)"),
   )
 ```
@@ -393,7 +393,7 @@ niche_tbl %>%
   select(tmean_occ_mean, ppt_occ_mean, vpdmax_occ_mean) %>%
   GGally::ggpairs(
     title = "Species niche dimensions",
-    columnLabels = c("Temperature (degC)", "Precipitation (mm)", "VPDmax (Pa)")
+    columnLabels = c("Temperature (°C)", "Precipitation (mm)", "VPDmax (Pa)")
   )
 ```
 
@@ -406,7 +406,7 @@ With all the correlations, we can safely use temperature and precipitation to vi
   geom_errorbarh(aes(xmin = tmean_occ_mean - tmean_occ_sd / sqrt(occ_n), xmax = tmean_occ_mean + tmean_occ_sd / sqrt(occ_n), y = ppt_occ_mean), alpha = .3) +
   geom_errorbar(aes(x = tmean_occ_mean, ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
   labs(
-    x = "Species occurrence mean temperature (degC)",
+    x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
   )
 ) %>%
@@ -428,7 +428,7 @@ This figure compares well with Josie's estimates.
   geom_point(alpha = .5) +
   # geom_smooth(method = "lm", aes(tmp, ppt)) +
   labs(
-    x = "Species occurrence mean temperature (degC)",
+    x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
   )
 ) %>%

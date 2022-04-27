@@ -37,7 +37,7 @@ gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/C
   # geom_smooth(method = "lm", aes(tmp, ppt)) +
   labs(
     color = "Species",
-    x = "Species occurrence mean temperature (degC)",
+    x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -101,7 +101,7 @@ Check those species climate niches. Again, strong negative correlation.
   geom_point(alpha = .5) +
   geom_smooth(method = "lm") +
   labs(
-    x = "Species occurrence mean temperature (degC)",
+    x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
   )
 ) %>%
@@ -138,7 +138,7 @@ cci_jrgce_dat %>%
   geom_point(alpha = .5) +
   geom_smooth() +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -162,7 +162,7 @@ cci_jrgce_dat %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -230,7 +230,7 @@ cci_jrgce_avg %>%
   geom_path() +
   facet_wrap(~trt) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -248,7 +248,7 @@ cci_jrgce_avg %>%
   geom_path() +
   facet_wrap(~trt) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -266,7 +266,7 @@ cci_jrgce_avg %>%
   geom_path() +
   facet_wrap(~trt) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -284,7 +284,7 @@ cci_jrgce_avg %>%
   geom_path() +
   facet_wrap(~trt) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -334,7 +334,7 @@ Now, let's explore the Santa Cruz International Drought Experiment (SCIDE).
   ggplot(aes(tmp, ppt, text = species)) +
   geom_point(alpha = .5) +
   labs(
-    x = "Species occurrence mean temperature (degC)",
+    x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
   )
 ) %>%
@@ -373,7 +373,7 @@ cci_scide_dat %>%
   ) +
   facet_wrap(~site) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -451,7 +451,7 @@ cci_site_gg <- ggplot(cci_site_sum, aes(
 cci_site_gg +
   labs(
     x = "Year",
-    y = "Community Temperature Index (CTI, degC)"
+    y = "Community Temperature Index (CTI, °C)"
   )
 ```
 
@@ -481,7 +481,7 @@ clim_site_gg <- clim_site_sum %>%
 clim_site_gg +
   labs(
     x = "Year",
-    y = "Growing season temperature (degC)"
+    y = "Growing season temperature (°C)"
   )
 ```
 
@@ -498,10 +498,10 @@ Time-series plots of site-level climate change and site-level community climate 
 ```{r, fig.cap="Compare long-term climate change vs. community change summarized by CTI", fig.height=10}
 (clim_site_gg +
   geom_smooth(method = "lm") +
-  labs(title = "(a) Climate change", x = "", y = "Growing season temperature (degC)")) /
+  labs(title = "(a) Climate change", x = "", y = "Growing season temperature (°C)")) /
   (cci_site_gg +
     geom_smooth(method = "lm") +
-    labs(title = "(b) Community change", x = "Year", y = "Community Temperature Index (CTI, degC)"))
+    labs(title = "(b) Community change", x = "Year", y = "Community Temperature Index (CTI, °C)"))
 ```
 
 I think the comparison looks very interesting. Climate change seems to drive community composition change.
@@ -519,8 +519,8 @@ clim_site_sum %>%
   facet_wrap(~site, scales = "free", nrow = 2) +
   geom_smooth(method = "lm") +
   labs(
-    x = "Growing season temperature (degC)",
-    y = "Community Temperature Index (CTI, degC)"
+    x = "Growing season temperature (°C)",
+    y = "Community Temperature Index (CTI, °C)"
   )
 ```
 
@@ -532,7 +532,7 @@ cci_site_sum %>%
   geom_path(aes(meanCTI, meanCPI, col = year)) +
   facet_wrap(~site, scales = "free") +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
