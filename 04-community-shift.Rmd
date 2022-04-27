@@ -1140,7 +1140,11 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   )
 ```
 
-### Community temperature index
+### Community change
+
+#### CTI ~ year
+
+Community temperature niches change over years.
 
 CTI community-level mean in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
@@ -1184,7 +1188,9 @@ obs_com_tbl %>%
   )
 ```
 
-### Community precipitation index
+#### CPI ~ year
+
+Community precipitation niches change over years.
 
 CPI community-level mean in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
 
@@ -1228,7 +1234,9 @@ obs_com_tbl %>%
   )
 ```
 
-### Community VPDmax index
+#### CVI ~ year
+
+Community VPDmax niches change over years.
 
 CVI community-level mean in several sites changes over years, but no clear direction.
 
@@ -1272,7 +1280,7 @@ obs_com_tbl %>%
   )
 ```
 
-### Site climate change
+### Climate change
 
 Observational site climate change over the study period.
 
