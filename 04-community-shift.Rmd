@@ -626,9 +626,67 @@ exp_com_tbl %>%
 
 ### McLaughlin Water Experiment
 
-#### Precipitation
+#### CTI ~ watering treatment
 
-Examine CPI change with respect to treatments. First, watering treatments.
+Community temperature niches responding to watering treatments.
+
+Community-level mean CTI in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CTI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare sd(CTI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### Precipitation
 
 ```{r, fig.cap="Compare mean(CPI) in control vs. watering treatments over years"}
 exp_com_tbl %>%
