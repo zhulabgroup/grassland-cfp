@@ -345,7 +345,7 @@ exp_com_tbl %>%
 
 Community-level mean CTI in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
 
-```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. watering treatments over years"}
+```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. watering treatments over years"}
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
@@ -400,6 +400,94 @@ exp_com_tbl %>%
   ) +
   labs(
     x = "Year", y = "Community Temperature Index (CTI, degC)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### CPI ~ watering treatment
+
+Community precipitation niches responding to watering treatments.
+
+Community-level mean CPI in ambient vs. watering plots.
+
+```{r, fig.cap="Compare mean(CPI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level mean CPI in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
+
+```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CPI standard deviation in ambient vs. watering plots.
+
+```{r, fig.cap="Compare sd(CPI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CPI standard deviation in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
+
+```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
