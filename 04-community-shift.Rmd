@@ -71,7 +71,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -91,7 +91,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -113,7 +113,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -133,7 +133,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -335,7 +335,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
@@ -355,7 +355,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
@@ -377,7 +377,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
@@ -397,7 +397,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
@@ -595,7 +595,7 @@ exp_com_tbl %>%
   # stat_ellipse() +
   facet_wrap(~treat) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -617,7 +617,7 @@ exp_com_tbl %>%
   geom_path() +
   facet_wrap(~treat) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -971,7 +971,7 @@ obs_com_tbl %>%
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)"
+    x = "Year", y = "Community Temperature Index (CTI, °C)"
   )
 ```
 
@@ -992,7 +992,7 @@ obs_com_tbl %>%
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)"
+    x = "Year", y = "Community Temperature Index (CTI, °C)"
   )
 ```
 
@@ -1175,7 +1175,7 @@ site_clim_tbl %>%
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
-    x = "Year", y = "Mean annual temperature (degC)"
+    x = "Year", y = "Mean annual temperature (°C)"
   )
 ```
 
