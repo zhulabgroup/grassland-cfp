@@ -51,11 +51,13 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
 
 ### JRGCE 
 
-#### Temperature
+#### CTI ~ warming treatment
 
-Community-level mean CTI in warming vs. ambient plots.
+Community temperature niches responding to warming treatments.
 
-```{r, fig.cap="Compare mean(CTI) in ambient vs. elevated warming treatments over years"}
+Community-level mean CTI in ambient vs. warming plots, controlling other treatments.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(
     site == "jrgce",
@@ -75,9 +77,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level mean CTI in all 64 warming vs. ambient plots (pooling together all the other P, C, N treatments).
+Community-level mean CTI in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
 
-```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. elevated warming treatments over years"}
+```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
@@ -95,9 +97,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level CTI standard deviation in warming vs. ambient plots.
+Community-level CTI standard deviation in ambient vs. warming plots.
 
-```{r, fig.cap="Compare sd(CTI) in ambient vs. elevated warming treatments over years"}
+```{r, fig.cap="Compare sd(CTI) in ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(
     site == "jrgce",
@@ -117,9 +119,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level CTI standard deviation in all 64 warming vs. ambient plots (pooling together all the other P, C, N treatments).
+Community-level CTI standard deviation in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
 
-```{r, fig.cap="Compare sd(CTI) in all 64 ambient vs. elevated warming treatments over years"}
+```{r, fig.cap="Compare sd(CTI) in all 64 ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
