@@ -139,7 +139,6 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-
 #### CPI ~ warming treatment
 
 Community precipitation niches responding to warming treatments.
@@ -227,7 +226,6 @@ exp_com_tbl %>%
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
-
 
 #### CVI ~ warming treatment
 
@@ -493,11 +491,13 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
-#### VPD max
+#### CVI ~ watering treatment
 
-Community-level mean VPDmax index (CVI) in watered vs. ambient plots.
+Community VPDmax niches responding to watering treatments.
 
-```{r, fig.cap="Compare mean(CVI) in ambient vs. elevated adding water treatments over years"}
+Community-level mean CVI in ambient vs. watering plots.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. watering treatments over years"}
 exp_com_tbl %>%
   filter(
     site == "jrgce",
@@ -517,9 +517,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
-Community-level mean CVI in all 64 warming vs. ambient plots (pooling together all the other T, C, N treatments).
+Community-level mean CVI in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
 
-```{r, fig.cap="Compare mean(CVI) in all 64 ambient vs. elevated adding water treatments over years"}
+```{r, fig.cap="Compare mean(CVI) in all 64 ambient vs. watering treatments over years"}
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
@@ -537,9 +537,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
-Community-level CVI standard deviation in watered vs. ambient plots.
+Community-level CVI standard deviation in ambient vs. watering plots.
 
-```{r, fig.cap="Compare sd(CVI) in ambient vs. elevated adding water treatments over years"}
+```{r, fig.cap="Compare sd(CVI) in ambient vs. watering treatments over years"}
 exp_com_tbl %>%
   filter(
     site == "jrgce",
@@ -559,9 +559,9 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
-Community-level CVI standard deviation in all 64 warming vs. ambient plots (pooling together all the other T, C, N treatments).
+Community-level CVI standard deviation in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
 
-```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. elevated warming treatments over years"}
+```{r, fig.cap="Compare sd(CVI) in all 64 ambient vs. watering treatments over years"}
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
@@ -573,7 +573,7 @@ exp_com_tbl %>%
     label = "p.signif", hide.ns = FALSE
   ) +
   labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
