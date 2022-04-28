@@ -245,8 +245,6 @@ Site description by Josie.
 knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.8wuzredrn9p5")
 ```
 
-Note (TODO): Move this to /data/ZHULAB/grassland (permission denied).
-
 ```{r}
 spp_renamings <- read_csv("data/community/ca_grassland_spp_rename.csv")
 names(spp_renamings) <- sub(" ", "_", tolower(names(spp_renamings)))
