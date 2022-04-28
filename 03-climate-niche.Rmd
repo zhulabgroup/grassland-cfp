@@ -3,7 +3,7 @@
 Setup and load packages.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE, cache = TRUE)
 ```
 
 ```{r}
@@ -43,8 +43,6 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
-### GBIF
-
 Load the master species list.
 
 ```{r}
@@ -56,6 +54,9 @@ spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
   dplyr::select(queryname, canonicalname, everything()) %>%
   distinct(canonicalname, scientificname)
 ```
+
+
+### GBIF
 
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
 
@@ -75,7 +76,7 @@ gbif_occ_box_list <-
     res <- occ(
       query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
       geometry = st_bbox(cfp_sf),
-      gbifopts = list(
+      gbifopts = list( # occ_options(from = "gbif", where = "console")
         hasGeospatialIssue = FALSE
       )
     )
@@ -84,6 +85,8 @@ gbif_occ_box_list <-
       unnest(cols = c(gbif))
   }
 gbif_occ_box_df <- bind_rows(gbif_occ_box_list)
+stopCluster(cl)
+
 occ_sf_box <- st_as_sf(
   x = gbif_occ_box_df %>% dplyr::select(key, longitude, latitude),
   coords = c("longitude", "latitude"),
@@ -98,11 +101,132 @@ write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-25.rds")
 Read GBIF occurrence data as a sf object. 
 
 ```{r}
-occ_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
+occ_sf_list<-vector(mode="list")
+occ_sf_list[["gbif"]] <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
+  dplyr::select(species=queryName, longitude, latitude, key) %>% 
+  mutate(dataset="gbif") %>% 
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
-In total, GBIF has `r nrow(occ_sf) %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` records for `r unique(occ_sf$species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` species. Make a map to show all occurrence locations (randomly sample 10% records to save render time).
+### iNaturalist
+
+Not querying the data separately because:
+1. Hard limit of 10,000 records
+2. Very slow
+3. May be blocked if running too many queries in a minute
+
+```{r, eval=FALSE}
+res <- occ(
+      query = gbif_occ_df_today, from = "inat", has_coords = TRUE, limit = 10000,
+      geometry = st_bbox(cfp_sf)
+    )
+```
+
+4. A recommended way to get a lot of data at once is to use the dataset of research grade observations submitted weekly to GBIF https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7
+
+```{r}
+occ_sf_list[["inat"]] <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
+  filter(datasetName=="iNaturalist research-grade observations") %>% 
+  dplyr::select(species=queryName, longitude, latitude, key) %>% 
+  mutate(dataset="inat") %>% 
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) 
+```
+
+
+### BIEN
+Retreive all BIEN data then select those within CFP.
+```{r, eval=F}
+library(foreach)
+library(doSNOW)
+num_cores <- 22 # socs-stats has 44 cores
+cl <- makeCluster(num_cores)
+registerDoSNOW(cl)
+bien_df_list <-
+  foreach(
+    i = 1:length(spp_tbl$canonicalname),
+    .packages = c("BIEN","tidyverse")
+  ) %dopar% {
+    sp <- spp_tbl$canonicalname[i]
+    res <- BIEN_occurrence_species(species = sp)
+    print(i)
+    tibble(queryName = sp, res) %>% 
+      mutate(date_collected=as.Date(date_collected))
+  }
+bien_all_df <- bind_rows(bien_df_list) %>% 
+  mutate(key=row_number())%>% 
+  drop_na(latitude, longitude)
+stopCluster(cl)
+
+bien_all_sf <- st_as_sf(
+  x = bien_all_df %>% dplyr::select(key,longitude, latitude),
+  coords = c("longitude", "latitude"),
+  crs = 4326
+)
+bien_cfp_sf <- st_intersection(bien_all_sf, cfp_sf)
+bien_cfp_df <- bien_all_df %>%
+  right_join(as_tibble(bien_cfp_sf) %>% dplyr::select(key), by = "key")
+write_rds(bien_all_df, "data/occurrence/bien/bien-all-2022-04-27.rds")
+write_rds(bien_cfp_df, "data/occurrence/bien/bien-cfp-2022-04-27.rds")
+```
+
+Read as sf object.
+```{r}
+occ_sf_list[["bien"]] <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
+  dplyr::select(species=queryName, longitude, latitude, key) %>% 
+  mutate(key=as.character(key)) %>% 
+  mutate(dataset="bien") %>% 
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) 
+```
+
+
+### eJepson
+
+eJepson might be more accurate compared to iNat and GBIF.
+
+Download full dataset at https://www.cch2.org/portal/collections/harvestparams.php
+(Searching within the bounding box of 55N-10N, 130W-50W.)
+
+Keep records with species of interest and within CFP.
+```{r, eval=F}
+cch_raw_df<-read_csv("data/occurrence/cch/occurrences.csv")
+
+cch_all_df<-cch_raw_df%>% 
+  filter(scientificName %in% spp_tbl$canonicalname) %>% 
+  dplyr::select(key=id, latitude=decimalLatitude, longitude=decimalLongitude, queryName=scientificName) %>% 
+  drop_na(latitude, longitude)
+
+cch_all_sf <- st_as_sf(
+  x = cch_all_df %>% dplyr::select(key,longitude, latitude),
+  coords = c("longitude", "latitude"),
+  crs = 4326
+)
+cch_cfp_sf <- st_intersection(cch_all_sf, cfp_sf)
+cch_cfp_df <- cch_all_df %>%
+  right_join(as_tibble(cch_cfp_sf) %>% dplyr::select(key), by = "key")
+write_rds(cch_all_df, "data/occurrence/cch/cch-all-2022-04-27.rds")
+write_rds(cch_cfp_df, "data/occurrence/cch/cch-cfp-2022-04-27.rds")
+```
+
+Read as sf object.
+```{r}
+occ_sf_list[["cch"]] <- read_rds("data/occurrence/cch/cch-cfp-2022-04-27.rds") %>%
+  dplyr::select(species=queryName, longitude, latitude, key) %>% 
+  mutate(key=as.character(key)) %>% 
+  mutate(dataset="cch") %>% 
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) 
+```
+
+Compare sample size.
+```{r}
+occ_sf<-bind_rows(occ_sf_list)
+occ_sf %>% 
+  as_tibble() %>% 
+  group_by(dataset) %>% 
+  summarise (record_number=n()%>% format(trim = TRUE, scientific = FALSE, big.mark = ","),
+             species_number=unique(species) %>% length()%>% format(trim = TRUE, scientific = FALSE, big.mark = ","))
+```
+
+Make a map to show all occurrence locations (randomly sample 10% records to save render time).
 
 ```{r}
 ggplot(map_data("county", c("california", "nevada", "oregon"))) +
@@ -114,16 +238,9 @@ ggplot(map_data("county", c("california", "nevada", "oregon"))) +
     data = occ_sf %>% slice_sample(prop = .1), # randomly sample 10%, otherwise too slow to render
     color = "black", alpha = .1, size = .1
   ) +
-  labs(x = "Longitude (deg)", y = "Latitude (deg)")
+  labs(x = "Longitude (deg)", y = "Latitude (deg)")+
+  facet_wrap(.~dataset, nrow=1)
 ```
-
-### iNaturalist
-
-### BIEN
-
-### eJepson
-
-eJepson might be more accurate compared to iNat and GBIF.
 
 ## Get climate data
 
@@ -160,10 +277,15 @@ for (param in param_list) {
 Load raster data using the raster package.
 
 ```{r}
+climate_list<-vector(mode="list")
+
 tmean_ras <- raster::raster("data/climate/chelsa/bio1.tif")
 ppt_ras <- raster::raster("data/climate/chelsa/bio12.tif")
 vpdmax_ras <- raster::raster("data/climate/chelsa/vpd_max.tif")
-raster::proj4string(tmean_ras) # check that projection is WGS84
+# raster::proj4string(tmean_ras) # check that projection is WGS84
+
+climate_list[["chelsa"]] <-list(temp=tmean_ras,prcp=ppt_ras,vpd=vpdmax_ras)
+
 ```
 
 ### Daymet
@@ -205,7 +327,7 @@ for (param in param_list) {
 
 Download and process PRISM using the prism package (not running).
 
-```{r, eval=FALSE}
+```{r, eval=F}
 prism::prism_set_dl_dir("data/climate/prism/")
 prism::get_prism_normals("tmean", "800m", annual = TRUE, keepZip = FALSE)
 prism::get_prism_normals("ppt", "800m", annual = TRUE, keepZip = FALSE)
@@ -214,7 +336,8 @@ prism::get_prism_normals("vpdmax", "800m", annual = TRUE, keepZip = FALSE)
 
 Load raster data using the raster package.
 
-```{r, eval=FALSE}
+```{r, eval=T}
+prism::prism_set_dl_dir("data/climate/prism/")
 tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
   prism::pd_to_file() %>%
   raster::raster()
@@ -224,38 +347,145 @@ ppt_ras <- prism::prism_archive_subset("ppt", "annual normals", resolution = "80
 vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution = "800m") %>%
   prism::pd_to_file() %>%
   raster::raster()
+climate_list[["prism"]] <-list(temp=tmean_ras,prcp=ppt_ras,vpd=vpdmax_ras)
 ```
 
 ## Extract data at occurrence sites
 
-Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA rasters.
+Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA and PRISM rasters.
 
-```{r}
-occ_sf <- occ_sf %>%
-  st_transform(crs = st_crs(tmean_ras)) %>% # WGS84 for CHELSA, NAD83 for PRISM
-  dplyr::select(species = queryName)
+```{r, eval=F}
+occ_clim_sf_list<-vector(mode = "list")
+for (clim_dat in c("chelsa", "prism")) {
+  occ_sf_reproj <- occ_sf %>%
+    filter(dataset=="gbif") %>% 
+    st_transform(crs = st_crs(climate_list[[clim_dat]][[1]])) # WGS84 for CHELSA, NAD83 for PRISM
+
+  occ_clim_sf <- occ_sf_reproj %>%
+    mutate(
+      tmean = raster::extract(climate_list[[clim_dat]]$temp, occ_sf_reproj),
+      ppt = raster::extract(climate_list[[clim_dat]]$prcp, occ_sf_reproj),
+      vpdmax = raster::extract(climate_list[[clim_dat]]$vpd, occ_sf_reproj),
+      dataset=clim_dat
+    )
+  occ_clim_sf_list[[clim_dat]]<-occ_clim_sf
+}
+occ_clim_sf<-bind_rows(occ_clim_sf_list) 
+write_rds(occ_clim_sf, "data/climate/occurrence_with_climate_data.rds")
 ```
 
+Check correlation between CHELSA and PRISM data.
 ```{r}
-occ_sf <- occ_sf %>%
-  mutate(
-    tmean = raster::extract(tmean_ras, occ_sf),
-    ppt = raster::extract(ppt_ras, occ_sf),
-    vpdmax = raster::extract(vpdmax_ras, occ_sf)
-  )
+occ_clim_sf<-read_rds( "data/climate/occurrence_with_climate_data.rds")
+ggplot(occ_clim_sf %>% 
+         as_tibble() %>% 
+         dplyr::select(tmean, ppt, vpdmax, dataset) %>% 
+         group_by(dataset) %>% 
+         mutate(id=row_number())%>% 
+         ungroup() %>% 
+         gather(key="var", value="value", -dataset, -id) %>% 
+         spread(key="dataset", value="value") %>% 
+         mutate(chelsa=case_when(var=="vpdmax"~chelsa/100,
+                                 TRUE~chelsa))
+         )+
+  stat_bin_hex(aes(x=chelsa, y=prism), bins = 100)+
+  geom_smooth(aes(x=chelsa, y=prism), method="lm")+
+  geom_abline(intercept = 0, slope=1, col="red")+
+  facet_wrap(.~var)+
+  viridis::scale_fill_viridis()+
+  theme_classic()
 ```
+```{r}
+tmean_chelsa<-occ_clim_sf %>%as_tibble() %>% filter(dataset=="chelsa") %>% pull(tmean)
+tmean_prism<-occ_clim_sf %>%as_tibble() %>% filter(dataset=="prism") %>% pull(tmean)
+cor.test(tmean_chelsa,tmean_prism)
+
+ppt_chelsa<-occ_clim_sf %>%as_tibble() %>% filter(dataset=="chelsa") %>% pull(ppt)
+ppt_prism<-occ_clim_sf %>%as_tibble() %>% filter(dataset=="prism") %>% pull(ppt)
+cor.test(ppt_chelsa,ppt_prism)
+
+vpdmax_chelsa<-occ_clim_sf %>%as_tibble() %>% filter(dataset=="chelsa") %>% pull(vpdmax)
+vpdmax_prism<-occ_clim_sf %>%as_tibble() %>% filter(dataset=="prism") %>% pull(vpdmax)
+cor.test(vpdmax_chelsa,vpdmax_prism)
+
+```
+
 
 ## Quantify species climate niches
+
+### Compare niche estimation using all vs. CFP observations
+```{r}
+bien_all_sf<- read_rds("data/occurrence/bien/bien-all-2022-04-27.rds") %>%
+  dplyr::select(species=queryName, longitude, latitude, key) %>% 
+  mutate(key=as.character(key)) %>% 
+  mutate(range="all") %>% 
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) 
+bien_cfp_sf<- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
+  dplyr::select(species=queryName, longitude, latitude, key) %>% 
+  mutate(key=as.character(key)) %>% 
+  mutate(range="cfp") %>% 
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) 
+range_compare_sf<-bind_rows(bien_all_sf, bien_cfp_sf)
+
+ggplot(map_data("county", c("california", "nevada", "oregon"))) +
+  geom_polygon(aes(long, lat, group = group),
+    fill = "white", color = "grey75"
+  ) +
+  geom_sf(data = range_compare_sf, alpha = .5) +
+  geom_sf(
+    data = occ_sf %>% slice_sample(n=1000), # randomly sample 1000, otherwise too slow to render
+    color = "black", alpha = .1, size = .1
+  ) +
+  labs(x = "Longitude (deg)", y = "Latitude (deg)")+
+  facet_wrap(.~range, nrow=1)
+```
+
+```{r, eval=F}
+range_compare_sf_reproj <- range_compare_sf %>% 
+  st_transform(crs = st_crs(climate_list[["chelsa"]][[1]])) # WGS84 for CHELSA, NAD83 for PRISM
+
+range_compare_clim_sf <- range_compare_sf_reproj %>%
+  mutate(
+    tmean = raster::extract(climate_list[["chelsa"]]$temp, range_compare_sf_reproj),
+    ppt = raster::extract(climate_list[["chelsa"]]$prcp, range_compare_sf_reproj),
+    vpdmax = raster::extract(climate_list[["chelsa"]]$vpd, range_compare_sf_reproj)
+  )
+
+write_rds(range_compare_clim_sf, "data/climate/range_comparison_with_climate_data.rds")
+```
+
+Compare quantiles of three climatic variables using data from full range and CFP.
+```{r}
+range_compare_clim_summary<-read_rds("data/climate/range_comparison_with_climate_data.rds") %>% 
+  as_tibble() %>% 
+  dplyr::select(species, range, tmean, ppt, vpdmax) %>% 
+  gather(key="var", value="value", -species, -range) %>% 
+  group_by(species, range, var) %>% 
+  summarise(q5=quantile(value, 0.05, na.rm=T),
+            q25=quantile(value, 0.25, na.rm=T),
+            q50=quantile(value, 0.5, na.rm=T),
+            q75=quantile(value, 0.75, na.rm=T),
+            q95=quantile(value, 0.95, na.rm=T)) %>% 
+  gather(key="quantile", value="value", -species, -range, -var) %>% 
+  spread(key="range", value="value")
+
+ggplot(range_compare_clim_summary)+
+  geom_point(aes(x=all, y=cfp), alpha=0.5)+
+  facet_wrap(.~var*quantile, scales = "free", ncol=5)+
+  geom_abline(intercept = 0, slope=1, col="red")+
+  theme_classic()
+```
 
 ### Individual species
 
 Visualize individual species occurrence in climate space.
 
 ```{r, eval=FALSE}
+occ_gbif_sf<-occ_sf %>% filter(dataset=="gbif")
 # gbif summary
-tmean_rng <- range(occ_sf$tmean)
-ppt_rng <- range(occ_sf$ppt)
-n_occ_tot <- nrow(occ_sf)
+tmean_rng <- range(occ_gbif_sf$tmean)
+ppt_rng <- range(occ_gbif_sf$ppt)
+n_occ_tot <- nrow(occ_gbif_sf)
 # exp data summary
 exp_tbl <- read_rds("data/community/all-experimental-data.rds")
 n_exp_tot <- nrow(exp_tbl)
@@ -264,9 +494,9 @@ obs_tbl <- read_rds("data/community/all-observational-data.rds")
 n_obs_tot <- nrow(obs_tbl)
 niche_gg <- vector(mode = "list")
 
-for (i in 1:length(unique(occ_sf$species))) {
-  sp <- unique(occ_sf$species)[i]
-  occ_sp_sf <- filter(occ_sf, species == sp)
+for (i in 1:length(unique(occ_gbif_sf$species))) {
+  sp <- unique(occ_gbif_sf$species)[i]
+  occ_sp_sf <- filter(occ_gbif_sf, species == sp)
 
   occ_sp_stat <- occ_sp_sf %>%
     as_tibble() %>%
@@ -317,7 +547,7 @@ for (i in 1:length(unique(occ_sf$species))) {
   niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
 }
 
-names(niche_gg) <- unique(occ_sf$species)
+names(niche_gg) <- unique(occ_gbif_sf$species)
 ```
 
 Print all species into a multi-page PDF.
@@ -334,7 +564,7 @@ dev.off()
 Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
-niche_tbl <- occ_sf %>%
+niche_tbl <- occ_clim_sf %>%
   as_tibble() %>% # drop sf geometry--too slow and not needed for this summary
   group_by(species) %>%
   summarize(
@@ -440,5 +670,5 @@ Save niche estimates with mean and SD statistics.
 ```{r}
 niche_tbl %>%
   select(species, occ_n, tmean_occ_mean, tmean_occ_sd, ppt_occ_mean, ppt_occ_sd, vpdmax_occ_mean, vpdmax_occ_sd) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-04-25.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-04-27.rds")
 ```
