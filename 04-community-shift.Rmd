@@ -12,7 +12,7 @@ $$
 \mathrm{Var}(T_i) = \mathrm{E}[T_i^2] - \mathrm{E}[T_i]^2 = \frac{\sum_j A_{ij}T_j^2}{\sum_j A_{ij}} - \bar{T_i}^2.
 $$
 
-A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) =  \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
+A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) = \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
 
 Setup and load packages.
 
@@ -22,17 +22,18 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 
 ```{r}
 library(tidyverse)
+library(sf)
 ```
 
 Load niche estimates.
 
 ```{r}
-niche_tbl <- read_rds("data/climate/niche_estimates.rds")
+niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-04-25.rds")
 ```
 
 ## Experimental data
 
-Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temp and precip, weighted by abundance.
+Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
 exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
@@ -50,65 +51,377 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
 
 ### JRGCE 
 
-Community-level mean CTI in warming vs. ambient plots.
+#### CTI ~ warming treatment
 
-```{r, fig.cap="Compare mean(CTI) in ambient vs. elevated warming treatments over years"}
+Community temperature niches responding to warming treatments.
+
+Community-level mean CTI in ambient vs. warming plots, controlling other treatments.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
   ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level CTI standard deviation in warming vs. ambient plots.
+Community-level mean CTI in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
 
-```{r, fig.cap="Compare sd(CTI) in ambient vs. elevated warming treatments over years"}
+```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CTI standard deviation in ambient vs. warming plots.
+
+```{r, fig.cap="Compare sd(CTI) in ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
   ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level mean CTI in all 64 warming vs. ambient plots (lumping other P, C, N treatments together).
+Community-level CTI standard deviation in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
 
-```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. elevated warming treatments over years"}
+```{r, fig.cap="Compare sd(CTI) in all 64 ambient vs. warming treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)",
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
     color = "Warming treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
 
-Community-level mean CPI in watered vs. ambient plots.
+#### CPI ~ warming treatment
 
-```{r, fig.cap="Compare mean(CPI) in ambient vs. elevated adding water treatments over years"}
+Community precipitation niches responding to warming treatments.
+
+Community-level mean CPI in ambient vs. warming plots, controlling other treatments.
+
+```{r, fig.cap="Compare mean(CPI) in ambient vs. warming treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level mean CPI in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
+
+```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CPI standard deviation in ambient vs. warming plots.
+
+```{r, fig.cap="Compare sd(CPI) in ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CPI standard deviation in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
+
+```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+#### CVI ~ warming treatment
+
+Community VPDmax niches responding to warming treatments.
+
+Community-level mean CVI in ambient vs. warming plots, controlling other treatments.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level mean CVI in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
+
+```{r, fig.cap="Compare mean(CVI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CVI standard deviation in ambient vs. warming plots.
+
+```{r, fig.cap="Compare sd(CVI) in ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "T___")
+  ) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CVI standard deviation in all 64 ambient vs. warming plots (pooling together all the other P, C, N treatments).
+
+```{r, fig.cap="Compare sd(CVI) in all 64 ambient vs. warming treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Warming treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+#### CTI ~ watering treatment
+
+Community temperature niches responding to watering treatments.
+
+Community-level mean CTI in ambient vs. watering plots.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level mean CTI in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
+
+```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CTI standard deviation in ambient vs. watering plots.
+
+```{r, fig.cap="Compare sd(CTI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CTI standard deviation in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
+
+```{r, fig.cap="Compare sd(CTI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### CPI ~ watering treatment
+
+Community precipitation niches responding to watering treatments.
+
+Community-level mean CPI in ambient vs. watering plots.
+
+```{r, fig.cap="Compare mean(CPI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Watering treatment"
@@ -116,16 +429,41 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
-Community-level CPI standard deviation in watered vs. ambient plots.
+Community-level mean CPI in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
 
-```{r, fig.cap="Compare sd(CPI) in ambient vs. elevated adding water treatments over years"}
+```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CPI standard deviation in ambient vs. watering plots.
+
+```{r, fig.cap="Compare sd(CPI) in ambient vs. watering treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Watering treatment"
@@ -133,27 +471,122 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "blue"))
 ```
 
-Community-level mean CPI in all 64 warming vs. ambient plots (lumping other T, C, N treatments together).
+Community-level CPI standard deviation in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
 
-```{r, fig.cap="Compare mean(CPI) in all 64 ambient vs. elevated adding water treatments over years"}
+```{r, fig.cap="Compare sd(CPI) in all 64 ambient vs. watering treatments over years"}
 exp_com_tbl %>%
-  filter(site == "JRGCE") %>%
+  filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Watering treatment"
   ) +
   scale_color_manual(values = c("black", "blue"))
 ```
+
+#### CVI ~ watering treatment
+
+Community VPDmax niches responding to watering treatments.
+
+Community-level mean CVI in ambient vs. watering plots.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level mean CVI in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
+
+```{r, fig.cap="Compare mean(CVI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CVI standard deviation in ambient vs. watering plots.
+
+```{r, fig.cap="Compare sd(CVI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(
+    site == "jrgce",
+    treat %in% c("____", "_P__")
+  ) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CVI standard deviation in all 64 ambient vs. watering plots (pooling together all the other T, C, N treatments).
+
+```{r, fig.cap="Compare sd(CVI) in all 64 ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat_P, group = interaction(treat_P, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_P),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### Joint analyses
 
 For both warming and watering treatments, show replicates as raw data.
 
 ```{r, fig.cap="Plot (replicate) level community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   mutate(year = as.factor(year)) %>%
@@ -162,7 +595,7 @@ exp_com_tbl %>%
   # stat_ellipse() +
   facet_wrap(~treat) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
@@ -174,7 +607,7 @@ Because of outliers, summarize by median (same as boxplot, not mean) values of r
 ```{r, fig.cap="Median community weighted temperature and precipitation indexes from ambient and elevated temp and precip treatments over years"}
 exp_com_tbl %>%
   filter(
-    site == "JRGCE",
+    site == "jrgce",
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   group_by(year, treat) %>%
@@ -184,23 +617,280 @@ exp_com_tbl %>%
   geom_path() +
   facet_wrap(~treat) +
   labs(
-    x = "Community Temperature Index (CTI, degC)",
+    x = "Community Temperature Index (CTI, °C)",
     y = "Community Precipitation Index (CPI, mm)",
     col = "Year"
   ) +
   scale_color_viridis_c()
 ```
 
-### Santa Cruz IDE
+### McLaughlin Water Experiment
 
-Plot (replicate) level mean CPI in ambient vs. drought treatments.
+#### CTI ~ watering treatment
+
+Community temperature niches responding to watering treatments.
+
+Community-level mean CTI in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CTI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare sd(CTI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### CPI ~ watering treatment
+
+Community precipitation niches responding to watering treatments.
+
+Community-level mean CPI in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare mean(CPI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CPI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare sd(CPI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### CVI ~ watering treatment
+
+Community VPDmax niches responding to watering treatments.
+
+Community-level mean CVI in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+Community-level CVI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
+
+```{r, fig.cap="Compare sd(CVI) in ambient vs. watering treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("_X", "WX")) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Watering treatment"
+  ) +
+  scale_color_manual(values = c("black", "blue"))
+```
+
+#### CTI ~ drought treatment
+
+Community temperature niches responding to drought (shelter) treatments.
+
+Community-level mean CTI in ambient vs. drought plots, in serpentine soil.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CTI standard deviation in ambient vs. drought plots, in serpentine soil.
+
+```{r, fig.cap="Compare sd(CTI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+#### CPI ~ drought treatment
+
+Community precipitation niches responding to drought (shelter) treatments.
+
+Community-level mean CPI in ambient vs. drought plots, in serpentine soil.
 
 ```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
   ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
-  facet_wrap(~site) +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Drought treatment"
@@ -208,15 +898,158 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Michael said Marshall Field has lots of native species, while Arboretum and YLR are highly invaded (2/16/22). That might explain the difference among those sites. 
-
-Plot (replicate) level CPI standard deviation in ambient vs. drought treatments.
+Community-level CPI standard deviation in ambient vs. drought plots, in serpentine soil.
 
 ```{r, fig.cap="Compare sd(CPI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
   ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+#### CVI ~ drought treatment
+
+Community VPDmax niches responding to drought (shelter) treatments.
+
+Community-level mean CVI in ambient vs. drought plots, in serpentine soil.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CVI standard deviation in ambient vs. drought plots, in serpentine soil.
+
+```{r, fig.cap="Compare sd(CVI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site == "mclexp") %>%
+  separate(treat, c("treat", "soil"), sep = 2) %>%
+  mutate(
+    soil = case_when(
+      soil == "S" ~ "Serpentine soil",
+      soil == "N" ~ "Non-serpentine soil"
+    )
+  ) %>%
+  filter(treat %in% c("X_", "XD")) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~soil) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+### Santa Cruz IDE
+
+Michael said Marshall Field has lots of native species, while Arboretum and YLR are highly invaded (2/16/22). That might explain the difference among those sites. 
+
+#### CTI ~ drought treatment
+
+Community temperature niches responding to drought treatments.
+
+Community-level mean CTI in ambient vs. drought plots.
+
+```{r, fig.cap="Compare mean(CTI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CTI standard deviation in ambient vs. drought plots.
+
+```{r, fig.cap="Compare sd(CTI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community Temperature Index (CTI, °C)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+#### CPI ~ drought treatment
+
+Community precipitation niches responding to drought treatments.
+
+Community-level mean CPI in ambient vs. drought plots.
+
+```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   facet_wrap(~site) +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)",
@@ -225,31 +1058,65 @@ exp_com_tbl %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-Use mean VPDmax to replace total precip.
+Community-level CPI standard deviation in ambient vs. drought plots.
 
-```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
+```{r, fig.cap="Compare sd(CPI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   facet_wrap(~site) +
   labs(
-    x = "Year", y = "Community VPDmax Index (CVI, hPa)",
+    x = "Year", y = "Community Precipitation Index (CPI, mm)",
     color = "Drought treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
 ```
 
-Use VPDmax standard deviation to replace total precip.
+#### CVI ~ drought treatment
 
-```{r, fig.cap="Compare community VPDmax in ambient vs. drought treatments over years"}
+Community VPDmax niches responding to drought treatments.
+
+Community-level mean CVI in ambient vs. drought plots.
+
+```{r, fig.cap="Compare mean(CVI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
-  filter(site %in% c("IDE Arboretum", "IDE Marshall Field", "IDE YLR")) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
   facet_wrap(~site) +
   labs(
-    x = "Year", y = "Community VPDmax Index (CVI, hPa)",
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
+    color = "Drought treatment"
+  ) +
+  scale_color_manual(values = c("black", "red"))
+```
+
+Community-level CVI standard deviation in ambient vs. drought plots.
+
+```{r, fig.cap="Compare sd(CVI) in ambient vs. drought treatments over years"}
+exp_com_tbl %>%
+  filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~site) +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
     color = "Drought treatment"
   ) +
   scale_color_manual(values = c("black", "red"))
@@ -257,7 +1124,7 @@ exp_com_tbl %>%
 
 ## Observational data
 
-Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temp and precip, weighted by abundance.
+Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
 obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
@@ -273,15 +1140,30 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   )
 ```
 
+### Community change
+
+#### CTI ~ year
+
+Community temperature niches change over years.
+
 CTI community-level mean in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
 ```{r, fig.cap="Compare mean(CTI) across sites over years"}
 obs_com_tbl %>%
   ggplot(aes(year, tmean_com_mean, group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)"
+    x = "Year", y = "Community Temperature Index (CTI, °C)"
   )
 ```
 
@@ -291,11 +1173,24 @@ CTI community-level standard deviation.
 obs_com_tbl %>%
   ggplot(aes(year, sqrt(tmean_com_var), group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
-    x = "Year", y = "Community Temperature Index (CTI, degC)"
+    x = "Year", y = "Community Temperature Index (CTI, °C)"
   )
 ```
+
+#### CPI ~ year
+
+Community precipitation niches change over years.
 
 CPI community-level mean in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
 
@@ -303,6 +1198,15 @@ CPI community-level mean in several sites decreases over years, suggesting commu
 obs_com_tbl %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
@@ -311,12 +1215,202 @@ obs_com_tbl %>%
 
 CPI community-level standard deviation.
 
-```{r, fig.cap="Compare mean(CPI) across sites over years"}
+```{r, fig.cap="Compare sd(CPI) across sites over years"}
 obs_com_tbl %>%
   ggplot(aes(year, sqrt(ppt_com_var), group = year)) +
   geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
     x = "Year", y = "Community Precipitation Index (CPI, mm)"
+  )
+```
+
+#### CVI ~ year
+
+Community VPDmax niches change over years.
+
+CVI community-level mean in several sites changes over years, but no clear direction.
+
+```{r, fig.cap="Compare mean(CVI) across sites over years"}
+obs_com_tbl %>%
+  ggplot(aes(year, vpdmax_com_mean, group = year)) +
+  geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)"
+  )
+```
+
+CPI community-level standard deviation.
+
+```{r, fig.cap="Compare sd(CVI) across sites over years"}
+obs_com_tbl %>%
+  ggplot(aes(year, sqrt(vpdmax_com_var), group = year)) +
+  geom_boxplot() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Community VPDmax Index (CVI, Pa)"
+  )
+```
+
+### Climate change
+
+Observational site climate change over the study period.
+
+```{r}
+site_tbl <- read_rds("data/community/site-info.rds")
+```
+
+Download PRISM data (to be updated with Chelsa). Set PRISM dir first.
+
+```{r}
+prism::prism_set_dl_dir("data/climate/prism/")
+```
+
+Download (not run, only once).
+
+```{r, eval=FALSE}
+range(exp_com_tbl$year) # 1998:2021
+range(obs_com_tbl$year) # 1983:2019
+prism::get_prism_annual("tmean", years = 1983:2021, keepZip = FALSE)
+prism::get_prism_annual("ppt", years = 1983:2021, keepZip = FALSE)
+prism::get_prism_annual("vpdmax", years = 1983:2021, keepZip = FALSE)
+```
+
+Extract site climate from PRISM.
+
+```{r}
+site_tmean_tbl <- prism::prism_archive_subset(
+  "tmean", "annual",
+  years = 1983:2020
+) %>%
+  prism::pd_stack() %>%
+  raster::extract(site_tbl) %>%
+  bind_cols(site = site_tbl$abbr, .) %>%
+  pivot_longer(-site, names_to = "year", values_to = "tmean") %>%
+  mutate(year = year %>%
+    str_sub(start = -8L, end = -5L) %>%
+    as.integer())
+
+site_ppt_tbl <- prism::prism_archive_subset(
+  "ppt", "annual",
+  years = 1983:2020
+) %>%
+  prism::pd_stack() %>%
+  raster::extract(site_tbl) %>%
+  bind_cols(site = site_tbl$abbr, .) %>%
+  pivot_longer(-site, names_to = "year", values_to = "ppt") %>%
+  mutate(year = year %>%
+    str_sub(start = -8L, end = -5L) %>%
+    as.integer())
+
+site_vpdmax_tbl <- prism::prism_archive_subset(
+  "vpdmax", "annual",
+  years = 1983:2020
+) %>%
+  prism::pd_stack() %>%
+  raster::extract(site_tbl) %>%
+  bind_cols(site = site_tbl$abbr, .) %>%
+  pivot_longer(-site, names_to = "year", values_to = "vpdmax") %>%
+  mutate(year = year %>%
+    str_sub(start = -8L, end = -5L) %>%
+    as.integer())
+```
+
+Assemble site climate data.
+
+```{r}
+site_clim_tbl <- site_tmean_tbl %>%
+  full_join(site_ppt_tbl, by = c("site", "year")) %>%
+  full_join(site_vpdmax_tbl, by = c("site", "year")) %>%
+  right_join(obs_com_tbl %>%
+    distinct(site, year), by = c("site", "year")) %>%
+  arrange(site, year)
+```
+
+Plot temperature change.
+
+```{r, fig.cap="Observational site temperature change across years"}
+site_clim_tbl %>%
+  ggplot(aes(year, tmean)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed"
+  ) +
+  ggpubr::stat_cor(aes(label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Mean annual temperature (°C)"
+  )
+```
+
+Plot precipitation change.
+
+```{r, fig.cap="Observational site precipitation change across years"}
+site_clim_tbl %>%
+  ggplot(aes(year, ppt)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed"
+  ) +
+  ggpubr::stat_cor(aes(label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Mean annual precipitation (mm)"
+  )
+```
+
+Plot VPDmax change.
+
+```{r, fig.cap="Observational site VPDmax change across years"}
+site_clim_tbl %>%
+  ggplot(aes(year, vpdmax)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE,
+    color = "red", lty = "dashed"
+  ) +
+  ggpubr::stat_cor(aes(label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site, scales = "free_y") +
+  labs(
+    x = "Year", y = "Mean VPDmax (hPa)"
   )
 ```

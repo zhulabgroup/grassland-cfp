@@ -89,13 +89,100 @@ Join all tables, remove intermediate objects, and save the tidy data.
 jrgce_data <- pin_tbl %>%
   left_join(spp_tbl, by = "species") %>%
   left_join(trt_tbl, by = c("year", "plot")) %>%
-  mutate(site = "JRGCE", abund_type = "point_intercept") %>%
+  mutate(site = "jrgce", abund_type = "point_intercept") %>%
   select(site, year, plot, treat, species, guild, abund, abund_type) %>%
   arrange(year, plot, species)
 
 rm(list = ls(pattern = "_tbl"))
 
 write_csv(jrgce_data, "data/community/tidy/jrgce.csv")
+```
+
+### McLaughlin Water Experiment
+
+The experiment was introduced in Harrison, Susan P., Marina L. LaForgia, and Andrew M. Latimer. “Climate‐driven Diversity Change in Annual Grasslands: Drought plus Deluge Does Not Equal Normal.” Global Change Biology 24, no. 4 (April 2018): 1782–92. https://doi.org/10.1111/gcb.14018.
+
+Susan's notes (email on 4/22/22):
+
+- Treatments began in Fall 2015 and ended in Winter 2020.   The years in the datasheets refer to Spring sampling.   Thus, sampling year 2015 is pre-treatment data, and sampling year 2021 is one full year post-treatment.
+- In practice it’s best to treat this as three separate sub-experiments.    On non-serpentine soil, the treatments are Watering and Watering Control.   On serpentine soil, there is also a watering experiment with treatments Watering and Watering Control.   On serpentine soil there is also a drought shelter experiment with treatments Shelter and Shelter Control.    The design was not conducive to analyzing these three sub-experiments all together.
+
+Read in raw data. Note 2020 data is missing.
+
+```{r}
+cover_2015_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2015")
+cover_2016_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2016")
+cover_2017_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2017")
+cover_2018_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2018")
+cover_2019_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2019")
+# cover_2020_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2020")
+cover_2021_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2021")
+plot_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "Plot codes")
+```
+
+Combine cover data across years and join with plot-treatment data.
+
+```{r}
+cover_long_tbl <- (
+  cover_2015_tbl %>%
+    rename(species = "Plots") %>%
+    pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+    mutate(year = 2015)
+) %>%
+  bind_rows(
+    cover_2016_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2016)
+  ) %>%
+  bind_rows(
+    cover_2017_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2017)
+  ) %>%
+  bind_rows(
+    cover_2018_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2018)
+  ) %>%
+  bind_rows(
+    cover_2019_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2019)
+  ) %>%
+  bind_rows(
+    cover_2021_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2021)
+  ) %>%
+  select(year, plot, species, abund) %>%
+  mutate(plot = as.integer(plot))
+
+mclexp_data <- plot_tbl %>%
+  mutate(
+    plot = as.integer(Site),
+    treat = case_when(
+      Trt == "W" ~ "WX", # watering; X means not available; watering is paired--compare WX vs. _X, not X_
+      Trt == "WC" ~ "_X", # watering control (_)
+      Trt == "S" ~ "XD", # shelter -> drought
+      Trt == "SC" ~ "X_" # shelter control -> drought control
+    ) %>%
+      str_c(Soil) # S = serpentine soil, N = non-serpentine soil
+  ) %>%
+  select(plot, treat) %>%
+  full_join(cover_long_tbl, by = "plot") %>%
+  mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
+  select(site, year, plot, treat, species, guild, abund, abund_type) %>%
+  filter(abund > 0) %>%
+  arrange(year, plot, species)
+
+rm(list = ls(pattern = "_tbl"))
+
+write_csv(mclexp_data, "data/community/tidy/mclexp.csv")
 ```
 
 ### Santa Cruz International Drought Experiment
@@ -109,7 +196,10 @@ scide_data <- read_csv("data/community/raw/SantaCruzIDE/IDESpeciesComp_LongForma
   col_types = c("ciicdicdcc")
 ) %>%
   mutate(
-    site = str_c("IDE ", Site),
+    site = Site %>%
+      str_replace(" ", "") %>%
+      tolower() %>%
+      str_c("scide_", .),
     year = Year,
     plot = str_c(Plot, Block, sep = "-"),
     treat = case_when(
@@ -175,11 +265,11 @@ Angelo <- read_csv("data/community/raw/Angelo/Angelo_CommCompData.csv") %>%
 names(Angelo) <- tolower(names(Angelo))
 Angelo_spp <- read_csv("data/community/raw/Angelo/Angelo_spp_guilds.csv")
 Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
-  mutate(Site = "Angelo") %>%
+  mutate(Site = "angelo") %>%
   filter(cover > 0)
 angelo_data <- Angelo %>%
   select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "Angelo") %>%
+  mutate(site = "angelo") %>%
   filter(
     guild != "Bare",
     guild != "Moss",
@@ -187,8 +277,6 @@ angelo_data <- Angelo %>%
   ) %>%
   mutate(site = "Angelo") %>%
   mutate(species.name = as.factor(species.name))
-# unique(angelo_data$species.name)
-# unique(angelo_data$guild)
 remove(Angelo)
 remove(Angelo_spp)
 
@@ -239,8 +327,6 @@ carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
     !is.na(guild)
   ) %>%
   mutate(site = "Carrizo")
-# unique(carrizo_data$Species.Name)
-# unique(carrizo_data$guild)
 ## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset.
 ## Removing extra carrizo objects
 remove(carrizo)
@@ -401,7 +487,7 @@ elkhorn_data <- elk_counts_df %>%
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
-  mutate(site = "Elkhorn")
+  mutate(site = "elkhorn")
 
 # removing extra elkhorn objects
 remove(elk_99_18_guilds)
@@ -488,7 +574,7 @@ McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   ) %>%
   unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
   unite(Guild1, Guild3, col = "guild", sep = "") %>%
-  mutate(Site = "McLAnn") %>%
+  mutate(Site = "mclann") %>%
   select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   summarise(cover = mean(Cover)) %>%
@@ -505,7 +591,7 @@ mclann_data <- McLAnn %>%
     species.name != "Unknown grass",
     species.name != "Unknown forb"
   ) %>%
-  mutate(site = "McL Ann")
+  mutate(site = "mclann")
 
 remove(McL_Sites)
 remove(McL_spp)
@@ -549,7 +635,7 @@ McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   ) %>%
   unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
   unite(Guild1, Guild3, col = "guild", sep = "") %>%
-  mutate(Site = "McLSerp") %>%
+  mutate(Site = "mclserp") %>%
   select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   summarise(cover = mean(Cover))
@@ -564,7 +650,7 @@ mclserp_data <- McLSerp %>%
     species.name != "Rock",
     species.name != "Unknown forb"
   ) %>%
-  mutate(site = "McL Serp")
+  mutate(site = "mclserp")
 
 remove(McL_Sites)
 remove(McL_spp)
@@ -678,7 +764,7 @@ swanton_data <- swan_counts_df %>%
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
-  mutate(site = "Swanton")
+  mutate(site = "swanton")
 
 # removing extra Swanton objects
 remove(swan_99_18_guilds)
@@ -781,7 +867,7 @@ ucsc_data <- ucsc_counts_df %>%
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
-  mutate(site = "UCSC")
+  mutate(site = "ucsc")
 
 # removing extra UCSC objects
 remove(ucsc_99_18_guilds)
@@ -815,6 +901,7 @@ Second, read directly from CSV file(s) for all experimental and observational da
 
 ```{r}
 all_exp_data <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
+  bind_rows(read_csv("data/community/tidy/mclexp.csv", col_types = "ciccccdc")) %>%
   bind_rows(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc"))
 
 all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
@@ -911,4 +998,3 @@ Save it to RDS.
 ```{r}
 write_rds(site_sf, file = "data/community/site-info.rds")
 ```
-
