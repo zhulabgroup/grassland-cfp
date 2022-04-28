@@ -273,7 +273,7 @@ angelo_data <- Angelo %>%
     guild != "Moss",
     guild != "Litter"
   ) %>%
-  mutate(site = "Angelo") %>%
+  mutate(site = "angelo") %>%
   mutate(species.name = as.factor(species.name))
 remove(Angelo)
 remove(Angelo_spp)
@@ -324,7 +324,7 @@ carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
     Intercepts > 0,
     !is.na(guild)
   ) %>%
-  mutate(site = "Carrizo")
+  mutate(site = "carrizo")
 ## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset.
 ## Removing extra carrizo objects
 remove(carrizo)
@@ -459,7 +459,7 @@ elk_counts_df <- do.call(rbind, elk_counts_clean) %>%
   left_join(elkspp, by="species.code") %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "Elkhorn",
+  mutate(site = "elkhorn",
          species.name = factor(species.name))
 # removing unwanted guilds (moss, litter, etc.)
 elk_counts_df <- elk_counts_df %>%
@@ -519,7 +519,7 @@ JR_spp <- read_csv("data/community/raw/Jasper/JR_speciesnames2.csv")
 Jasper <- left_join(Jasper_Veg, JR_spp, by = "species")
 Jasper_species <- Jasper %>%
   select("uniqueID", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "Jasper") %>%
+  mutate(site = "jasper") %>%
   filter(cover > 0) %>%
   ungroup()
 jasper_data <- Jasper_species %>%
@@ -736,7 +736,7 @@ swan_counts_df <- do.call(rbind, swan_counts_clean) %>%
   left_join(Swanspp, by="species.code") %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "Swanton",
+  mutate(site = "swanton",
          species.name = factor(species.name))
 # removing unwanted guilds (moss, litter, etc.)
 swan_counts_df <- swan_counts_df %>%
@@ -839,7 +839,7 @@ ucsc_counts_df <- do.call(rbind, ucsc_counts_clean) %>%
   left_join(UCSCspp, by="species.code") %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "UCSC",
+  mutate(site = "ucsc",
          species.name = factor(species.name))
 # removing unwanted guilds (moss, litter, etc.)
 ucsc_counts_df <- ucsc_counts_df %>%
