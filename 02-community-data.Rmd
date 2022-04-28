@@ -245,16 +245,23 @@ Site description by Josie.
 knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.8wuzredrn9p5")
 ```
 
+```{r}
+spp_renamings <- read_csv("data/community/ca_grassland_spp_rename.csv")
+names(spp_renamings) <- sub(" ", "_", tolower(names(spp_renamings)))
+spp_renamings_vec <- pull(spp_renamings, revised_name)
+names(spp_renamings_vec) <- pull(spp_renamings, original_name)
+```
+
 ### Angelo
 
 These data were collected by K.B. Suttle from 2002 to 2015.  
 
-```{r Angelo Data Import and Clean}
-Angelo <- read.csv("data/community/raw/Angelo/Angelo_CommCompData.csv") %>%
+```{r Angelo Data Import and Clean, message=FALSE}
+Angelo <- read_csv("data/community/raw/Angelo/Angelo_CommCompData.csv") %>%
   filter(TMT == "C") %>%
   gather("Dan":"Thistle", key = species, value = cover)
 names(Angelo) <- tolower(names(Angelo))
-Angelo_spp <- read.csv("data/community/raw/Angelo/Angelo_spp_guilds.csv")
+Angelo_spp <- read_csv("data/community/raw/Angelo/Angelo_spp_guilds.csv")
 Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
   mutate(Site = "angelo") %>%
   filter(cover > 0)
@@ -266,15 +273,8 @@ angelo_data <- Angelo %>%
     guild != "Moss",
     guild != "Litter"
   ) %>%
-  mutate(site = "angelo") %>%
-  mutate(species.name = fct_recode(species.name,
-    "Brodiaea elegans" = "Broadia elegans ",
-    "Convolvulus arvensis" = "Convulvus arvensis ",
-    "Torilis arvensis" = "Torrilis arvensis ",
-    "Aira caryophyllea" = "Aira caryophellea "
-  ))
-unique(angelo_data$species.name)
-unique(angelo_data$guild)
+  mutate(site = "Angelo") %>%
+  mutate(species.name = as.factor(species.name))
 remove(Angelo)
 remove(Angelo_spp)
 
@@ -294,39 +294,37 @@ In the raw data, there should be be eight 1x1m plots per site (e.g. EP1, EP2) an
 
 **At a later date, we may want to consider changing the level of analysis. For now, we will treat each plot as a separate replicate.**
 
-```{r Import & clean Carrizo}
+```{r Import & clean Carrizo, message=FALSE}
 ## importing all of the files
-carrizo_spp <- read.csv("data/community/raw/Carrizo/Carrizo_plant list.csv")
-carrizo <- read.csv("data/community/raw/Carrizo/Carrizo_data.csv")
-carrizo_forms <- read.csv("data/community/raw/Carrizo/Carrizo_plant forms.csv")
-carrizo_extras <- read.csv("data/community/raw/Carrizo/carrizo_extraspecies.csv")
-carrizo$Plot <- as.factor(carrizo$Plot)
-str(carrizo)
+carrizo_spp <- read_csv("data/community/raw/Carrizo/Carrizo_plant list.csv")
+carrizo <- read_csv("data/community/raw/Carrizo/Carrizo_data.csv",
+                          col_types = c("cfDcccccccdcic"))
+carrizo_forms <- read_csv("data/community/raw/Carrizo/Carrizo_plant forms.csv")
+carrizo_extras <- read_csv("data/community/raw/Carrizo/carrizo_extraspecies.csv")
+# str(carrizo)
 ## renaming some columns and selecting only the columns we care about
 carrizo <- carrizo %>%
-  rename(Intercepts = Count) %>%
-  select(Site, Plot, Site.type, year, Intercepts, Code)
-carrizo$Code <- tolower(carrizo$Code)
+  dplyr::rename(Intercepts = Count) %>%
+  select(Site, Plot, Site.type, year, Intercepts, Code) %>%
+  mutate(Code = tolower(Code))
 ## combining the species guild info to the main data
-carrizo_spp <- left_join(carrizo_spp, carrizo_forms, by = "newform")
 carrizo_spp <- carrizo_spp %>%
+  rename_with(~ sub(" ", ".", .x)) %>%
+  left_join(carrizo_forms, by = "newform") %>% 
   select(NewCode, SCIENTIFIC.NAME, nat.exo, ann.per, lifeform, guild) %>%
-  rename(
+  dplyr::rename(
     Code = NewCode,
     Species.Name = SCIENTIFIC.NAME
-  )
-carrizo_spp <- full_join(carrizo_spp, carrizo_extras, by = c("Code", "Species.Name", "nat.exo", "ann.per", "lifeform", "guild"))
+  ) %>%
+  full_join(carrizo_extras, by = c("Code", "Species.Name", "nat.exo", "ann.per", "lifeform", "guild"))
 ## adding the missing guild info (for things like "moss" and "bare"), getting rid of a very small number of NA datapoints, and adding a "site" column.
-carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code")
-carrizo_data <- carrizo_data %>%
+carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
   filter(
     !is.na(Intercepts),
     Intercepts > 0,
     !is.na(guild)
   ) %>%
-  mutate(site = "carrizo")
-unique(carrizo_data$Species.Name)
-unique(carrizo_data$guild)
+  mutate(site = "Carrizo")
 ## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset.
 ## Removing extra carrizo objects
 remove(carrizo)
@@ -335,35 +333,13 @@ remove(carrizo_forms)
 remove(carrizo_spp)
 # fixing species name spellings/parentheticals
 carrizo_data <- carrizo_data %>%
-  rename(species.name = Species.Name) %>%
-  mutate(species.name = fct_recode(species.name,
-    "Bromus rubens" = "Bromus madritensis ssp rubens (B. rubens)",
-    "Vulpia microstachys v pauciflora" = "Vulpia microstachys vpauciflora (F. reflexa)",
-    "Vulpia myuros v hirsuta" = "Vulpia myuros v hirsuta (F. megalura)",
-    "Guillenia lasiophylla" = "Guillenia lasiophylla (Thelypodium l.)",
-    "Phlox gracilis" = "Phlox gracilis (Microsteris g.)",
-    "Lasthenia californica" = "Lasthenia californica (L. chrysotoma)",
-    "Bromus hordeaceus" = "Bromus hordeaceus (B. mollis)",
-    "Poa secunda ssp secunda" = "Poa secunda ssp secunda (P. scabrella)",
-    "Lupinus microcarpus v microcarpus" = "Lupinus microcarpus v microcarpus (L. ruber)",
-    "Hollisteria lanata" = "Hollisteria lanata*",
-    "Castilleja exserta" = "Castilleja exserta (O. purpurascens)",
-    "Vulpia bromoides" = "Vulpia bromoides (Festuca dertonensis)",
-    "Chaenactis glabriuscula v glabriuscula" = "Chaenactis glabriuscula vglabriuscula",
-    "Lastarriaea coriacea" = "Lastarriaea coriacea (Chorizanthe c.)",
-    "Castilleja lineariloba" = "Castilleja lineariloba (O. l.)",
-    "Delphinium recurvatum" = "Delphinium recurvatum*",
-    "Amsinckia menziesii" = "Amsinckia menziesii v menziesii",
-    "Monolopia congdonii" = "Monolopia congdonii*",
-    "Herniaria hirsuta ssp. cinerea" = "Herniaria hirsuta ssp cineria",
-    "Carrizo Allium sp." = "Allium sp.",
-    "Car Astragalus sp." = "Astragalus sp."
-  ))
+  dplyr::rename(species.name = Species.Name) %>%
+  mutate(species.name = recode(species.name, !!!spp_renamings_vec))
 ## because carrizo has a weird plot vs. site issue, we'll group by "site" for all analyses
 carrizo_data <- carrizo_data %>%
   group_by(Site, year, species.name, guild, site) %>%
   summarise(Intercepts = sum(Intercepts)) %>%
-  rename(plot = Site) %>%
+  dplyr::rename(plot = Site) %>%
   filter(
     species.name != "litter",
     species.name != "bare",
@@ -386,30 +362,26 @@ write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. *Karen suggested combining all of the Bromus species into one group*. 
 
-```{r Importing Elkhorn, warning=FALSE}
-elkspp <- read.csv("data/community/raw/HollData/ElkhornSpecies.csv")
-elkspp$species.code <- tolower(elkspp$species.code)
-elk_guilds <- read.csv("data/community/raw/HollData/ElkhornGuilds.csv")
-elk99 <- read.csv("data/community/raw/HollData/Elk_1999.csv", skip = 4)
-elk00 <- read.csv("data/community/raw/HollData/Elk_2000.csv", skip = 3)
-elk01 <- read.csv("data/community/raw/HollData/Elk_2001.csv", skip = 3)
-elk02 <- read.csv("data/community/raw/HollData/Elk_2002.csv", skip = 3)
-elk03 <- read.csv("data/community/raw/HollData/Elk_2003.csv")
-elk04 <- read.csv("data/community/raw/HollData/Elk_2004.csv")
-elk05 <- read.csv("data/community/raw/HollData/Elk_2005.csv")
-elk06 <- read.csv("data/community/raw/HollData/Elk_2006.csv")
-elk07 <- read.csv("data/community/raw/HollData/Elk_2007.csv")
-elk08 <- read.csv("data/community/raw/HollData/Elk_2008.csv")
-elk09 <- read.csv("data/community/raw/HollData/Elk_2009.csv")
-elk10 <- read.csv("data/community/raw/HollData/Elk_2010.csv", skip = 1)
-elk11 <- read.csv("data/community/raw/HollData/Elk_2011.csv")
-elk12 <- read.csv("data/community/raw/HollData/Elk_2012.csv")
-elk13 <- read.csv("data/community/raw/HollData/Elk_2013.csv", skip = 2)
-elk14 <- read.csv("data/community/raw/HollData/Elk_2014.csv", skip = 1)
-elk15 <- read.csv("data/community/raw/HollData/Elk_2015.csv", skip = 1)
-elk16 <- read.csv("data/community/raw/HollData/Elk_2016.csv", skip = 1)
-elk17 <- read.csv("data/community/raw/HollData/Elk_2017.csv", skip = 1)
-elk18 <- read.csv("data/community/raw/HollData/Elk_2018.csv", skip = 1)
+```{r Importing Elkhorn, warning=FALSE, message=FALSE}
+elkspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
+  mutate(species.code = tolower(species.code))
+elk_guilds <- read_csv("data/community/raw/HollData/ElkhornGuilds.csv")
+elk_counts <- list()
+for(i in 1:20) {
+  year <- as.character(1999:2018)[i]
+  skips = c(4,3,3,3,0,0,0,0,0,0,0,1,0,0,2,1,1,1,1,1)
+  filename <- paste0("data/community/raw/HollData/Elk_", year, ".csv")
+  out <- read_csv(filename, skip=skips[i], show_col_types = FALSE)
+  # elk_counts[[year]] <- select_if(out, has_data)
+  elk_counts[[year]] <- out
+}
+elk_counts <- lapply(seq_along(elk_counts), function(i) {
+  rename_with(elk_counts[[i]], tolower) %>%
+    rename_with(~ sub("frequency", "freq", sub("treatment", "treat", sub("replicate", "rep", sub("9$", "", .x))))) %>%
+    select(-starts_with("comment"), -starts_with("..."), -starts_with("0"))
+  })
+
+# lapply(elk_counts, names)
 ```
 
 Because these data are in separate files (one year per file), we need to clean the data and compile all of the years into a single object. To clean the data, we selected only the Elkhorn plots (these files also contained the data from two other sites; UCSC and Swanton, removed the non-control plots, restructured the data to make sure only non-zero datapoints were included, and added the year.
@@ -417,432 +389,80 @@ Because these data are in separate files (one year per file), we need to clean t
 We then combined the file with species guild information to each yearly object. 
 
 ```{r Cleaning Elkhorn, warning=FALSE}
-elk99 <- elk99 %>%
-  filter(
-    freq == "con",
-    site == "elk"
-  ) %>%
-  mutate(year = "1999")
-elk99 <- gather(elk99, "anaarv9":"bare9", key = "species.code", value = "intercepts")
-elk99$species.code <- substr(elk99$species.code, 1, nchar(elk99$species.code) - 1)
-elk99$species.code <- tolower(elk99$species.code)
-elk99 <- left_join(elk99, elkspp, by = "species.code")
-elk99$intercepts <- as.numeric(elk99$intercepts)
-elk00 <- elk00 %>%
-  filter(
-    site == "elk",
-    freq == "con"
-  ) %>%
-  select(site:naspul) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"naspul", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2000")
-elk00$species.code <- tolower(elk00$species.code)
-elk00 <- left_join(elk00, elkspp, by = "species.code")
-elk00 <- spread(elk00, key = plot, value = intercepts) %>%
-  rename(
-    plot1 = "1",
-    plot2 = "2",
-    plot3 = "3",
-    plot4 = "4"
-  ) %>%
-  mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-  select(-plot1, -plot2, -plot3, -plot4)
-elk00$intercepts <- as.numeric(elk00$intercepts)
-elk01 <- elk01 %>%
-  filter(
-    site == "elk",
-    freq == "con"
-  ) %>%
-  select(site:thatch) %>%
-  replace(is.na(.), 0) %>%
-  gather("anaarv":"thatch", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2001")
-elk01$species.code <- tolower(elk01$species.code)
-elk01 <- left_join(elk01, elkspp, by = "species.code")
-elk01 <- spread(elk01, key = plot, value = intercepts) %>%
-  rename(
-    plot1 = "1",
-    plot2 = "2",
-    plot3 = "3",
-    plot4 = "4"
-  ) %>%
-  mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-  select(-plot1, -plot2, -plot3, -plot4)
-elk01$intercepts <- as.numeric(elk01$intercepts)
-elk02 <- elk02 %>%
-  filter(
-    Site == "elk",
-    Frequency == "con"
-  ) %>%
-  select(Site:thatch) %>%
-  replace(is.na(.), 0) %>%
-  gather("anaarv":"thatch", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2002")
-names(elk02) <- tolower(names(elk02))
-elk02 <- elk02 %>%
-  rename(
-    site = site,
-    freq = frequency,
-    treat = treatment,
-    rep = replicate
-  )
-elk02$intercepts <- as.numeric(elk02$intercepts)
-elk02 <- left_join(elk02, elkspp, by = "species.code")
-elk03 <- elk03 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2003")
-names(elk03) <- tolower(names(elk03))
-elk03 <- left_join(elk03, elkspp, by = "species.code")
-elk04 <- elk04 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2004")
-names(elk04) <- tolower(names(elk04))
-elk04 <- left_join(elk04, elkspp, by = "species.code")
-elk05 <- elk05 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2005")
-names(elk05) <- tolower(names(elk05))
-elk05 <- left_join(elk05, elkspp, by = "species.code")
-elk06 <- elk06 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2006")
-names(elk06) <- tolower(names(elk06))
-elk06 <- left_join(elk06, elkspp, by = "species.code")
-elk07 <- elk07 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2007")
-names(elk07) <- tolower(names(elk07))
-elk07 <- left_join(elk07, elkspp, by = "species.code")
-elk08 <- elk08 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "con"
-  ) %>%
-  select(SITE:hormur) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"hormur", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2008")
-names(elk08) <- tolower(names(elk08))
-elk08 <- left_join(elk08, elkspp, by = "species.code")
-elk09 <- elk09 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2009")
-names(elk09) <- tolower(names(elk09))
-elk09 <- left_join(elk09, elkspp, by = "species.code")
-elk10 <- elk10 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2010")
-names(elk10) <- tolower(names(elk10))
-elk10$intercepts <- as.numeric(elk10$intercepts)
-elk10 <- left_join(elk10, elkspp, by = "species.code")
-elk11 <- elk11 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2011")
-names(elk11) <- tolower(names(elk11))
-elk11$intercepts <- as.numeric(elk11$intercepts)
-elk11 <- left_join(elk11, elkspp, by = "species.code")
-elk12 <- elk12 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2012")
-names(elk12) <- tolower(names(elk12))
-elk12$intercepts <- as.numeric(elk12$intercepts)
-elk12 <- left_join(elk12, elkspp, by = "species.code")
-elk13 <- elk13 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2013")
-names(elk13) <- tolower(names(elk13))
-elk13$intercepts <- as.numeric(elk13$intercepts)
-elk13 <- left_join(elk13, elkspp, by = "species.code")
-elk14 <- elk14 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2014")
-names(elk14) <- tolower(names(elk14))
-elk14 <- left_join(elk14, elkspp, by = "species.code")
-elk15 <- elk15 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2015")
-names(elk15) <- tolower(names(elk15))
-elk15 <- left_join(elk15, elkspp, by = "species.code")
-elk16 <- elk16 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpia) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpia", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2016")
-names(elk16) <- tolower(names(elk16))
-elk16 <- left_join(elk16, elkspp, by = "species.code")
-elk17 <- elk17 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpia) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpia", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2017")
-names(elk17) <- tolower(names(elk17))
-elk17 <- left_join(elk17, elkspp, by = "species.code")
-elk18 <- elk18 %>%
-  filter(
-    SITE == "elk",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpia) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpia", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2018")
-names(elk18) <- tolower(names(elk18))
-elk18 <- left_join(elk18, elkspp, by = "species.code")
+cleanElkhornData <- function(data, gathercol1, gathercol2, site=c("elk", "swa", "ucsc")) {
+  filtersite <- match.arg(site, c("elk", "swa", "ucsc"))
+  keep_cols <- c("site", "freq", "treat", "rep", "species.code", "intercepts", "plot")
+  if(!(gathercol1 %in% names(data)) | !(gathercol2 %in% names(data))) {
+    stop("gathercol1 and gathercol2 must be columns in data.")
+  }
+  ind_col1 <- which(names(data) == gathercol1)
+  ind_col2 <- which(names(data) == gathercol2)
+  if(ind_col1 > ind_col2) stop("gathercol1 must come before gathercol2 in the column names of the data.")
+  columns <- names(data)[ind_col1:ind_col2]
+  data <- suppressWarnings(mutate(data, across(all_of(columns), function(x) as.numeric(x))))
+  data %>% 
+    mutate(freq = tolower(freq),
+           freq = if_else(freq == "control", "con", freq),
+           site = tolower(site),
+           site = if_else(site == "swan", "swa", site),
+           site = if_else(site == "swanton", "swa", site)) %>%
+    filter(
+      site == filtersite,
+      freq == "con"
+    ) %>%
+    pivot_longer(all_of(columns), names_to = "species.code", values_to = "intercepts") %>%
+    mutate(intercepts = as.numeric(intercepts),
+           intercepts = if_else(is.na(intercepts), 0, intercepts),
+           species.code = tolower(species.code)) %>%
+    select(any_of(keep_cols)) %>%
+  return()
+}
+cleanElkhornPlot <- function(data) {
+  data %>%
+    pivot_wider(names_from = "plot", values_from = "intercepts", names_prefix = "plot") %>%
+    mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
+    select(-plot1, -plot2, -plot3, -plot4)
+}
+
+elk_counts_clean <- list()
+elk_counts_clean[[1]] <- elk_counts[[1]] %>% cleanElkhornData("anaarv", "bare")
+elk_counts_clean[[2]] <- elk_counts[[2]] %>% cleanElkhornData("aircar", "naspul") %>% cleanElkhornPlot()
+elk_counts_clean[[3]] <- elk_counts[[3]] %>% cleanElkhornData("anaarv", "thatch") %>% cleanElkhornPlot()
+elk_counts_clean[[4]] <- elk_counts[[4]] %>% cleanElkhornData("anaarv", "thatch")
+elk_counts_clean[[5]] <- elk_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[6]] <- elk_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[7]] <- elk_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[8]] <- elk_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[9]] <- elk_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[10]] <- elk_counts[[10]] %>% cleanElkhornData("aircar", "hormur")
+elk_counts_clean[[11]] <- elk_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[12]] <- elk_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[13]] <- elk_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[14]] <- elk_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[15]] <- elk_counts[[15]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[16]] <- elk_counts[[16]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[17]] <- elk_counts[[17]] %>% cleanElkhornData("aircar", "vulpsp")
+elk_counts_clean[[18]] <- elk_counts[[18]] %>% cleanElkhornData("aircar", "vulpia")
+elk_counts_clean[[19]] <- elk_counts[[19]] %>% cleanElkhornData("aircar", "vulpia")
+elk_counts_clean[[20]] <- elk_counts[[20]] %>% cleanElkhornData("aircar", "vulpia")
+
+# lapply(elk_counts_clean, dim)
+for(i in 1:length(elk_counts_clean)) {
+  elk_counts_clean[[i]]$year <- (1999:2018)[i]
+}
 ```
 
 At this point, all that is left to do is to combine the objects so that we have one large object with each year of data in it. 
 
-```{r Compiling Elkhorn, warning=FALSE}
-elk_99_00 <- full_join(elk99, elk00, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-elk_99_01 <- full_join(elk_99_00, elk01, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_00)
-elk_99_02 <- full_join(elk_99_01, elk02, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_01)
-elk_99_03 <- full_join(elk_99_02, elk03, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_02)
-elk_99_04 <- full_join(elk_99_03, elk04, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_03)
-elk_99_05 <- full_join(elk_99_04, elk05, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_04)
-elk_99_06 <- full_join(elk_99_05, elk06, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_05)
-elk_99_07 <- full_join(elk_99_06, elk07, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_06)
-elk_99_08 <- full_join(elk_99_07, elk08, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_07)
-elk_99_09 <- full_join(elk_99_08, elk09, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_08)
-elk_99_10 <- full_join(elk_99_09, elk10, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_09)
-elk_99_11 <- full_join(elk_99_10, elk11, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_10)
-elk_99_12 <- full_join(elk_99_11, elk12, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_11)
-elk_99_13 <- full_join(elk_99_12, elk13, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_12)
-elk_99_14 <- full_join(elk_99_13, elk14, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_13)
-elk_99_15 <- full_join(elk_99_14, elk15, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_14)
-elk_99_16 <- full_join(elk_99_15, elk16, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_15)
-elk_99_17 <- full_join(elk_99_16, elk17, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_16)
-elk_99_18 <- full_join(elk_99_17, elk18, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(elk_99_17)
-remove(elk99)
-remove(elk00)
-remove(elk01)
-remove(elk02)
-remove(elk03)
-remove(elk04)
-remove(elk05)
-remove(elk06)
-remove(elk07)
-remove(elk08)
-remove(elk09)
-remove(elk10)
-remove(elk11)
-remove(elk12)
-remove(elk13)
-remove(elk14)
-remove(elk15)
-remove(elk16)
-remove(elk17)
-remove(elk18)
-```
-
 ```{r Elkhorn graph prep, warning=FALSE}
-elk_99_18_species <- elk_99_18 %>%
+elk_counts_df <- do.call(rbind, elk_counts_clean) %>%
+  left_join(elkspp, by="species.code") %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "elkhorn")
-elk_99_18_species$species.name <- as.character(elk_99_18_species$species.name)
-elk_99_18_species$species.name <- as.factor(elk_99_18_species$species.name)
-elk_99_18_species$year <- as.integer(elk_99_18_species$year)
-elk_99_18_species$year <- as.numeric(elk_99_18_species$year)
-elkhorn_data <- elk_99_18_species %>%
-  mutate(species.name = fct_recode(species.name,
-    "Vulpia myuros" = "Festuca myuros"
-  ))
+  mutate(site = "Elkhorn",
+         species.name = factor(species.name))
 # removing unwanted guilds (moss, litter, etc.)
-elk_99_18_species <- elk_99_18_species %>%
+elk_counts_df <- elk_counts_df %>%
   group_by(rep, year, guild, species.name) %>%
   summarize(intercepts = sum(intercepts)) %>%
   filter(
@@ -850,16 +470,16 @@ elk_99_18_species <- elk_99_18_species %>%
     guild != "Thatch",
     guild != "Bare"
   )
-unique(elk_99_18_species$species.name)
-unique(elk_99_18_species$guild)
-elk_99_18_guilds <- elk_99_18_species %>%
+# unique(elk_counts_df$species.name)
+# unique(elk_counts_df$guild)
+elk_guilds <- elk_counts_df %>%
   group_by(rep, year, guild) %>%
   summarize(guildtotal = sum(intercepts)) %>%
   ungroup() %>%
   group_by(year, guild) %>%
   summarize(mean.intercepts = mean(guildtotal))
 
-elkhorn_data <- elkhorn_data %>%
+elkhorn_data <- elk_counts_df %>%
   filter(
     species.name != "Moss",
     species.name != "Thatch",
@@ -869,7 +489,7 @@ elkhorn_data <- elkhorn_data %>%
 
 # removing extra elkhorn objects
 remove(elk_99_18_guilds)
-remove(elk_99_18_species)
+remove(elk_counts_df)
 remove(elk_guilds)
 remove(elkspp)
 remove(elk_99_18)
@@ -886,25 +506,24 @@ write_csv(elkhorn_data, "data/community/tidy/elkhorn.csv")
 
 These data were collected from Jasper Ridge from 1983 to 2015.  
 
-```{r Jasper Data Import & Clean}
-Jasper_Veg <- read.csv("data/community/raw/Jasper/JR_cover_forJosie.csv") %>%
-  select(-X) %>%
-  spread(key = species, value = cover) %>%
+```{r Jasper Data Import & Clean, message=FALSE}
+Jasper_Veg <- read_csv("data/community/raw/Jasper/JR_cover_forJosie.csv", 
+           col_types = cols_only(year="d", species="c", cover="d", uniqueID = "c")) %>%
+  # select(-X) %>%
+  pivot_wider(names_from = species, values_from = cover) %>%
   replace(is.na(.), 0) %>%
-  gather("aghe":"vumi", key = species, value = cover) %>%
+  pivot_longer(cols=aghe:vumi, names_to = "species", values_to = "cover") %>%
   group_by(uniqueID, year, species) %>%
   summarize(cover = mean(cover))
-JR_spp <- read.csv("data/community/raw/Jasper/JR_speciesnames2.csv")
+JR_spp <- read_csv("data/community/raw/Jasper/JR_speciesnames2.csv")
 Jasper <- left_join(Jasper_Veg, JR_spp, by = "species")
 Jasper_species <- Jasper %>%
   select("uniqueID", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "jasper") %>%
-  filter(cover > 0)
+  mutate(site = "Jasper") %>%
+  filter(cover > 0) %>%
+  ungroup()
 jasper_data <- Jasper_species %>%
-  mutate(species.name = fct_recode(species.name,
-    "Eschscholzia californica" = "Escholtzia californica",
-    "Elymus multisetus" = "Elymus multisedis"
-  ))
+  mutate(species.name = recode(species.name, !!!spp_renamings_vec))
 jasper_spp_check <- jasper_data %>%
   group_by(species.name, guild) %>%
   summarise(mean = mean(cover))
@@ -926,20 +545,22 @@ write_csv(jasper_data, "data/community/tidy/jasper.csv")
 
 Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrants. Data is richness only from 2000-2005, but full community data 2006-2014. 
 
-```{r McLaughlin Importing and Cleaning Data}
+```{r McLaughlin Importing and Cleaning Data, message=FALSE}
 ## importing the data
-McLAnn <- read.csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read.csv("data/community/raw/McLaughlin/AbioticSiteData.csv") %>%
-  rename(Site = site)
-McL_spp <- read.csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
-## combining the data with site infomation, filtering to just serptentine sites
+McLAnn <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv",
+                   col_types=c(id="i", Year="i", Site="d", Quadrat="i", Species_Name="c",
+                               Cover="d", Notes="c", Merged_Species="c"))
+McL_Sites <- read.csv("data/community/raw/McLaughlin/AbioticSiteData.csv") %>% # Cannot be read using read_csv
+  dplyr::rename(Site=site)
+McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
+## combining the data with site infomation, filtering to just serpentine sites
 McLAnn <- left_join(McLAnn, McL_Sites, by = "Site")
 McLAnn <- McLAnn %>%
   filter(Serpentine == "N") %>%
-  rename(plot = Site)
+  dplyr::rename(plot = Site)
 ## combining the guild information, creating a "guild" column, selecting only the desired info
 McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
-  rename(
+  dplyr::rename(
     nat.exo = Native.Exotic,
     lifeform = Grass.Forb.Shrub,
     ann.per = Annual.Perennial
@@ -954,20 +575,14 @@ McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   mutate(Site = "mclann") %>%
   select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
-  summarise(cover = mean(Cover))
+  summarise(cover = mean(Cover)) %>%
+  ungroup()
 mclann_data <- McLAnn %>%
-  rename(
+  dplyr::rename(
     species.name = Species_Name,
     year = Year
   ) %>%
-  mutate(species.name = fct_recode(species.name,
-    "Cerastium fontanum ssp. vulgare" = "Cerastium vulgare",
-    "Astragalus gambellianus" = "Astragalus gambelianus",
-    "Melilotus indicus" = "Melilotus indica",
-    "Zeltnera trichantha" = "Centaurium trichanthum",
-    "Elymus repens" = "Elytrigia repens",
-    "Packera eurycephala" = "Senecio eurycephalus"
-  )) %>%
+  mutate(species.name = recode(species.name, !!!spp_renamings_vec)) %>%
   filter(
     species.name != "Bare",
     species.name != "Rock",
@@ -993,20 +608,20 @@ write_csv(mclann_data, "data/community/tidy/mclann.csv")
 
 These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern California. These data are for 38 plots that were measured using 1m^2^ quadrants. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
 
-```{r Import and Clean McL Serpentine}
+```{r Import and Clean McL Serpentine, message=FALSE}
 ## importing the data
-McLSerp <- read.csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read.csv("data/community/raw/McLaughlin/AbioticSiteData.csv") %>%
-  rename(Site = site)
-McL_spp <- read.csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
+McLSerp <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
+McL_Sites <- read.csv("data/community/raw/McLaughlin/AbioticSiteData.csv") %>% # Cannot be read using read_csv
+  dplyr::rename(Site = site)
+McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
 ## combining the data with site infomation, filtering to just serptentine sites
 McLSerp <- left_join(McLSerp, McL_Sites, by = "Site")
 McLSerp <- McLSerp %>%
   filter(Serpentine == "S") %>%
-  rename(plot = Site)
+  dplyr::rename(plot = Site)
 ## combining the guild information, creating a "guild" column, selecting only the desired info
 McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
-  rename(
+  dplyr::rename(
     nat.exo = Native.Exotic,
     lifeform = Grass.Forb.Shrub,
     ann.per = Annual.Perennial
@@ -1023,21 +638,11 @@ McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   summarise(cover = mean(Cover))
 mclserp_data <- McLSerp %>%
-  rename(
+  dplyr::rename(
     species.name = Species_Name,
     year = Year
   ) %>%
-  mutate(species.name = fct_recode(species.name,
-    "Astragalus gambellianus" = "Astragalus gambelianus",
-    "Melilotus indicus" = "Melilotus indica",
-    "Antirrhinum vexillocalyculatum" = "Antirrhinum vexillo-calyculatum",
-    "Erythranthe guttata" = "Mimulus guttatus",
-    "Zeltnera trichantha" = "Centaurium trichanthum",
-    "Elymus repens" = "Elytrigia repens",
-    "Packera eurycephala" = "Senecio eurycephalus",
-    "mcLserp Allium sp." = "Allium sp.",
-    "mcLserp Astragalus sp." = "Astragalus sp."
-  )) %>%
+  mutate(species.name = recode(species.name, !!!spp_renamings_vec)) %>%
   filter(
     species.name != "Bare",
     species.name != "Rock",
@@ -1078,369 +683,80 @@ Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very in
 
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, I am using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
-```{r Importing Swanton, warning=FALSE}
-Swanspp <- read.csv("data/community/raw/HollData/ElkhornSpecies.csv")
-Swanspp$species.code <- tolower(Swanspp$species.code)
-Swan_guilds <- read.csv("data/community/raw/HollData/ElkhornGuilds.csv")
-Swan99 <- read.csv("data/community/raw/HollData/Elk_1999.csv", skip = 4)
-Swan00 <- read.csv("data/community/raw/HollData/Elk_2000.csv", skip = 3)
-Swan01 <- read.csv("data/community/raw/HollData/Elk_2001.csv", skip = 3)
-Swan02 <- read.csv("data/community/raw/HollData/Elk_2002.csv", skip = 3)
-Swan03 <- read.csv("data/community/raw/HollData/Elk_2003.csv")
-Swan04 <- read.csv("data/community/raw/HollData/Elk_2004.csv")
-Swan05 <- read.csv("data/community/raw/HollData/Elk_2005.csv")
-Swan06 <- read.csv("data/community/raw/HollData/Elk_2006.csv")
-Swan07 <- read.csv("data/community/raw/HollData/Elk_2007.csv")
-Swan08 <- read.csv("data/community/raw/HollData/swanton_08.csv", skip = 1)
-Swan09 <- read.csv("data/community/raw/HollData/Elk_2009.csv")
-Swan10 <- read.csv("data/community/raw/HollData/Elk_2010.csv", skip = 1)
-Swan11 <- read.csv("data/community/raw/HollData/Elk_2011.csv")
-Swan12 <- read.csv("data/community/raw/HollData/Elk_2012.csv")
+```{r, message=FALSE}
+Swanspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
+  mutate(species.code = tolower(species.code))
+Swan_guilds <- read_csv("data/community/raw/HollData/ElkhornGuilds.csv")
+swan_counts <- list()
+for(i in 1:14) {
+  year <- as.character(1999:2012)[i]
+  skips = c(4,3,3,3,0,0,0,0,0,1,0,1,0,0)
+  if(i!=10) {
+    filename <- paste0("data/community/raw/HollData/Elk_", year, ".csv")
+  } else {
+    filename <- "data/community/raw/HollData/swanton_08.csv"
+  }
+  out <- read_csv(filename, skip=skips[i], show_col_types = FALSE)
+  swan_counts[[year]] <- out
+}
+swan_counts <- lapply(seq_along(swan_counts), function(i) {
+  rename_with(swan_counts[[i]], tolower) %>%
+    rename_with(~ sub("frequency", "freq", sub("treatment", "treat", sub("replicate", "rep", sub("9$", "", .x))))) %>%
+    select(-starts_with("comment"), -starts_with("..."), -starts_with("0"))
+  })
+
+# lapply(swan_counts, names)
 ```
 
 ```{r Cleaning Swanton, warning=FALSE}
-Swan99 <- Swan99 %>%
-  filter(
-    freq == "con",
-    site == "swan"
-  ) %>%
-  mutate(year = "1999")
-Swan99 <- gather(Swan99, "anaarv9":"bare9", key = "species.code", value = "intercepts")
-Swan99$species.code <- substr(Swan99$species.code, 1, nchar(Swan99$species.code) - 1)
-Swan99$species.code <- tolower(Swan99$species.code)
-Swan99 <- left_join(Swan99, Swanspp, by = "species.code")
-Swan99$intercepts <- as.numeric(Swan99$intercepts)
-Swan00 <- Swan00 %>%
-  filter(
-    site == "swa",
-    freq == "con"
-  ) %>%
-  select(site:naspul) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"naspul", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2000")
-Swan00$species.code <- tolower(Swan00$species.code)
-Swan00 <- left_join(Swan00, Swanspp, by = "species.code")
-Swan00 <- spread(Swan00, key = plot, value = intercepts) %>%
-  rename(
-    plot1 = "1",
-    plot2 = "2",
-    plot3 = "3",
-    plot4 = "4"
-  ) %>%
-  mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-  select(-plot1, -plot2, -plot3, -plot4)
-Swan00$intercepts <- as.numeric(Swan00$intercepts)
-Swan01 <- Swan01 %>%
-  filter(
-    site == "swan",
-    freq == "con"
-  ) %>%
-  select(site:thatch) %>%
-  replace(is.na(.), 0) %>%
-  gather("anaarv":"thatch", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2001")
-Swan01$species.code <- tolower(Swan01$species.code)
-Swan01 <- left_join(Swan01, Swanspp, by = "species.code")
-Swan01 <- spread(Swan01, key = plot, value = intercepts) %>%
-  rename(
-    plot1 = "1",
-    plot2 = "2",
-    plot3 = "3",
-    plot4 = "4"
-  ) %>%
-  mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-  select(-plot1, -plot2, -plot3, -plot4)
-Swan01$intercepts <- as.numeric(Swan01$intercepts)
-Swan02 <- Swan02 %>%
-  filter(
-    Site == "swa",
-    Frequency == "con"
-  ) %>%
-  select(Site:thatch) %>%
-  replace(is.na(.), 0) %>%
-  gather("anaarv":"thatch", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2002")
-names(Swan02) <- tolower(names(Swan02))
-Swan02 <- Swan02 %>%
-  rename(
-    site = site,
-    freq = frequency,
-    treat = treatment,
-    rep = replicate
-  )
-Swan02$intercepts <- as.numeric(Swan02$intercepts)
-Swan02 <- left_join(Swan02, Swanspp, by = "species.code")
-Swan03 <- Swan03 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2003")
-names(Swan03) <- tolower(names(Swan03))
-Swan03 <- left_join(Swan03, Swanspp, by = "species.code")
-Swan04 <- Swan04 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2004")
-names(Swan04) <- tolower(names(Swan04))
-Swan04 <- left_join(Swan04, Swanspp, by = "species.code")
-Swan05 <- Swan05 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2005")
-names(Swan05) <- tolower(names(Swan05))
-Swan05 <- left_join(Swan05, Swanspp, by = "species.code")
-Swan06 <- Swan06 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2006")
-names(Swan06) <- tolower(names(Swan06))
-Swan06 <- left_join(Swan06, Swanspp, by = "species.code")
-Swan07 <- Swan07 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2007")
-names(Swan07) <- tolower(names(Swan07))
-Swan07 <- left_join(Swan07, Swanspp, by = "species.code")
-Swan08 <- Swan08 %>%
-  filter(
-    SITE == "SWANTON",
-    FREQ == "CON"
-  ) %>%
-  select(SITE:spearv) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"spearv", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2008")
-names(Swan08) <- tolower(names(Swan08))
-Swan08 <- left_join(Swan08, Swanspp, by = "species.code")
-Swan09 <- Swan09 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2009")
-names(Swan09) <- tolower(names(Swan09))
-Swan09 <- left_join(Swan09, Swanspp, by = "species.code")
-Swan10 <- Swan10 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2010")
-names(Swan10) <- tolower(names(Swan10))
-Swan10$intercepts <- as.numeric(Swan10$intercepts)
-Swan10 <- left_join(Swan10, Swanspp, by = "species.code")
-Swan11 <- Swan11 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2011")
-names(Swan11) <- tolower(names(Swan11))
-Swan11$intercepts <- as.numeric(Swan11$intercepts)
-Swan11 <- left_join(Swan11, Swanspp, by = "species.code")
-Swan12 <- Swan12 %>%
-  filter(
-    SITE == "swa",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2012")
-names(Swan12) <- tolower(names(Swan12))
-Swan12$intercepts <- as.numeric(Swan12$intercepts)
-Swan12 <- left_join(Swan12, Swanspp, by = "species.code")
-```
+swan_counts_clean <- list()
+swan_counts_clean[[1]] <- swan_counts[[1]] %>% cleanElkhornData("anaarv", "bare", site="swa")
+swan_counts_clean[[2]] <- swan_counts[[2]] %>% cleanElkhornData("aircar", "naspul", site="swa") %>% cleanElkhornPlot()
+swan_counts_clean[[3]] <- swan_counts[[3]] %>% cleanElkhornData("anaarv", "thatch", site="swa") %>% cleanElkhornPlot()
+swan_counts_clean[[4]] <- swan_counts[[4]] %>% cleanElkhornData("anaarv", "thatch", site="swa")
+swan_counts_clean[[5]] <- swan_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[6]] <- swan_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[7]] <- swan_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[8]] <- swan_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[9]] <- swan_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[10]] <- swan_counts[[10]] %>% cleanElkhornData("aircar", "spearv", site="swa")
+swan_counts_clean[[11]] <- swan_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[12]] <- swan_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[13]] <- swan_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
+swan_counts_clean[[14]] <- swan_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp", site="swa")
 
-Once the data is cleaned up on a yearly basis, we can combine the years into a single dataframe. 
-
-```{r Compiling Swanton, warning=FALSE}
-Swan_99_00 <- full_join(Swan99, Swan00, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-Swan_99_01 <- full_join(Swan_99_00, Swan01, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_00)
-Swan_99_02 <- full_join(Swan_99_01, Swan02, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_01)
-Swan_99_03 <- full_join(Swan_99_02, Swan03, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_02)
-Swan_99_04 <- full_join(Swan_99_03, Swan04, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_03)
-Swan_99_05 <- full_join(Swan_99_04, Swan05, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_04)
-Swan_99_06 <- full_join(Swan_99_05, Swan06, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_05)
-Swan_99_07 <- full_join(Swan_99_06, Swan07, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_06)
-Swan_99_08 <- full_join(Swan_99_07, Swan08, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_07)
-Swan_99_09 <- full_join(Swan_99_08, Swan09, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_08)
-Swan_99_10 <- full_join(Swan_99_09, Swan10, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_09)
-Swan_99_11 <- full_join(Swan_99_10, Swan11, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_10)
-Swan_99_12 <- full_join(Swan_99_11, Swan12, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(Swan_99_11)
-remove(Swan99)
-remove(Swan00)
-remove(Swan01)
-remove(Swan02)
-remove(Swan03)
-remove(Swan04)
-remove(Swan05)
-remove(Swan06)
-remove(Swan07)
-remove(Swan08)
-remove(Swan09)
-remove(Swan10)
-remove(Swan11)
-remove(Swan12)
+# lapply(swan_counts_clean, dim)
+for(i in 1:length(swan_counts_clean)) {
+  swan_counts_clean[[i]]$year <- (1999:2012)[i]
+}
 ```
 
 ```{r Swanton Graph Prep, warning=FALSE}
-Swan_99_12_species <- Swan_99_12 %>%
+swan_counts_df <- do.call(rbind, swan_counts_clean) %>%
+  left_join(Swanspp, by="species.code") %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "swanton")
-Swan_99_12_species$species.name <- as.character(Swan_99_12_species$species.name)
-Swan_99_12_species$species.name <- as.factor(Swan_99_12_species$species.name)
-Swan_99_12_species$year <- as.integer(Swan_99_12_species$year)
-Swan_99_12_species$year <- as.numeric(Swan_99_12_species$year)
-
-swanton_data <- Swan_99_12_species %>%
-  mutate(species.name = fct_recode(species.name,
-    "Vulpia myuros" = "Festuca myuros"
-  ))
-
-Swan_99_12_species <- Swan_99_12_species %>%
-  group_by(rep, year, guild, species.name) %>%
-  summarize(intercepts = sum(intercepts))
-
-Swan_99_12_guilds <- Swan_99_12_species %>%
+  mutate(site = "Swanton",
+         species.name = factor(species.name))
+# removing unwanted guilds (moss, litter, etc.)
+swan_counts_df <- swan_counts_df %>%
   group_by(rep, year, guild, species.name) %>%
   summarize(intercepts = sum(intercepts)) %>%
+  filter(
+    guild != "Moss",
+    guild != "Thatch",
+    guild != "Bare"
+  )
+# unique(swan_counts_df$species.name)
+# unique(swan_counts_df$guild)
+elk_guilds <- swan_counts_df %>%
   group_by(rep, year, guild) %>%
   summarize(guildtotal = sum(intercepts)) %>%
   ungroup() %>%
   group_by(year, guild) %>%
   summarize(mean.intercepts = mean(guildtotal))
-Swan_Richness <- Swan_99_12_species %>%
-  filter(guild != "Moss" &
-    guild != "Thatch" &
-    guild != "Bare ground") %>%
-  group_by(year) %>%
-  summarize(rich = n_distinct(species.name))
-```
 
-__We may want to consider combining all of the *Bromus* species into one group.__
-
-```{r Removing extra Swanton objects and saving final data}
-remove(Swan_99_12)
-remove(Swan_99_12_species)
-remove(Swan_99_12_guilds)
-remove(Swan_Richness)
-remove(Swanspp)
-remove(Swan_guilds)
-
-swanton_data <- swanton_data %>%
+swanton_data <- swan_counts_df %>%
   filter(
     species.name != "Moss",
     species.name != "Thatch",
@@ -1448,10 +764,16 @@ swanton_data <- swanton_data %>%
   ) %>%
   mutate(site = "swanton")
 
+# removing extra Swanton objects
+remove(swan_99_18_guilds)
+remove(swan_counts_df)
+remove(Swan_guilds)
+remove(Swanspp)
+
 swanton_data <- swanton_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "point_intercept") %>%
+  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
 write_csv(swanton_data, "data/community/tidy/swanton.csv")
 ```
@@ -1460,357 +782,96 @@ write_csv(swanton_data, "data/community/tidy/swanton.csv")
 
 These are data for grassland plots at UCSC. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
-```{r Importing UCSC, warning=FALSE}
-UCSCspp <- read.csv("data/community/raw/HollData/ElkhornSpecies.csv")
-UCSCspp$species.code <- tolower(UCSCspp$species.code)
-UCSC_guilds <- read.csv("data/community/raw/HollData/ElkhornGuilds.csv")
-UCSC99 <- read.csv("data/community/raw/HollData/Elk_1999.csv", skip = 4)
-UCSC00 <- read.csv("data/community/raw/HollData/Elk_2000.csv", skip = 3)
-UCSC01 <- read.csv("data/community/raw/HollData/Elk_2001.csv", skip = 3)
-UCSC02 <- read.csv("data/community/raw/HollData/Elk_2002.csv", skip = 3)
-UCSC03 <- read.csv("data/community/raw/HollData/Elk_2003.csv")
-UCSC04 <- read.csv("data/community/raw/HollData/Elk_2004.csv")
-UCSC05 <- read.csv("data/community/raw/HollData/Elk_2005.csv")
-UCSC06 <- read.csv("data/community/raw/HollData/Elk_2006.csv")
-UCSC07 <- read.csv("data/community/raw/HollData/Elk_2007.csv")
-UCSC08 <- read.csv("data/community/raw/HollData/ucsc_08.csv")
-UCSC09 <- read.csv("data/community/raw/HollData/Elk_2009.csv")
-UCSC10 <- read.csv("data/community/raw/HollData/Elk_2010.csv", skip = 1)
-UCSC11 <- read.csv("data/community/raw/HollData/Elk_2011.csv")
-UCSC12 <- read.csv("data/community/raw/HollData/Elk_2012.csv")
+```{r Importing UCSC, warning=FALSE, message=FALSE}
+UCSCspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
+  mutate(species.code = tolower(species.code))
+UCSC_guilds <- read_csv("data/community/raw/HollData/ElkhornGuilds.csv")
+ucsc_counts <- list()
+for(i in 1:14) {
+  year <- as.character(1999:2012)[i]
+  skips = c(4,3,3,3,0,0,0,0,0,0,0,1,0,0)
+  if(i!=10) {
+    filename <- paste0("data/community/raw/HollData/Elk_", year, ".csv")
+  } else {
+    filename <- "data/community/raw/HollData/ucsc_08.csv"
+  }
+  out <- read_csv(filename, skip=skips[i], show_col_types = FALSE)
+  ucsc_counts[[year]] <- out
+}
+ucsc_counts <- lapply(seq_along(ucsc_counts), function(i) {
+  rename_with(ucsc_counts[[i]], tolower) %>%
+    rename_with(~ sub("frequency", "freq", sub("treatment", "treat", sub("replicate", "rep", sub("9$", "", .x))))) %>%
+    select(-starts_with("comment"), -starts_with("..."), -starts_with("0"))
+  })
+
+# lapply(ucsc_counts, names)
 ```
 
 After creating objects for each year, we will clean each to a compatible structure. 
 
 ```{r Cleaning UCSC, warning=FALSE}
-UCSC99 <- UCSC99 %>%
-  filter(
-    freq == "con",
-    site == "ucsc"
-  ) %>%
-  mutate(year = "1999")
-UCSC99 <- gather(UCSC99, "anaarv9":"bare9", key = "species.code", value = "intercepts")
-UCSC99$species.code <- substr(UCSC99$species.code, 1, nchar(UCSC99$species.code) - 1)
-UCSC99$species.code <- tolower(UCSC99$species.code)
-UCSC99 <- left_join(UCSC99, UCSCspp, by = "species.code")
-UCSC99$intercepts <- as.numeric(UCSC99$intercepts)
-UCSC00 <- UCSC00 %>%
-  filter(
-    site == "ucsc",
-    freq == "con"
-  ) %>%
-  select(site:naspul) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"naspul", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2000")
-UCSC00$species.code <- tolower(UCSC00$species.code)
-UCSC00 <- left_join(UCSC00, UCSCspp, by = "species.code")
-UCSC00 <- spread(UCSC00, key = plot, value = intercepts) %>%
-  rename(
-    plot1 = "1",
-    plot2 = "2",
-    plot3 = "3",
-    plot4 = "4"
-  ) %>%
-  mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-  select(-plot1, -plot2, -plot3, -plot4)
-UCSC00$intercepts <- as.numeric(UCSC00$intercepts)
-UCSC01 <- UCSC01 %>%
-  filter(
-    site == "ucsc",
-    freq == "con"
-  ) %>%
-  select(site:thatch) %>%
-  replace(is.na(.), 0) %>%
-  gather("anaarv":"thatch", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2001")
-UCSC01$species.code <- tolower(UCSC01$species.code)
-UCSC01 <- left_join(UCSC01, UCSCspp, by = "species.code")
-UCSC01 <- spread(UCSC01, key = plot, value = intercepts) %>%
-  rename(
-    plot1 = "1",
-    plot2 = "2",
-    plot3 = "3",
-    plot4 = "4"
-  ) %>%
-  mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-  select(-plot1, -plot2, -plot3, -plot4)
-UCSC01$intercepts <- as.numeric(UCSC01$intercepts)
-UCSC02 <- UCSC02 %>%
-  filter(
-    Site == "ucsc",
-    Frequency == "con"
-  ) %>%
-  select(Site:thatch) %>%
-  replace(is.na(.), 0) %>%
-  gather("anaarv":"thatch", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2002")
-names(UCSC02) <- tolower(names(UCSC02))
-UCSC02 <- UCSC02 %>%
-  rename(
-    site = site,
-    freq = frequency,
-    treat = treatment,
-    rep = replicate
-  )
-UCSC02$intercepts <- as.numeric(UCSC02$intercepts)
-UCSC02 <- left_join(UCSC02, UCSCspp, by = "species.code")
-UCSC03 <- UCSC03 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2003")
-names(UCSC03) <- tolower(names(UCSC03))
-UCSC03 <- left_join(UCSC03, UCSCspp, by = "species.code")
-UCSC04 <- UCSC04 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2004")
-names(UCSC04) <- tolower(names(UCSC04))
-UCSC04 <- left_join(UCSC04, UCSCspp, by = "species.code")
-UCSC05 <- UCSC05 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2005")
-names(UCSC05) <- tolower(names(UCSC05))
-UCSC05 <- left_join(UCSC05, UCSCspp, by = "species.code")
-UCSC06 <- UCSC06 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2006")
-names(UCSC06) <- tolower(names(UCSC06))
-UCSC06 <- left_join(UCSC06, UCSCspp, by = "species.code")
-UCSC07 <- UCSC07 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "con"
-  ) %>%
-  select(SITE:vulpsp) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2007")
-names(UCSC07) <- tolower(names(UCSC07))
-UCSC07 <- left_join(UCSC07, UCSCspp, by = "species.code")
-UCSC08 <- UCSC08 %>%
-  filter(
-    SITE == "UCSC",
-    FREQ == "CON"
-  ) %>%
-  select(SITE:brohor) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"brohor", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2008")
-names(UCSC08) <- tolower(names(UCSC08))
-UCSC08 <- left_join(UCSC08, UCSCspp, by = "species.code")
-UCSC09 <- UCSC09 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2009")
-names(UCSC09) <- tolower(names(UCSC09))
-UCSC09 <- left_join(UCSC09, UCSCspp, by = "species.code")
-UCSC10 <- UCSC10 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2010")
-names(UCSC10) <- tolower(names(UCSC10))
-UCSC10$intercepts <- as.numeric(UCSC10$intercepts)
-UCSC10 <- left_join(UCSC10, UCSCspp, by = "species.code")
-UCSC11 <- UCSC11 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2011")
-names(UCSC11) <- tolower(names(UCSC11))
-UCSC11$intercepts <- as.numeric(UCSC11$intercepts)
-UCSC11 <- left_join(UCSC11, UCSCspp, by = "species.code")
-UCSC12 <- UCSC12 %>%
-  filter(
-    SITE == "ucsc",
-    FREQ == "CONTROL"
-  ) %>%
-  select(SITE:vulpsp, -Comments) %>%
-  replace(is.na(.), 0) %>%
-  gather("aircar":"vulpsp", key = "species.code", value = "intercepts") %>%
-  mutate(year = "2012")
-names(UCSC12) <- tolower(names(UCSC12))
-UCSC12$intercepts <- as.numeric(UCSC12$intercepts)
-UCSC12 <- left_join(UCSC12, UCSCspp, by = "species.code")
+ucsc_counts_clean <- list()
+ucsc_counts_clean[[1]] <- ucsc_counts[[1]] %>% cleanElkhornData("anaarv", "bare", site="ucsc")
+ucsc_counts_clean[[2]] <- ucsc_counts[[2]] %>% cleanElkhornData("aircar", "naspul", site="ucsc") %>% cleanElkhornPlot()
+ucsc_counts_clean[[3]] <- ucsc_counts[[3]] %>% cleanElkhornData("anaarv", "thatch", site="ucsc") %>% cleanElkhornPlot()
+ucsc_counts_clean[[4]] <- ucsc_counts[[4]] %>% cleanElkhornData("anaarv", "thatch", site="ucsc")
+ucsc_counts_clean[[5]] <- ucsc_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[6]] <- ucsc_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[7]] <- ucsc_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[8]] <- ucsc_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[9]] <- ucsc_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[10]] <- ucsc_counts[[10]] %>% cleanElkhornData("aircar", "brohor", site="ucsc")
+ucsc_counts_clean[[11]] <- ucsc_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[12]] <- ucsc_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[13]] <- ucsc_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+ucsc_counts_clean[[14]] <- ucsc_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp", site="ucsc")
+
+# lapply(ucsc_counts_clean, dim)
+for(i in 1:length(ucsc_counts_clean)) {
+  ucsc_counts_clean[[i]]$year <- (1999:2012)[i]
+}
 ```
 
 Once the data is cleaned and in a similar format, it's ready to be compiled. 
 
 ```{r Compiling UCSC, warning=FALSE}
-UCSC_99_00 <- full_join(UCSC99, UCSC00, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-UCSC_99_01 <- full_join(UCSC_99_00, UCSC01, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_00)
-UCSC_99_02 <- full_join(UCSC_99_01, UCSC02, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_01)
-UCSC_99_03 <- full_join(UCSC_99_02, UCSC03, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_02)
-UCSC_99_04 <- full_join(UCSC_99_03, UCSC04, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_03)
-UCSC_99_05 <- full_join(UCSC_99_04, UCSC05, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_04)
-UCSC_99_06 <- full_join(UCSC_99_05, UCSC06, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_05)
-UCSC_99_07 <- full_join(UCSC_99_06, UCSC07, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_06)
-UCSC_99_08 <- full_join(UCSC_99_07, UCSC08, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_07)
-UCSC_99_09 <- full_join(UCSC_99_08, UCSC09, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_08)
-UCSC_99_10 <- full_join(UCSC_99_09, UCSC10, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_09)
-UCSC_99_11 <- full_join(UCSC_99_10, UCSC11, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_10)
-UCSC_99_12 <- full_join(UCSC_99_11, UCSC12, by = c(
-  "site", "freq", "treat", "rep", "year",
-  "species.code", "species.name", "guild",
-  "nat.exo", "ann.perr", "lifeform",
-  "intercepts"
-))
-remove(UCSC_99_11)
-remove(UCSC99)
-remove(UCSC00)
-remove(UCSC01)
-remove(UCSC02)
-remove(UCSC03)
-remove(UCSC04)
-remove(UCSC05)
-remove(UCSC06)
-remove(UCSC07)
-remove(UCSC08)
-remove(UCSC09)
-remove(UCSC10)
-remove(UCSC11)
-remove(UCSC12)
-```
-
-```{r UCSC Graph Prep, warning=FALSE}
-UCSC_99_12_species <- UCSC_99_12 %>%
+ucsc_counts_df <- do.call(rbind, ucsc_counts_clean) %>%
+  left_join(UCSCspp, by="species.code") %>%
   filter(intercepts > 0) %>%
   select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(site = "ucsc")
-UCSC_99_12_species$species.name <- as.character(UCSC_99_12_species$species.name)
-UCSC_99_12_species$species.name <- as.factor(UCSC_99_12_species$species.name)
-UCSC_99_12_species$year <- as.integer(UCSC_99_12_species$year)
-UCSC_99_12_species$year <- as.numeric(UCSC_99_12_species$year)
-UCSC_99_12_species <- UCSC_99_12_species %>%
+  mutate(site = "UCSC",
+         species.name = factor(species.name))
+# removing unwanted guilds (moss, litter, etc.)
+ucsc_counts_df <- ucsc_counts_df %>%
   group_by(rep, year, guild, species.name) %>%
-  summarize(intercepts = sum(intercepts))
-ucsc_data <- UCSC_99_12_species %>%
-  mutate(species.name = fct_recode(species.name,
-    "Vulpia myuros" = "Festuca myuros"
-  ))
-```
-
-__We may want to consider combining all of the *Bromus* species into one group.__  
-
-```{r Removing extra UCSC objects and saving data}
-remove(UCSC_99_12)
-remove(UCSC_99_12_species)
-remove(UCSCspp)
-remove(UCSC_guilds)
-
-ucsc_data <- ucsc_data %>%
+  summarize(intercepts = sum(intercepts)) %>%
   filter(
+    guild != "Moss",
+    guild != "Thatch",
+    guild != "Bare"
+  )
+# unique(ucsc_counts_df$species.name)
+# unique(ucsc_counts_df$guild)
+elk_guilds <- ucsc_counts_df %>%
+  group_by(rep, year, guild) %>%
+  summarize(guildtotal = sum(intercepts)) %>%
+  ungroup() %>%
+  group_by(year, guild) %>%
+  summarize(mean.intercepts = mean(guildtotal))
+
+ucsc_data <- ucsc_counts_df %>%
+  filter(
+    species.name != "Moss",
     species.name != "Thatch",
     species.name != "Bare ground"
   ) %>%
   mutate(site = "ucsc")
+
+# removing extra UCSC objects
+remove(ucsc_99_18_guilds)
+remove(ucsc_counts_df)
+remove(UCSC_guilds)
+remove(UCSCspp)
 
 ucsc_data <- ucsc_data %>%
   as_tibble() %>%
