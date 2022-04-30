@@ -988,7 +988,7 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
 
 ### Clean species names
 
-Prepare a master species list.
+Prepare a master species list from tidy data.
 
 ```{r}
 all_spp <- c(all_exp_data$species, all_obs_data$species) %>%
@@ -996,15 +996,15 @@ all_spp <- c(all_exp_data$species, all_obs_data$species) %>%
   sort()
 ```
 
-Resolve duplicated/misspelling species names. Download using the taxize package. 
+Automatically resolve duplicated/misspelling species names, using the taxize package. 
 
-```{r eval=FALSE}
-match_spp <- taxize::get_gbifid_(all_spp) %>%
+```{r, eval=FALSE}
+taxize::get_gbifid_(all_spp) %>%
   as_tibble_col(column_name = "gbif") %>%
   mutate(queryname = all_spp) %>%
   unnest(cols = c(gbif)) %>%
-  select(queryname, everything())
-write_rds(match_spp, "data/community/match-species-table.rds")
+  select(queryname, everything()) %>% 
+  write_rds("data/community/species-table-taxize-2022-04-30.rds")
 ```
 
 Choose match based on (conversation with Justin Luong, 2/15/22)
@@ -1014,7 +1014,7 @@ Choose match based on (conversation with Justin Luong, 2/15/22)
 1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
 ```{r}
-match_spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
+match_spp_tbl <- read_rds("data/community/species-table-taxize-2022-04-30.rds") %>%
   filter(kingdom == "Plantae") %>%
   group_by(queryname) %>%
   slice_head(n = 1) %>% # choose the top 1
