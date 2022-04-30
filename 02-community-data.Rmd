@@ -1,25 +1,25 @@
 # Community data preparation 
 
+Objectives
+
+- Clean up experimental community data (JRGCE, McLaughlin Water Exp, Santa Cruz IDE)
+- Clean up observational community data (~10 datasets)
+
+Key results
+
+- Raw data path: `data/community/raw/`
+- Tidy data path: `data/community/tidy/`
+- Processed data path: `data/community/`
+
 Setup and load packages.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 ```
 
 ```{r}
 library(tidyverse)
 ```
-
-Objectives:
-
-1. Clean up experimental community data (JRGCE, Santa Cruz IDE)
-1. Clean up observational community data (~10 datasets)
-
-Raw data path: `data/community/raw/`
-Tidy data path: `data/community/tidy/`
-Processed data path: `data/community/`
-
-Setup and load packages
 
 ## Experimental community data
 
@@ -93,9 +93,14 @@ jrgce_data <- pin_tbl %>%
   select(site, year, plot, treat, species, guild, abund, abund_type) %>%
   arrange(year, plot, species)
 
-rm(list = ls(pattern = "_tbl"))
-
 write_csv(jrgce_data, "data/community/tidy/jrgce.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+rm(list = c("pin_tbl", "spp_tbl", "trt_tbl"))
+rm(jrgce_data)
 ```
 
 ### McLaughlin Water Experiment
@@ -180,9 +185,14 @@ mclexp_data <- plot_tbl %>%
   filter(abund > 0) %>%
   arrange(year, plot, species)
 
-rm(list = ls(pattern = "_tbl"))
-
 write_csv(mclexp_data, "data/community/tidy/mclexp.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+rm(list = c("cover_2015_tbl", "cover_2016_tbl", "cover_2017_tbl", "cover_2018_tbl", "cover_2019_tbl", "cover_2021_tbl", "cover_long_tbl", "plot_tbl"))
+rm(mclexp_data)
 ```
 
 ### Santa Cruz International Drought Experiment
@@ -237,6 +247,12 @@ scide_data <- read_csv("data/community/raw/SantaCruzIDE/IDESpeciesComp_LongForma
 write_csv(scide_data, "data/community/tidy/scide.csv")
 ```
 
+Remove intermediate objects.
+
+```{r}
+remove(scide_data)
+```
+
 ## Observational community data
 
 Site description by Josie.
@@ -244,6 +260,8 @@ Site description by Josie.
 ```{r, echo = F}
 knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.8wuzredrn9p5")
 ```
+
+Species renaming data.
 
 ```{r}
 spp_renamings <- read_csv("data/community/ca_grassland_spp_rename.csv")
@@ -275,15 +293,21 @@ angelo_data <- Angelo %>%
   ) %>%
   mutate(site = "angelo") %>%
   mutate(species.name = as.factor(species.name))
-remove(Angelo)
-remove(Angelo_spp)
 
 angelo_data <- angelo_data %>%
   as_tibble() %>%
   select(site, year, plot, species = species.name, guild, abund = cover) %>%
   mutate(species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
   arrange(site, year, plot, species)
+
 write_csv(angelo_data, "data/community/tidy/angelo.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("Angelo", "Angelo_spp"))
+remove(angelo_data)
 ```
 
 ### Carrizo
@@ -327,11 +351,7 @@ carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
   ) %>%
   mutate(site = "carrizo")
 ## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset.
-## Removing extra carrizo objects
-remove(carrizo)
-remove(carrizo_extras)
-remove(carrizo_forms)
-remove(carrizo_spp)
+
 # fixing species name spellings/parentheticals
 carrizo_data <- carrizo_data %>%
   dplyr::rename(species.name = Species.Name) %>%
@@ -356,7 +376,15 @@ carrizo_data <- carrizo_data %>%
     guild = as.character(guild), abund_type = "point_intercept"
   ) %>%
   arrange(site, year, plot, species)
+
 write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("carrizo", "carrizo_extras", "carrizo_forms", "carrizo_spp"))
+remove(carrizo_data)
 ```
 
 ### Elkhorn
@@ -498,19 +526,21 @@ elkhorn_data <- elk_counts_df %>%
   ) %>%
   mutate(site = "elkhorn")
 
-# removing extra elkhorn objects
-remove(elk_99_18_guilds)
-remove(elk_counts_df)
-remove(elk_guilds)
-remove(elkspp)
-remove(elk_99_18)
-
 elkhorn_data <- elkhorn_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
   mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
+
 write_csv(elkhorn_data, "data/community/tidy/elkhorn.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("elk_counts", "elk_counts_clean", "elk_counts_df", "elk_guilds", "elkspp", "out"))
+remove(list = c("filename", "i", "skips", "year"))
+remove(elkhorn_data)
 ```
 
 ### Jasper
@@ -539,18 +569,21 @@ jasper_data <- Jasper_species %>%
 jasper_spp_check <- jasper_data %>%
   group_by(species.name, guild) %>%
   summarise(mean = mean(cover))
-remove(Jasper)
-remove(Jasper_species)
-remove(Jasper_Veg)
-remove(JR_spp)
-remove(jasper_spp_check)
 
 jasper_data <- jasper_data %>%
   as_tibble() %>%
   select(site, year, plot = uniqueID, species = species.name, guild, abund = cover) %>%
   mutate(plot = as.character(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
   arrange(site, year, plot, species)
+
 write_csv(jasper_data, "data/community/tidy/jasper.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("Jasper", "Jasper_species", "jasper_spp_check", "Jasper_Veg", "JR_spp"))
+remove(jasper_data)
 ```
 
 ### McLaughlin Annual
@@ -606,17 +639,21 @@ mclann_data <- McLAnn %>%
   ) %>%
   mutate(site = "mclann")
 
-remove(McL_Sites)
-remove(McL_spp)
-remove(McLAnn)
-
 mclann_data <- mclann_data %>%
   as_tibble() %>%
   ungroup() %>%
   select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
   mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
   arrange(site, year, plot, species)
+
 write_csv(mclann_data, "data/community/tidy/mclann.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("McL_Sites", "McL_spp", "McLAnn"))
+remove(mclann_data)
 ```
 
 ### McLaughlin Serpentine
@@ -665,17 +702,21 @@ mclserp_data <- McLSerp %>%
   ) %>%
   mutate(site = "mclserp")
 
-remove(McL_Sites)
-remove(McL_spp)
-remove(McLSerp)
-
 mclserp_data <- mclserp_data %>%
   as_tibble() %>%
   ungroup() %>%
   select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
   mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
   arrange(site, year, plot, species)
+
 write_csv(mclserp_data, "data/community/tidy/mclserp.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("McL_Sites", "McL_spp", "McLSerp"))
+remove(mclserp_data)
 ```
 
 ### Santa Rosa
@@ -785,18 +826,21 @@ swanton_data <- swan_counts_df %>%
   ) %>%
   mutate(site = "swanton")
 
-# removing extra Swanton objects
-remove(swan_99_18_guilds)
-remove(swan_counts_df)
-remove(Swan_guilds)
-remove(Swanspp)
-
 swanton_data <- swanton_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
   mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
+
 write_csv(swanton_data, "data/community/tidy/swanton.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("out", "swan_counts", "swan_counts_clean", "swan_counts_df", "Swan_guilds", "Swanspp"))
+remove(list = c("filename", "i", "skips", "year"))
+remove(swanton_data)
 ```
 
 ### UCSC
@@ -894,18 +938,21 @@ ucsc_data <- ucsc_counts_df %>%
   ) %>%
   mutate(site = "ucsc")
 
-# removing extra UCSC objects
-remove(ucsc_99_18_guilds)
-remove(ucsc_counts_df)
-remove(UCSC_guilds)
-remove(UCSCspp)
-
 ucsc_data <- ucsc_data %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
   mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
   arrange(site, year, plot, species)
+
 write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(list = c("out", "ucsc_counts", "ucsc_counts_clean", "ucsc_counts_df", "UCSC_guilds", "UCSCspp"))
+remove(list = c("filename", "i", "skips", "year"))
+remove(ucsc_data)
 ```
 
 ### Vasco Caves
@@ -916,13 +963,7 @@ Incomplete data that is not used.
 
 ### Combine data
 
-First, remove all "data" objects generated from this script. 
-
-```{r}
-rm(list = ls(pattern = "data"))
-```
-
-Second, read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
+First, read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
 
 ```{r}
 all_exp_data <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
