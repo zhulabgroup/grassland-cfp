@@ -14,7 +14,7 @@ Key results
 Setup and load packages.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = FALSE)
 ```
 
 ```{r}
@@ -265,7 +265,7 @@ Species renaming data.
 
 ```{r}
 spp_renamings <- read_csv(
-  "data/community/species-table-luong-qin-2022-04-13.csv",
+  "data/community/species-table-expert-2022-04-13.csv",
   col_types = "ccc"
 ) %>%
   rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
@@ -842,7 +842,7 @@ write_csv(swanton_data, "data/community/tidy/swanton.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("out", "swan_counts", "swan_counts_clean", "swan_counts_df", "Swan_guilds", "Swanspp"))
+remove(list = c("out", "elk_guilds", "swan_counts", "swan_counts_clean", "swan_counts_df", "Swan_guilds", "Swanspp"))
 remove(list = c("filename", "i", "skips", "year"))
 remove(swanton_data)
 ```
@@ -954,7 +954,7 @@ write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("out", "ucsc_counts", "ucsc_counts_clean", "ucsc_counts_df", "UCSC_guilds", "UCSCspp"))
+remove(list = c("out", "elk_guilds", "ucsc_counts", "ucsc_counts_clean", "ucsc_counts_df", "UCSC_guilds", "UCSCspp"))
 remove(list = c("filename", "i", "skips", "year"))
 remove(ucsc_data)
 ```
@@ -966,6 +966,7 @@ Incomplete data that is not used.
 Remove intermediate objects.
 
 ```{r}
+remove(list = c("spp_renamings", "spp_renamings_vec"))
 remove(list = c("cleanElkhornData", "cleanElkhornPlot"))
 ```
 
@@ -995,30 +996,33 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
 Prepare a master species list from tidy data.
 
 ```{r}
-all_spp <- c(all_exp_data$species, all_obs_data$species) %>%
-  unique() %>%
-  sort()
+spp_tidy_tbl <- tibble(
+  species =
+    c(all_exp_data$species, all_obs_data$species) %>%
+      unique() %>%
+      sort()
+)
 ```
 
-Automatically resolve duplicated/misspelling species names, using the taxize package. 
+Download species name using the taxize package. 
 
 ```{r, eval=FALSE}
-taxize::get_gbifid_(all_spp) %>%
+taxize::get_gbifid_(spp_tidy_tbl$species) %>%
   as_tibble_col(column_name = "gbif") %>%
-  mutate(queryname = all_spp) %>%
+  mutate(queryname = spp_tidy_tbl$species) %>%
   unnest(cols = c(gbif)) %>%
   select(queryname, everything()) %>%
   write_rds("data/community/species-table-taxize-2022-04-30.rds")
 ```
 
-Choose match based on (conversation with Justin Luong, 2/15/22)
+Automatic match original names with taxize names based on the conversation with Justin Luong, 2/15/22.
 
 1. Filter plants (kingdom == "Plantae").
 1. For each query, choose the top row (highest confidence).
 1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
 ```{r}
-match_spp_tbl <- read_rds("data/community/species-table-taxize-2022-04-30.rds") %>%
+spp_taxize_tbl <- read_rds("data/community/species-table-taxize-2022-04-30.rds") %>%
   filter(kingdom == "Plantae") %>%
   group_by(queryname) %>%
   slice_head(n = 1) %>% # choose the top 1
@@ -1026,20 +1030,78 @@ match_spp_tbl <- read_rds("data/community/species-table-taxize-2022-04-30.rds") 
   select(queryname, canonicalname, everything())
 ```
 
+Manual correction based on the look-up table complied by Justin Luong and Clara Qin.
+
+```{r}
+spp_expert_tbl <- read_csv("data/community/species-table-expert-2022-04-13.csv", col_types = "ccc") %>%
+  rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
+```
+
+Combining all species name corrections: taxize, expert, and drop genus-only "species."
+
+```{r}
+spp_clean_tbl <- spp_tidy_tbl %>%
+  select(tidy_name = species) %>%
+  left_join(
+    spp_taxize_tbl %>%
+      select(tidy_name = queryname, taxize_name = canonicalname),
+    by = "tidy_name"
+  ) %>%
+  left_join(
+    spp_expert_tbl %>%
+      select(taxize_name = original_name, expert_name = revised_name, expert_issue = issue),
+    by = "taxize_name"
+  ) %>%
+  mutate(
+    clean_name = if_else(
+      (!is.na(expert_name) | !is.na(expert_issue)), # if expert correction or drop
+      expert_name,
+      taxize_name
+    )
+  ) %>%
+  mutate(
+    clean_name = if_else(
+      str_detect(clean_name, " "), # genus-species combo has a space; otherwise drop genus-only "species"
+      clean_name,
+      "DROP"
+    ),
+    clean_name = na_if(clean_name, "DROP")
+  )
+```
+
 Finally, replace clean species names in all data and save to RDS.
 
 ```{r}
 all_exp_data %>%
-  inner_join(match_spp_tbl %>% select(queryname, canonicalname), by = c("species" = "queryname")) %>%
-  select(site, year, plot, treat, species = canonicalname, guild, abund, abund_type) %>%
+  rename(tidy_name = species) %>%
+  inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
+  drop_na(clean_name) %>%
   filter(abund > 0) %>%
+  select(
+    site, year, plot,
+    treat,
+    species = clean_name,
+    guild, abund, abund_type
+  ) %>%
   write_rds("data/community/all-experimental-data.rds")
 
 all_obs_data %>%
-  inner_join(match_spp_tbl %>% select(queryname, canonicalname), by = c("species" = "queryname")) %>%
-  select(site, year, plot, species = canonicalname, species_original = species, guild, abund, abund_type) %>%
+  rename(tidy_name = species) %>%
+  inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
+  drop_na(clean_name) %>%
   filter(abund > 0) %>%
+  select(
+    site, year, plot,
+    species = clean_name,
+    guild, abund, abund_type
+  ) %>%
   write_rds("data/community/all-observational-data.rds")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(all_exp_data, all_obs_data, spp_clean_tbl, spp_expert_tbl, spp_taxize_tbl, spp_tidy_tbl)
 ```
 
 ### Site information
@@ -1073,4 +1135,10 @@ Save it to RDS.
 
 ```{r}
 write_rds(site_sf, file = "data/community/site-info.rds")
+```
+
+Remove intermediate objects.
+
+```{r}
+remove(site_sf)
 ```
