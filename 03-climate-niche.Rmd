@@ -43,18 +43,18 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
-Load the master species list.
+Load all the species from community data.
 
 ```{r}
-spp_tbl <- read_rds("data/community/match-species-table.rds") %>%
-  filter(kingdom == "Plantae") %>%
-  group_by(queryname) %>%
-  slice_head(n = 1) %>% # choose the top 1
-  ungroup() %>%
-  dplyr::select(queryname, canonicalname, everything()) %>%
-  distinct(canonicalname, scientificname)
+spp_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
+  select(species) %>%
+  bind_rows(
+    read_rds("data/community/all-experimental-data.rds") %>%
+      select(species)
+  ) %>%
+  distinct(species) %>%
+  arrange(species)
 ```
-
 
 ### GBIF
 
@@ -95,7 +95,7 @@ occ_sf_box <- st_as_sf(
 occ_sf <- st_intersection(occ_sf_box, cfp_sf)
 gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-25.rds")
+write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-30.rds")
 ```
 
 Read GBIF occurrence data as a sf object. 
