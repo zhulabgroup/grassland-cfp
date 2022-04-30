@@ -959,6 +959,12 @@ remove(ucsc_data)
 
 Incomplete data that is not used.
 
+Remove intermediate objects.
+
+```{r}
+remove(list = c("cleanElkhornData", "cleanElkhornPlot"))
+```
+
 ## Finalize data preparation 
 
 ### Combine data
