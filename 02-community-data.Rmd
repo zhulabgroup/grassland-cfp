@@ -264,7 +264,7 @@ knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3B
 Species renaming data.
 
 ```{r}
-spp_renamings <- read_csv("data/community/ca_grassland_spp_rename.csv")
+spp_renamings <- read_csv("data/community/species-table-luong-qin-2022-04-13.csv")
 names(spp_renamings) <- sub(" ", "_", tolower(names(spp_renamings)))
 spp_renamings_vec <- pull(spp_renamings, revised_name)
 names(spp_renamings_vec) <- pull(spp_renamings, original_name)
