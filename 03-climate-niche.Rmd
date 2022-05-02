@@ -67,7 +67,7 @@ spp_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
 
 ```{r, eval=FALSE}
-# ~ 1 h to run
+# ~ 13 min to run
 library(foreach)
 library(doSNOW)
 num_cores <- 22 # socs-stats has 44 cores
@@ -103,7 +103,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/all-spp-cfp-2022-05-02.rds")
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-05-02.rds")
 
 rm(list = c("cl", "num_cores", "gbif_box_ls", "gbif_box_tbl", "gbif_cfp_tbl"))
 ```
@@ -136,11 +136,11 @@ gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
 
 gbif_occ_df_today <- gbif_occ_df
-write_rds(gbif_occ_df_today, "data/occurrence/gbif/all-spp-cfp-2022-04-27-test.rds")
+write_rds(gbif_occ_df_today, "data/occurrence/gbif/gbif-cfp-2022-04-27-test.rds")
 ##### Comparing with previous data
 
 # Comparing with 0323 data
-gbif_occ_df_0323 <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-03-23.rds")
+gbif_occ_df_0323 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-03-23.rds")
 # some record keys seem to be deleted, some added
 # in 0323 but not in today
 diff1 <- anti_join(gbif_occ_df_0323 %>% filter(queryName == sp), gbif_occ_df_today, by = c("queryName", "key"))
@@ -160,7 +160,7 @@ diff2 %>%
   sort()
 
 # Comparing with 0418 data
-gbif_occ_df_0418 <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-18.rds")
+gbif_occ_df_0418 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-04-18.rds")
 # no difference in record keys but some records have been re-crawled judging from the crawId
 # in 0418 but not in today
 diff1 <- anti_join(gbif_occ_df_0418 %>% filter(queryName == sp), gbif_occ_df_today, by = c("queryName", "key", "crawlId"))
@@ -182,48 +182,10 @@ diff2 %>%
 # 0425 data do not have this species for some reason?
 ```
 
-Read GBIF occurrence data as a sf object. 
-
-```{r}
-gbif_cfp_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-05-02-morning.rds") %>%
-  select(species = queryName, longitude, latitude, key) %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
-```
-
-In total, GBIF has `r nrow(gbif_cfp_sf) %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` records for `r unique(gbif_cfp_sf$species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` species. Make a map to show all occurrence locations (randomly sample 10% records to save render time).
-
-```{r}
-ggplot() +
-  geom_sf(
-    data = rnaturalearth::ne_states(
-      country = c("Mexico", "United States of America"),
-      returnclass = "sf"
-    ),
-    fill = NA,
-    color = alpha("black", .1)
-  ) +
-  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-  geom_sf(
-    data = gbif_cfp_sf %>% slice_sample(prop = .5), # randomly sample certain proportion, otherwise too slow to render
-    color = "black", alpha = .1, size = .1
-  ) +
-  labs(x = "Longitude", y = "Latitude") +
-  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
-```
-
-To compare with other occurrence datasets (see below).
-
-```{r, eval=FALSE}
-occ_sf_list <- vector(mode = "list")
-occ_sf_list[["gbif"]] <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
-  select(species = queryName, longitude, latitude, key) %>%
-  mutate(dataset = "gbif") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
-```
-
 ### iNaturalist
 
-Not querying the data separately because:
+Not directly querying the data separately because:
+
 1. Hard limit of 10,000 records
 2. Very slow
 3. May be blocked if running too many queries in a minute
@@ -238,16 +200,15 @@ res <- occ(
 4. A recommended way to get a lot of data at once is to use the dataset of research grade observations submitted weekly to GBIF https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7
 
 ```{r, eval=FALSE}
-occ_sf_list[["inat"]] <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
+read_rds("data/occurrence/gbif/gbif-cfp-2022-05-02.rds") %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
   select(species = queryName, longitude, latitude, key) %>%
-  mutate(dataset = "inat") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+  write_rds("data/occurrence/inat/inat-cfp-2022-05-02.rds")
 ```
 
 ### BIEN
 
-Retreive all BIEN data then select those within CFP.
+Retrieve all BIEN data then select those within CFP. Note, the code can't run because of BIEN server error, as of 5/2/2022.
 
 ```{r, eval=FALSE}
 library(foreach)
@@ -283,16 +244,6 @@ write_rds(bien_all_df, "data/occurrence/bien/bien-all-2022-04-27.rds")
 write_rds(bien_cfp_df, "data/occurrence/bien/bien-cfp-2022-04-27.rds")
 ```
 
-Read as sf object.
-
-```{r, eval=FALSE}
-occ_sf_list[["bien"]] <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
-  select(species = queryName, longitude, latitude, key) %>%
-  mutate(key = as.character(key)) %>%
-  mutate(dataset = "bien") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-```
-
 ### eJepson
 
 eJepson might be more accurate compared to iNat and GBIF.
@@ -303,24 +254,89 @@ Download full dataset at https://www.cch2.org/portal/collections/harvestparams.p
 Keep records with species of interest and within CFP.
 
 ```{r, eval=FALSE}
-cch_raw_df <- read_csv("data/occurrence/cch/occurrences.csv")
-
-cch_all_df <- cch_raw_df %>%
+cch_all_tbl <- read_csv("data/occurrence/cch/occurrences.csv") %>%
   filter(scientificName %in% spp_tbl$species) %>%
-  dplyr::select(key = id, latitude = decimalLatitude, longitude = decimalLongitude, queryName = scientificName) %>%
-  drop_na(latitude, longitude)
+  drop_na(decimalLongitude, decimalLatitude) %>%
+  select(
+    queryName = scientificName,
+    longitude = decimalLongitude,
+    latitude = decimalLatitude,
+    key = id
+  )
 
-cch_all_sf <- st_as_sf(
-  x = cch_all_df %>% dplyr::select(key, longitude, latitude),
-  coords = c("longitude", "latitude"),
-  crs = 4326
-)
-cch_cfp_sf <- st_intersection(cch_all_sf, cfp_sf)
-cch_cfp_df <- cch_all_df %>%
-  right_join(as_tibble(cch_cfp_sf) %>% dplyr::select(key), by = "key")
-write_rds(cch_all_df, "data/occurrence/cch/cch-all-2022-04-27.rds")
-write_rds(cch_cfp_df, "data/occurrence/cch/cch-cfp-2022-04-27.rds")
+cch_cfp_tbl <- cch_all_tbl %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
+  st_intersection(cfp_sf) %>% # find CCH and CFP intersection
+  as_tibble() %>% # drop geometry
+  select(key) %>% # use key to join (fast)
+  right_join(cch_all_tbl, ., by = "key")
+
+write_rds(cch_all_tbl, "data/occurrence/cch/cch-all-2022-05-02.rds")
+write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-05-02.rds")
+
+rm(list = c("cch_all_tbl", "cch_cfp_tbl"))
 ```
+
+### Comparisons
+
+```{r, eval=FALSE}
+occ_sf_list[["inat"]] <- read_rds("data/occurrence/gbif/gbif-cfp-2022-04-25.rds") %>%
+  filter(datasetName == "iNaturalist research-grade observations") %>%
+  select(species = queryName, longitude, latitude, key) %>%
+  mutate(dataset = "inat") %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+```
+
+
+Read as sf object.
+
+```{r, eval=FALSE}
+occ_sf_list[["bien"]] <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
+  select(species = queryName, longitude, latitude, key) %>%
+  mutate(key = as.character(key)) %>%
+  mutate(dataset = "bien") %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+```
+
+Read GBIF occurrence data as a sf object. 
+
+```{r}
+gbif_cfp_sf <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-02-morning.rds") %>%
+  select(species = queryName, longitude, latitude, key) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+```
+
+In total, GBIF has `r nrow(gbif_cfp_sf) %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` records for `r unique(gbif_cfp_sf$species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` species. Make a map to show all occurrence locations (randomly sample 10% records to save render time).
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  geom_sf(
+    data = gbif_cfp_sf %>% slice_sample(prop = .5), # randomly sample certain proportion, otherwise too slow to render
+    color = "black", alpha = .1, size = .1
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
+```
+
+To compare with other occurrence datasets (see below).
+
+```{r, eval=FALSE}
+occ_sf_list <- vector(mode = "list")
+occ_sf_list[["gbif"]] <- read_rds("data/occurrence/gbif/gbif-cfp-2022-04-25.rds") %>%
+  select(species = queryName, longitude, latitude, key) %>%
+  mutate(dataset = "gbif") %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+```
+
 
 Read as sf object.
 
@@ -342,22 +358,29 @@ occ_sf %>%
   summarise(
     record_number = n() %>% format(trim = TRUE, scientific = FALSE, big.mark = ","),
     species_number = unique(species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")
-  )
+  ) %>%
+  knitr::kable()
 ```
 
 To compare among data sets, make a map to show all occurrence locations (randomly sample 10% records to save render time).
 
 ```{r, eval=FALSE}
-ggplot(map_data("county", c("california", "nevada", "oregon"))) +
-  geom_polygon(aes(long, lat, group = group),
-    fill = "white", color = "grey75"
-  ) +
-  geom_sf(data = cfp_sf, alpha = .5) +
+ggplot() +
   geom_sf(
-    data = occ_sf %>% slice_sample(prop = .1), # randomly sample 10%, otherwise too slow to render
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  geom_sf(
+    data = occ_sf %>% slice_sample(prop = .1), # randomly sample certain proportion, otherwise too slow to render
     color = "black", alpha = .1, size = .1
   ) +
   labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
   facet_wrap(. ~ dataset, nrow = 1)
 ```
 
