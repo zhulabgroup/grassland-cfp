@@ -1012,7 +1012,7 @@ taxize::get_gbifid_(spp_tidy_tbl$species) %>%
   mutate(queryname = spp_tidy_tbl$species) %>%
   unnest(cols = c(gbif)) %>%
   select(queryname, everything()) %>%
-  write_rds("data/community/species-table-taxize-2022-04-30.rds")
+  write_rds("data/community/species-table-taxize-2022-05-02.rds")
 ```
 
 Automatic match original names with taxize names based on the conversation with Justin Luong, 2/15/22.
@@ -1022,7 +1022,7 @@ Automatic match original names with taxize names based on the conversation with 
 1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
 ```{r}
-spp_taxize_tbl <- read_rds("data/community/species-table-taxize-2022-04-30.rds") %>%
+spp_taxize_tbl <- read_rds("data/community/species-table-taxize-2022-05-02.rds") %>%
   filter(kingdom == "Plantae") %>%
   group_by(queryname) %>%
   slice_head(n = 1) %>% # choose the top 1
