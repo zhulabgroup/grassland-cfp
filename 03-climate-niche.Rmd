@@ -15,7 +15,6 @@ library(sf)
 ## Get occurrence data
 
 The first question is what the geographic extent that we search for occurrence records. Joise used the state of California for convenience, but it seems to make more sense using an ecological, not administrative, boundary. We thought about using NEON domains. After much discussion, we decided to use the [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely across CFP. 
-
 ```{r}
 site_sf <- read_rds("data/community/site-info.rds")
 site_sf %>%
@@ -69,10 +68,10 @@ cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
 gbif_occ_box_list <-
   foreach(
-    i = 1:length(spp_tbl$canonicalname),
+    i = 1:length(spp_tbl$species),
     .packages = c("spocc", "sf", "tidyverse")
   ) %dopar% {
-    sp <- spp_tbl$canonicalname[i]
+    sp <- spp_tbl$species[i]
     res <- occ(
       query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
       geometry = st_bbox(cfp_sf),
@@ -95,7 +94,7 @@ occ_sf_box <- st_as_sf(
 occ_sf <- st_intersection(occ_sf_box, cfp_sf)
 gbif_occ_df <- gbif_occ_box_df %>%
   right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-04-30.rds")
+write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-05-02.rds")
 ```
 
 Read GBIF occurrence data as a sf object. 
@@ -143,10 +142,10 @@ cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
 bien_df_list <-
   foreach(
-    i = 1:length(spp_tbl$canonicalname),
+    i = 1:length(spp_tbl$species),
     .packages = c("BIEN", "tidyverse")
   ) %dopar% {
-    sp <- spp_tbl$canonicalname[i]
+    sp <- spp_tbl$species[i]
     res <- BIEN_occurrence_species(species = sp)
     print(i)
     tibble(queryName = sp, res) %>%
@@ -191,7 +190,7 @@ Keep records with species of interest and within CFP.
 cch_raw_df <- read_csv("data/occurrence/cch/occurrences.csv")
 
 cch_all_df <- cch_raw_df %>%
-  filter(scientificName %in% spp_tbl$canonicalname) %>%
+  filter(scientificName %in% spp_tbl$species) %>%
   dplyr::select(key = id, latitude = decimalLatitude, longitude = decimalLongitude, queryName = scientificName) %>%
   drop_na(latitude, longitude)
 
