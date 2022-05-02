@@ -8,8 +8,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE, cache = TRUE)
 
 ```{r}
 library(tidyverse)
+library(sf)
 library(patchwork)
-# library(sf)
 ```
 
 ## Get occurrence data
@@ -26,7 +26,7 @@ site_sf %>%
 Make a map overlaying sites with CFP and admin boundaries from [Natural Earth](https://www.naturalearthdata.com/). 
 
 ```{r}
-cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
+cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   filter(
     NAME == "California Floristic Province",
     Type == "hotspot area"
@@ -43,7 +43,7 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   ) +
   geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
   geom_sf(data = site_sf, color = "red", aes(text = name)) +
-  labs(x = "Longitude (deg)", y = "Latitude (deg)") +
+  labs(x = "Longitude", y = "Latitude") +
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
 ) %>%
   plotly::ggplotly(tooltip = "text")
@@ -73,7 +73,7 @@ library(doSNOW)
 num_cores <- 22 # socs-stats has 44 cores
 cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
-gbif_occ_box_list <-
+gbif_box_ls <-
   foreach(
     i = 1:length(spp_tbl$species),
     .packages = c("spocc", "sf", "tidyverse")
@@ -82,7 +82,8 @@ gbif_occ_box_list <-
     res <- occ(
       query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
       geometry = st_bbox(cfp_sf),
-      gbifopts = list( # occ_options(from = "gbif", where = "console")
+      gbifopts = list(
+        # occ_options(from = "gbif", where = "console")
         hasGeospatialIssue = FALSE
       )
     )
@@ -90,18 +91,21 @@ gbif_occ_box_list <-
     tibble(queryName = sp, gbif = res$gbif$data) %>%
       unnest(cols = c(gbif))
   }
-gbif_occ_box_df <- bind_rows(gbif_occ_box_list)
 stopCluster(cl)
 
-occ_sf_box <- st_as_sf(
-  x = gbif_occ_box_df %>% dplyr::select(key, longitude, latitude),
-  coords = c("longitude", "latitude"),
-  crs = 4326
-)
-occ_sf <- st_intersection(occ_sf_box, cfp_sf)
-gbif_occ_df <- gbif_occ_box_df %>%
-  right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-write_rds(gbif_occ_df, "data/occurrence/gbif/all-spp-cfp-2022-05-02.rds")
+gbif_box_tbl <- bind_rows(gbif_box_ls) # collapse from list to tibble
+
+gbif_cfp_tbl <- gbif_box_tbl %>%
+  select(key, longitude, latitude) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
+  st_intersection(cfp_sf) %>% # find GBIF and CFP intersection
+  as_tibble() %>% # drop geometry
+  select(key) %>% # use key to join (fast)
+  right_join(gbif_box_tbl, ., by = "key")
+
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/all-spp-cfp-2022-05-02.rds")
+
+rm(list = c("cl", "num_cores", "gbif_box_ls", "gbif_box_tbl", "gbif_cfp_tbl"))
 ```
 
 Note that GBIF depends on download dates. Here's a test.
@@ -181,9 +185,38 @@ diff2 %>%
 Read GBIF occurrence data as a sf object. 
 
 ```{r}
+gbif_cfp_sf <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-05-02-morning.rds") %>%
+  select(species = queryName, longitude, latitude, key) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+```
+
+In total, GBIF has `r nrow(gbif_cfp_sf) %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` records for `r unique(gbif_cfp_sf$species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` species. Make a map to show all occurrence locations (randomly sample 10% records to save render time).
+
+```{r}
+ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  geom_sf(
+    data = gbif_cfp_sf %>% slice_sample(prop = .5), # randomly sample certain proportion, otherwise too slow to render
+    color = "black", alpha = .1, size = .1
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
+```
+
+To compare with other occurrence datasets (see below).
+
+```{r, eval=FALSE}
 occ_sf_list <- vector(mode = "list")
 occ_sf_list[["gbif"]] <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
-  dplyr::select(species = queryName, longitude, latitude, key) %>%
+  select(species = queryName, longitude, latitude, key) %>%
   mutate(dataset = "gbif") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
@@ -204,18 +237,19 @@ res <- occ(
 
 4. A recommended way to get a lot of data at once is to use the dataset of research grade observations submitted weekly to GBIF https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7
 
-```{r}
+```{r, eval=FALSE}
 occ_sf_list[["inat"]] <- read_rds("data/occurrence/gbif/all-spp-cfp-2022-04-25.rds") %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
-  dplyr::select(species = queryName, longitude, latitude, key) %>%
+  select(species = queryName, longitude, latitude, key) %>%
   mutate(dataset = "inat") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 ```
 
-
 ### BIEN
+
 Retreive all BIEN data then select those within CFP.
-```{r, eval=F}
+
+```{r, eval=FALSE}
 library(foreach)
 library(doSNOW)
 num_cores <- 22 # socs-stats has 44 cores
@@ -250,14 +284,14 @@ write_rds(bien_cfp_df, "data/occurrence/bien/bien-cfp-2022-04-27.rds")
 ```
 
 Read as sf object.
-```{r}
+
+```{r, eval=FALSE}
 occ_sf_list[["bien"]] <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
-  dplyr::select(species = queryName, longitude, latitude, key) %>%
+  select(species = queryName, longitude, latitude, key) %>%
   mutate(key = as.character(key)) %>%
   mutate(dataset = "bien") %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 ```
-
 
 ### eJepson
 
@@ -267,7 +301,8 @@ Download full dataset at https://www.cch2.org/portal/collections/harvestparams.p
 (Searching within the bounding box of 55N-10N, 130W-50W.)
 
 Keep records with species of interest and within CFP.
-```{r, eval=F}
+
+```{r, eval=FALSE}
 cch_raw_df <- read_csv("data/occurrence/cch/occurrences.csv")
 
 cch_all_df <- cch_raw_df %>%
@@ -288,7 +323,8 @@ write_rds(cch_cfp_df, "data/occurrence/cch/cch-cfp-2022-04-27.rds")
 ```
 
 Read as sf object.
-```{r}
+
+```{r, eval=FALSE}
 occ_sf_list[["cch"]] <- read_rds("data/occurrence/cch/cch-cfp-2022-04-27.rds") %>%
   dplyr::select(species = queryName, longitude, latitude, key) %>%
   mutate(key = as.character(key)) %>%
@@ -296,8 +332,9 @@ occ_sf_list[["cch"]] <- read_rds("data/occurrence/cch/cch-cfp-2022-04-27.rds") %
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 ```
 
-Compare sample size.
-```{r}
+To compare among data sets, compare sample size.
+
+```{r, eval=FALSE}
 occ_sf <- bind_rows(occ_sf_list)
 occ_sf %>%
   as_tibble() %>%
@@ -308,9 +345,9 @@ occ_sf %>%
   )
 ```
 
-Make a map to show all occurrence locations (randomly sample 10% records to save render time).
+To compare among data sets, make a map to show all occurrence locations (randomly sample 10% records to save render time).
 
-```{r}
+```{r, eval=FALSE}
 ggplot(map_data("county", c("california", "nevada", "oregon"))) +
   geom_polygon(aes(long, lat, group = group),
     fill = "white", color = "grey75"
@@ -320,7 +357,7 @@ ggplot(map_data("county", c("california", "nevada", "oregon"))) +
     data = occ_sf %>% slice_sample(prop = .1), # randomly sample 10%, otherwise too slow to render
     color = "black", alpha = .1, size = .1
   ) +
-  labs(x = "Longitude (deg)", y = "Latitude (deg)") +
+  labs(x = "Longitude", y = "Latitude") +
   facet_wrap(. ~ dataset, nrow = 1)
 ```
 
@@ -535,7 +572,7 @@ ggplot(map_data("county", c("california", "nevada", "oregon"))) +
     data = occ_sf %>% slice_sample(n = 1000), # randomly sample 1000, otherwise too slow to render
     color = "black", alpha = .1, size = .1
   ) +
-  labs(x = "Longitude (deg)", y = "Latitude (deg)") +
+  labs(x = "Longitude", y = "Latitude") +
   facet_wrap(. ~ range, nrow = 1)
 ```
 
@@ -621,7 +658,7 @@ for (i in 1:length(unique(occ_gbif_sf$species))) {
     ) +
     geom_sf(data = cfp_sf, alpha = .5) +
     geom_sf(data = occ_sp_sf, alpha = .1, size = .5) +
-    labs(x = "Longitude (deg)", y = "Latitude (deg)", title = sp) +
+    labs(x = "Longitude", y = "Latitude", title = sp) +
     theme(plot.title = element_text(face = "italic"))
 
   occ_clim <- ggplot(occ_sp_sf, aes(tmean, ppt)) +
