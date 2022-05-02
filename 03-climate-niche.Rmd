@@ -244,7 +244,7 @@ write_rds(bien_all_df, "data/occurrence/bien/bien-all-2022-04-27.rds")
 write_rds(bien_cfp_df, "data/occurrence/bien/bien-cfp-2022-04-27.rds")
 ```
 
-### eJepson
+### eJepson (CCH)
 
 eJepson might be more accurate compared to iNat and GBIF.
 
@@ -277,81 +277,61 @@ write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-05-02.rds")
 rm(list = c("cch_all_tbl", "cch_cfp_tbl"))
 ```
 
-### Comparisons
+### Compare occurrence data sets
 
-```{r, eval=FALSE}
-occ_sf_list[["inat"]] <- read_rds("data/occurrence/gbif/gbif-cfp-2022-04-25.rds") %>%
-  filter(datasetName == "iNaturalist research-grade observations") %>%
-  select(species = queryName, longitude, latitude, key) %>%
-  mutate(dataset = "inat") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-```
-
-
-Read as sf object.
-
-```{r, eval=FALSE}
-occ_sf_list[["bien"]] <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
-  select(species = queryName, longitude, latitude, key) %>%
-  mutate(key = as.character(key)) %>%
-  mutate(dataset = "bien") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-```
-
-Read GBIF occurrence data as a sf object. 
+Compare the above data sets, in alphabetical order, BIEN, CCH, GBIF, iNat.
 
 ```{r}
-gbif_cfp_sf <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-02-morning.rds") %>%
-  select(species = queryName, longitude, latitude, key) %>%
+bien_tbl <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
+  mutate(
+    dataset = "bien",
+    species = queryName,
+    key = as.character(key)
+  ) %>%
+  filter(species %in% spp_tbl$species) %>%
+  select(dataset, key, species, longitude, latitude)
+
+cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
+  mutate(
+    dataset = "cch",
+    species = queryName,
+    key = as.character(key)
+  ) %>%
+  filter(species %in% spp_tbl$species) %>%
+  select(dataset, key, species, longitude, latitude)
+
+gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-02.rds") %>%
+  mutate(
+    dataset = "gbif",
+    species = queryName,
+    key = as.character(key)
+  ) %>%
+  filter(species %in% spp_tbl$species) %>%
+  select(dataset, key, species, longitude, latitude)
+
+inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-02.rds") %>%
+  mutate(
+    dataset = "inat",
+    # species = queryName,
+    key = as.character(key)
+  ) %>%
+  filter(species %in% spp_tbl$species) %>%
+  select(dataset, key, species, longitude, latitude)
+```
+
+Combine them and convert to sf.
+
+```{r}
+occ_sf <- bien_tbl %>%
+  bind_rows(cch_tbl) %>%
+  bind_rows(gbif_tbl) %>%
+  bind_rows(inat_tbl) %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 ```
 
-In total, GBIF has `r nrow(gbif_cfp_sf) %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` records for `r unique(gbif_cfp_sf$species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")` species. Make a map to show all occurrence locations (randomly sample 10% records to save render time).
+Compare sample sizes across data sets.
 
 ```{r}
-ggplot() +
-  geom_sf(
-    data = rnaturalearth::ne_states(
-      country = c("Mexico", "United States of America"),
-      returnclass = "sf"
-    ),
-    fill = NA,
-    color = alpha("black", .1)
-  ) +
-  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-  geom_sf(
-    data = gbif_cfp_sf %>% slice_sample(prop = .5), # randomly sample certain proportion, otherwise too slow to render
-    color = "black", alpha = .1, size = .1
-  ) +
-  labs(x = "Longitude", y = "Latitude") +
-  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
-```
-
-To compare with other occurrence datasets (see below).
-
-```{r, eval=FALSE}
-occ_sf_list <- vector(mode = "list")
-occ_sf_list[["gbif"]] <- read_rds("data/occurrence/gbif/gbif-cfp-2022-04-25.rds") %>%
-  select(species = queryName, longitude, latitude, key) %>%
-  mutate(dataset = "gbif") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
-```
-
-
-Read as sf object.
-
-```{r, eval=FALSE}
-occ_sf_list[["cch"]] <- read_rds("data/occurrence/cch/cch-cfp-2022-04-27.rds") %>%
-  dplyr::select(species = queryName, longitude, latitude, key) %>%
-  mutate(key = as.character(key)) %>%
-  mutate(dataset = "cch") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-```
-
-To compare among data sets, compare sample size.
-
-```{r, eval=FALSE}
-occ_sf <- bind_rows(occ_sf_list)
 occ_sf %>%
   as_tibble() %>%
   group_by(dataset) %>%
@@ -362,9 +342,11 @@ occ_sf %>%
   knitr::kable()
 ```
 
-To compare among data sets, make a map to show all occurrence locations (randomly sample 10% records to save render time).
+Compare occurrence locations across data sets. Randomly sample a proportion of records to save render time.
 
-```{r, eval=FALSE}
+```{r}
+set.seed(618)
+prop_samp <- .1 # prop to sample and plot
 ggplot() +
   geom_sf(
     data = rnaturalearth::ne_states(
@@ -376,12 +358,13 @@ ggplot() +
   ) +
   geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
   geom_sf(
-    data = occ_sf %>% slice_sample(prop = .1), # randomly sample certain proportion, otherwise too slow to render
+    data = occ_sf %>% slice_sample(prop = prop_samp), # randomly sample certain proportion, otherwise too slow to render
     color = "black", alpha = .1, size = .1
   ) +
   labs(x = "Longitude", y = "Latitude") +
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
   facet_wrap(. ~ dataset, nrow = 1)
+rm(prop_samp)
 ```
 
 ## Get climate data
