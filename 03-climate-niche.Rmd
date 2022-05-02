@@ -49,53 +49,6 @@ cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
-Test for nicer maps using the `rnaturalearth` package. First, install the development version of the package and its data.
-
-```{r, eval=FALSE}
-devtools::install_github("ropensci/rnaturalearth")
-devtools::install_github("ropensci/rnaturalearthdata")
-devtools::install_github("ropensci/rnaturalearthhires")
-```
-
-Second, download the data.
-
-```{r, eval=FALSE}
-rnaturalearth::ne_download(
-  scale = 50,
-  type = "states",
-  category = "cultural",
-  destdir = "data/occurrence/rnaturalearth/",
-  load = FALSE,
-  returnclass = "sf"
-)
-```
-
-Third, read the data and make maps.
-
-```{r}
-ne_states_sf <- sf::st_read("data/occurrence/rnaturalearth/ne_50m_admin_1_states_provinces_lakes.shp")
-
-cfp_sf <- sf::st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
-  filter(
-    NAME == "California Floristic Province",
-    Type == "hotspot area"
-  )
-
-ggplot() +
-  geom_sf(
-    data = rnaturalearth::ne_states(
-      country = c("Mexico", "United States of America"),
-      returnclass = "sf"
-    ),
-    fill = NA,
-    color = alpha("black", .1)
-  ) +
-  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-  geom_sf(data = site_sf, color = "red", aes(text = name)) +
-  labs(x = "Longitude (deg)", y = "Latitude (deg)") +
-  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
-```
-
 Load all the species from community data.
 
 ```{r}
