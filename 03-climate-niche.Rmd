@@ -480,7 +480,7 @@ raster::proj4string(prism_ras) # NAD83
 
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
 
-```{r}
+```{r, eval=FALSE}
 gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-02.rds") %>%
   mutate(
     species = queryName,
@@ -505,6 +505,7 @@ chelsa_gbif_sf <- chelsa_ras %>%
 prism_gbif_sf <- prism_ras %>%
   raster::extract(gbif_sf_nad83) %>%
   as_tibble() %>%
+  mutate(vpd = vpd * 100) %>% # prism vpd * 100 = chelsa vpd unit
   rename_with(~ str_c("prism_", .)) %>%
   bind_cols(gbif_sf_nad83)
 
@@ -517,61 +518,100 @@ bind_cols(
   write_rds("data/climate/climate-gbif-2022-05-02.rds")
 ```
 
-Check correlation between CHELSA and PRISM data.
+Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation. 
 
 ```{r}
-occ_clim_sf <- read_rds("data/climate/occurrence_with_climate_data.rds")
-ggplot(occ_clim_sf %>%
+clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-02.rds") %>%
   as_tibble() %>%
-  dplyr::select(tmean, ppt, vpdmax, dataset) %>%
-  group_by(dataset) %>%
-  mutate(id = row_number()) %>%
-  ungroup() %>%
-  gather(key = "var", value = "value", -dataset, -id) %>%
-  spread(key = "dataset", value = "value") %>%
-  mutate(chelsa = case_when(
-    var == "vpdmax" ~ chelsa / 100,
-    TRUE ~ chelsa
-  ))) +
-  stat_bin_hex(aes(x = chelsa, y = prism), bins = 100) +
-  geom_smooth(aes(x = chelsa, y = prism), method = "lm") +
-  geom_abline(intercept = 0, slope = 1, col = "red") +
-  facet_wrap(. ~ var) +
+  drop_na() # PRISM = NA in Mexico
+
+ggplot(clim_gbif_tbl, aes(chelsa_tmp, prism_tmp)) +
+  geom_hex(bins = 100) +
   viridis::scale_fill_viridis() +
-  theme_classic()
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  coord_fixed() +
+  labs(
+    x = "CHELSA temperature (°C)",
+    y = "PRISM temperature (°C)",
+    fill = "Occurrence site"
+  )
+
+ggplot(clim_gbif_tbl, aes(chelsa_ppt, prism_ppt)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  coord_fixed() +
+  labs(
+    x = "CHELSA precipitation (mm)",
+    y = "PRISM precipitation (mm)",
+    fill = "Occurrence site"
+  )
+
+ggplot(clim_gbif_tbl, aes(chelsa_vpd, prism_vpd)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  coord_fixed() +
+  labs(
+    x = "CHELSA VPD max (Pa)",
+    y = "PRISM VPD max (Pa)",
+    fill = "Occurrence site"
+  )
 ```
-```{r}
-tmean_chelsa <- occ_clim_sf %>%
-  as_tibble() %>%
-  filter(dataset == "chelsa") %>%
-  pull(tmean)
-tmean_prism <- occ_clim_sf %>%
-  as_tibble() %>%
-  filter(dataset == "prism") %>%
-  pull(tmean)
-cor.test(tmean_chelsa, tmean_prism)
 
-ppt_chelsa <- occ_clim_sf %>%
-  as_tibble() %>%
-  filter(dataset == "chelsa") %>%
-  pull(ppt)
-ppt_prism <- occ_clim_sf %>%
-  as_tibble() %>%
-  filter(dataset == "prism") %>%
-  pull(ppt)
-cor.test(ppt_chelsa, ppt_prism)
+Making maps is possible but too time consuming.
 
-vpdmax_chelsa <- occ_clim_sf %>%
-  as_tibble() %>%
-  filter(dataset == "chelsa") %>%
-  pull(vpdmax)
-vpdmax_prism <- occ_clim_sf %>%
-  as_tibble() %>%
-  filter(dataset == "prism") %>%
-  pull(vpdmax)
-cor.test(vpdmax_chelsa, vpdmax_prism)
+```{r, eval=FALSE}
+clim_long_sf <- read_rds("data/climate/climate-gbif-2022-05-02.rds") %>%
+  pivot_longer(
+    contains(match = c("chelsa", "prism")),
+    names_to = "dataset_variable",
+    values_to = "value"
+  ) %>%
+  separate(
+    col = dataset_variable,
+    into = c("dataset", "variable"),
+    sep = "_"
+  )
+
+ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  geom_sf(
+    data = clim_long_sf,
+    aes(geometry = geometry, color = value),
+    alpha = .1, size = .1
+  ) +
+  facet_wrap(variable ~ dataset) +
+  scale_color_viridis() +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
 ```
-
 
 ## Quantify species climate niches
 
