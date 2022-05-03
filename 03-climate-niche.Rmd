@@ -615,70 +615,70 @@ ggplot() +
 
 ## Quantify species climate niches
 
-### Compare niche estimation using all vs. CFP observations
-```{r}
-bien_all_sf <- read_rds("data/occurrence/bien/bien-all-2022-04-27.rds") %>%
-  dplyr::select(species = queryName, longitude, latitude, key) %>%
-  mutate(key = as.character(key)) %>%
-  mutate(range = "all") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-bien_cfp_sf <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
-  dplyr::select(species = queryName, longitude, latitude, key) %>%
-  mutate(key = as.character(key)) %>%
-  mutate(range = "cfp") %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-range_compare_sf <- bind_rows(bien_all_sf, bien_cfp_sf)
+<!-- ### Compare niche estimation using all vs. CFP observations -->
+<!-- ```{r} -->
+<!-- bien_all_sf <- read_rds("data/occurrence/bien/bien-all-2022-04-27.rds") %>% -->
+<!--   dplyr::select(species = queryName, longitude, latitude, key) %>% -->
+<!--   mutate(key = as.character(key)) %>% -->
+<!--   mutate(range = "all") %>% -->
+<!--   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) -->
+<!-- bien_cfp_sf <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>% -->
+<!--   dplyr::select(species = queryName, longitude, latitude, key) %>% -->
+<!--   mutate(key = as.character(key)) %>% -->
+<!--   mutate(range = "cfp") %>% -->
+<!--   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) -->
+<!-- range_compare_sf <- bind_rows(bien_all_sf, bien_cfp_sf) -->
 
-ggplot(map_data("county", c("california", "nevada", "oregon"))) +
-  geom_polygon(aes(long, lat, group = group),
-    fill = "white", color = "grey75"
-  ) +
-  geom_sf(data = range_compare_sf, alpha = .5) +
-  geom_sf(
-    data = occ_sf %>% slice_sample(n = 1000), # randomly sample 1000, otherwise too slow to render
-    color = "black", alpha = .1, size = .1
-  ) +
-  labs(x = "Longitude", y = "Latitude") +
-  facet_wrap(. ~ range, nrow = 1)
-```
+<!-- ggplot(map_data("county", c("california", "nevada", "oregon"))) + -->
+<!--   geom_polygon(aes(long, lat, group = group), -->
+<!--     fill = "white", color = "grey75" -->
+<!--   ) + -->
+<!--   geom_sf(data = range_compare_sf, alpha = .5) + -->
+<!--   geom_sf( -->
+<!--     data = occ_sf %>% slice_sample(n = 1000), # randomly sample 1000, otherwise too slow to render -->
+<!--     color = "black", alpha = .1, size = .1 -->
+<!--   ) + -->
+<!--   labs(x = "Longitude", y = "Latitude") + -->
+<!--   facet_wrap(. ~ range, nrow = 1) -->
+<!-- ``` -->
 
-```{r, eval=F}
-range_compare_sf_reproj <- range_compare_sf %>%
-  st_transform(crs = st_crs(climate_list[["chelsa"]][[1]])) # WGS84 for CHELSA, NAD83 for PRISM
+<!-- ```{r, eval=F} -->
+<!-- range_compare_sf_reproj <- range_compare_sf %>% -->
+<!--   st_transform(crs = st_crs(climate_list[["chelsa"]][[1]])) # WGS84 for CHELSA, NAD83 for PRISM -->
 
-range_compare_clim_sf <- range_compare_sf_reproj %>%
-  mutate(
-    tmean = raster::extract(climate_list[["chelsa"]]$temp, range_compare_sf_reproj),
-    ppt = raster::extract(climate_list[["chelsa"]]$prcp, range_compare_sf_reproj),
-    vpdmax = raster::extract(climate_list[["chelsa"]]$vpd, range_compare_sf_reproj)
-  )
+<!-- range_compare_clim_sf <- range_compare_sf_reproj %>% -->
+<!--   mutate( -->
+<!--     tmean = raster::extract(climate_list[["chelsa"]]$temp, range_compare_sf_reproj), -->
+<!--     ppt = raster::extract(climate_list[["chelsa"]]$prcp, range_compare_sf_reproj), -->
+<!--     vpdmax = raster::extract(climate_list[["chelsa"]]$vpd, range_compare_sf_reproj) -->
+<!--   ) -->
 
-write_rds(range_compare_clim_sf, "data/climate/range_comparison_with_climate_data.rds")
-```
+<!-- write_rds(range_compare_clim_sf, "data/climate/range_comparison_with_climate_data.rds") -->
+<!-- ``` -->
 
-Compare quantiles of three climatic variables using data from full range and CFP.
-```{r}
-range_compare_clim_summary <- read_rds("data/climate/range_comparison_with_climate_data.rds") %>%
-  as_tibble() %>%
-  dplyr::select(species, range, tmean, ppt, vpdmax) %>%
-  gather(key = "var", value = "value", -species, -range) %>%
-  group_by(species, range, var) %>%
-  summarise(
-    q5 = quantile(value, 0.05, na.rm = T),
-    q25 = quantile(value, 0.25, na.rm = T),
-    q50 = quantile(value, 0.5, na.rm = T),
-    q75 = quantile(value, 0.75, na.rm = T),
-    q95 = quantile(value, 0.95, na.rm = T)
-  ) %>%
-  gather(key = "quantile", value = "value", -species, -range, -var) %>%
-  spread(key = "range", value = "value")
+<!-- Compare quantiles of three climatic variables using data from full range and CFP. -->
+<!-- ```{r} -->
+<!-- range_compare_clim_summary <- read_rds("data/climate/range_comparison_with_climate_data.rds") %>% -->
+<!--   as_tibble() %>% -->
+<!--   dplyr::select(species, range, tmean, ppt, vpdmax) %>% -->
+<!--   gather(key = "var", value = "value", -species, -range) %>% -->
+<!--   group_by(species, range, var) %>% -->
+<!--   summarise( -->
+<!--     q5 = quantile(value, 0.05, na.rm = T), -->
+<!--     q25 = quantile(value, 0.25, na.rm = T), -->
+<!--     q50 = quantile(value, 0.5, na.rm = T), -->
+<!--     q75 = quantile(value, 0.75, na.rm = T), -->
+<!--     q95 = quantile(value, 0.95, na.rm = T) -->
+<!--   ) %>% -->
+<!--   gather(key = "quantile", value = "value", -species, -range, -var) %>% -->
+<!--   spread(key = "range", value = "value") -->
 
-ggplot(range_compare_clim_summary) +
-  geom_point(aes(x = all, y = cfp), alpha = 0.5) +
-  facet_wrap(. ~ var * quantile, scales = "free", ncol = 5) +
-  geom_abline(intercept = 0, slope = 1, col = "red") +
-  theme_classic()
-```
+<!-- ggplot(range_compare_clim_summary) + -->
+<!--   geom_point(aes(x = all, y = cfp), alpha = 0.5) + -->
+<!--   facet_wrap(. ~ var * quantile, scales = "free", ncol = 5) + -->
+<!--   geom_abline(intercept = 0, slope = 1, col = "red") + -->
+<!--   theme_classic() -->
+<!-- ``` -->
 
 ### Individual species
 
