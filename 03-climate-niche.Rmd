@@ -402,14 +402,13 @@ for (param in param_list) {
 Load raster data using the raster package.
 
 ```{r}
-climate_list <- vector(mode = "list")
-
-tmean_ras <- raster::raster("data/climate/chelsa/bio1.tif")
-ppt_ras <- raster::raster("data/climate/chelsa/bio12.tif")
-vpdmax_ras <- raster::raster("data/climate/chelsa/vpd_max.tif")
-# raster::proj4string(tmean_ras) # check that projection is WGS84
-
-climate_list[["chelsa"]] <- list(temp = tmean_ras, prcp = ppt_ras, vpd = vpdmax_ras)
+chelsa_ras <- raster::stack(
+  "data/climate/chelsa/bio1.tif",
+  "data/climate/chelsa/bio12.tif",
+  "data/climate/chelsa/vpd_max.tif"
+)
+names(chelsa_ras) <- c("tmp", "ppt", "vpd")
+raster::proj4string(chelsa_ras) # WGS84
 ```
 
 ### Daymet
@@ -451,7 +450,7 @@ for (param in param_list) {
 
 Download and process PRISM using the prism package (not running).
 
-```{r, eval=F}
+```{r, eval=FALSE}
 prism::prism_set_dl_dir("data/climate/prism/")
 prism::get_prism_normals("tmean", "800m", annual = TRUE, keepZip = FALSE)
 prism::get_prism_normals("ppt", "800m", annual = TRUE, keepZip = FALSE)
@@ -460,45 +459,66 @@ prism::get_prism_normals("vpdmax", "800m", annual = TRUE, keepZip = FALSE)
 
 Load raster data using the raster package.
 
-```{r, eval=T}
+```{r}
 prism::prism_set_dl_dir("data/climate/prism/")
-tmean_ras <- prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
-  prism::pd_to_file() %>%
-  raster::raster()
-ppt_ras <- prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>%
-  prism::pd_to_file() %>%
-  raster::raster()
-vpdmax_ras <- prism::prism_archive_subset("vpdmax", "annual normals", resolution = "800m") %>%
-  prism::pd_to_file() %>%
-  raster::raster()
-climate_list[["prism"]] <- list(temp = tmean_ras, prcp = ppt_ras, vpd = vpdmax_ras)
+prism_ras <- raster::stack(
+  prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
+    prism::pd_to_file() %>%
+    raster::raster(),
+  prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>%
+    prism::pd_to_file() %>%
+    raster::raster(),
+  prism::prism_archive_subset("vpdmax", "annual normals", resolution = "800m") %>%
+    prism::pd_to_file() %>%
+    raster::raster()
+)
+names(prism_ras) <- c("tmp", "ppt", "vpd")
+raster::proj4string(prism_ras) # NAD83
 ```
 
-## Extract data at occurrence sites
+### Extract climate data at occurrence sites and then compare
 
-Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters. But first, convert GBIF coordinates in WGS84 to the projection of CHELSA and PRISM rasters.
+Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
 
-```{r, eval=F}
-occ_clim_sf_list <- vector(mode = "list")
-for (clim_dat in c("chelsa", "prism")) {
-  occ_sf_reproj <- occ_sf %>%
-    filter(dataset == "gbif") %>%
-    st_transform(crs = st_crs(climate_list[[clim_dat]][[1]])) # WGS84 for CHELSA, NAD83 for PRISM
+```{r}
+gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-02.rds") %>%
+  mutate(
+    species = queryName,
+    key = as.character(key)
+  ) %>%
+  filter(species %in% spp_tbl$species) %>%
+  select(key, species, longitude, latitude) %>%
+  st_as_sf(
+    coords = c("longitude", "latitude"),
+    crs = "+proj=longlat +datum=WGS84 +no_defs"
+  )
 
-  occ_clim_sf <- occ_sf_reproj %>%
-    mutate(
-      tmean = raster::extract(climate_list[[clim_dat]]$temp, occ_sf_reproj),
-      ppt = raster::extract(climate_list[[clim_dat]]$prcp, occ_sf_reproj),
-      vpdmax = raster::extract(climate_list[[clim_dat]]$vpd, occ_sf_reproj),
-      dataset = clim_dat
-    )
-  occ_clim_sf_list[[clim_dat]] <- occ_clim_sf
-}
-occ_clim_sf <- bind_rows(occ_clim_sf_list)
-write_rds(occ_clim_sf, "data/climate/occurrence_with_climate_data.rds")
+gbif_sf_nad83 <- gbif_sf_wgs84 %>%
+  st_transform(crs = "+proj=longlat +datum=NAD83 +no_defs")
+
+chelsa_gbif_sf <- chelsa_ras %>%
+  raster::extract(gbif_sf_wgs84) %>%
+  as_tibble() %>%
+  rename_with(~ str_c("chelsa_", .)) %>%
+  bind_cols(gbif_sf_wgs84)
+
+prism_gbif_sf <- prism_ras %>%
+  raster::extract(gbif_sf_nad83) %>%
+  as_tibble() %>%
+  rename_with(~ str_c("prism_", .)) %>%
+  bind_cols(gbif_sf_nad83)
+
+bind_cols(
+  chelsa_gbif_sf %>%
+    select(geometry, key, species, starts_with("chelsa_")),
+  prism_gbif_sf %>%
+    select(starts_with("prism_"))
+) %>%
+  write_rds("data/climate/climate-gbif-2022-05-02.rds")
 ```
 
 Check correlation between CHELSA and PRISM data.
+
 ```{r}
 occ_clim_sf <- read_rds("data/climate/occurrence_with_climate_data.rds")
 ggplot(occ_clim_sf %>%
