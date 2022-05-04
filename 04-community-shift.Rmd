@@ -28,7 +28,7 @@ library(sf)
 Load niche estimates.
 
 ```{r}
-niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-04-25.rds")
+niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-04.rds")
 ```
 
 ## Experimental data
@@ -40,12 +40,12 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
-    tmean_com_var = sum(abund * tmean_occ_mean^2) / sum(abund) - tmean_com_mean^2,
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
     ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund),
-    vpdmax_com_var = sum(abund * vpdmax_occ_mean^2) / sum(abund) - vpdmax_com_mean^2
+    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
   )
 ```
 
@@ -63,7 +63,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -83,7 +83,7 @@ Community-level mean CTI in all 64 ambient vs. warming plots (pooling together a
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_T),
@@ -105,7 +105,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -125,7 +125,7 @@ Community-level CTI standard deviation in all 64 ambient vs. warming plots (pool
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat_T, group = interaction(treat_T, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_T),
@@ -239,7 +239,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -259,7 +259,7 @@ Community-level mean CVI in all 64 ambient vs. warming plots (pooling together a
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat_T, group = interaction(treat_T, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_T),
@@ -281,7 +281,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "T___")
   ) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -301,7 +301,7 @@ Community-level CVI standard deviation in all 64 ambient vs. warming plots (pool
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat_T, group = interaction(treat_T, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_T),
@@ -327,7 +327,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -347,7 +347,7 @@ Community-level mean CTI in all 64 ambient vs. watering plots (pooling together 
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_P),
@@ -369,7 +369,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -389,7 +389,7 @@ Community-level CTI standard deviation in all 64 ambient vs. watering plots (poo
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat_P, group = interaction(treat_P, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_P),
@@ -503,7 +503,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -523,7 +523,7 @@ Community-level mean CVI in all 64 ambient vs. watering plots (pooling together 
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat_P, group = interaction(treat_P, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_P),
@@ -545,7 +545,7 @@ exp_com_tbl %>%
     site == "jrgce",
     treat %in% c("____", "_P__")
   ) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -565,7 +565,7 @@ Community-level CVI standard deviation in all 64 ambient vs. watering plots (poo
 exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_P = str_sub(treat, start = 2L, end = 2L)) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat_P, group = interaction(treat_P, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat_P, group = interaction(treat_P, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat_P),
@@ -590,7 +590,7 @@ exp_com_tbl %>%
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   mutate(year = as.factor(year)) %>%
-  ggplot(aes(tmean_com_mean, ppt_com_mean, group = interaction(treat, year))) +
+  ggplot(aes(tmp_com_mean, ppt_com_mean, group = interaction(treat, year))) +
   geom_point(aes(color = year), alpha = .5) +
   # stat_ellipse() +
   facet_wrap(~treat) +
@@ -611,9 +611,9 @@ exp_com_tbl %>%
     treat %in% c("____", "T___", "_P__", "TP__")
   ) %>%
   group_by(year, treat) %>%
-  summarize(tmean_com_mean = median(tmean_com_mean), ppt_com_mean = median(ppt_com_mean)) %>%
+  summarize(tmp_com_mean = median(tmp_com_mean), ppt_com_mean = median(ppt_com_mean)) %>%
   # mutate(year = as.factor(year)) %>%
-  ggplot(aes(tmean_com_mean, ppt_com_mean, col = year)) +
+  ggplot(aes(tmp_com_mean, ppt_com_mean, col = year)) +
   geom_path() +
   facet_wrap(~treat) +
   labs(
@@ -643,7 +643,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -671,7 +671,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -763,7 +763,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -791,7 +791,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -823,7 +823,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -851,7 +851,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -943,7 +943,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -971,7 +971,7 @@ exp_com_tbl %>%
     )
   ) %>%
   filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -999,7 +999,7 @@ Community-level mean CTI in ambient vs. drought plots.
 ```{r, fig.cap="Compare mean(CTI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
-  ggplot(aes(year, tmean_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -1019,7 +1019,7 @@ Community-level CTI standard deviation in ambient vs. drought plots.
 ```{r, fig.cap="Compare sd(CTI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
-  ggplot(aes(year, sqrt(tmean_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -1087,7 +1087,7 @@ Community-level mean CVI in ambient vs. drought plots.
 ```{r, fig.cap="Compare mean(CVI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
-  ggplot(aes(year, vpdmax_com_mean, col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -1107,7 +1107,7 @@ Community-level CVI standard deviation in ambient vs. drought plots.
 ```{r, fig.cap="Compare sd(CVI) in ambient vs. drought treatments over years"}
 exp_com_tbl %>%
   filter(site %in% c("scide_arboretum", "scide_marshallfield", "scide_ylr")) %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), col = treat, group = interaction(treat, year))) +
+  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
   geom_boxplot() +
   ggpubr::stat_compare_means(
     aes(group = treat),
@@ -1131,12 +1131,12 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
-    tmean_com_mean = sum(abund * tmean_occ_mean) / sum(abund),
-    tmean_com_var = sum(abund * tmean_occ_mean^2) / sum(abund) - tmean_com_mean^2,
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
     ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpdmax_com_mean = sum(abund * vpdmax_occ_mean) / sum(abund),
-    vpdmax_com_var = sum(abund * vpdmax_occ_mean^2) / sum(abund) - vpdmax_com_mean^2
+    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
   )
 ```
 
@@ -1150,7 +1150,7 @@ CTI community-level mean in several sites increases over years, suggesting commu
 
 ```{r, fig.cap="Compare mean(CTI) across sites over years"}
 obs_com_tbl %>%
-  ggplot(aes(year, tmean_com_mean, group = year)) +
+  ggplot(aes(year, tmp_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
     method = "lm", se = FALSE,
@@ -1171,7 +1171,7 @@ CTI community-level standard deviation.
 
 ```{r, fig.cap="Compare sd(CTI) across sites over years"}
 obs_com_tbl %>%
-  ggplot(aes(year, sqrt(tmean_com_var), group = year)) +
+  ggplot(aes(year, sqrt(tmp_com_var), group = year)) +
   geom_boxplot() +
   geom_smooth(
     method = "lm", se = FALSE,
@@ -1242,7 +1242,7 @@ CVI community-level mean in several sites changes over years, but no clear direc
 
 ```{r, fig.cap="Compare mean(CVI) across sites over years"}
 obs_com_tbl %>%
-  ggplot(aes(year, vpdmax_com_mean, group = year)) +
+  ggplot(aes(year, vpd_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
     method = "lm", se = FALSE,
@@ -1263,7 +1263,7 @@ CPI community-level standard deviation.
 
 ```{r, fig.cap="Compare sd(CVI) across sites over years"}
 obs_com_tbl %>%
-  ggplot(aes(year, sqrt(vpdmax_com_var), group = year)) +
+  ggplot(aes(year, sqrt(vpd_com_var), group = year)) +
   geom_boxplot() +
   geom_smooth(
     method = "lm", se = FALSE,
@@ -1307,14 +1307,14 @@ prism::get_prism_annual("vpdmax", years = 1983:2021, keepZip = FALSE)
 Extract site climate from PRISM.
 
 ```{r}
-site_tmean_tbl <- prism::prism_archive_subset(
+site_tmp_tbl <- prism::prism_archive_subset(
   "tmean", "annual",
   years = 1983:2020
 ) %>%
   prism::pd_stack() %>%
   raster::extract(site_tbl) %>%
   bind_cols(site = site_tbl$abbr, .) %>%
-  pivot_longer(-site, names_to = "year", values_to = "tmean") %>%
+  pivot_longer(-site, names_to = "year", values_to = "tmp") %>%
   mutate(year = year %>%
     str_sub(start = -8L, end = -5L) %>%
     as.integer())
@@ -1331,14 +1331,14 @@ site_ppt_tbl <- prism::prism_archive_subset(
     str_sub(start = -8L, end = -5L) %>%
     as.integer())
 
-site_vpdmax_tbl <- prism::prism_archive_subset(
+site_vpd_tbl <- prism::prism_archive_subset(
   "vpdmax", "annual",
   years = 1983:2020
 ) %>%
   prism::pd_stack() %>%
   raster::extract(site_tbl) %>%
   bind_cols(site = site_tbl$abbr, .) %>%
-  pivot_longer(-site, names_to = "year", values_to = "vpdmax") %>%
+  pivot_longer(-site, names_to = "year", values_to = "vpd") %>%
   mutate(year = year %>%
     str_sub(start = -8L, end = -5L) %>%
     as.integer())
@@ -1347,9 +1347,9 @@ site_vpdmax_tbl <- prism::prism_archive_subset(
 Assemble site climate data.
 
 ```{r}
-site_clim_tbl <- site_tmean_tbl %>%
+site_clim_tbl <- site_tmp_tbl %>%
   full_join(site_ppt_tbl, by = c("site", "year")) %>%
-  full_join(site_vpdmax_tbl, by = c("site", "year")) %>%
+  full_join(site_vpd_tbl, by = c("site", "year")) %>%
   right_join(obs_com_tbl %>%
     distinct(site, year), by = c("site", "year")) %>%
   arrange(site, year)
@@ -1359,7 +1359,7 @@ Plot temperature change.
 
 ```{r, fig.cap="Observational site temperature change across years"}
 site_clim_tbl %>%
-  ggplot(aes(year, tmean)) +
+  ggplot(aes(year, tmp)) +
   geom_point() +
   geom_smooth(
     method = "lm", se = FALSE,
@@ -1399,7 +1399,7 @@ Plot VPDmax change.
 
 ```{r, fig.cap="Observational site VPDmax change across years"}
 site_clim_tbl %>%
-  ggplot(aes(year, vpdmax)) +
+  ggplot(aes(year, vpd)) +
   geom_point() +
   geom_smooth(
     method = "lm", se = FALSE,
