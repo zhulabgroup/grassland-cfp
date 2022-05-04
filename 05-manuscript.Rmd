@@ -16,6 +16,60 @@ library(patchwork)
 
 Figures and tables in the main text.
 
+Read in CFP, GBIF-CHELSA, and niche estimate data.
+
+```{r}
+cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+
+gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-04.rds") %>%
+  select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
+
+niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-04.rds")
+```
+
+Create three panels separately (fast without rendering).
+
+```{r}
+occ_geog_gg <- ggplot() +
+    geom_sf(
+      data = rnaturalearth::ne_states(
+        country = c("Mexico", "United States of America"),
+        returnclass = "sf"
+      ),
+      fill = NA,
+      color = alpha("black", .1)
+    ) +
+    geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+    geom_sf(data = gbif_chelsa_sf, alpha = .1, size = .1) +
+    labs(x = "Longitude", y = "Latitude") +
+    coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
+
+occ_clim_gg <- ggplot(gbif_chelsa_sf) + 
+  geom_point(aes(tmp, ppt), alpha = .1, size = .1) +
+  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)")
+
+niche_gg <- niche_tbl %>%
+  ggplot() +
+  geom_point(aes(tmp_occ_mean, ppt_occ_mean), alpha = .5) +
+  geom_errorbarh(aes(xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n), xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n), y = ppt_occ_mean), alpha = .3) +
+  geom_errorbar(aes(x = tmp_occ_mean, ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
+  labs(
+    x = "Species occurrence mean temperature (°C)",
+    y = "Species occurrence mean precipitation (mm)"
+  )
+```
+
+Combine three panels (slow rendering).
+
+```{r}
+occ_geog_gg + occ_clim_gg + niche_gg
+```
+
 ## Supplements
 
 Figures and tables in the supplements.
