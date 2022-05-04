@@ -32,42 +32,147 @@ gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-04.rds") %>%
 niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-04.rds")
 ```
 
+Choose two example species and assign colors.
+
+```{r}
+cool_sp <- "Allium falcifolium"
+warm_sp <- "Stipa pulchra"
+cool_col <- "blue"
+warm_col <- "red"
+```
+
 Create three panels separately (fast without rendering).
 
 ```{r}
-occ_geog_gg <- ggplot() +
-    geom_sf(
-      data = rnaturalearth::ne_states(
-        country = c("Mexico", "United States of America"),
-        returnclass = "sf"
-      ),
-      fill = NA,
-      color = alpha("black", .1)
-    ) +
-    geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-    geom_sf(data = gbif_chelsa_sf, alpha = .1, size = .1) +
-    labs(x = "Longitude", y = "Latitude") +
-    coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
+occ_geog_gg <-
+  ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = gray(.25)
+  ) +
+  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  geom_sf( # all species
+    data = gbif_chelsa_sf,
+    color = gray(.5),
+    alpha = .05, size = .05
+  ) +
+  geom_sf( # cool species
+    data = gbif_chelsa_sf %>% filter(species == cool_sp),
+    color = cool_col,
+    alpha = .5, size = .5
+  ) +
+  geom_sf( # warm species
+    data = gbif_chelsa_sf %>% filter(species == warm_sp),
+    color = warm_col,
+    alpha = .5, size = .5
+  ) +
+  coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
+  labs(x = "Longitude", y = "Latitude")
 
-occ_clim_gg <- ggplot(gbif_chelsa_sf) + 
-  geom_point(aes(tmp, ppt), alpha = .1, size = .1) +
+occ_clim_gg <-
+  ggplot(mapping = aes(tmp, ppt)) +
+  geom_point(
+    data = gbif_chelsa_sf, # all species
+    color = gray(.5),
+    alpha = .1, size = .1
+  ) +
+  geom_point(
+    data = gbif_chelsa_sf %>% filter(species == cool_sp), # warm species
+    color = cool_col,
+    alpha = .5, size = .5
+  ) +
+  geom_point(
+    data = gbif_chelsa_sf %>% filter(species == warm_sp), # warm species
+    color = warm_col,
+    alpha = .5, size = .5
+  ) +
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)")
 
-niche_gg <- niche_tbl %>%
-  ggplot() +
-  geom_point(aes(tmp_occ_mean, ppt_occ_mean), alpha = .5) +
-  geom_errorbarh(aes(xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n), xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n), y = ppt_occ_mean), alpha = .3) +
-  geom_errorbar(aes(x = tmp_occ_mean, ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
-  labs(
-    x = "Species occurrence mean temperature (°C)",
-    y = "Species occurrence mean precipitation (mm)"
-  )
+niche_gg <-
+  ggplot(
+    mapping = aes(
+      x = tmp_occ_mean,
+      y = ppt_occ_mean,
+      xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
+      xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
+      ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
+      ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n),
+      label = species
+    )
+  ) +
+  geom_point(
+    data = niche_tbl,
+    color = gray(0),
+    alpha = .5
+  ) +
+  geom_errorbarh(
+    data = niche_tbl,
+    color = gray(.5),
+    alpha = .5
+  ) +
+  geom_errorbar(
+    data = niche_tbl,
+    color = gray(.5),
+    alpha = .5
+  ) +
+  geom_point( # cool species
+    data = niche_tbl %>% filter(species == cool_sp),
+    color = cool_col,
+    size = 2
+  ) +
+  geom_label(
+    data = niche_tbl %>% filter(species == cool_sp),
+    color = cool_col,
+    fill = NA,
+    fontface = "italic",
+    label.padding = unit(.5, "lines"),
+    label.size = 0,
+    vjust = "outward", hjust = "outward"
+  ) +
+  geom_point( # warm species
+    data = niche_tbl %>% filter(species == warm_sp),
+    color = warm_col,
+    size = 2
+  ) +
+  geom_label(
+    data = niche_tbl %>% filter(species == warm_sp),
+    color = warm_col,
+    fill = NA,
+    fontface = "italic",
+    label.padding = unit(.5, "lines"),
+    label.size = 0,
+    vjust = "outward", hjust = "outward"
+  ) +
+  scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
+  scale_y_continuous(expand = expansion(mult = .1)) +
+  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)")
 ```
 
 Combine three panels (slow rendering).
 
 ```{r}
-occ_geog_gg + occ_clim_gg + niche_gg
+theme_set(ggpubr::theme_pubclean())
+
+fig1_gg <- occ_geog_gg + occ_clim_gg + niche_gg +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  ABB
+  ABB
+  CCC
+  CCC
+  CCC
+  ")
+
+ggsave(
+  plot = fig1_gg,
+  filename = "figures/fig1.png",
+  width = 7.5,
+  height = 7.5 * 1.618
+)
 ```
 
 ## Supplements
