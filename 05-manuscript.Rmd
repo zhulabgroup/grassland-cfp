@@ -1,0 +1,21 @@
+# Manuscript display items
+
+Setup and load packages.
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE, cache = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(sf)
+library(patchwork)
+```
+
+## Main text
+
+Figures and tables in the main text.
+
+## Supplements
+
+Figures and tables in the supplements.
