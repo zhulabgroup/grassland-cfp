@@ -789,26 +789,26 @@ dev.off()
 Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
-niche_tbl <- occ_clim_sf %>%
-  as_tibble() %>% # drop sf geometry--too slow and not needed for this summary
+niche_tbl <- read_rds("data/climate/climate-gbif-2022-05-04.rds") %>%
+  select(key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   group_by(species) %>%
   summarize(
     occ_n = n(),
-    tmean_occ_mean = mean(tmean, na.rm = TRUE),
-    tmean_occ_median = median(tmean, na.rm = TRUE),
-    tmean_occ_lwr = quantile(tmean, .05, na.rm = TRUE),
-    tmean_occ_upr = quantile(tmean, .95, na.rm = TRUE), # hot limit, suggested by Susan Harrison
-    tmean_occ_sd = sd(tmean, na.rm = TRUE),
+    tmp_occ_mean = mean(tmp, na.rm = TRUE),
+    tmp_occ_median = median(tmp, na.rm = TRUE),
+    tmp_occ_lwr = quantile(tmp, .05, na.rm = TRUE),
+    tmp_occ_upr = quantile(tmp, .95, na.rm = TRUE), # hot limit, suggested by Susan Harrison
+    tmp_occ_sd = sd(tmp, na.rm = TRUE),
     ppt_occ_mean = mean(ppt, na.rm = TRUE),
     ppt_occ_median = median(ppt, na.rm = TRUE),
     ppt_occ_lwr = quantile(ppt, .05, na.rm = TRUE), # dry limit, suggested by Susan Harrison
     ppt_occ_upr = quantile(ppt, .95, na.rm = TRUE),
     ppt_occ_sd = sd(ppt, na.rm = TRUE),
-    vpdmax_occ_mean = mean(vpdmax, na.rm = TRUE),
-    vpdmax_occ_median = median(vpdmax, na.rm = TRUE),
-    vpdmax_occ_lwr = quantile(vpdmax, .05, na.rm = TRUE),
-    vpdmax_occ_upr = quantile(vpdmax, .95, na.rm = TRUE),
-    vpdmax_occ_sd = sd(vpdmax, na.rm = TRUE),
+    vpd_occ_mean = mean(vpd, na.rm = TRUE),
+    vpd_occ_median = median(vpd, na.rm = TRUE),
+    vpd_occ_lwr = quantile(vpd, .05, na.rm = TRUE),
+    vpd_occ_upr = quantile(vpd, .95, na.rm = TRUE),
+    vpd_occ_sd = sd(vpd, na.rm = TRUE),
   )
 ```
 
@@ -816,7 +816,7 @@ These different summary statistics (mean, median, upper, and lower quantiles) ar
 
 ```{r fig.cap="Species temperature niche statistics (°C)"}
 niche_tbl %>%
-  select(tmean_occ_mean, tmean_occ_median, tmean_occ_lwr, tmean_occ_upr) %>%
+  select(tmp_occ_mean, tmp_occ_median, tmp_occ_lwr, tmp_occ_upr) %>%
   GGally::ggpairs(
     title = "Species temperature niche (°C)",
     columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)"),
@@ -832,11 +832,11 @@ niche_tbl %>%
   )
 ```
 
-```{r fig.cap="Species VPDmax niche statistics (Pa)"}
+```{r fig.cap="Species VPD max niche statistics (Pa)"}
 niche_tbl %>%
-  select(vpdmax_occ_mean, vpdmax_occ_median, vpdmax_occ_lwr, vpdmax_occ_upr) %>%
+  select(vpd_occ_mean, vpd_occ_median, vpd_occ_lwr, vpd_occ_upr) %>%
   GGally::ggpairs(
-    title = "Species VPDmax niche (Pa)",
+    title = "Species VPD max niche (Pa)",
     columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
   )
 ```
@@ -845,21 +845,21 @@ Different dimensions of the niche space (temperature, precipitation, and VPD max
 
 ```{r fig.cap="Correlation of species niche dimensions"}
 niche_tbl %>%
-  select(tmean_occ_mean, ppt_occ_mean, vpdmax_occ_mean) %>%
+  select(tmp_occ_mean, ppt_occ_mean, vpd_occ_mean) %>%
   GGally::ggpairs(
     title = "Species niche dimensions",
-    columnLabels = c("Temperature (°C)", "Precipitation (mm)", "VPDmax (Pa)")
+    columnLabels = c("Temperature (°C)", "Precipitation (mm)", "VPD max (Pa)")
   )
 ```
 
-With all the correlations, we can safely use temperature and precipitation to visualize species niches in climate space. Note the strong negative correlation between temperature and precipitation (r = `r with(niche_tbl, cor(tmean_occ_mean, ppt_occ_mean)) %>% format(digits = 3)`, p = `r with(niche_tbl, cor.test(tmean_occ_mean, ppt_occ_mean))$p.value %>% format(digits = 3)`).
+With all the correlations, we can safely use temperature and precipitation to visualize species niches in climate space. Note the strong negative correlation between temperature and precipitation (r = `r with(niche_tbl, cor(tmp_occ_mean, ppt_occ_mean)) %>% format(digits = 3)`, p = `r with(niche_tbl, cor.test(tmp_occ_mean, ppt_occ_mean))$p.value %>% format(digits = 3)`).
 
 ```{r fig.cap="Species climate niches, with mean (point) and standard error (crossbar)"}
 (niche_tbl %>%
   ggplot(aes(text = species)) +
-  geom_point(aes(tmean_occ_mean, ppt_occ_mean), alpha = .5) +
-  geom_errorbarh(aes(xmin = tmean_occ_mean - tmean_occ_sd / sqrt(occ_n), xmax = tmean_occ_mean + tmean_occ_sd / sqrt(occ_n), y = ppt_occ_mean), alpha = .3) +
-  geom_errorbar(aes(x = tmean_occ_mean, ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
+  geom_point(aes(tmp_occ_mean, ppt_occ_mean), alpha = .5) +
+  geom_errorbarh(aes(xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n), xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n), y = ppt_occ_mean), alpha = .3) +
+  geom_errorbar(aes(x = tmp_occ_mean, ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n), ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)), alpha = .3) +
   labs(
     x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
@@ -894,6 +894,6 @@ Save niche estimates with mean and SD statistics.
 
 ```{r}
 niche_tbl %>%
-  select(species, occ_n, tmean_occ_mean, tmean_occ_sd, ppt_occ_mean, ppt_occ_sd, vpdmax_occ_mean, vpdmax_occ_sd) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-04-27.rds")
+  select(species, occ_n, tmp_occ_mean, tmp_occ_sd, ppt_occ_mean, ppt_occ_sd, vpd_occ_mean, vpd_occ_sd) %>%
+  write_rds("data/occurrence/niche-estimates-cfp-2022-05-04.rds")
 ```
