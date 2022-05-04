@@ -1067,6 +1067,8 @@ spp_clean_tbl <- spp_tidy_tbl %>%
     ),
     clean_name = na_if(clean_name, "DROP")
   )
+
+write_csv(spp_clean_tbl, "data/community/species-table-clean-2022-05-02.csv")
 ```
 
 Finally, replace clean species names in all data and save to RDS.
