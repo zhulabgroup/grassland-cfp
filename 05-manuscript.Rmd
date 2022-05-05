@@ -183,6 +183,168 @@ fig1_gg
 # )
 ```
 
+### Community shift analyses
+
+Read in experimental and observational data.
+
+```{r}
+exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot, treat) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
+    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+  )
+
+obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
+    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+  )
+```
+
+JRGCE warming treatment to CTI and CPI comparisons. 
+
+```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. warming treatments over years"}
+jrgce_gg <-
+  exp_com_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
+  pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
+  mutate(com_idx_name = factor(com_idx_name,
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
+  )) %>%
+  ggplot(aes(year, com_idx_value, col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~com_idx_name,
+    ncol = 1, scales = "free_y",
+    strip.position = "left",
+    labeller = as_labeller(c(
+      CTI = "Community Temperature Index\n(CTI, °C)",
+      CPI = "Community Precipitation Index\n(CPI, mm)"
+    ))
+  ) +
+  labs(
+    x = "Year", y = NULL,
+    color = "Warming treatment",
+    title = "Jasper Ridge Global Change Experiment"
+  ) +
+  scale_color_manual(values = c("black", "red")) +
+  theme(
+    strip.background = element_blank(),
+    strip.placement = "outside"
+  )
+```
+
+Observational data CTI and CPI comparisons.
+
+```{r}
+site_labeller <- as_labeller(c(
+  angelo = "Angelo Coast Range Reserve",
+  carrizo = "Carrizo Plain",
+  elkhorn = "Elkhorn Slough",
+  jasper = "Jasper Ridge",
+  mclann = "McLaughlin (Annual)",
+  mclserp = "McLaughlin (Serpentine)",
+  swanton = "Swanton Ranch",
+  ucsc = "UC Santa Cruz"
+))
+
+obs_cti_gg <-
+  obs_com_tbl %>%
+  ggplot(aes(year, tmp_com_mean, group = year)) +
+  geom_boxplot() +
+  geom_smooth(
+    method = "lm", formula = y ~ x, se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site,
+    nrow = 2,
+    scales = "free_y",
+    labeller = site_labeller
+  ) +
+  labs(
+    x = "Year", y = "Community Temperature Index\n(CTI, °C)"
+  ) +
+  theme(
+    strip.background = element_blank()
+  )
+
+obs_cpi_gg <-
+  obs_com_tbl %>%
+  ggplot(aes(year, ppt_com_mean, group = year)) +
+  geom_boxplot() +
+  geom_smooth(
+    method = "lm", formula = y ~ x, se = FALSE,
+    color = "red", lty = "dashed",
+    aes(group = 1)
+  ) +
+  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  facet_wrap(~site,
+    nrow = 2,
+    scales = "free_y",
+    labeller = site_labeller
+  ) +
+  labs(
+    x = "Year", y = "Community Precipitation Index\n(CPI, mm)"
+  ) +
+  theme(
+    strip.background = element_blank()
+  )
+```
+
+Combine panels.
+
+```{r}
+fig2_gg <- jrgce_gg + obs_cti_gg + obs_cpi_gg +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  A
+  B
+  C
+  ")
+```
+
+Render and save.
+
+```{r, fig.width=10, fig.height=10*1.618, fig.cap="Community shift from long-term experiments and observations."}
+theme_set(ggpubr::theme_pubclean())
+
+fig2_gg
+
+# ggsave(
+#   plot = fig2_gg,
+#   filename = "figures/fig2.png",
+#   width = 10,
+#   height = 10 * 1.618
+# )
+```
+
 ## Supplements
 
 Figures and tables in the supplements.
