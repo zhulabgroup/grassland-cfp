@@ -852,7 +852,7 @@ niche_tbl %>%
   )
 ```
 
-With all the correlations, we can safely use temperature and precipitation to visualize species niches in climate space. Note the strong negative correlation between temperature and precipitation (r = `r with(niche_tbl, cor(tmp_occ_mean, ppt_occ_mean)) %>% format(digits = 3)`, p = `r with(niche_tbl, cor.test(tmp_occ_mean, ppt_occ_mean))$p.value %>% format(digits = 3)`).
+With all the correlations, we can safely use temperature and precipitation to visualize species niches in climate space. Note the strong negative correlation between temperature and precipitation (r = `r format(with(niche_tbl, cor(tmp_occ_mean, ppt_occ_mean)), digits = 3)`, p = `r format(with(niche_tbl, cor.test(tmp_occ_mean, ppt_occ_mean))$p.value, digits = 3)`).
 
 ```{r fig.cap="Species climate niches, with mean (point) and standard error (crossbar)"}
 (niche_tbl %>%
