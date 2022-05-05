@@ -16,6 +16,8 @@ library(patchwork)
 
 Figures and tables in the main text.
 
+### Climate niche estimation
+
 Read in CFP, GBIF-CHELSA, and niche estimate data.
 
 ```{r}
@@ -152,11 +154,9 @@ niche_gg <-
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)")
 ```
 
-Combine three panels (slow rendering).
+Combine three panels.
 
 ```{r}
-theme_set(ggpubr::theme_pubclean())
-
 fig1_gg <- occ_geog_gg + occ_clim_gg + niche_gg +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
@@ -166,13 +166,21 @@ fig1_gg <- occ_geog_gg + occ_clim_gg + niche_gg +
   CCC
   CCC
   ")
+```
 
-ggsave(
-  plot = fig1_gg,
-  filename = "figures/fig1.png",
-  width = 7.5,
-  height = 7.5 * 1.618
-)
+Render (slow) and save.
+
+```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Panel A shows all GBIF occurrences in gray and two example species in blue and red; panel B shows the same data in climate space; panel C shows the average temperature and precipitation estimates for all species, highlighting the two examples."}
+theme_set(ggpubr::theme_pubclean())
+
+fig1_gg
+
+# ggsave(
+#   plot = fig1_gg,
+#   filename = "figures/fig1.png",
+#   width = 7.5,
+#   height = 7.5 * 1.618
+# )
 ```
 
 ## Supplements
