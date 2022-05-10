@@ -18,14 +18,14 @@ Figures and tables in the main text.
 
 ### Climate niche estimation
 
-Read in CFP, GBIF-CHELSA, and niche estimate data.
+Read in GBIF-CHELSA, and niche estimate data.
 
 ```{r}
-cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
-  filter(
-    NAME == "California Floristic Province",
-    Type == "hotspot area"
-  )
+# cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
+#   filter(
+#     NAME == "California Floristic Province",
+#     Type == "hotspot area"
+#   )
 
 gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
   select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
@@ -34,7 +34,11 @@ gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
 niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
 ```
 
-Choose two example species and assign colors.
+Choose two example species and assign colors. From Justin's email 5/10/22:
+
+> Are you aiming for natives specifically? I think Stipa pulchra works well for the dry, Festuca perennis is also commonly known since its a weed, in the same area. 
+> 
+> For wet species I don't recommend Allium, I might recommend Danthonia californica, or Juncus bufonis (Juncus are rushes and also typically though of as 'wetter' or cooler species). For a non-native if desired - Holcus lanatus would be a good choice.
 
 ```{r}
 cool_sp <- "Allium falcifolium"
@@ -56,7 +60,7 @@ occ_geog_gg <-
     fill = NA,
     color = gray(.25)
   ) +
-  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  # geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
   geom_sf( # all species
     data = gbif_chelsa_sf,
     color = gray(.5),
