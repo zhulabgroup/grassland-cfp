@@ -800,6 +800,7 @@ niche_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
     tmp_occ_upr = quantile(tmp, .95, na.rm = TRUE), # hot limit, suggested by Susan Harrison
     tmp_occ_sd = sd(tmp, na.rm = TRUE),
     ppt_occ_mean = mean(ppt, na.rm = TRUE),
+    ppt_occ_logmean = log(ppt) %>% mean(na.rm = TRUE) %>% exp(), # ppt distn is lognormal
     ppt_occ_median = median(ppt, na.rm = TRUE),
     ppt_occ_lwr = quantile(ppt, .05, na.rm = TRUE), # dry limit, suggested by Susan Harrison
     ppt_occ_upr = quantile(ppt, .95, na.rm = TRUE),
@@ -894,6 +895,6 @@ Save niche estimates with mean and SD statistics.
 
 ```{r}
 niche_tbl %>%
-  select(species, occ_n, tmp_occ_mean, tmp_occ_sd, ppt_occ_mean, ppt_occ_sd, vpd_occ_mean, vpd_occ_sd) %>%
+  select(species, occ_n, tmp_occ_mean, tmp_occ_sd, ppt_occ_mean, ppt_occ_logmean, ppt_occ_sd, vpd_occ_mean, vpd_occ_sd) %>%
   write_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
 ```
