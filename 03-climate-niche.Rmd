@@ -103,7 +103,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-05-04.rds")
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-05-10.rds")
 
 rm(list = c("cl", "num_cores", "gbif_box_ls", "gbif_box_tbl", "gbif_cfp_tbl"))
 ```
@@ -200,10 +200,10 @@ res <- occ(
 4. A recommended way to get a lot of data at once is to use the dataset of research grade observations submitted weekly to GBIF https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7
 
 ```{r, eval=FALSE}
-read_rds("data/occurrence/gbif/gbif-cfp-2022-05-04.rds") %>%
+read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
   select(species = queryName, longitude, latitude, key) %>%
-  write_rds("data/occurrence/inat/inat-cfp-2022-05-04.rds")
+  write_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds")
 ```
 
 ### BIEN
@@ -300,7 +300,7 @@ cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
   filter(species %in% spp_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
-gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-04.rds") %>%
+gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
   mutate(
     dataset = "gbif",
     species = queryName,
@@ -309,7 +309,7 @@ gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-04.rds") %>%
   filter(species %in% spp_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
-inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-04.rds") %>%
+inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds") %>%
   mutate(
     dataset = "inat",
     # species = queryName,
