@@ -21,12 +21,6 @@ Figures and tables in the main text.
 Read in GBIF-CHELSA, and niche estimate data.
 
 ```{r}
-# cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
-#   filter(
-#     NAME == "California Floristic Province",
-#     Type == "hotspot area"
-#   )
-
 gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
   select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
@@ -43,14 +37,24 @@ Choose two example species and assign colors. From Justin's email 5/10/22:
 ```{r}
 cool_sp <- "Allium falcifolium"
 warm_sp <- "Stipa pulchra"
-cool_col <- "blue"
-warm_col <- "red"
+
+gbif_chelsa_sf <- gbif_chelsa_sf %>% 
+  mutate(species_type = case_when(
+    species == cool_sp ~ "cool",
+    species == warm_sp ~ "warm",
+    TRUE ~ "other"
+  ))
 ```
 
 Create three panels separately (fast without rendering).
 
 ```{r}
-occ_geog_gg <-
+# set up plot params using alphabetical species type names
+species_color <- c(cool = "blue", other = gray(.75), warm = "red")
+species_size <- c(cool = 1, other = .01, warm = 1)
+species_alpha <- c(cool = .5, other = .05, warm = .5)
+
+# occ_geog_gg <-
   ggplot() +
   geom_sf(
     data = rnaturalearth::ne_states(
@@ -60,24 +64,16 @@ occ_geog_gg <-
     fill = NA,
     color = gray(.25)
   ) +
-  # geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-  geom_sf( # all species
+  geom_sf(
     data = gbif_chelsa_sf,
-    color = gray(.5),
-    alpha = .05, size = .05
+    aes(color = species_type, size = species_type, alpha = species_type)
   ) +
-  geom_sf( # cool species
-    data = gbif_chelsa_sf %>% filter(species == cool_sp),
-    color = cool_col,
-    alpha = .5, size = .5
-  ) +
-  geom_sf( # warm species
-    data = gbif_chelsa_sf %>% filter(species == warm_sp),
-    color = warm_col,
-    alpha = .5, size = .5
-  ) +
+  scale_color_manual(values = species_color) +
+  scale_size_manual(values = species_size) +
+  scale_alpha_manual(values = species_alpha) +
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
-  labs(x = "Longitude", y = "Latitude")
+  labs(x = "Longitude", y = "Latitude") +
+  guides(color = "none", size = "none", alpha = "none")
 
 occ_clim_gg <-
   ggplot(mapping = aes(tmp, ppt)) +
