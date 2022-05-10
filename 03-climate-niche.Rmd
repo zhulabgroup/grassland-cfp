@@ -105,7 +105,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
 
 write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-05-10.rds")
 
-rm(list = c("cl", "num_cores", "gbif_box_ls", "gbif_box_tbl", "gbif_cfp_tbl"))
+rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 ```
 
 Note that GBIF depends on download dates. Here's a test.
@@ -274,7 +274,7 @@ cch_cfp_tbl <- cch_all_tbl %>%
 write_rds(cch_all_tbl, "data/occurrence/cch/cch-all-2022-05-02.rds")
 write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-05-02.rds")
 
-rm(list = c("cch_all_tbl", "cch_cfp_tbl"))
+rm(cch_all_tbl, cch_cfp_tbl)
 ```
 
 ### Compare occurrence data sets
