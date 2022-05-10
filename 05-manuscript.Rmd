@@ -44,15 +44,22 @@ gbif_chelsa_sf <- gbif_chelsa_sf %>%
     species == warm_sp ~ "warm",
     TRUE ~ "other"
   ))
+
+niche_tbl <- niche_tbl %>%
+  mutate(species_type = case_when(
+    species == cool_sp ~ "cool",
+    species == warm_sp ~ "warm",
+    TRUE ~ "other"
+  ))
 ```
 
 Create three panels separately (fast without rendering).
 
 ```{r}
 # set up plot params using alphabetical species type names
-species_color <- c(cool = "blue", other = gray(.75), warm = "red")
-species_size <- c(cool = 1, other = .01, warm = 1)
-species_alpha <- c(cool = .5, other = .05, warm = .5)
+species_color <- c(cool = "blue", other = gray(.9), warm = "red")
+species_shape <- c(cool = 19, other = 20, warm = 19)
+species_alpha <- c(cool = .6, other = .005, warm = .6)
 
 occ_geog_gg <-
   ggplot() +
@@ -66,31 +73,32 @@ occ_geog_gg <-
   ) +
   geom_sf(
     data = gbif_chelsa_sf,
-    aes(color = species_type, size = species_type, alpha = species_type)
+    aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
   scale_color_manual(values = species_color) +
-  scale_size_manual(values = species_size) +
+  scale_shape_manual(values = species_shape) +
   scale_alpha_manual(values = species_alpha) +
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
   labs(x = "Longitude", y = "Latitude") +
-  guides(color = "none", size = "none", alpha = "none")
+  guides(color = "none", shape = "none", alpha = "none")
 
 occ_clim_gg <-
-  ggplot(mapping = aes(tmp, ppt)) +
+  ggplot(data = gbif_chelsa_sf, mapping = aes(tmp, ppt)) +
   geom_point(
-    data = gbif_chelsa_sf,
-    aes(color = species_type, size = species_type, alpha = species_type)
+    aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
   scale_color_manual(values = species_color) +
-  scale_size_manual(values = species_size) +
+  scale_shape_manual(values = species_shape) +
   scale_alpha_manual(values = species_alpha) +
+  scale_y_log10() +
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
-  guides(color = "none", size = "none", alpha = "none")
+  guides(color = "none", shape = "none", alpha = "none")
 
 niche_gg <-
   ggplot(
+    data = niche_tbl,
     mapping = aes(
       x = tmp_occ_mean,
       y = ppt_occ_mean,
@@ -98,55 +106,26 @@ niche_gg <-
       xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
       ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
       ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n),
-      label = species
+      label = species,
+      color = species_type
     )
   ) +
-  geom_point(
-    data = niche_tbl,
-    color = gray(0),
-    alpha = .5
-  ) +
-  geom_errorbarh(
-    data = niche_tbl,
-    color = gray(.5),
-    alpha = .5
-  ) +
-  geom_errorbar(
-    data = niche_tbl,
-    color = gray(.5),
-    alpha = .5
-  ) +
-  geom_point( # cool species
-    data = niche_tbl %>% filter(species == cool_sp),
-    color = cool_col,
-    size = 2
-  ) +
-  geom_label(
-    data = niche_tbl %>% filter(species == cool_sp),
-    color = cool_col,
-    fill = NA,
-    fontface = "italic",
-    label.padding = unit(.5, "lines"),
-    label.size = 0,
-    vjust = "outward", hjust = "outward"
-  ) +
-  geom_point( # warm species
-    data = niche_tbl %>% filter(species == warm_sp),
-    color = warm_col,
-    size = 2
-  ) +
-  geom_label(
-    data = niche_tbl %>% filter(species == warm_sp),
-    color = warm_col,
-    fill = NA,
-    fontface = "italic",
-    label.padding = unit(.5, "lines"),
-    label.size = 0,
-    vjust = "outward", hjust = "outward"
-  ) +
+  geom_point() +
+  geom_errorbar() +
+  geom_errorbarh() +
+  scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
-  scale_y_continuous(expand = expansion(mult = .1)) +
-  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)")
+  scale_y_log10(expand = expansion(mult = .1)) +
+  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
+  guides(color = "none") +
+  geom_label(
+    data = niche_tbl %>% filter(species_type %in% c("cool", "warm")),
+    fill = NA,
+    fontface = "italic",
+    label.padding = unit(.5, "lines"),
+    label.size = 0,
+    vjust = "outward", hjust = "outward"
+  )
 ```
 
 Combine three panels.
