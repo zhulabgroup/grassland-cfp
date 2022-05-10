@@ -1021,7 +1021,7 @@ Automatic match original names with taxize names based on the conversation with 
 1. For each query, choose the top row (highest confidence).
 1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
-```{r}
+```{r, eval=FALSE}
 spp_taxize_tbl <- read_rds("data/community/species-table-taxize-2022-05-02.rds") %>%
   filter(kingdom == "Plantae") %>%
   group_by(queryname) %>%
@@ -1032,14 +1032,14 @@ spp_taxize_tbl <- read_rds("data/community/species-table-taxize-2022-05-02.rds")
 
 Manual correction based on the look-up table complied by Justin Luong and Clara Qin.
 
-```{r}
+```{r, eval=FALSE}
 spp_expert_tbl <- read_csv("data/community/species-table-expert-2022-04-13.csv", col_types = "ccc") %>%
   rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
 ```
 
 Combining all species name corrections: taxize, expert, and drop genus-only "species."
 
-```{r}
+```{r, eval=FALSE}
 spp_clean_tbl <- spp_tidy_tbl %>%
   select(tidy_name = species) %>%
   left_join(
@@ -1071,9 +1071,11 @@ spp_clean_tbl <- spp_tidy_tbl %>%
 write_csv(spp_clean_tbl, "data/community/species-table-clean-2022-05-02.csv")
 ```
 
-Finally, replace clean species names in all data and save to RDS.
+Finally, replace clean species names in all data and save to RDS. The species clean table is based on the above code, supplemented by Justin's manual adjustments on 5/6/22 and Kai's edits on 5/10/22.
 
 ```{r}
+spp_clean_tbl <- read_csv("data/community/species-table-clean-2022-05-10.csv", col_types = "c")
+
 all_exp_data %>%
   rename(tidy_name = species) %>%
   inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
@@ -1103,7 +1105,8 @@ all_obs_data %>%
 Remove intermediate objects.
 
 ```{r}
-remove(all_exp_data, all_obs_data, spp_clean_tbl, spp_expert_tbl, spp_taxize_tbl, spp_tidy_tbl)
+rm(all_exp_data, all_obs_data, spp_clean_tbl, spp_tidy_tbl)
+# rm(spp_expert_tbl, spp_taxize_tbl)
 ```
 
 ### Site information
