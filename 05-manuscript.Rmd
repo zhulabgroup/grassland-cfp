@@ -153,18 +153,18 @@ theme_set(ggpubr::theme_pubclean())
 
 fig1_gg
 
-ggsave(
-  plot = fig1_gg,
-  filename = str_c(
-    "figures/fig1-",
-    word(cool_sp, 1) %>% tolower(),
-    "-",
-    word(warm_sp, 1) %>% tolower(),
-    ".png"
-  ),
-  width = 7.5,
-  height = 7.5 * 1.618
-)
+# ggsave(
+#   plot = fig1_gg,
+#   filename = str_c(
+#     "figures/fig1-",
+#     word(cool_sp, 1) %>% tolower(),
+#     "-",
+#     word(warm_sp, 1) %>% tolower(),
+#     ".png"
+#   ),
+#   width = 7.5,
+#   height = 7.5 * 1.618
+# )
 ```
 
 ### Community shift analyses
