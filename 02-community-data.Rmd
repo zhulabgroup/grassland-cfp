@@ -99,7 +99,7 @@ write_csv(jrgce_data, "data/community/tidy/jrgce.csv")
 Remove intermediate objects.
 
 ```{r}
-rm(list = c("pin_tbl", "spp_tbl", "trt_tbl"))
+rm(pin_tbl, spp_tbl, trt_tbl)
 rm(jrgce_data)
 ```
 
@@ -191,7 +191,7 @@ write_csv(mclexp_data, "data/community/tidy/mclexp.csv")
 Remove intermediate objects.
 
 ```{r}
-rm(list = c("cover_2015_tbl", "cover_2016_tbl", "cover_2017_tbl", "cover_2018_tbl", "cover_2019_tbl", "cover_2021_tbl", "cover_long_tbl", "plot_tbl"))
+rm(cover_2015_tbl, cover_2016_tbl, cover_2017_tbl, cover_2018_tbl, cover_2019_tbl, cover_2021_tbl, cover_long_tbl, plot_tbl)
 rm(mclexp_data)
 ```
 
@@ -250,7 +250,7 @@ write_csv(scide_data, "data/community/tidy/scide.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(scide_data)
+rm(scide_data)
 ```
 
 ## Observational community data
@@ -310,8 +310,8 @@ write_csv(angelo_data, "data/community/tidy/angelo.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("Angelo", "Angelo_spp"))
-remove(angelo_data)
+rm(Angelo, Angelo_spp)
+rm(angelo_data)
 ```
 
 ### Carrizo
@@ -387,8 +387,8 @@ write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("carrizo", "carrizo_extras", "carrizo_forms", "carrizo_spp"))
-remove(carrizo_data)
+rm(carrizo, carrizo_extras, carrizo_forms, carrizo_spp)
+rm(carrizo_data)
 ```
 
 ### Elkhorn
@@ -542,9 +542,9 @@ write_csv(elkhorn_data, "data/community/tidy/elkhorn.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("elk_counts", "elk_counts_clean", "elk_counts_df", "elk_guilds", "elkspp", "out"))
-remove(list = c("filename", "i", "skips", "year"))
-remove(elkhorn_data)
+rm(elk_counts, elk_counts_clean, elk_counts_df, elk_guilds, elkspp, out)
+rm(filename, i, skips, year)
+rm(elkhorn_data)
 ```
 
 ### Jasper
@@ -586,8 +586,8 @@ write_csv(jasper_data, "data/community/tidy/jasper.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("Jasper", "Jasper_species", "jasper_spp_check", "Jasper_Veg", "JR_spp"))
-remove(jasper_data)
+rm(Jasper, Jasper_species, jasper_spp_check, Jasper_Veg, JR_spp)
+rm(jasper_data)
 ```
 
 ### McLaughlin Annual
@@ -656,8 +656,8 @@ write_csv(mclann_data, "data/community/tidy/mclann.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("McL_Sites", "McL_spp", "McLAnn"))
-remove(mclann_data)
+rm(McL_Sites, McL_spp, McLAnn)
+rm(mclann_data)
 ```
 
 ### McLaughlin Serpentine
@@ -719,8 +719,8 @@ write_csv(mclserp_data, "data/community/tidy/mclserp.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("McL_Sites", "McL_spp", "McLSerp"))
-remove(mclserp_data)
+rm(McL_Sites, McL_spp, McLSerp)
+rm(mclserp_data)
 ```
 
 ### Santa Rosa
@@ -842,9 +842,9 @@ write_csv(swanton_data, "data/community/tidy/swanton.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("out", "elk_guilds", "swan_counts", "swan_counts_clean", "swan_counts_df", "Swan_guilds", "Swanspp"))
-remove(list = c("filename", "i", "skips", "year"))
-remove(swanton_data)
+rm(elk_guilds, out, swan_counts, swan_counts_clean, swan_counts_df, Swan_guilds, Swanspp)
+rm(filename, i, skips, year)
+rm(swanton_data)
 ```
 
 ### UCSC
@@ -954,9 +954,9 @@ write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("out", "elk_guilds", "ucsc_counts", "ucsc_counts_clean", "ucsc_counts_df", "UCSC_guilds", "UCSCspp"))
-remove(list = c("filename", "i", "skips", "year"))
-remove(ucsc_data)
+rm(elk_guilds, out, ucsc_counts, ucsc_counts_clean, ucsc_counts_df, UCSC_guilds, UCSCspp)
+rm(filename, i, skips, year)
+rm(ucsc_data)
 ```
 
 ### Vasco Caves
@@ -966,8 +966,8 @@ Incomplete data that is not used.
 Remove intermediate objects.
 
 ```{r}
-remove(list = c("spp_renamings", "spp_renamings_vec"))
-remove(list = c("cleanElkhornData", "cleanElkhornPlot"))
+rm(spp_renamings, spp_renamings_vec)
+rm(cleanElkhornData, cleanElkhornPlot)
 ```
 
 ## Finalize data preparation 
@@ -1145,5 +1145,5 @@ write_rds(site_sf, file = "data/community/site-info.rds")
 Remove intermediate objects.
 
 ```{r}
-remove(site_sf)
+rm(site_sf)
 ```
