@@ -481,7 +481,7 @@ raster::proj4string(prism_ras) # NAD83
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
 
 ```{r, eval=FALSE}
-gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-04.rds") %>%
+gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
   mutate(
     species = queryName,
     key = as.character(key)
@@ -515,13 +515,13 @@ bind_cols(
   prism_gbif_sf %>%
     select(starts_with("prism_"))
 ) %>%
-  write_rds("data/climate/climate-gbif-2022-05-04.rds")
+  write_rds("data/climate/climate-gbif-2022-05-10.rds")
 ```
 
 Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation. 
 
 ```{r}
-clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-04.rds") %>%
+clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
   as_tibble() %>%
   drop_na() # PRISM = NA in Mexico
 
@@ -580,7 +580,7 @@ ggplot(clim_gbif_tbl, aes(chelsa_vpd, prism_vpd)) +
 Making maps is possible but too time consuming.
 
 ```{r, eval=FALSE}
-clim_long_sf <- read_rds("data/climate/climate-gbif-2022-05-02.rds") %>%
+clim_long_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
   pivot_longer(
     contains(match = c("chelsa", "prism")),
     names_to = "dataset_variable",
@@ -686,7 +686,7 @@ Visualize individual species occurrence in climate space.
 
 ```{r, eval=FALSE}
 # read combined GBIF and CHELSA data
-gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-04.rds") %>%
+gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
   select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
@@ -779,7 +779,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-2022-05-04.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-05-10.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
@@ -789,7 +789,7 @@ dev.off()
 Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
-niche_tbl <- read_rds("data/climate/climate-gbif-2022-05-04.rds") %>%
+niche_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
   select(key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   group_by(species) %>%
   summarize(
@@ -895,5 +895,5 @@ Save niche estimates with mean and SD statistics.
 ```{r}
 niche_tbl %>%
   select(species, occ_n, tmp_occ_mean, tmp_occ_sd, ppt_occ_mean, ppt_occ_sd, vpd_occ_mean, vpd_occ_sd) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-05-04.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
 ```
