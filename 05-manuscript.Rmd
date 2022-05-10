@@ -35,10 +35,12 @@ Choose two example species and assign colors. From Justin's email 5/10/22:
 > For wet species I don't recommend Allium, I might recommend Danthonia californica, or Juncus bufonis (Juncus are rushes and also typically though of as 'wetter' or cooler species). For a non-native if desired - Holcus lanatus would be a good choice.
 >
 > Danthonia californica looks like its in a good spot, but I'm sure how well known it is - Juncus bufonis could be good - most people would know Juncus typically likes 'wet and cooler' but it is not in as an extreme location.
+>
+> Note: Juncus bufonis should be Juncus bufonius.
 
 ```{r}
-cool_sp <- "Allium falcifolium"
-warm_sp <- "Stipa pulchra"
+cool_sp <- "Danthonia californica" # "Juncus bufonius"
+warm_sp <- "Stipa pulchra" # "Festuca perennis"
 
 gbif_chelsa_sf <- gbif_chelsa_sf %>%
   mutate(species_type = case_when(
@@ -80,7 +82,7 @@ occ_geog_gg <-
   scale_color_manual(values = species_color) +
   scale_shape_manual(values = species_shape) +
   scale_alpha_manual(values = species_alpha) +
-  coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
+  coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
   labs(x = "Longitude", y = "Latitude") +
@@ -151,12 +153,18 @@ theme_set(ggpubr::theme_pubclean())
 
 fig1_gg
 
-# ggsave(
-#   plot = fig1_gg,
-#   filename = "figures/fig1.png",
-#   width = 7.5,
-#   height = 7.5 * 1.618
-# )
+ggsave(
+  plot = fig1_gg,
+  filename = str_c(
+    "figures/fig1-",
+    word(cool_sp, 1) %>% tolower(),
+    "-",
+    word(warm_sp, 1) %>% tolower(),
+    ".png"
+  ),
+  width = 7.5,
+  height = 7.5 * 1.618
+)
 ```
 
 ### Community shift analyses
