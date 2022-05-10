@@ -38,7 +38,7 @@ Choose two example species and assign colors. From Justin's email 5/10/22:
 cool_sp <- "Allium falcifolium"
 warm_sp <- "Stipa pulchra"
 
-gbif_chelsa_sf <- gbif_chelsa_sf %>% 
+gbif_chelsa_sf <- gbif_chelsa_sf %>%
   mutate(species_type = case_when(
     species == cool_sp ~ "cool",
     species == warm_sp ~ "warm",
@@ -55,7 +55,7 @@ species_size <- c(cool = 1, other = .01, warm = 1)
 species_alpha <- c(cool = .5, other = .05, warm = .5)
 
 # occ_geog_gg <-
-  ggplot() +
+ggplot() +
   geom_sf(
     data = rnaturalearth::ne_states(
       country = c("Mexico", "United States of America"),
@@ -72,6 +72,8 @@ species_alpha <- c(cool = .5, other = .05, warm = .5)
   scale_size_manual(values = species_size) +
   scale_alpha_manual(values = species_alpha) +
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44)) +
+  scale_x_continuous(breaks = c(-125, -120, -115)) +
+  scale_y_continuous(breaks = c(30, 35, 40)) +
   labs(x = "Longitude", y = "Latitude") +
   guides(color = "none", size = "none", alpha = "none")
 
