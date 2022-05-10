@@ -33,6 +33,8 @@ Choose two example species and assign colors. From Justin's email 5/10/22:
 > Are you aiming for natives specifically? I think Stipa pulchra works well for the dry, Festuca perennis is also commonly known since its a weed, in the same area. 
 > 
 > For wet species I don't recommend Allium, I might recommend Danthonia californica, or Juncus bufonis (Juncus are rushes and also typically though of as 'wetter' or cooler species). For a non-native if desired - Holcus lanatus would be a good choice.
+>
+> Danthonia californica looks like its in a good spot, but I'm sure how well known it is - Juncus bufonis could be good - most people would know Juncus typically likes 'wet and cooler' but it is not in as an extreme location.
 
 ```{r}
 cool_sp <- "Allium falcifolium"
