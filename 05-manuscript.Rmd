@@ -39,20 +39,20 @@ Choose two example species and assign colors. From Justin's email 5/10/22:
 > Note: Juncus bufonis should be Juncus bufonius.
 
 ```{r}
-cool_sp <- "Danthonia californica" # "Juncus bufonius"
-warm_sp <- "Stipa pulchra" # "Festuca perennis"
+cool_species <- "Danthonia californica" # "Juncus bufonius"
+warm_species <- "Stipa pulchra" # "Festuca perennis"
 
 gbif_chelsa_sf <- gbif_chelsa_sf %>%
   mutate(species_type = case_when(
-    species == cool_sp ~ "cool",
-    species == warm_sp ~ "warm",
+    species == cool_species ~ "cool",
+    species == warm_species ~ "warm",
     TRUE ~ "other"
   ))
 
 niche_tbl <- niche_tbl %>%
   mutate(species_type = case_when(
-    species == cool_sp ~ "cool",
-    species == warm_sp ~ "warm",
+    species == cool_species ~ "cool",
+    species == warm_species ~ "warm",
     TRUE ~ "other"
   ))
 ```
@@ -61,9 +61,9 @@ Create three panels separately (fast without rendering).
 
 ```{r}
 # set up plot params using alphabetical species type names
-species_color <- c(cool = "blue", other = gray(.9), warm = "red")
-species_shape <- c(cool = 19, other = 20, warm = 19)
-species_alpha <- c(cool = .6, other = .005, warm = .6)
+color_vec <- c(cool = "blue", other = gray(.9), warm = "red")
+shape_vec <- c(cool = 19, other = 20, warm = 19)
+alpha_vec <- c(cool = .6, other = .005, warm = .6)
 
 occ_geog_gg <-
   ggplot() +
@@ -79,9 +79,9 @@ occ_geog_gg <-
     data = gbif_chelsa_sf,
     aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
-  scale_color_manual(values = species_color) +
-  scale_shape_manual(values = species_shape) +
-  scale_alpha_manual(values = species_alpha) +
+  scale_color_manual(values = color_vec) +
+  scale_shape_manual(values = shape_vec) +
+  scale_alpha_manual(values = alpha_vec) +
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
@@ -93,9 +93,9 @@ occ_clim_gg <-
   geom_point(
     aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
-  scale_color_manual(values = species_color) +
-  scale_shape_manual(values = species_shape) +
-  scale_alpha_manual(values = species_alpha) +
+  scale_color_manual(values = color_vec) +
+  scale_shape_manual(values = shape_vec) +
+  scale_alpha_manual(values = alpha_vec) +
   scale_y_log10() +
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
   guides(color = "none", shape = "none", alpha = "none")
@@ -157,9 +157,9 @@ fig1_gg
 #   plot = fig1_gg,
 #   filename = str_c(
 #     "figures/fig1-",
-#     word(cool_sp, 1) %>% tolower(),
+#     word(cool_species, 1) %>% tolower(),
 #     "-",
-#     word(warm_sp, 1) %>% tolower(),
+#     word(warm_species, 1) %>% tolower(),
 #     ".png"
 #   ),
 #   width = 7.5,
