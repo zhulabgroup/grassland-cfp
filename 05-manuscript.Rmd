@@ -261,6 +261,7 @@ site_labeller <- as_labeller(c(
 
 obs_cti_gg <-
   obs_com_tbl %>%
+  filter(site != "mclserp", site != "swanton") %>%
   ggplot(aes(year, tmp_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
@@ -286,6 +287,7 @@ obs_cti_gg <-
 
 obs_cpi_gg <-
   obs_com_tbl %>%
+  filter(site != "mclserp", site != "swanton") %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
