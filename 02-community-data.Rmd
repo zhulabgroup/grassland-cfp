@@ -395,6 +395,8 @@ rm(carrizo_data)
 
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. *Karen suggested combining all of the Bromus species into one group*. 
 
+Josie's comments (5/12/22): Elkhorn site is in Elkhorn Ranch; not so coastal and might not be windy.
+
 ```{r Importing Elkhorn, warning=FALSE, message=FALSE}
 elkspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
   mutate(species.code = tolower(species.code))
