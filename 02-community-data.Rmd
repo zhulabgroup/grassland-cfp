@@ -853,6 +853,8 @@ rm(swanton_data)
 
 These are data for grassland plots at UCSC. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
+Josie's comment (5/12/22): The site is in East Meadow. The treatment is grazing.
+
 ```{r Importing UCSC, warning=FALSE, message=FALSE}
 UCSCspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
   mutate(species.code = tolower(species.code))
