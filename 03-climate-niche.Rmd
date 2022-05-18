@@ -439,6 +439,10 @@ names(prism_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(prism_ras) # NAD83
 ```
 
+### TerraClimate
+
+TODO: download TerraClimate data.
+
 ### Extract climate data at occurrence sites and then compare
 
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
