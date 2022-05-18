@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 library(tidyverse)
 library(sf)
 library(patchwork)
+theme_set(ggpubr::theme_pubclean())
 ```
 
 ## Main text
@@ -98,7 +99,6 @@ occ_clim_gg <-
   scale_color_manual(values = color_vec) +
   scale_shape_manual(values = shape_vec) +
   scale_alpha_manual(values = alpha_vec) +
-  scale_y_log10() +
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
   guides(color = "none", shape = "none", alpha = "none")
 
@@ -106,28 +106,21 @@ niche_gg <-
   ggplot(
     data = niche_tbl,
     mapping = aes(
-      x = tmp_occ_median,
-      y = ppt_occ_median,
-      xmin = tmp_occ_q25, # tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
-      xmax = tmp_occ_q75, # tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
-      ymin = ppt_occ_q25, # ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
-      ymax = ppt_occ_q75, # ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)
+      x = tmp_occ_mean,
+      y = ppt_occ_mean,
+      xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
+      xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
+      ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
+      ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n),
       label = species,
-      color = species_type,
-      # shape = species_type,
-      # alpha = species_type
+      color = species_type
     )
   ) +
   geom_point() +
   geom_errorbar() +
   geom_errorbarh() +
-  # scale_color_manual(values = color_vec) +
-  # scale_shape_manual(values = shape_vec) +
-  # scale_alpha_manual(values = alpha_vec) +
-  scale_y_log10() +
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
-  # scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
-  # scale_y_log10(expand = expansion(mult = .1)) +
+  scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
   guides(color = "none") +
   geom_label(
