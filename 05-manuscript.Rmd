@@ -149,8 +149,7 @@ fig1_gg <- occ_geog_gg + occ_clim_gg + niche_gg +
 
 Render (slow) and save.
 
-```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Panel A shows all GBIF occurrences in gray and two example species in blue and red; panel B shows the same data in climate space; panel C shows the average temperature and precipitation estimates for all species, highlighting the two examples."}
-```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap=""}
+```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 367,657 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 894 records, blue points) and *Stipa pulchra* in the south (*n* = 481 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 182 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
 fig1_gg
 
 # ggsave(
@@ -199,7 +198,7 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
 
 JRGCE warming treatment to CTI and CPI comparisons. 
 
-```{r, fig.cap="Compare mean(CTI) in all 64 ambient vs. warming treatments over years"}
+```{r}
 jrgce_gg <-
   exp_com_tbl %>%
   filter(site == "jrgce") %>%
@@ -325,7 +324,7 @@ fig2_gg <- jrgce_gg + obs_cti_gg + obs_cpi_gg +
 
 Render and save.
 
-```{r, fig.width=10, fig.height=10*1.618, fig.cap="Community shift from long-term experiments and observations."}
+```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term experiments and observations. (A) Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 64 plots, ambient in black, warming in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon tests, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). (B and C) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in six long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by t tests, *p* < 0.05)."}
 fig2_gg
 
 # ggsave(
