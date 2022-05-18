@@ -743,6 +743,8 @@ Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very in
 
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, I am using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
+Josie's comment (5/12/22): Swanton is close to the coast, always windy. The treatment is grazing.
+
 ```{r, message=FALSE}
 Swanspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
   mutate(species.code = tolower(species.code))
