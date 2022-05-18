@@ -369,8 +369,6 @@ rm(prop_samp)
 
 ## Get climate data
 
-TODO: try hydrological year
-
 ### CHELSA
 
 Download and process [CHELSA climatology data v2.1](https://chelsa-climate.org/downloads/). We used annual data of temperature and precipitation (see [metadata](https://chelsa-climate.org/bioclim/) below). Daily and monthly data are also available.
