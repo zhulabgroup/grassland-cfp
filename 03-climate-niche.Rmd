@@ -409,41 +409,6 @@ names(chelsa_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(chelsa_ras) # WGS84
 ```
 
-### Daymet
-
-Download and process Daymet data (not running).
-
-```{r,eval=FALSE}
-bbox <- st_bbox(cfp_sf)
-param_list <- c("tmax", "tmin", "prcp")
-for (param in param_list) {
-  daymet_param_path <- paste0("data/climate/daymet/", param, "/")
-  if (!dir.exists(daymet_param_path)) {
-    dir.create(daymet_param_path, recursive = T)
-  }
-  for (year in 1980:2020) {
-    # url<-paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1840/daymet_v4_daily_na_",param,"_",year,".nc") # daily data are probably too much. takes too long to download and process.
-    if (param == "prcp") {
-      url <- paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1855/daymet_v4_", param, "_monttl_na_", year, ".nc")
-    }
-    if (param %in% c("tmax", "tmin")) {
-      url <- paste0("https://thredds.daac.ornl.gov/thredds/fileServer/ornldaac/1855/daymet_v4_", param, "_monavg_na_", year, ".nc")
-    }
-    httr::GET(url = url, httr::write_disk(path = paste0(daymet_param_path, year, ".nc"), overwrite = TRUE))
-    print(paste0(param, ",", year))
-  }
-}
-for (param in param_list) {
-  daymet_param_path <- paste0("data/climate/daymet/", param, "/")
-  files <- list.files(daymet_param_path, full.names = T)
-  for (i in 1:length(files)) {
-    file <- files[i]
-    bri <- raster::brick(file)
-    # potentially do other calculations
-  }
-}
-```
-
 ### PRISM
 
 Download and process PRISM using the prism package (not running).
