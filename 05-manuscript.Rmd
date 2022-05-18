@@ -3,7 +3,7 @@
 Setup and load packages.
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE)
 ```
 
 ```{r}
@@ -150,8 +150,7 @@ fig1_gg <- occ_geog_gg + occ_clim_gg + niche_gg +
 Render (slow) and save.
 
 ```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Panel A shows all GBIF occurrences in gray and two example species in blue and red; panel B shows the same data in climate space; panel C shows the average temperature and precipitation estimates for all species, highlighting the two examples."}
-theme_set(ggpubr::theme_pubclean())
-
+```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap=""}
 fig1_gg
 
 # ggsave(
@@ -177,24 +176,24 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
+    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
   )
 
 obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
-    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
+    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
+    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
   )
 ```
 
@@ -229,12 +228,15 @@ jrgce_gg <-
   labs(
     x = "Year", y = NULL,
     color = "Warming treatment",
-    title = "Jasper Ridge Global Change Experiment"
+    title = "Jasper Ridge Global Change Experiment",
+    subtitle = "<span style='color:black'>Ambient vs. </span><span style='color:red'>warming treatment</span>"
   ) +
   scale_color_manual(values = c("black", "red")) +
   theme(
     strip.background = element_blank(),
-    strip.placement = "outside"
+    strip.placement = "outside",
+    legend.position = "none",
+    plot.subtitle = ggtext::element_markdown()
   )
 ```
 
@@ -245,16 +247,19 @@ site_labeller <- as_labeller(c(
   angelo = "Angelo Coast Range Reserve",
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
-  jasper = "Jasper Ridge",
-  mclann = "McLaughlin (Annual)",
-  mclserp = "McLaughlin (Serpentine)",
-  swanton = "Swanton Ranch",
+  jasper = "Jasper Ridge Biological Preserve",
+  mclann = "McLaughlin Reserve",
+  # mclserp = "McLaughlin (Serpentine)",
+  # swanton = "Swanton Ranch",
   ucsc = "UC Santa Cruz"
 ))
 
+obs_com_tbl <-
+  obs_com_tbl %>%
+  filter(site != "mclserp", site != "swanton")
+
 obs_cti_gg <-
   obs_com_tbl %>%
-  filter(site != "mclserp", site != "swanton") %>%
   ggplot(aes(year, tmp_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
@@ -275,12 +280,12 @@ obs_cti_gg <-
     x = "Year", y = "Community Temperature Index\n(CTI, °C)"
   ) +
   theme(
-    strip.background = element_blank()
+    strip.background = element_blank(),
+    strip.text.x = element_text(hjust = 0)
   )
 
 obs_cpi_gg <-
   obs_com_tbl %>%
-  filter(site != "mclserp", site != "swanton") %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
@@ -301,7 +306,8 @@ obs_cpi_gg <-
     x = "Year", y = "Community Precipitation Index\n(CPI, mm)"
   ) +
   theme(
-    strip.background = element_blank()
+    strip.background = element_blank(),
+    strip.text.x = element_text(hjust = 0)
   )
 ```
 
@@ -320,8 +326,6 @@ fig2_gg <- jrgce_gg + obs_cti_gg + obs_cpi_gg +
 Render and save.
 
 ```{r, fig.width=10, fig.height=10*1.618, fig.cap="Community shift from long-term experiments and observations."}
-theme_set(ggpubr::theme_pubclean())
-
 fig2_gg
 
 # ggsave(
