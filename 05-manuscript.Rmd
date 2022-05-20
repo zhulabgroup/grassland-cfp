@@ -326,7 +326,7 @@ fig2_gg <- jrgce_gg + obs_cti_gg + obs_cpi_gg +
 
 Render and save.
 
-```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term experiments and observations. (A) Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 64 plots, ambient in black, warming in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). (B and C) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in six long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by *t*-test, *p* < 0.05)."}
+```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term experiments and observations. (A) Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). (B and C) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in six long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by *t*-test, *p* < 0.05)."}
 fig2_gg
 
 # ggsave(
