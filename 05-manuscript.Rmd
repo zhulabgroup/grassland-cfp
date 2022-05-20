@@ -225,7 +225,8 @@ jrgce_gg <-
     ))
   ) +
   labs(
-    x = "Year", y = NULL,
+    x = NULL, # "Year",
+    y = NULL,
     color = "Warming treatment",
     title = "Jasper Ridge Global Change Experiment",
     subtitle = "<span style='color:black'>Ambient vs. </span><span style='color:red'>warming treatment</span>"
@@ -276,7 +277,8 @@ obs_cti_gg <-
     labeller = site_labeller
   ) +
   labs(
-    x = "Year", y = "Community Temperature Index\n(CTI, °C)"
+    x = NULL, # "Year",
+    y = "Community Temperature Index\n(CTI, °C)"
   ) +
   theme(
     strip.background = element_blank(),
@@ -333,6 +335,97 @@ fig2_gg
 #   width = 10,
 #   height = 10 * 1.618
 # )
+```
+
+Alternative panel arrangement by observational sites.
+
+```{r}
+obs_gg_fun <- function(tbl, site_lab, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
+  ggplot(data = tbl, aes(year, com_idx_value, group = year)) +
+    geom_boxplot() +
+    geom_smooth(
+      method = "lm", formula = y ~ x, se = FALSE,
+      color = "red", lty = "dashed",
+      aes(group = 1)
+    ) +
+    ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
+      p.accuracy = 0.05,
+      color = "red"
+    ) +
+    facet_wrap(~com_idx_name,
+      ncol = 1, scales = "free_y",
+      strip.position = "left",
+      labeller = as_labeller(c(
+        CTI = cti_lab, # "Community Temperature Index\n(CTI, °C)",
+        CPI = cpi_lab # "Community Precipitation Index\n(CPI, mm)"
+      ))
+    ) +
+    xlim(1983, 2019) +
+    labs(
+      x = yr_lab, y = NULL,
+      title = site_lab
+    ) +
+    theme(
+      strip.background = element_blank(),
+      strip.placement = "outside",
+      plot.title = element_text(size = 11)
+    )
+}
+
+obs_com_idx_tbl <- obs_com_tbl %>%
+  select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
+  pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
+  mutate(com_idx_name = factor(com_idx_name,
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
+  ))
+
+angelo_gg <- obs_com_idx_tbl %>%
+  filter(site == "angelo") %>%
+  obs_gg_fun(site_labeller("angelo")[[1]],
+    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
+  )
+
+carrizo_gg <- obs_com_idx_tbl %>%
+  filter(site == "carrizo") %>%
+  obs_gg_fun(site_labeller("carrizo")[[1]])
+
+elkhorn_gg <- obs_com_idx_tbl %>%
+  filter(site == "elkhorn") %>%
+  obs_gg_fun(site_labeller("elkhorn")[[1]])
+
+jasper_gg <- obs_com_idx_tbl %>%
+  filter(site == "jasper") %>%
+  obs_gg_fun(site_labeller("jasper")[[1]],
+    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
+  )
+
+mclann_gg <- obs_com_idx_tbl %>%
+  filter(site == "mclann") %>%
+  obs_gg_fun(site_labeller("mclann")[[1]],
+    yr_lab = "Year"
+  )
+
+ucsc_gg <- obs_com_idx_tbl %>%
+  filter(site == "ucsc") %>%
+  obs_gg_fun(site_labeller("ucsc")[[1]])
+
+fig3_gg <- jrgce_gg +
+  angelo_gg + carrizo_gg + elkhorn_gg +
+  jasper_gg + mclann_gg + ucsc_gg +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  AAA
+  BCD
+  EFG
+  ")
+
+ggsave(
+  plot = fig3_gg,
+  filename = "figures/fig3.png",
+  width = 10,
+  height = 10 * 1.618
+)
 ```
 
 ## Supplements
