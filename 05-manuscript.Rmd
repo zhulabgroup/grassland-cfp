@@ -558,5 +558,9 @@ ggplot() +
   facet_wrap(. ~ dataset,
     nrow = 1,
     labeller = labeller(dataset = dataset_vec)
+  ) +
+  theme(
+    strip.background = element_blank(),
+    # strip.text.x = element_text(hjust = 0)
   )
 ```
