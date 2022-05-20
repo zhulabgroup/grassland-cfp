@@ -635,7 +635,20 @@ ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
   )
 ```
 
-### Climate variables are highly correlated 
+### Climate variable correlations
 
-TODO: different bioclim variables
+TODO: different bioclim variables are highly correlated
 
+### Species climate niche summary statistics
+
+TODO: correlation of mean, median, upper, lower temp and precip for all species are highly correlated
+
+### Individual species climate niches
+
+TODO: multi-page PDF, each for a single species (to avoid overplotting), left geo-space, right clim-space
+
+### Experimental and observational site map
+
+### McL Annual vs. Serp comparison
+
+### sd(CTI) and sd(CPI) figures
