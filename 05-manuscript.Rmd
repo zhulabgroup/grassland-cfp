@@ -380,6 +380,11 @@ obs_com_idx_tbl <- obs_com_tbl %>%
     labels = c("CTI", "CPI")
   ))
 
+samp_size_tbl <- obs_com_tbl %>% 
+  group_by(site) %>% 
+  summarize(n_plot = n_distinct(plot),
+            n_year = n_distinct(year))
+
 angelo_gg <- obs_com_idx_tbl %>%
   filter(site == "angelo") %>%
   obs_gg_fun(site_labeller("angelo")[[1]],
