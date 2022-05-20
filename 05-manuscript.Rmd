@@ -641,7 +641,35 @@ TODO: different bioclim variables are highly correlated
 
 ### Species climate niche summary statistics
 
-TODO: correlation of mean, median, upper, lower temp and precip for all species are highly correlated
+Read species climate niche estimates.
+
+```{r}
+niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
+```
+
+The mean, median, upper, lower temp and precip for all species are highly correlated.
+
+```{r, fig.cap="Species temperature niche statistics are highly correlated"}
+niche_tbl %>%
+  select(tmp_occ_mean, tmp_occ_median, tmp_occ_q05, tmp_occ_q95) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species temperature niche (°C)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+  ) +
+  theme(strip.background = element_blank())
+```
+
+```{r, fig.cap="Species precipitation niche statistics are highly correlated"}
+niche_tbl %>%
+  select(ppt_occ_mean, ppt_occ_median, ppt_occ_q05, ppt_occ_q95) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species precipitation niche (mm)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+  ) +
+  theme(strip.background = element_blank())
+```
 
 ### Individual species climate niches
 
