@@ -409,7 +409,11 @@ mclann_gg <- obs_com_idx_tbl %>%
 ucsc_gg <- obs_com_idx_tbl %>%
   filter(site == "ucsc") %>%
   obs_gg_fun(site_labeller("ucsc")[[1]])
+```
 
+Combine panels.
+
+```{r}
 fig3_gg <- jrgce_gg +
   angelo_gg + carrizo_gg + elkhorn_gg +
   jasper_gg + mclann_gg + ucsc_gg +
@@ -419,6 +423,12 @@ fig3_gg <- jrgce_gg +
   BCD
   EFG
   ")
+```
+
+Render and save.
+
+```{r, fig.width=10, fig.height=10*1.618, fig.cap=""}
+fig3_gg
 
 ggsave(
   plot = fig3_gg,
