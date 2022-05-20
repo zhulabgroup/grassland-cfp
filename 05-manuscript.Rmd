@@ -675,7 +675,65 @@ niche_tbl %>%
 
 TODO: multi-page PDF, each for a single species (to avoid overplotting), left geo-space, right clim-space
 
-### Experimental and observational site map
+### Experimental and observational sites info
+
+Site information in table and map.
+
+```{r}
+site_sf <- read_rds("data/community/site-info.rds") %>%
+  filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "ucsc")) %>%
+  mutate(short_name = case_when(
+    abbr == "angelo" ~ "Angelo",
+    abbr == "carrizo" ~ "Carrizon Plain",
+    abbr == "elkhorn" ~ "Elkhorn Slough",
+    abbr == "jasper" ~ "Jasper Ridge",
+    abbr == "mclann" ~ "McLaughlin",
+    abbr == "ucsc" ~ "UC Santa Cruz"
+  ))
+site_sf %>%
+  as_tibble() %>% # drop geometry
+  knitr::kable()
+```
+
+```{r}
+cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+
+set.seed(618)
+ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(
+    data = cfp_sf,
+    color = alpha("black", .3),
+    fill = alpha("white", .1)
+  ) +
+  geom_sf(data = site_sf, color = "red") +
+  ggrepel::geom_label_repel(
+    data = site_sf,
+    mapping = aes(label = short_name, geometry = geometry),
+    stat = "sf_coordinates",
+    size = 3,
+    color = "red",
+    fill = NA,
+    min.segment.length = 0,
+    label.padding = unit(.1, "lines"),
+    label.size = NA
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
+  scale_x_continuous(breaks = c(-125, -120, -115)) +
+  scale_y_continuous(breaks = c(30, 35, 40))
+```
 
 ### JRGCE biomass vs. pin count data
 
