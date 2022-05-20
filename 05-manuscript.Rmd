@@ -675,9 +675,9 @@ niche_tbl %>%
 
 TODO: multi-page PDF, each for a single species (to avoid overplotting), left geo-space, right clim-space
 
-### Experimental and observational sites info
+### Site info
 
-Site information in table and map.
+Experimental and observational site information in table and map.
 
 ```{r}
 site_sf <- read_rds("data/community/site-info.rds") %>%
@@ -734,6 +734,10 @@ ggplot() +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40))
 ```
+
+### Site climate change
+
+TODO: get PRISM/CHELSA data on six sites and plot climate change; may compare with CTI and CPI changes
 
 ### JRGCE biomass vs. pin count data
 
