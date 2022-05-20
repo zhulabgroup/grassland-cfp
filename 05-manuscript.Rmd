@@ -564,3 +564,73 @@ ggplot() +
     # strip.text.x = element_text(hjust = 0)
   )
 ```
+
+### Climate data sources
+
+Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation.
+
+```{r}
+clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
+  as_tibble() %>%
+  drop_na() # PRISM = NA in Mexico
+
+chelsa_gbif_tbl <- clim_gbif_tbl %>%
+  select(
+    geometry, key, species,
+    chelsa_tmp, chelsa_ppt
+  ) %>%
+  pivot_longer(chelsa_tmp:chelsa_ppt,
+    names_to = "variable",
+    values_to = "CHELSA"
+  ) %>%
+  mutate(variable = str_sub(variable, start = -3L, end = -1L))
+
+prism_gbif_tbl <- clim_gbif_tbl %>%
+  select(
+    geometry, key, species,
+    prism_tmp, prism_ppt
+  ) %>%
+  pivot_longer(prism_tmp:prism_ppt,
+    names_to = "variable",
+    values_to = "PRISM"
+  ) %>%
+  mutate(variable = str_sub(variable, start = -3L, end = -1L))
+
+clim_comp_tbl <- chelsa_gbif_tbl %>%
+  inner_join(prism_gbif_tbl,
+    by = c("geometry", "key", "species", "variable")
+  )
+```
+
+```{r fig.cap="Climate data source comparison"}
+ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  facet_wrap(. ~ factor(
+    variable,
+    levels = c("tmp", "ppt"),
+    labels = c(
+      "Mean annual temperature (°C)",
+      "Annual precipitation (mm)"
+    )
+  ),
+  scales = "free"
+  ) +
+  labs(
+    x = "CHELSA data",
+    y = "PRISM data",
+    fill = "Occurrence record"
+  ) +
+  theme(
+    aspect.ratio = 1, # can't do + coord_fixed() with facet_wrap(scales = "free")
+    strip.background = element_blank(),
+    strip.text.x = element_text(size = 15)
+  )
+```
