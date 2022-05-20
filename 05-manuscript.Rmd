@@ -634,3 +634,8 @@ ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
     strip.text.x = element_text(size = 15)
   )
 ```
+
+### Climate variables are highly correlated 
+
+TODO: different bioclim variables
+
