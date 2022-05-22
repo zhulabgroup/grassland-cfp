@@ -437,7 +437,7 @@ occ_sf %>%
   knitr::kable(caption = "Comparison of occurrence datasets.")
 ```
 
-```{r}
+```{r fig.cap="Occurrence data comparison from multiple sources in study area"}
 set.seed(618)
 prop_samp <- .1 # prop to sample and plot
 ggplot() +
@@ -505,7 +505,7 @@ clim_comp_tbl <- chelsa_gbif_tbl %>%
   )
 ```
 
-```{r fig.cap="Climate data source comparison"}
+```{r fig.cap="Climate data comparison from multiple sources in study area"}
 ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
   geom_hex(bins = 100) +
   viridis::scale_fill_viridis() +
@@ -598,7 +598,7 @@ site_sf %>%
   knitr::kable()
 ```
 
-```{r}
+```{r fig.cap="Map of experimental and observational study sites"}
 cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   filter(
     NAME == "California Floristic Province",
