@@ -290,7 +290,7 @@ site_vec <- c(
 Reshape data and make individual panels.
 
 ```{r}
-obs_com_idx_tbl <- obs_com_tbl %>%
+obs_com_mean_tbl <- obs_com_tbl %>%
   select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
   pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
   mutate(com_idx_name = factor(com_idx_name,
@@ -305,33 +305,33 @@ samp_size_tbl <- obs_com_tbl %>%
     n_year = n_distinct(year)
   )
 
-angelo_gg <- obs_com_idx_tbl %>%
+angelo_gg <- obs_com_mean_tbl %>%
   filter(site == "angelo") %>%
   obs_gg_fun(site_vec["angelo"],
     cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
   )
 
-carrizo_gg <- obs_com_idx_tbl %>%
+carrizo_gg <- obs_com_mean_tbl %>%
   filter(site == "carrizo") %>%
   obs_gg_fun(site_vec["carrizo"])
 
-elkhorn_gg <- obs_com_idx_tbl %>%
+elkhorn_gg <- obs_com_mean_tbl %>%
   filter(site == "elkhorn") %>%
   obs_gg_fun(site_vec["elkhorn"])
 
-jasper_gg <- obs_com_idx_tbl %>%
+jasper_gg <- obs_com_mean_tbl %>%
   filter(site == "jasper") %>%
   obs_gg_fun(site_vec["jasper"],
     cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
   )
 
-mclann_gg <- obs_com_idx_tbl %>%
+mclann_gg <- obs_com_mean_tbl %>%
   filter(site == "mclann") %>%
   obs_gg_fun(site_vec["mclann"],
     yr_lab = "Year"
   )
 
-ucsc_gg <- obs_com_idx_tbl %>%
+ucsc_gg <- obs_com_mean_tbl %>%
   filter(site == "ucsc") %>%
   obs_gg_fun(site_vec["ucsc"])
 ```
