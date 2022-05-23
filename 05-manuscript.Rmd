@@ -672,7 +672,7 @@ for (i in seq_along(sp_gbif_vec)) {
       title = bquote(italic("n") ~ "=" ~ .(format(occ_sp_stat$occ_n, big.mark = ",", trim = TRUE)))
     )
 
-  print(sp)
+  # print(sp)
   niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
 }
 names(niche_gg) <- sp_gbif_vec
