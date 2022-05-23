@@ -618,7 +618,7 @@ n_occ_tot <- nrow(gbif_chelsa_sf)
 
 Multi-page PDF, each for a single species (to avoid overplotting), left geo-space, right clim-space.
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 # multi-species plot
 niche_gg <- vector(mode = "list")
 for (i in seq_along(sp_gbif_vec)) {
