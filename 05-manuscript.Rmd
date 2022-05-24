@@ -759,7 +759,54 @@ TODO: get PRISM/CHELSA data on six sites and plot climate change; may compare wi
 
 ### JRGCE biomass vs. pin count data
 
-TODO: show different measures of abundance (e.g., biomass, pin count) are highly correlated
+Show different measures of abundance (e.g., biomass, pin count) are highly correlated.
+
+Read data.
+
+```{r}
+attach("data/archives/JRGCE/Input/Biomass/FG/All abundance and environment.rdata")
+jrgce_tbl <- abund.dat %>% ungroup()
+detach()
+```
+
+Calculate correlation coefficients.
+
+```{r}
+jrgce_cor_tbl <- jrgce_tbl %>%
+  group_by(plt, yr) %>%
+  summarize(
+    cor_pearson = cor(bio, pin, method = "pearson"),
+    cor_kendall = cor(bio, pin, method = "kendall"),
+    cor_spearman = cor(bio, pin, method = "spearman")
+  ) %>%
+  pivot_longer(starts_with("cor_"), names_to = "cor_type", values_to = "cor_value") %>%
+  drop_na()
+```
+
+Plot distribution.
+
+```{r, fig.cap="Correlation between biomass and pin count measures of abundance for each plot and year"}
+jrgce_cor_tbl %>%
+  ggplot(aes(x = cor_value)) +
+  geom_histogram(
+    aes(y = ..density..),
+    color = 1,
+    fill = NA
+  ) +
+  geom_density(
+    lwd = 1.2,
+    linetype = 2,
+    color = 2
+  ) +
+  facet_wrap(~ factor(cor_type,
+    levels = c("cor_pearson", "cor_kendall", "cor_spearman"),
+    labels = c("Pearson", "Kendall", "Spearman")
+  )) +
+  labs(
+    x = "Correlation coefficient",
+    y = "Density"
+  )
+```
 
 ### McL Annual vs. Serp comparison
 
