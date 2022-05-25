@@ -729,6 +729,8 @@ rm(mclserp_data)
 
 Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very inconsistent. Data collected via point-intercept. Richness available for more years (2000-2011) than point-intercept (2000-2006). 
 
+Josie's email on 5/25/22: "Unfortunately, the point intercept data was only collected 2000-2006 AND there was a sharp decline in sampling effort for the 2006 year - so only a handful of transects have multiple years of data. I think we can drop these data from the list of potential additions for that reason."
+
 **Note: this dataset was not used in the analysis.**
 
 ```{r SR Importing and Cleaning Data}
