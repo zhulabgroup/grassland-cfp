@@ -708,7 +708,7 @@ site_sf <- read_rds("data/community/site-info.rds") %>%
   filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "ucsc")) %>%
   mutate(short_name = case_when(
     abbr == "angelo" ~ "Angelo",
-    abbr == "carrizo" ~ "Carrizon Plain",
+    abbr == "carrizo" ~ "Carrizo Plain",
     abbr == "elkhorn" ~ "Elkhorn Slough",
     abbr == "jasper" ~ "Jasper Ridge",
     abbr == "mclann" ~ "McLaughlin",
