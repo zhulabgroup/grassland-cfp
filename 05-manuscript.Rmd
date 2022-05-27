@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE, warning = FALS
 library(tidyverse)
 library(sf)
 library(patchwork)
-theme_set(ggpubr::theme_pubclean())
+theme_set(ggthemes::theme_few())
 ```
 
 ## Main text
