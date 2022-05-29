@@ -53,10 +53,10 @@ Load all the species from community data.
 
 ```{r}
 spp_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
-  select(species) %>%
+  dplyr::select(species) %>%
   bind_rows(
     read_rds("data/community/all-experimental-data.rds") %>%
-      select(species)
+      dplyr::select(species)
   ) %>%
   distinct(species) %>%
   arrange(species)
@@ -441,7 +441,59 @@ raster::proj4string(prism_ras) # NAD83
 
 ### TerraClimate
 
-TODO: download TerraClimate data.
+Climatology data manually downloaded from http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/summaries/catalog.html
+
+Calculate mean annual temperature, total annual precipitation, and maximum monthly vapor pressure deficit from monthly climatology.
+```{r, eval=FALSE}
+param_list <- c("tmp", "ppt", "vpd")
+terraclim_path <- "data/climate/terraclimate/"
+dir.create(terraclim_path, recursive = T)
+for (param in param_list) {
+  if (param == "tmp") {
+   terraclim_stack1 <- raster::stack(
+  paste0("data/climate/terraclimate/TerraClimate19812010_tmax.nc")
+)
+   terraclim_stack2 <- raster::stack(
+  paste0("data/climate/terraclimate/TerraClimate19812010_tmin.nc")
+)
+   terraclim_ras_list<-vector(mode="list", length = 12)
+   for ( m in 1:12) {
+     terraclim_ras_list[[m]]<-mean(terraclim_stack1[[m]], terraclim_stack2[[m]])
+   }
+  terraclim_ras<-terraclim_ras_list %>% stack() %>% mean()
+  writeRaster(terraclim_ras, "data/climate/terraclimate/tmp.tif", format="GTiff", overwrite=TRUE)
+  }
+  
+ if (param == "ppt") {
+   terraclim_stack <- raster::stack(
+  paste0("data/climate/terraclimate/TerraClimate19812010_ppt.nc")
+)
+  terraclim_ras<-sum(terraclim_stack)
+  writeRaster(terraclim_ras, "data/climate/terraclimate/ppt.tif", format="GTiff", overwrite=TRUE)
+ }
+  
+  if (param == "vpd") {
+   terraclim_stack <- raster::stack(
+  paste0("data/climate/terraclimate/TerraClimate19812010_vpd.nc")
+)
+  terraclim_ras<-max(terraclim_stack)
+  writeRaster(terraclim_ras, "data/climate/terraclimate/vpd.tif", format="GTiff", overwrite=TRUE)
+ }
+}
+
+```
+
+Read processed climate data.
+```{r}
+terraclim_ras <- raster::stack(
+  "data/climate/terraclimate/tmp.tif",
+  "data/climate/terraclimate/ppt.tif",
+  "data/climate/terraclimate/vpd.tif"
+)
+names(terraclim_ras) <- c("tmp", "ppt", "vpd")
+raster::proj4string(terraclim_ras) # WGS84
+```
+
 
 ### Extract climate data at occurrence sites and then compare
 
@@ -454,7 +506,7 @@ gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
-  select(key, species, longitude, latitude) %>%
+  dplyr::select(key, species, longitude, latitude) %>%
   st_as_sf(
     coords = c("longitude", "latitude"),
     crs = "+proj=longlat +datum=WGS84 +no_defs"
@@ -472,44 +524,62 @@ chelsa_gbif_sf <- chelsa_ras %>%
 prism_gbif_sf <- prism_ras %>%
   raster::extract(gbif_sf_nad83) %>%
   as_tibble() %>%
-  # mutate(vpd = vpd * 100) %>% # prism vpd * 100 = chelsa vpd unit
+  mutate(vpd = vpd * 100) %>% # prism vpd * 100 = chelsa vpd unit
   rename_with(~ str_c("prism_", .)) %>%
   bind_cols(gbif_sf_nad83)
 
+terraclim_gbif_sf <- terraclim_ras %>%
+  raster::extract(gbif_sf_wgs84) %>%
+  as_tibble() %>%
+  mutate(vpd = vpd * 1000) %>% # terraclim vpd * 1000 = chelsa vpd unit
+  rename_with(~ str_c("terraclim_", .)) %>%
+  bind_cols(gbif_sf_wgs84)
+
 bind_cols(
   chelsa_gbif_sf %>%
-    select(geometry, key, species, starts_with("chelsa_")),
+    dplyr::select(geometry, key, species, starts_with("chelsa_")),
   prism_gbif_sf %>%
-    select(starts_with("prism_"))
+    dplyr::select(starts_with("prism_")),
+  terraclim_gbif_sf %>%
+    dplyr::select(starts_with("terraclim_"))
 ) %>%
-  write_rds("data/climate/climate-gbif-2022-05-10.rds")
+  write_rds("data/climate/climate-gbif-2022-05-28.rds")
 ```
 
-Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation. 
+Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
 
 ```{r}
-clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
+clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
   as_tibble() %>%
   drop_na() # PRISM = NA in Mexico
 
-ggplot(clim_gbif_tbl, aes(chelsa_tmp, prism_tmp)) +
-  geom_hex(bins = 100) +
-  viridis::scale_fill_viridis() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
-  ggpubr::stat_cor(
-    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  coord_fixed() +
-  labs(
-    x = "CHELSA temperature (°C)",
-    y = "PRISM temperature (°C)",
-    fill = "Occurrence site"
-  )
+clim_gbif_tbl_compare<-bind_rows(clim_gbif_tbl %>% 
+                                   dplyr::select(tmp1=chelsa_tmp,
+                                                 tmp2=prism_tmp,
+                                                 ppt1=chelsa_ppt,
+                                                 ppt2=prism_ppt,
+                                                 vpd1=chelsa_vpd,
+                                                 vpd2=prism_vpd) %>% 
+                                   mutate(compare="chelsa-prism"),
+                                 clim_gbif_tbl %>% 
+                                   dplyr::select(tmp1=chelsa_tmp,
+                                                 tmp2=terraclim_tmp,
+                                                 ppt1=chelsa_ppt,
+                                                 ppt2=terraclim_ppt,
+                                                 vpd1=chelsa_vpd,
+                                                 vpd2=terraclim_vpd) %>% 
+                                   mutate(compare="chelsa-terraclim"),
+                                 clim_gbif_tbl %>% 
+                                   dplyr::select(tmp1=prism_tmp,
+                                                 tmp2=terraclim_tmp,
+                                                 ppt1=prism_ppt,
+                                                 ppt2=terraclim_ppt,
+                                                 vpd1=prism_vpd,
+                                                 vpd2=terraclim_vpd) %>% 
+                                   mutate(compare="prism-terraclim")
+                                 )
 
-ggplot(clim_gbif_tbl, aes(chelsa_ppt, prism_ppt)) +
+ggplot(clim_gbif_tbl_compare, aes(tmp1, tmp2)) +
   geom_hex(bins = 100) +
   viridis::scale_fill_viridis() +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
@@ -521,12 +591,13 @@ ggplot(clim_gbif_tbl, aes(chelsa_ppt, prism_ppt)) +
   geom_abline(slope = 1, intercept = 0, color = "red") +
   coord_fixed() +
   labs(
-    x = "CHELSA precipitation (mm)",
-    y = "PRISM precipitation (mm)",
+    x = "Temperature 1 (°C)",
+    y = "Temperature 2 (°C)",
     fill = "Occurrence site"
-  )
+  )+
+  facet_wrap(.~compare)
 
-ggplot(clim_gbif_tbl, aes(chelsa_vpd, prism_vpd)) +
+ggplot(clim_gbif_tbl_compare, aes(ppt1, ppt2)) +
   geom_hex(bins = 100) +
   viridis::scale_fill_viridis() +
   geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
@@ -538,16 +609,35 @@ ggplot(clim_gbif_tbl, aes(chelsa_vpd, prism_vpd)) +
   geom_abline(slope = 1, intercept = 0, color = "red") +
   coord_fixed() +
   labs(
-    x = "CHELSA VPD max (Pa)",
-    y = "PRISM VPD max (Pa)",
+    x = "Precipitation 1 (mm)",
+    y = "Precipitation 2 (mm)",
     fill = "Occurrence site"
-  )
+  )+
+  facet_wrap(.~compare)
+
+ggplot(clim_gbif_tbl_compare, aes(vpd1, vpd2)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  coord_fixed() +
+  labs(
+    x = "VPD max 1 (Pa)",
+    y = "VPD max 2 (Pa)",
+    fill = "Occurrence site"
+  )+
+  facet_wrap(.~compare)
 ```
 
 Making maps is possible but too time consuming.
 
 ```{r, eval=FALSE}
-clim_long_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
+clim_long_sf <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
   pivot_longer(
     contains(match = c("chelsa", "prism")),
     names_to = "dataset_variable",
@@ -631,7 +721,7 @@ ggplot() +
 <!--   gather(key = "var", value = "value", -species, -range) %>% -->
 <!--   group_by(species, range, var) %>% -->
 <!--   summarise( -->
-<!--     q5 = quantile(value, 0.05, na.rm = T), -->
+<!--     q05 = quantile(value, 0.05, na.rm = T), -->
 <!--     q25 = quantile(value, 0.25, na.rm = T), -->
 <!--     q50 = quantile(value, 0.5, na.rm = T), -->
 <!--     q75 = quantile(value, 0.75, na.rm = T), -->
