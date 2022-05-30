@@ -535,39 +535,6 @@ clim_comp_tbl <- chelsa_gbif_tbl %>%
   )
 ```
 
-```{r fig.cap="Climate data comparison from multiple sources in study area"}
-ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
-  geom_hex(bins = 100) +
-  viridis::scale_fill_viridis() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
-  ggpubr::stat_cor(
-    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  facet_wrap(. ~ factor(
-    variable,
-    levels = c("tmp", "ppt"),
-    labels = c(
-      "Mean annual temperature (°C)",
-      "Annual precipitation (mm)"
-    )
-  ),
-  scales = "free"
-  ) +
-  labs(
-    x = "CHELSA data",
-    y = "PRISM data",
-    fill = "Occurrence record"
-  ) +
-  theme(
-    aspect.ratio = 1, # can't do + coord_fixed() with facet_wrap(scales = "free")
-    strip.background = element_blank(),
-    strip.text.x = element_text(size = 12)
-  )
-```
-
 ```{r fig.cap="Climate data comparison from multiple sources shows high consistency in study area."}
 chelsa_prism_gg <- ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
   geom_hex(bins = 100) +
@@ -635,6 +602,7 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
 
 chelsa_prism_gg / chelsa_terraclim_gg
 ```
+
 ### Climate variable correlations
 
 TODO: different bioclim variables are highly correlated
