@@ -121,6 +121,7 @@ niche_gg <-
   geom_errorbarh() +
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
+  scale_y_continuous(expand = expansion(mult = .1)) +
   labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
   guides(color = "none") +
   geom_label(
