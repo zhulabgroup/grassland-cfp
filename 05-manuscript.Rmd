@@ -177,11 +177,7 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
     tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
 
 obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
@@ -189,11 +185,7 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   group_by(site, year, plot) %>%
   summarize(
     tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
 ```
 
