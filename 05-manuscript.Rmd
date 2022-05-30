@@ -99,7 +99,7 @@ occ_clim_gg <-
   scale_color_manual(values = color_vec) +
   scale_shape_manual(values = shape_vec) +
   scale_alpha_manual(values = alpha_vec) +
-  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none", shape = "none", alpha = "none")
 
 niche_gg <-
@@ -122,7 +122,7 @@ niche_gg <-
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
   scale_y_continuous(expand = expansion(mult = .1)) +
-  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none") +
   geom_label(
     data = niche_tbl %>% filter(species_type %in% c("cool", "warm")),
@@ -551,7 +551,7 @@ chelsa_prism_gg <- ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
     levels = c("tmp", "ppt"),
     labels = c(
       "Mean annual temperature (°C)",
-      "Annual precipitation (mm)"
+      "Mean annual precipitation (mm)"
     )
   ),
   scales = "free"
@@ -583,7 +583,7 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
     levels = c("tmp", "ppt"),
     labels = c(
       "Mean annual temperature (°C)",
-      "Annual precipitation (mm)"
+      "Mean annual precipitation (mm)"
     )
   ),
   scales = "free"
@@ -718,7 +718,7 @@ for (i in seq_along(sp_gbif_vec)) {
     ) +
     lims(x = tmp_rng, y = ppt_rng) +
     labs(
-      x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)",
+      x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)",
       title = bquote(italic("n") ~ "=" ~ .(format(occ_sp_stat$occ_n, big.mark = ",", trim = TRUE)))
     )
 
