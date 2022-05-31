@@ -22,8 +22,8 @@ Figures and tables in the main text.
 Read in GBIF-CHELSA, and niche estimate data.
 
 ```{r}
-gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
-  select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
+  dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
 niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
@@ -203,7 +203,7 @@ jrgce_gg <-
   exp_com_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
+  dplyr::select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
   pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
   mutate(com_idx_name = factor(com_idx_name,
     levels = c("tmp_com_mean", "ppt_com_mean"),
@@ -291,7 +291,7 @@ Reshape data and make individual panels.
 
 ```{r}
 obs_com_mean_tbl <- obs_com_tbl %>%
-  select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
+  dplyr::select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
   pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
   mutate(com_idx_name = factor(com_idx_name,
     levels = c("tmp_com_mean", "ppt_com_mean"),
@@ -373,10 +373,10 @@ Compare BIEN, CCH, GBIF, iNat occurrence datasets.
 
 ```{r}
 spp_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
-  select(species) %>%
+  dplyr::select(species) %>%
   bind_rows(
     read_rds("data/community/all-experimental-data.rds") %>%
-      select(species)
+      dplyr::select(species)
   ) %>%
   distinct(species) %>%
   arrange(species)
@@ -388,7 +388,7 @@ bien_tbl <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
-  select(dataset, key, species, longitude, latitude)
+  dplyr::select(dataset, key, species, longitude, latitude)
 
 cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
   mutate(
@@ -397,7 +397,7 @@ cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
-  select(dataset, key, species, longitude, latitude)
+  dplyr::select(dataset, key, species, longitude, latitude)
 
 gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
   mutate(
@@ -406,7 +406,7 @@ gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
-  select(dataset, key, species, longitude, latitude)
+  dplyr::select(dataset, key, species, longitude, latitude)
 
 inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds") %>%
   mutate(
@@ -415,7 +415,7 @@ inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds") %>%
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
-  select(dataset, key, species, longitude, latitude)
+  dplyr::select(dataset, key, species, longitude, latitude)
 ```
 
 Combine them and convert to sf.
@@ -488,12 +488,12 @@ ggplot() +
 Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation.
 
 ```{r}
-clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
+clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
   as_tibble() %>%
   drop_na() # PRISM = NA in Mexico
 
 chelsa_gbif_tbl <- clim_gbif_tbl %>%
-  select(
+  dplyr::select(
     geometry, key, species,
     chelsa_tmp, chelsa_ppt
   ) %>%
@@ -504,7 +504,7 @@ chelsa_gbif_tbl <- clim_gbif_tbl %>%
   mutate(variable = str_sub(variable, start = -3L, end = -1L))
 
 prism_gbif_tbl <- clim_gbif_tbl %>%
-  select(
+  dplyr::select(
     geometry, key, species,
     prism_tmp, prism_ppt
   ) %>%
@@ -569,7 +569,7 @@ The mean, median, upper, lower temp and precip for all species are highly correl
 
 ```{r, fig.cap="Species temperature niche statistics are highly correlated"}
 niche_tbl %>%
-  select(tmp_occ_mean, tmp_occ_median, tmp_occ_q05, tmp_occ_q95) %>%
+  dplyr::select(tmp_occ_mean, tmp_occ_median, tmp_occ_q05, tmp_occ_q95) %>%
   GGally::ggpairs(
     lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
     title = "Species temperature niche (°C)",
@@ -580,7 +580,7 @@ niche_tbl %>%
 
 ```{r, fig.cap="Species precipitation niche statistics are highly correlated"}
 niche_tbl %>%
-  select(ppt_occ_mean, ppt_occ_median, ppt_occ_q05, ppt_occ_q95) %>%
+  dplyr::select(ppt_occ_mean, ppt_occ_median, ppt_occ_q05, ppt_occ_q95) %>%
   GGally::ggpairs(
     lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
     title = "Species precipitation niche (mm)",
@@ -719,6 +719,26 @@ site_sf %>%
   knitr::kable()
 ```
 
+Get grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from https://lpdaac.usgs.gov/products/mcd12c1v006/.
+```{r}
+grass_path<-"data/occurrence/grassland/"
+dir.create(grass_path, recursive = T)
+library(terra)
+sds<-sds(paste0(grass_path, "MCD12C1.A2020001.006.2021362215328.hdf"))
+lc_ras<-raster(sds[1])
+extent(lc_ras)<-c(-180, 180,-90, 90)
+projection(lc_ras) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+lc_ras<-flip(lc_ras)
+lc_ras <- crop(lc_ras, extent(cfp_sf))
+lc_ras <- mask(lc_ras, cfp_sf)
+
+grass_ras<-lc_ras
+grass_ras[grass_ras!=10]<-NA # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
+grass_ras[grass_ras==10]<-1
+grass_df<-as.data.frame(grass_ras, xy=T) %>% 
+  drop_na()
+```
+
 ```{r fig.cap="Map of experimental and observational study sites"}
 set.seed(618)
 ggplot() +
@@ -735,6 +755,9 @@ ggplot() +
     color = alpha("black", .3),
     fill = alpha("white", .1)
   ) +
+  geom_raster(data=grass_df,
+              aes(x=x, y=y),
+              fill="yellow green")+
   geom_sf(data = site_sf, color = "red") +
   ggrepel::geom_label_repel(
     data = site_sf,
