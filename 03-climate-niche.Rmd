@@ -442,46 +442,49 @@ raster::proj4string(prism_ras) # NAD83
 Climatology data manually downloaded from http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/summaries/catalog.html
 
 Calculate mean annual temperature, total annual precipitation, and maximum monthly vapor pressure deficit from monthly climatology.
+
 ```{r, eval=FALSE}
 param_list <- c("tmp", "ppt", "vpd")
 terraclim_path <- "data/climate/terraclimate/"
 dir.create(terraclim_path, recursive = T)
 for (param in param_list) {
   if (param == "tmp") {
-   terraclim_stack1 <- raster::stack(
-  paste0("data/climate/terraclimate/TerraClimate19812010_tmax.nc")
-)
-   terraclim_stack2 <- raster::stack(
-  paste0("data/climate/terraclimate/TerraClimate19812010_tmin.nc")
-)
-   terraclim_ras_list<-vector(mode="list", length = 12)
-   for ( m in 1:12) {
-     terraclim_ras_list[[m]]<-mean(terraclim_stack1[[m]], terraclim_stack2[[m]])
-   }
-  terraclim_ras<-terraclim_ras_list %>% stack() %>% mean()
-  writeRaster(terraclim_ras, "data/climate/terraclimate/tmp.tif", format="GTiff", overwrite=TRUE)
+    terraclim_stack1 <- raster::stack(
+      paste0("data/climate/terraclimate/TerraClimate19812010_tmax.nc")
+    )
+    terraclim_stack2 <- raster::stack(
+      paste0("data/climate/terraclimate/TerraClimate19812010_tmin.nc")
+    )
+    terraclim_ras_list <- vector(mode = "list", length = 12)
+    for (m in 1:12) {
+      terraclim_ras_list[[m]] <- mean(terraclim_stack1[[m]], terraclim_stack2[[m]])
+    }
+    terraclim_ras <- terraclim_ras_list %>%
+      stack() %>%
+      mean()
+    writeRaster(terraclim_ras, "data/climate/terraclimate/tmp.tif", format = "GTiff", overwrite = TRUE)
   }
-  
- if (param == "ppt") {
-   terraclim_stack <- raster::stack(
-  paste0("data/climate/terraclimate/TerraClimate19812010_ppt.nc")
-)
-  terraclim_ras<-sum(terraclim_stack)
-  writeRaster(terraclim_ras, "data/climate/terraclimate/ppt.tif", format="GTiff", overwrite=TRUE)
- }
-  
-  if (param == "vpd") {
-   terraclim_stack <- raster::stack(
-  paste0("data/climate/terraclimate/TerraClimate19812010_vpd.nc")
-)
-  terraclim_ras<-max(terraclim_stack)
-  writeRaster(terraclim_ras, "data/climate/terraclimate/vpd.tif", format="GTiff", overwrite=TRUE)
- }
-}
 
+  if (param == "ppt") {
+    terraclim_stack <- raster::stack(
+      paste0("data/climate/terraclimate/TerraClimate19812010_ppt.nc")
+    )
+    terraclim_ras <- sum(terraclim_stack)
+    writeRaster(terraclim_ras, "data/climate/terraclimate/ppt.tif", format = "GTiff", overwrite = TRUE)
+  }
+
+  if (param == "vpd") {
+    terraclim_stack <- raster::stack(
+      paste0("data/climate/terraclimate/TerraClimate19812010_vpd.nc")
+    )
+    terraclim_ras <- max(terraclim_stack)
+    writeRaster(terraclim_ras, "data/climate/terraclimate/vpd.tif", format = "GTiff", overwrite = TRUE)
+  }
+}
 ```
 
 Read processed climate data.
+
 ```{r}
 terraclim_ras <- raster::stack(
   "data/climate/terraclimate/tmp.tif",
@@ -491,7 +494,6 @@ terraclim_ras <- raster::stack(
 names(terraclim_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(terraclim_ras) # WGS84
 ```
-
 
 ### Extract climate data at occurrence sites and then compare
 
@@ -551,31 +553,38 @@ clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
   as_tibble() %>%
   drop_na() # PRISM = NA in Mexico
 
-clim_gbif_tbl_compare<-bind_rows(clim_gbif_tbl %>% 
-                                   dplyr::select(tmp1=chelsa_tmp,
-                                                 tmp2=prism_tmp,
-                                                 ppt1=chelsa_ppt,
-                                                 ppt2=prism_ppt,
-                                                 vpd1=chelsa_vpd,
-                                                 vpd2=prism_vpd) %>% 
-                                   mutate(compare="chelsa-prism"),
-                                 clim_gbif_tbl %>% 
-                                   dplyr::select(tmp1=chelsa_tmp,
-                                                 tmp2=terraclim_tmp,
-                                                 ppt1=chelsa_ppt,
-                                                 ppt2=terraclim_ppt,
-                                                 vpd1=chelsa_vpd,
-                                                 vpd2=terraclim_vpd) %>% 
-                                   mutate(compare="chelsa-terraclim"),
-                                 clim_gbif_tbl %>% 
-                                   dplyr::select(tmp1=prism_tmp,
-                                                 tmp2=terraclim_tmp,
-                                                 ppt1=prism_ppt,
-                                                 ppt2=terraclim_ppt,
-                                                 vpd1=prism_vpd,
-                                                 vpd2=terraclim_vpd) %>% 
-                                   mutate(compare="prism-terraclim")
-                                 )
+clim_gbif_tbl_compare <- bind_rows(
+  clim_gbif_tbl %>%
+    dplyr::select(
+      tmp1 = chelsa_tmp,
+      tmp2 = prism_tmp,
+      ppt1 = chelsa_ppt,
+      ppt2 = prism_ppt,
+      vpd1 = chelsa_vpd,
+      vpd2 = prism_vpd
+    ) %>%
+    mutate(compare = "chelsa-prism"),
+  clim_gbif_tbl %>%
+    dplyr::select(
+      tmp1 = chelsa_tmp,
+      tmp2 = terraclim_tmp,
+      ppt1 = chelsa_ppt,
+      ppt2 = terraclim_ppt,
+      vpd1 = chelsa_vpd,
+      vpd2 = terraclim_vpd
+    ) %>%
+    mutate(compare = "chelsa-terraclim"),
+  clim_gbif_tbl %>%
+    dplyr::select(
+      tmp1 = prism_tmp,
+      tmp2 = terraclim_tmp,
+      ppt1 = prism_ppt,
+      ppt2 = terraclim_ppt,
+      vpd1 = prism_vpd,
+      vpd2 = terraclim_vpd
+    ) %>%
+    mutate(compare = "prism-terraclim")
+)
 
 ggplot(clim_gbif_tbl_compare, aes(tmp1, tmp2)) +
   geom_hex(bins = 100) +
@@ -592,8 +601,8 @@ ggplot(clim_gbif_tbl_compare, aes(tmp1, tmp2)) +
     x = "Temperature 1 (°C)",
     y = "Temperature 2 (°C)",
     fill = "Occurrence site"
-  )+
-  facet_wrap(.~compare)
+  ) +
+  facet_wrap(. ~ compare)
 
 ggplot(clim_gbif_tbl_compare, aes(ppt1, ppt2)) +
   geom_hex(bins = 100) +
@@ -610,8 +619,8 @@ ggplot(clim_gbif_tbl_compare, aes(ppt1, ppt2)) +
     x = "Precipitation 1 (mm)",
     y = "Precipitation 2 (mm)",
     fill = "Occurrence site"
-  )+
-  facet_wrap(.~compare)
+  ) +
+  facet_wrap(. ~ compare)
 
 ggplot(clim_gbif_tbl_compare, aes(vpd1, vpd2)) +
   geom_hex(bins = 100) +
@@ -628,8 +637,8 @@ ggplot(clim_gbif_tbl_compare, aes(vpd1, vpd2)) +
     x = "VPD max 1 (Pa)",
     y = "VPD max 2 (Pa)",
     fill = "Occurrence site"
-  )+
-  facet_wrap(.~compare)
+  ) +
+  facet_wrap(. ~ compare)
 ```
 
 Making maps is possible but too time consuming.

@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE, warning = FALS
 library(tidyverse)
 library(sf)
 library(patchwork)
-theme_set(ggpubr::theme_pubclean())
+theme_set(ggthemes::theme_few())
 ```
 
 ## Main text
@@ -99,7 +99,7 @@ occ_clim_gg <-
   scale_color_manual(values = color_vec) +
   scale_shape_manual(values = shape_vec) +
   scale_alpha_manual(values = alpha_vec) +
-  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none", shape = "none", alpha = "none")
 
 niche_gg <-
@@ -121,7 +121,8 @@ niche_gg <-
   geom_errorbarh() +
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
-  labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
+  scale_y_continuous(expand = expansion(mult = .1)) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none") +
   geom_label(
     data = niche_tbl %>% filter(species_type %in% c("cool", "warm")),
@@ -176,11 +177,7 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
     tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
 
 obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
@@ -188,11 +185,7 @@ obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
   group_by(site, year, plot) %>%
   summarize(
     tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
 ```
 
@@ -224,6 +217,7 @@ jrgce_gg <-
       CPI = "Community Precipitation Index\n(CPI, mm)"
     ))
   ) +
+  scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
   labs(
     x = NULL, # "Year",
     y = NULL,
@@ -280,8 +274,8 @@ site_vec <- c(
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
   jasper = "Jasper Ridge Biological Preserve",
-  mclann = "McLaughlin Reserve",
-  mclserp = "McLaughlin (Serpentine)",
+  mclann = "McLaughlin Reserve Annual",
+  mclserp = "McLaughlin Reserve Serpentine",
   swanton = "Swanton Ranch",
   ucsc = "UC Santa Cruz"
 )
@@ -321,15 +315,21 @@ elkhorn_gg <- obs_com_mean_tbl %>%
 
 jasper_gg <- obs_com_mean_tbl %>%
   filter(site == "jasper") %>%
-  obs_gg_fun(site_vec["jasper"],
-    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
-  )
+  obs_gg_fun(site_vec["jasper"])
 
 mclann_gg <- obs_com_mean_tbl %>%
   filter(site == "mclann") %>%
   obs_gg_fun(site_vec["mclann"],
-    yr_lab = "Year"
+    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
   )
+
+mclserp_gg <- obs_com_mean_tbl %>%
+  filter(site == "mclserp") %>%
+  obs_gg_fun(site_vec["mclserp"])
+
+swanton_gg <- obs_com_mean_tbl %>%
+  filter(site == "swanton") %>%
+  obs_gg_fun(site_vec["swanton"])
 
 ucsc_gg <- obs_com_mean_tbl %>%
   filter(site == "ucsc") %>%
@@ -340,19 +340,19 @@ Combine panels.
 
 ```{r}
 fig2_gg <- jrgce_gg +
-  angelo_gg + carrizo_gg + elkhorn_gg +
-  jasper_gg + mclann_gg + ucsc_gg +
+  angelo_gg + carrizo_gg + elkhorn_gg + jasper_gg +
+  mclann_gg + mclserp_gg + swanton_gg + ucsc_gg +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
-  AAA
-  BCD
-  EFG
+  AAAA
+  BCDE
+  FGHI
   ")
 ```
 
 Render and save.
 
-```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term experiments and observations. (A) Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). (B to G) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in six long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by *t*-test, *p* < 0.05)."}
+```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term experiments and observations. (A) Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). (B to I) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in six long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by *t*-test, *p* < 0.05)."}
 fig2_gg
 
 # ggsave(
@@ -489,8 +489,7 @@ Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making sc
 
 ```{r}
 clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
-  as_tibble() %>%
-  drop_na() # PRISM = NA in Mexico
+  as_tibble()
 
 chelsa_gbif_tbl <- clim_gbif_tbl %>%
   dplyr::select(
@@ -514,19 +513,35 @@ prism_gbif_tbl <- clim_gbif_tbl %>%
   ) %>%
   mutate(variable = str_sub(variable, start = -3L, end = -1L))
 
+terraclim_gbif_tbl <- clim_gbif_tbl %>%
+  select(
+    geometry, key, species,
+    terraclim_tmp, terraclim_ppt
+  ) %>%
+  pivot_longer(terraclim_tmp:terraclim_ppt,
+    names_to = "variable",
+    values_to = "TerraClim"
+  ) %>%
+  mutate(variable = str_sub(variable, start = -3L, end = -1L))
+
 clim_comp_tbl <- chelsa_gbif_tbl %>%
-  inner_join(prism_gbif_tbl,
+  inner_join(
+    prism_gbif_tbl,
+    by = c("geometry", "key", "species", "variable")
+  ) %>%
+  inner_join(
+    terraclim_gbif_tbl,
     by = c("geometry", "key", "species", "variable")
   )
 ```
 
-```{r fig.cap="Climate data comparison from multiple sources in study area"}
-ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
+```{r fig.cap="Climate data comparison from multiple sources shows high consistency in study area."}
+chelsa_prism_gg <- ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
   geom_hex(bins = 100) +
   viridis::scale_fill_viridis() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
+  geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
   ggpubr::stat_cor(
-    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
+    aes(label = paste(..r.label.., ..p.label.., sep = "*`,`~")),
     p.accuracy = 0.05,
     color = "red"
   ) +
@@ -536,21 +551,56 @@ ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
     levels = c("tmp", "ppt"),
     labels = c(
       "Mean annual temperature (°C)",
-      "Annual precipitation (mm)"
+      "Mean annual precipitation (mm)"
     )
   ),
   scales = "free"
   ) +
   labs(
-    x = "CHELSA data",
-    y = "PRISM data",
-    fill = "Occurrence record"
+    x = "",
+    y = "PRISM",
+    # fill = "Occurrence record"
   ) +
+  guides(fill = "none") +
   theme(
     aspect.ratio = 1, # can't do + coord_fixed() with facet_wrap(scales = "free")
     strip.background = element_blank(),
-    strip.text.x = element_text(size = 15)
+    strip.text.x = element_text(size = 12)
   )
+
+chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "*`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  facet_wrap(. ~ factor(
+    variable,
+    levels = c("tmp", "ppt"),
+    labels = c(
+      "Mean annual temperature (°C)",
+      "Mean annual precipitation (mm)"
+    )
+  ),
+  scales = "free"
+  ) +
+  labs(
+    x = "CHELSA",
+    y = "TerraClim",
+    # fill = "Occurrence record"
+  ) +
+  guides(fill = "none") +
+  theme(
+    aspect.ratio = 1, # can't do + coord_fixed() with facet_wrap(scales = "free")
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+chelsa_prism_gg / chelsa_terraclim_gg
 ```
 
 ### Climate variable correlations
@@ -668,7 +718,7 @@ for (i in seq_along(sp_gbif_vec)) {
     ) +
     lims(x = tmp_rng, y = ppt_rng) +
     labs(
-      x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)",
+      x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)",
       title = bquote(italic("n") ~ "=" ~ .(format(occ_sp_stat$occ_n, big.mark = ",", trim = TRUE)))
     )
 
@@ -779,51 +829,3 @@ ggplot() +
 ### Site climate change
 
 TODO: get PRISM/CHELSA data on six sites and plot climate change; may compare with CTI and CPI changes
-
-### McL Annual vs. Serp comparison
-
-```{r, fig.cap="Compare annual vs. serpentine grassland communities in McLaughlin Reserve"}
-obs_com_tbl %>%
-  filter(site %in% c("mclann", "mclserp")) %>%
-  select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
-  pivot_longer(tmp_com_mean:ppt_com_mean, names_to = "variable", values_to = "value") %>%
-  mutate(variable = factor(
-    variable,
-    c("tmp_com_mean", "ppt_com_mean")
-  )) %>%
-  ggplot(aes(year, value, group = year)) +
-  geom_boxplot() +
-  geom_smooth(
-    method = "lm", formula = y ~ x, se = FALSE,
-    color = "red", lty = "dashed",
-    aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  facet_grid(variable ~ site,
-    scales = "free_y",
-    switch = "y", # for facet_wrap, use strip.position = "left",
-    labeller = labeller(
-      variable = c(
-        tmp_com_mean = "Community Temperature Index\n(CTI, °C)",
-        ppt_com_mean = "Community Precipitation Index\n(CPI, mm)"
-      ),
-      site = c(
-        mclann = "Annual",
-        mclserp = "Serpentine"
-      )
-    )
-  ) +
-  xlim(1983, 2019) +
-  labs(
-    x = "Year", y = NULL,
-    title = "McLaughlin Reserve"
-  ) +
-  theme(
-    strip.background = element_blank(),
-    strip.placement = "outside",
-    plot.title = element_text(size = 11)
-  )
-```
