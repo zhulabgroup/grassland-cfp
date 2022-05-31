@@ -489,8 +489,7 @@ Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making sc
 
 ```{r}
 clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
-  as_tibble() %>%
-  drop_na() # PRISM = NA in Mexico
+  as_tibble()
 
 chelsa_gbif_tbl <- clim_gbif_tbl %>%
   dplyr::select(

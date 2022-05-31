@@ -200,7 +200,6 @@ res <- occ(
 ```{r, eval=FALSE}
 read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
-  select(species = queryName, longitude, latitude, key) %>%
   write_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds")
 ```
 
@@ -305,15 +304,21 @@ gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
+  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>% 
+  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
+  filter(!coordinateUncertaintyInMeters %in% c(301,3036,999,9999)) %>% 
   select(dataset, key, species, longitude, latitude)
 
 inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds") %>%
   mutate(
     dataset = "inat",
-    # species = queryName,
+    species = queryName,
     key = as.character(key)
   ) %>%
   filter(species %in% spp_tbl$species) %>%
+  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>% 
+  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
+  filter(!coordinateUncertaintyInMeters %in% c(301,3036,999,9999)) %>% 
   select(dataset, key, species, longitude, latitude)
 ```
 
