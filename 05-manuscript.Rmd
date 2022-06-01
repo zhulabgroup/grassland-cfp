@@ -770,22 +770,21 @@ site_sf %>%
 ```
 
 Get grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from https://lpdaac.usgs.gov/products/mcd12c1v006/.
+
 ```{r}
 grass_path <- "data/occurrence/grassland/"
-dir.create(grass_path, recursive = T)
-library(terra)
-sds <- sds(paste0(grass_path, "MCD12C1.A2020001.006.2021362215328.hdf"))
-lc_ras <- raster(sds[1])
-extent(lc_ras) <- c(-180, 180, -90, 90)
-projection(lc_ras) <- CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
-lc_ras <- flip(lc_ras)
-lc_ras <- crop(lc_ras, extent(cfp_sf))
-lc_ras <- mask(lc_ras, cfp_sf)
+sds <- terra::sds(paste0(grass_path, "MCD12C1.A2020001.006.2021362215328.hdf"))
+lc_ras <- raster::raster(sds[1])
+raster::extent(lc_ras) <- c(-180, 180, -90, 90)
+raster::projection(lc_ras) <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+lc_ras <- raster::flip(lc_ras)
+lc_ras <- raster::crop(lc_ras, raster::extent(cfp_sf))
+lc_ras <- raster::mask(lc_ras, cfp_sf)
 
 grass_ras <- lc_ras
 grass_ras[grass_ras != 10] <- NA # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
 grass_ras[grass_ras == 10] <- 1
-grass_df <- as.data.frame(grass_ras, xy = T) %>%
+grass_df <- raster::as.data.frame(grass_ras, xy = T) %>%
   drop_na()
 ```
 
