@@ -853,6 +853,14 @@ rm(filename, i, skips, year)
 rm(swanton_data)
 ```
 
+Update on 6/3/22. Karen corrected species names, so use the new CSV file for Swanton data.
+
+```{r}
+read_csv("data/community/raw/HollData/swanton-updated.csv") %>% 
+  arrange(site, year, plot, species) %>% 
+  write_csv("data/community/tidy/swanton.csv")
+```
+
 ### UCSC
 
 These are data for grassland plots at UCSC. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
