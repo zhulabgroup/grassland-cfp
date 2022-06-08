@@ -33,7 +33,17 @@ Raw data tables (CSV files) include pin count, species, treatment.
 
 ```{r pin count table}
 pin_tbl <- read_csv("data/community/raw/JRGCE/Pin count.csv", col_types = "iiccicc") %>%
-  select(year = YEAR, plot = ID, species = SPECIES, abund = TOTAL)
+  select(year = YEAR, plot = ID, species = SPECIES, abund = TOTAL) %>%
+  mutate(species = if_else(
+    str_starts(species, "Acmispon americanus"),
+    "Acmispon americanus var.americanus",
+    species
+  )) %>%
+  mutate(species = if_else(
+    str_starts(species, "Crepis"),
+    "Crepis vesicaria ssp. taraxacifolia",
+    species
+  ))
 ```
 
 ```{r species table}
@@ -856,8 +866,8 @@ rm(swanton_data)
 Update on 6/3/22. Karen corrected species names, so use the new CSV file for Swanton data.
 
 ```{r}
-read_csv("data/community/raw/HollData/swanton-updated.csv") %>% 
-  arrange(site, year, plot, species) %>% 
+read_csv("data/community/raw/HollData/swanton-updated.csv") %>%
+  arrange(site, year, plot, species) %>%
   write_csv("data/community/tidy/swanton.csv")
 ```
 
@@ -1089,8 +1099,10 @@ write_csv(spp_clean_tbl, "data/community/species-table-clean-2022-05-02.csv")
 
 Finally, replace clean species names in all data and save to RDS. The species clean table is based on the above code, supplemented by Justin's manual adjustments on 5/6/22 and Kai's edits on 5/10/22.
 
+Updated on 6/8/22. Directly use the species table reviewed by Justin.
+
 ```{r}
-spp_clean_tbl <- read_csv("data/community/species-table-clean-2022-05-10.csv", col_types = "c")
+spp_clean_tbl <- read_csv("data/community/species-table-clean-2022-06-08.csv", col_types = "c")
 
 all_exp_data %>%
   rename(tidy_name = species) %>%
