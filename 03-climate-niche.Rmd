@@ -137,6 +137,12 @@ read_rds("data/occurrence/gbif/gbif-cfp-2022-06-08.rds") %>%
   write_rds("data/occurrence/gbif/gbif-consolidated-2022-06-08.rds")
 ```
 
+Pointer to file name.
+
+```{r}
+gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-06-08.rds"
+```
+
 ### iNaturalist
 
 Not directly querying the data separately because:
@@ -155,9 +161,15 @@ res <- occ(
 4. A recommended way to get a lot of data at once is to use the dataset of research grade observations submitted weekly to GBIF https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7
 
 ```{r, eval=FALSE}
-read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
+read_rds(gbif_file) %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
-  write_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds")
+  write_rds("data/occurrence/inat/inat-cfp-2022-06-08.rds")
+```
+
+Pointer to file name.
+
+```{r}
+inat_file <- "data/occurrence/inat/inat-cfp-2022-06-08.rds"
 ```
 
 ### BIEN
@@ -198,6 +210,12 @@ write_rds(bien_all_df, "data/occurrence/bien/bien-all-2022-04-27.rds")
 write_rds(bien_cfp_df, "data/occurrence/bien/bien-cfp-2022-04-27.rds")
 ```
 
+Pointer to file name.
+
+```{r}
+bien_file <- "data/occurrence/bien/bien-cfp-2022-04-27.rds"
+```
+
 ### eJepson (CCH)
 
 eJepson might be more accurate compared to iNat and GBIF.
@@ -231,12 +249,18 @@ write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-05-02.rds")
 rm(cch_all_tbl, cch_cfp_tbl)
 ```
 
+Pointer to file name.
+
+```{r}
+cch_file <- "data/occurrence/cch/cch-cfp-2022-05-02.rds"
+```
+
 ### Compare occurrence data sets
 
 Compare the above data sets, in alphabetical order, BIEN, CCH, GBIF, iNat.
 
 ```{r}
-bien_tbl <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
+bien_tbl <- read_rds(bien_file) %>%
   mutate(
     dataset = "bien",
     species = queryName,
@@ -245,7 +269,7 @@ bien_tbl <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
   filter(species %in% spp_comm_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
-cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
+cch_tbl <- read_rds(cch_file) %>%
   mutate(
     dataset = "cch",
     species = queryName,
@@ -254,10 +278,10 @@ cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
   filter(species %in% spp_comm_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
-gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
+gbif_tbl <- read_rds(gbif_file) %>%
   mutate(
     dataset = "gbif",
-    species = queryName,
+    species = consolidatedName,
     key = as.character(key)
   ) %>%
   filter(species %in% spp_comm_tbl$species) %>%
@@ -266,10 +290,10 @@ gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   select(dataset, key, species, longitude, latitude)
 
-inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds") %>%
+inat_tbl <- read_rds(inat_file) %>%
   mutate(
     dataset = "inat",
-    species = queryName,
+    species = consolidatedName,
     key = as.character(key)
   ) %>%
   filter(species %in% spp_comm_tbl$species) %>%
@@ -462,9 +486,9 @@ raster::proj4string(terraclim_ras) # WGS84
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
 
 ```{r, eval=FALSE}
-gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
+gbif_sf_wgs84 <- read_rds(gbif_file) %>%
   mutate(
-    species = queryName,
+    species = consolidatedName,
     key = as.character(key)
   ) %>%
   filter(species %in% spp_comm_tbl$species) %>%
@@ -505,13 +529,19 @@ bind_cols(
   terraclim_gbif_sf %>%
     dplyr::select(starts_with("terraclim_"))
 ) %>%
-  write_rds("data/climate/climate-gbif-2022-05-28.rds")
+  write_rds("data/climate/climate-gbif-2022-06-08.rds")
+```
+
+Pointer to file name.
+
+```{r}
+clim_file <- "data/climate/climate-gbif-2022-06-08.rds"
 ```
 
 Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
 
 ```{r}
-clim_gbif_tbl <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
+clim_gbif_tbl <- read_rds(clim_file) %>%
   as_tibble() %>%
   drop_na() # PRISM = NA in Mexico
 
@@ -606,7 +636,7 @@ ggplot(clim_gbif_tbl_compare, aes(vpd1, vpd2)) +
 Making maps is possible but too time consuming.
 
 ```{r, eval=FALSE}
-clim_long_sf <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
+clim_long_sf <- read_rds(clim_file) %>%
   pivot_longer(
     contains(match = c("chelsa", "prism")),
     names_to = "dataset_variable",
@@ -712,7 +742,7 @@ Visualize individual species occurrence in climate space.
 
 ```{r, eval=FALSE}
 # read combined GBIF and CHELSA data
-gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
+gbif_chelsa_sf <- read_rds(clim_file) %>%
   select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
@@ -805,7 +835,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-2022-05-10.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-06-08.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
@@ -815,7 +845,7 @@ dev.off()
 Summarize species climate niches (mean, sd, etc.).
 
 ```{r}
-niche_tbl <- read_rds("data/climate/climate-gbif-2022-05-10.rds") %>%
+niche_tbl <- read_rds(clim_file) %>%
   select(key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   group_by(species) %>%
   summarize(
@@ -959,5 +989,5 @@ niche_tbl %>%
     vpd_occ_mean, vpd_occ_sd,
     vpd_occ_median, vpd_occ_q05, vpd_occ_q25, vpd_occ_q75, vpd_occ_q95
   ) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-06-08.rds")
 ```
