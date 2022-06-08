@@ -119,6 +119,24 @@ rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 
 Note that GBIF depends on download dates. So we'll keep the download file with date stamp.
 
+Consolidate species names in GBIF.
+
+```{r, eval=FALSE}
+read_rds("data/occurrence/gbif/gbif-cfp-2022-06-08.rds") %>%
+  left_join(spp_consol_tbl, by = c("queryName" = "query_name")) %>%
+  select(consolidated_name, everything()) %>%
+  rename(consolidatedName = consolidated_name) %>%
+  mutate(
+    consolidatedName =
+      ifelse(
+        is.na(consolidatedName),
+        queryName,
+        consolidatedName
+      )
+  ) %>%
+  write_rds("data/occurrence/gbif/gbif-consolidated-2022-06-08.rds")
+```
+
 ### iNaturalist
 
 Not directly querying the data separately because:
