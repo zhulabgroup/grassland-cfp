@@ -920,36 +920,34 @@ With all the correlations, we can safely use temperature and precipitation to vi
 niche_tbl %>%
   ggplot(aes(
     text = species,
-    x = tmp_occ_median,
-    y = ppt_occ_median,
-    xmin = tmp_occ_q25, # tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
-    xmax = tmp_occ_q75, # tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
-    ymin = ppt_occ_q25, # ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
-    ymax = ppt_occ_q75 # ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)
+    x = tmp_occ_mean,
+    y = ppt_occ_mean,
+    xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
+    xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
+    ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
+    ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)
   )) +
   geom_point() +
-  geom_errorbarh(alpha = .05) +
-  geom_errorbar(alpha = .05) +
+  geom_errorbarh(alpha = .5) +
+  geom_errorbar(alpha = .5) +
   labs(
     x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
-  ) +
-  scale_y_log10()
+  )
 ```
 
 ```{r fig.cap="Interactive figure, no error bars"}
 (niche_tbl %>%
   ggplot(aes(
     text = species,
-    x = tmp_occ_median,
-    y = ppt_occ_median,
+    x = tmp_occ_mean,
+    y = ppt_occ_mean,
   )) +
   geom_point() +
   labs(
     x = "Species occurrence mean temperature (°C)",
     y = "Species occurrence mean precipitation (mm)"
-  ) +
-  scale_y_log10()
+  )
 ) %>%
   plotly::ggplotly(tooltip = "text")
 ```
