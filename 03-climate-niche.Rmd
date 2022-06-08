@@ -117,78 +117,7 @@ write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-06-08.rds")
 rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 ```
 
-Note that GBIF depends on download dates. Here's a test.
-Yiluan's notes: I compared my query today with queries on Mar 23 and Apr 18. I noticed that differences between today's query and Mar 23 query are from crawling events that took place after Mar 23. Some records were removed, many were added. The records are the same between today and Apr 18. I noticed there were some new crawling events after Apr 18, but they did not change the content of the records.
-
-```{r, eval=FALSE}
-# tested on 20220424
-
-##### Getting today's occ data
-sp <- "Achillea millefolium"
-res <- occ(
-  query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
-  geometry = st_bbox(cfp_sf),
-  gbifopts = list(
-    hasGeospatialIssue = FALSE
-  )
-)
-sp_df <- tibble(queryName = sp, gbif = res$gbif$data) %>%
-  unnest(cols = c(gbif))
-
-gbif_occ_box_df <- sp_df
-occ_sf_box <- st_as_sf(
-  x = gbif_occ_box_df %>% dplyr::select(key, longitude, latitude),
-  coords = c("longitude", "latitude"),
-  crs = 4326
-)
-occ_sf <- st_intersection(occ_sf_box, cfp_sf)
-gbif_occ_df <- gbif_occ_box_df %>%
-  right_join(as_tibble(occ_sf) %>% dplyr::select(key), by = "key")
-
-gbif_occ_df_today <- gbif_occ_df
-write_rds(gbif_occ_df_today, "data/occurrence/gbif/gbif-cfp-2022-04-27-test.rds")
-##### Comparing with previous data
-
-# Comparing with 0323 data
-gbif_occ_df_0323 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-03-23.rds")
-# some record keys seem to be deleted, some added
-# in 0323 but not in today
-diff1 <- anti_join(gbif_occ_df_0323 %>% filter(queryName == sp), gbif_occ_df_today, by = c("queryName", "key"))
-diff1 %>% nrow()
-diff1 %>%
-  pull(lastCrawled) %>%
-  as.Date() %>%
-  unique() %>%
-  sort()
-# in today but not in 0323
-diff2 <- anti_join(gbif_occ_df_today, gbif_occ_df_0323 %>% filter(queryName == sp), by = c("queryName", "key"))
-diff2 %>% nrow()
-diff2 %>%
-  pull(lastCrawled) %>%
-  as.Date() %>%
-  unique() %>%
-  sort()
-
-# Comparing with 0418 data
-gbif_occ_df_0418 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-04-18.rds")
-# no difference in record keys but some records have been re-crawled judging from the crawId
-# in 0418 but not in today
-diff1 <- anti_join(gbif_occ_df_0418 %>% filter(queryName == sp), gbif_occ_df_today, by = c("queryName", "key", "crawlId"))
-diff1 %>% nrow()
-diff1 %>%
-  pull(lastCrawled) %>%
-  as.Date() %>%
-  unique() %>%
-  sort()
-# in today but not in 0418
-diff2 <- anti_join(gbif_occ_df_today, gbif_occ_df_0418 %>% filter(queryName == sp), by = c("queryName", "key", "crawlId"))
-diff2 %>% nrow()
-diff2 %>%
-  pull(lastCrawled) %>%
-  as.Date() %>%
-  unique() %>%
-  sort()
-```
+Note that GBIF depends on download dates. So we'll keep the download file with date stamp.
 
 ### iNaturalist
 
