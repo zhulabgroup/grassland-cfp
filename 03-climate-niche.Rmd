@@ -49,10 +49,13 @@ cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
-Load all the species from community data.
+Load two species tables. 
+
+1. All the species from community data (experimental and observational).
+1. Species consolidation table.
 
 ```{r}
-spp_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
+spp_comm_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   dplyr::select(species) %>%
   bind_rows(
     read_rds("data/community/all-experimental-data.rds") %>%
@@ -60,6 +63,12 @@ spp_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   ) %>%
   distinct(species) %>%
   arrange(species)
+
+spp_consol_tbl <- read_csv("data/occurrence/species-consolidation-2022-06-08.csv", col_types = "c")
+
+spp_vec <- c(spp_comm_tbl$species, spp_consol_tbl$query_name) %>%
+  unique() %>%
+  sort()
 ```
 
 ### GBIF
@@ -75,10 +84,10 @@ cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
 gbif_box_ls <-
   foreach(
-    i = 1:length(spp_tbl$species),
+    i = 1:length(spp_vec),
     .packages = c("spocc", "sf", "tidyverse")
   ) %dopar% {
-    sp <- spp_tbl$species[i]
+    sp <- spp_vec[i]
     res <- occ(
       query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
       geometry = st_bbox(cfp_sf),
@@ -103,7 +112,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-05-10.rds")
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-06-08.rds")
 
 rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 ```
@@ -216,10 +225,10 @@ cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
 bien_df_list <-
   foreach(
-    i = 1:length(spp_tbl$species),
+    i = 1:length(spp_vec),
     .packages = c("BIEN", "tidyverse")
   ) %dopar% {
-    sp <- spp_tbl$species[i]
+    sp <- spp_vec[i]
     res <- BIEN_occurrence_species(species = sp)
     print(i)
     tibble(queryName = sp, res) %>%
@@ -253,7 +262,7 @@ Keep records with species of interest and within CFP.
 
 ```{r, eval=FALSE}
 cch_all_tbl <- read_csv("data/occurrence/cch/occurrences.csv") %>%
-  filter(scientificName %in% spp_tbl$species) %>%
+  filter(scientificName %in% spp_comm_tbl$species) %>%
   drop_na(decimalLongitude, decimalLatitude) %>%
   select(
     queryName = scientificName,
@@ -286,7 +295,7 @@ bien_tbl <- read_rds("data/occurrence/bien/bien-cfp-2022-04-27.rds") %>%
     species = queryName,
     key = as.character(key)
   ) %>%
-  filter(species %in% spp_tbl$species) %>%
+  filter(species %in% spp_comm_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
 cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
@@ -295,7 +304,7 @@ cch_tbl <- read_rds("data/occurrence/cch/cch-cfp-2022-05-02.rds") %>%
     species = queryName,
     key = as.character(key)
   ) %>%
-  filter(species %in% spp_tbl$species) %>%
+  filter(species %in% spp_comm_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
 gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
@@ -304,7 +313,7 @@ gbif_tbl <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
     species = queryName,
     key = as.character(key)
   ) %>%
-  filter(species %in% spp_tbl$species) %>%
+  filter(species %in% spp_comm_tbl$species) %>%
   filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
   filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
@@ -316,7 +325,7 @@ inat_tbl <- read_rds("data/occurrence/inat/inat-cfp-2022-05-10.rds") %>%
     species = queryName,
     key = as.character(key)
   ) %>%
-  filter(species %in% spp_tbl$species) %>%
+  filter(species %in% spp_comm_tbl$species) %>%
   filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
   filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
@@ -511,7 +520,7 @@ gbif_sf_wgs84 <- read_rds("data/occurrence/gbif/gbif-cfp-2022-05-10.rds") %>%
     species = queryName,
     key = as.character(key)
   ) %>%
-  filter(species %in% spp_tbl$species) %>%
+  filter(species %in% spp_comm_tbl$species) %>%
   dplyr::select(key, species, longitude, latitude) %>%
   st_as_sf(
     coords = c("longitude", "latitude"),
@@ -765,7 +774,7 @@ sp_gbif_vec <- gbif_chelsa_sf %>%
   pull(species) %>%
   unique() %>%
   sort()
-sp_tab_vec <- spp_tbl %>%
+sp_tab_vec <- spp_comm_tbl %>%
   pull(species) %>%
   unique() %>%
   sort()
