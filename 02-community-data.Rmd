@@ -865,6 +865,8 @@ rm(swanton_data)
 
 Update on 6/3/22. Karen corrected species names, so use the new CSV file for Swanton data.
 
+Further update on 6/9/22. Karen made one more minor correction. Same file.
+
 ```{r}
 read_csv("data/community/raw/HollData/swanton-updated.csv") %>%
   arrange(site, year, plot, species) %>%
