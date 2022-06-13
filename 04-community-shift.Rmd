@@ -28,7 +28,7 @@ library(sf)
 Load niche estimates.
 
 ```{r}
-niche_file <- "data/occurrence/niche-estimates-cfp-2022-06-08.rds"
+niche_file <- "data/occurrence/niche-estimates-cfp-2022-06-13.rds"
 niche_tbl <- read_rds(niche_file)
 ```
 
