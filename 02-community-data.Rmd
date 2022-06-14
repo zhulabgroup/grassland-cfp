@@ -401,6 +401,71 @@ rm(carrizo, carrizo_extras, carrizo_forms, carrizo_spp)
 rm(carrizo_data)
 ```
 
+### East Bay
+
+East Bay Regional Park District (EBRPD) data from Joan Dudney. Three sites: PR = Pleasant Ridge, VC = Vasco Cave, SU = Sunol.
+
+```{r}
+spp_tbl <- readxl::read_xlsx("data/community/raw/Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
+  mutate(
+    species_code = toupper(species),
+    guild = str_c(
+      case_when(
+        `native/exotic` == "e" ~ "E", # Exotic
+        `native/exotic` == "n" ~ "N", # Native
+        TRUE ~ "U" # else is Unknown
+      ),
+      case_when(
+        `annual/perennial` == "a" ~ "A", # Annual
+        `annual/perennial` == "p" ~ "P", # Perennial
+        TRUE ~ "U" # else is Unknown
+      ),
+      case_when(
+        `forb/grass` == "f" ~ "F", # Forb
+        `forb/grass` == "g" ~ "G", # Grass
+        `forb/grass` == "n" ~ "R", # Rush
+        `forb/grass` == "s" ~ "S", # Shurb
+        `forb/grass` == "t" ~ "T", # Tree
+        TRUE ~ "U" # else is Unknown
+      )
+    )
+  ) %>%
+  select(species_code, species = latin, guild)
+
+com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv",
+  col_types = "cicidc"
+) %>%
+  rename(plot = plot.ID, species_code = species) %>%
+  group_by(site, year, plot, species_code) %>%
+  summarize(abund = sum(point)) %>%
+  left_join(spp_tbl, by = "species_code") %>%
+  mutate(abund_type = "point_intercept") %>%
+  select(site, year, plot, species_code, species, guild, abund, abund_type)
+```
+
+Validation with Joan's functional group (guild) spreadsheet.
+
+```{r, eval=FALSE}
+guild_sum_tbl1 <- readxl::read_xlsx("data/community/raw/Dudney/FunctionalGroups_EBParks.xlsx",
+  range = readxl::cell_cols("A:E")
+) %>%
+  rename(plot = plot.ID, guild = fungrp)
+
+guild_sum_tbl2 <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv",
+  col_types = "cicidc"
+) %>%
+  rename(plot = plot.ID, species_code = species) %>%
+  left_join(spp_tbl, by = "species_code") %>%
+  group_by(site, year, plot, guild) %>%
+  summarize(abund = n())
+
+inner_join(guild_sum_tbl1, guild_sum_tbl2, by = c("site", "year", "plot", "guild")) %>%
+  ggplot(aes(abund.x, abund.y)) +
+  geom_point() +
+  geom_abline(intercept = 0, slope = 1, color = "red") +
+  labs(x = "Species hit from Dudney", y = "Species hit from Zhu")
+```
+
 ### Elkhorn
 
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. *Karen suggested combining all of the Bromus species into one group*. 
@@ -986,10 +1051,6 @@ rm(elk_guilds, out, ucsc_counts, ucsc_counts_clean, ucsc_counts_df, UCSC_guilds,
 rm(filename, i, skips, year)
 rm(ucsc_data)
 ```
-
-### Vasco Caves
-
-Incomplete data that is not used.
 
 Remove intermediate objects.
 
