@@ -440,7 +440,8 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
   summarize(abund = sum(point)) %>%
   left_join(eb_spp_tbl, by = "species_code") %>%
   mutate(abund_type = "point_intercept") %>%
-  select(site, year, plot, species_code, species, guild, abund, abund_type)
+  select(site, year, plot, species_code, species, guild, abund, abund_type) %>%
+  arrange(site, year, plot, species)
 ```
 
 Validate with Joan's functional group (guild) spreadsheet.
@@ -464,6 +465,33 @@ inner_join(eb_guild_sum_tbl1, eb_guild_sum_tbl2, by = c("site", "year", "plot", 
   geom_point() +
   geom_abline(intercept = 0, slope = 1, color = "red") +
   labs(x = "Species hit from Dudney", y = "Species hit from Zhu")
+
+rm(eb_guild_sum_tbl1, eb_guild_sum_tbl2)
+```
+
+Separately save three site files.
+
+```{r}
+eb_com_tbl %>%
+  filter(site == "PR") %>%
+  mutate(site = "pleasantonridge") %>%
+  write_csv("data/community/tidy/pleasantonridge.csv")
+
+eb_com_tbl %>%
+  filter(site == "SU") %>%
+  mutate(site = "sunol") %>%
+  write_csv("data/community/tidy/sunol.csv")
+
+eb_com_tbl %>%
+  filter(site == "VC") %>%
+  mutate(site = "vascocaves") %>%
+  write_csv("data/community/tidy/vascocaves.csv")
+```
+
+Remove intermediate objects.
+
+```{r}
+rm(eb_com_tbl, eb_spp_tbl)
 ```
 
 ### Elkhorn
