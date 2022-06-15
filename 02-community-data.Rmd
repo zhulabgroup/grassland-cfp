@@ -489,7 +489,7 @@ rm(eb_com_tbl, eb_spp_tbl)
 
 ### Elkhorn
 
-Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. *Karen suggested combining all of the Bromus species into one group*. 
+Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
 Josie's comments (5/12/22): Elkhorn site is in Elkhorn Ranch; not so coastal and might not be windy.
 
