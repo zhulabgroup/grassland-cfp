@@ -1059,11 +1059,11 @@ rm(cleanElkhornData, cleanElkhornPlot)
 Read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
 
 ```{r}
-all_exp_data <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
+tidy_exp_tbl <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
   bind_rows(read_csv("data/community/tidy/mclexp.csv", col_types = "ciccccdc")) %>%
   bind_rows(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc"))
 
-all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
+tidy_obs_tbl <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
   bind_rows(read_csv("data/community/tidy/carrizo.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/elkhorn.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/jasper.csv", col_types = "cicccdc")) %>%
@@ -1081,9 +1081,9 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
 Prepare a master species list from tidy data.
 
 ```{r}
-tidy_tax_tbl <- all_exp_data %>%
+tidy_tax_tbl <- tidy_exp_tbl %>%
   select(species, guild) %>%
-  bind_rows(all_obs_data %>% select(species, guild)) %>%
+  bind_rows(tidy_obs_tbl %>% select(species, guild)) %>%
   distinct() %>%
   arrange(species, guild)
 ```
@@ -1155,7 +1155,7 @@ Updated on 6/8/22. Directly use the species table reviewed by Justin.
 ```{r}
 spp_clean_tbl <- read_csv("data/community/species-table-clean-2022-06-08.csv", col_types = "c")
 
-all_exp_data %>%
+tidy_exp_tbl %>%
   rename(tidy_name = species) %>%
   inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
   drop_na(clean_name) %>%
@@ -1168,7 +1168,7 @@ all_exp_data %>%
   ) %>%
   write_rds("data/community/all-experimental-data.rds")
 
-all_obs_data %>%
+tidy_obs_tbl %>%
   rename(tidy_name = species) %>%
   inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
   drop_na(clean_name) %>%
@@ -1184,7 +1184,7 @@ all_obs_data %>%
 Remove intermediate objects.
 
 ```{r}
-rm(all_exp_data, all_obs_data, spp_clean_tbl, spp_tidy_tbl)
+rm(tidy_exp_tbl, tidy_obs_tbl, spp_clean_tbl, spp_tidy_tbl)
 # rm(spp_expert_tbl, spp_taxize_tbl)
 ```
 
