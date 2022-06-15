@@ -1088,19 +1088,6 @@ tidy_tax_tbl <- all_exp_data %>%
   arrange(species, guild)
 ```
 
-Species renaming data.
-
-```{r}
-spp_renamings <- read_csv(
-  "data/community/species-table-expert-2022-04-13.csv",
-  col_types = "ccc"
-) %>%
-  rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
-
-spp_renamings_vec <- pull(spp_renamings, revised_name)
-names(spp_renamings_vec) <- pull(spp_renamings, original_name)
-```
-
 Download species name using the taxize package. 
 
 ```{r, eval=FALSE}
@@ -1119,19 +1106,12 @@ Automatic match original names with taxize names based on the conversation with 
 1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
 
 ```{r, eval=FALSE}
-spp_taxize_tbl <- read_rds("data/community/species-table-taxize-2022-05-02.rds") %>%
+spp_taxize_tbl <- read_rds("data/taxonomy/taxize-2022-06-15.rds") %>%
   filter(kingdom == "Plantae") %>%
   group_by(queryname) %>%
   slice_head(n = 1) %>% # choose the top 1
   ungroup() %>%
   select(queryname, canonicalname, everything())
-```
-
-Manual correction based on the look-up table complied by Justin Luong and Clara Qin.
-
-```{r, eval=FALSE}
-spp_expert_tbl <- read_csv("data/community/species-table-expert-2022-04-13.csv", col_types = "ccc") %>%
-  rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
 ```
 
 Combining all species name corrections: taxize, expert, and drop genus-only "species."
