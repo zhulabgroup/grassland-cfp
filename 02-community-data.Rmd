@@ -267,12 +267,6 @@ rm(scide_data)
 
 ## Observational community data
 
-Site description by Josie.
-
-```{r, echo = F}
-knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.8wuzredrn9p5")
-```
-
 Species renaming data.
 
 ```{r}
@@ -1230,7 +1224,11 @@ rm(all_exp_data, all_obs_data, spp_clean_tbl, spp_tidy_tbl)
 
 ## Gather site information
 
-Input site table from Josie's dissertation. Plus JRGCE and Santa Cruz IDE. Plus additional sites.
+Input site table from Josie's dissertation. Plus additional sites: JRGCE, Santa Cruz IDE, East Bay, etc.
+
+```{r, echo = F}
+knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.8wuzredrn9p5")
+```
 
 ```{r}
 site_sf <- tribble(
