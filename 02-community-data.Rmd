@@ -194,7 +194,10 @@ mclexp_data <- plot_tbl %>%
   full_join(cover_long_tbl, by = "plot") %>%
   mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
   select(site, year, plot, treat, species, guild, abund, abund_type) %>%
-  filter(abund > 0) %>%
+  filter(
+    abund > 0,
+    !(species %in% c("bare", "gopher", "litter", "mosses", "rock", "soil"))
+  ) %>%
   arrange(year, plot, species)
 
 write_csv(mclexp_data, "data/community/tidy/mclexp.csv")
