@@ -529,6 +529,14 @@ rm(jasper_data)
 
 ### McLaughlin
 
+Data provided by Susan Harrison for two sites: Annual and Serpentine. First, read common site and species tables.
+
+```{r}
+McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>%
+  rename(Site = site)
+McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
+```
+
 #### Annual
 
 Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrants. Data is richness only from 2000-2005, but full community data 2006-2014. 
@@ -541,14 +549,13 @@ McLAnn <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv",
     Cover = "d", Notes = "c", Merged_Species = "c"
   )
 )
-McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>%
-  rename(Site = site)
-McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
+
 ## combining the data with site infomation, filtering to just serpentine sites
 McLAnn <- left_join(McLAnn, McL_Sites, by = "Site")
 McLAnn <- McLAnn %>%
   filter(Serpentine == "N") %>%
   rename(plot = Site)
+
 ## combining the guild information, creating a "guild" column, selecting only the desired info
 McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   rename(
@@ -591,13 +598,6 @@ mclann_data <- mclann_data %>%
 write_csv(mclann_data, "data/community/tidy/mclann.csv")
 ```
 
-Remove intermediate objects.
-
-```{r}
-rm(McL_Sites, McL_spp, McLAnn)
-rm(mclann_data)
-```
-
 #### Serpentine
 
 These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern California. These data are for 38 plots that were measured using 1m^2^ quadrants. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
@@ -605,14 +605,13 @@ These data were collected by Susan Harrison from serpentine grassland sites at M
 ```{r Import and Clean McL Serpentine, message=FALSE}
 ## importing the data
 McLSerp <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>%
-  rename(Site = site)
-McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
+
 ## combining the data with site information, filtering to just serpentine sites
 McLSerp <- left_join(McLSerp, McL_Sites, by = "Site")
 McLSerp <- McLSerp %>%
   filter(Serpentine == "S") %>%
   rename(plot = Site)
+
 ## combining the guild information, creating a "guild" column, selecting only the desired info
 McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   rename(
@@ -656,8 +655,7 @@ write_csv(mclserp_data, "data/community/tidy/mclserp.csv")
 Remove intermediate objects.
 
 ```{r}
-rm(McL_Sites, McL_spp, McLSerp)
-rm(mclserp_data)
+rm(McL_Sites, McL_spp, McLAnn, mclann_data, McLSerp, mclserp_data)
 ```
 
 ### Santa Cruz
