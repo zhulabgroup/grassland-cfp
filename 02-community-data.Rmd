@@ -487,16 +487,14 @@ Remove intermediate objects.
 rm(eb_com_tbl, eb_spp_tbl)
 ```
 
-
 ### Jasper
 
-These data were collected from Jasper Ridge from 1983 to 2015.  
+These data were collected from Jasper Ridge Biological Preserve by Lauren Hallett and Richard Hobbs from 1983 to 2015.  
 
 ```{r Jasper Data Import & Clean, message=FALSE}
 Jasper_Veg <- read_csv("data/community/raw/Jasper/JR_cover_forJosie.csv",
   col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")
 ) %>%
-  # select(-X) %>%
   pivot_wider(names_from = species, values_from = cover) %>%
   replace(is.na(.), 0) %>%
   pivot_longer(cols = aghe:vumi, names_to = "species", values_to = "cover") %>%
@@ -509,13 +507,11 @@ Jasper_species <- Jasper %>%
   mutate(site = "jasper") %>%
   filter(cover > 0) %>%
   ungroup()
-jasper_data <- Jasper_species %>%
-  mutate(species.name = recode(species.name, !!!spp_renamings_vec))
-jasper_spp_check <- jasper_data %>%
+jasper_spp_check <- Jasper_species %>%
   group_by(species.name, guild) %>%
   summarise(mean = mean(cover))
 
-jasper_data <- jasper_data %>%
+jasper_data <- Jasper_species %>%
   as_tibble() %>%
   select(site, year, plot = uniqueID, species = species.name, guild, abund = cover) %>%
   mutate(plot = as.character(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
