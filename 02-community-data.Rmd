@@ -420,6 +420,12 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
   summarize(abund = sum(point)) %>%
   left_join(eb_spp_tbl, by = "species_code") %>%
   mutate(abund_type = "point_intercept") %>%
+  mutate(species = coalesce(species, species_code)) %>% # if species == NA, replace with species_code
+  filter(
+    !(species %in% c("bare", "gopher", "litter", "mosses", "rock", "soil")),
+    !str_detect(species, "unknown"),
+    is.na(guild) | guild != "UUU"
+  ) %>%
   select(site, year, plot, species, guild, abund, abund_type) %>%
   arrange(site, year, plot, species)
 ```
