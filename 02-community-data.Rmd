@@ -335,22 +335,24 @@ carrizo <- read_csv("data/community/raw/Carrizo/Carrizo_data.csv",
 )
 carrizo_forms <- read_csv("data/community/raw/Carrizo/Carrizo_plant forms.csv")
 carrizo_extras <- read_csv("data/community/raw/Carrizo/carrizo_extraspecies.csv")
-# str(carrizo)
+
 ## renaming some columns and selecting only the columns we care about
 carrizo <- carrizo %>%
-  dplyr::rename(Intercepts = Count) %>%
-  select(Site, Plot, Site.type, year, Intercepts, Code) %>%
-  mutate(Code = tolower(Code))
+  rename(Intercepts = Count) %>%
+  mutate(Code = tolower(Code)) %>%
+  select(Site, Plot, Site.type, year, Intercepts, Code)
+
 ## combining the species guild info to the main data
 carrizo_spp <- carrizo_spp %>%
   rename_with(~ sub(" ", ".", .x)) %>%
   left_join(carrizo_forms, by = "newform") %>%
   select(NewCode, SCIENTIFIC.NAME, nat.exo, ann.per, lifeform, guild) %>%
-  dplyr::rename(
+  rename(
     Code = NewCode,
     Species.Name = SCIENTIFIC.NAME
   ) %>%
   full_join(carrizo_extras, by = c("Code", "Species.Name", "nat.exo", "ann.per", "lifeform", "guild"))
+
 ## adding the missing guild info (for things like "moss" and "bare"), getting rid of a very small number of NA datapoints, and adding a "site" column.
 carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
   filter(
@@ -359,17 +361,13 @@ carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
     !is.na(guild)
   ) %>%
   mutate(site = "carrizo")
-## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset.
 
-# fixing species name spellings/parentheticals
+## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset. Because carrizo has a weird plot vs. site issue, we'll group by "site" for all analyses.
 carrizo_data <- carrizo_data %>%
-  dplyr::rename(species.name = Species.Name) %>%
-  mutate(species.name = recode(species.name, !!!spp_renamings_vec))
-## because carrizo has a weird plot vs. site issue, we'll group by "site" for all analyses
-carrizo_data <- carrizo_data %>%
+  rename(species.name = Species.Name) %>%
   group_by(Site, year, species.name, guild, site) %>%
   summarise(Intercepts = sum(Intercepts)) %>%
-  dplyr::rename(plot = Site) %>%
+  rename(plot = Site) %>%
   filter(
     species.name != "litter",
     species.name != "bare",
