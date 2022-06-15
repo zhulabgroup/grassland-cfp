@@ -821,24 +821,6 @@ rm(McL_Sites, McL_spp, McLSerp)
 rm(mclserp_data)
 ```
 
-### Santa Rosa
-
-Santa Rosa Plateau, managed by TNC. Sites and transects varied annually, very inconsistent. Data collected via point-intercept. Richness available for more years (2000-2011) than point-intercept (2000-2006). 
-
-Josie's email on 5/25/22: "Unfortunately, the point intercept data was only collected 2000-2006 AND there was a sharp decline in sampling effort for the 2006 year - so only a handful of transects have multiple years of data. I think we can drop these data from the list of potential additions for that reason."
-
-**Note: this dataset was not used in the analysis.**
-
-```{r SR Importing and Cleaning Data}
-# ## importing the data
-# saro_rich <- read.csv("data/community/raw/SantaRosa/SantaRosa_Richness.csv")
-# saro_cov <- read.csv("data/community/raw/SantaRosa/SantaRosa_Cover00_06_raw.csv")
-# saro_spp <- read.csv("data/community/raw/SantaRosa/SantaRosa_SpeciesList.csv") %>%
-#   rename("Species" = "Codes")
-# ## combining the guild information, creating a "guild" column, selecting only the desired info
-# saro_rich <- left_join(saro_rich, saro_spp, by = "Species")
-```
-
 ### Swanton
 
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, I am using on the control plots (n = 3), and removing all other treatments from the dataset. 
