@@ -4,6 +4,8 @@ Objectives
 
 - Clean up experimental community data (JRGCE, McLaughlin Water Exp, Santa Cruz IDE)
 - Clean up observational community data (~10 datasets)
+- Correct species names
+- Gather site information
 
 Key results
 
@@ -1087,11 +1089,9 @@ rm(spp_renamings, spp_renamings_vec)
 rm(cleanElkhornData, cleanElkhornPlot)
 ```
 
-## Finalize data preparation 
+## Combine all community data
 
-### Combine data
-
-First, read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
+Read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
 
 ```{r}
 all_exp_data <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
@@ -1108,7 +1108,7 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc"))
 ```
 
-### Clean species names
+## Correct species names
 
 Prepare a master species list from tidy data.
 
@@ -1228,9 +1228,9 @@ rm(all_exp_data, all_obs_data, spp_clean_tbl, spp_tidy_tbl)
 # rm(spp_expert_tbl, spp_taxize_tbl)
 ```
 
-### Site information
+## Gather site information
 
-Input site table from Josie's dissertation. Plus JRGCE and Santa Cruz IDE.
+Input site table from Josie's dissertation. Plus JRGCE and Santa Cruz IDE. Plus additional sites.
 
 ```{r}
 site_sf <- tribble(
