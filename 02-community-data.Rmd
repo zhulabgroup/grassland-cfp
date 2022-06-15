@@ -267,19 +267,6 @@ rm(scide_data)
 
 ## Observational community data
 
-Species renaming data.
-
-```{r}
-spp_renamings <- read_csv(
-  "data/community/species-table-expert-2022-04-13.csv",
-  col_types = "ccc"
-) %>%
-  rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
-
-spp_renamings_vec <- pull(spp_renamings, revised_name)
-names(spp_renamings_vec) <- pull(spp_renamings, original_name)
-```
-
 ### Angelo
 
 These data were collected by K.B. Suttle from 2002 to 2015.  
@@ -1079,7 +1066,7 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/pleasantonridge.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/sunol.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc")) %>% 
+  bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/vascocaves.csv", col_types = "cicccdc"))
 ```
 
@@ -1088,23 +1075,35 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
 Prepare a master species list from tidy data.
 
 ```{r}
-spp_tidy_tbl <- tibble(
-  species =
-    c(all_exp_data$species, all_obs_data$species) %>%
-      unique() %>%
-      sort()
-)
+tidy_tax_tbl <- all_exp_data %>%
+  select(species, guild) %>%
+  bind_rows(all_obs_data %>% select(species, guild)) %>%
+  distinct() %>%
+  arrange(species, guild)
+```
+
+Species renaming data.
+
+```{r}
+spp_renamings <- read_csv(
+  "data/community/species-table-expert-2022-04-13.csv",
+  col_types = "ccc"
+) %>%
+  rename_with(~ tolower(gsub(" ", "_", .x, fixed = TRUE)))
+
+spp_renamings_vec <- pull(spp_renamings, revised_name)
+names(spp_renamings_vec) <- pull(spp_renamings, original_name)
 ```
 
 Download species name using the taxize package. 
 
 ```{r, eval=FALSE}
-taxize::get_gbifid_(spp_tidy_tbl$species) %>%
+taxize::get_gbifid_(tidy_tax_tbl$species) %>%
   as_tibble_col(column_name = "gbif") %>%
-  mutate(queryname = spp_tidy_tbl$species) %>%
+  mutate(queryname = tidy_tax_tbl$species) %>%
   unnest(cols = c(gbif)) %>%
   select(queryname, everything()) %>%
-  write_rds("data/community/species-table-taxize-2022-05-02.rds")
+  write_rds("data/taxonomy/taxize-2022-06-15.rds")
 ```
 
 Automatic match original names with taxize names based on the conversation with Justin Luong, 2/15/22.
