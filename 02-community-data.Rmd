@@ -433,7 +433,7 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
   summarize(abund = sum(point)) %>%
   left_join(eb_spp_tbl, by = "species_code") %>%
   mutate(abund_type = "point_intercept") %>%
-  select(site, year, plot, species_code, species, guild, abund, abund_type) %>%
+  select(site, year, plot, species, guild, abund, abund_type) %>%
   arrange(site, year, plot, species)
 ```
 
@@ -1076,8 +1076,11 @@ all_obs_data <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/jasper.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/mclann.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/mclserp.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/pleasantonridge.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/sunol.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc"))
+  bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc")) %>% 
+  bind_rows(read_csv("data/community/tidy/vascocaves.csv", col_types = "cicccdc"))
 ```
 
 ## Correct species names
