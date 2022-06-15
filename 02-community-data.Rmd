@@ -541,17 +541,17 @@ McLAnn <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv",
     Cover = "d", Notes = "c", Merged_Species = "c"
   )
 )
-McL_Sites <- read.csv("data/community/raw/McLaughlin/AbioticSiteData.csv") %>% # Cannot be read using read_csv
-  dplyr::rename(Site = site)
+McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>%
+  rename(Site = site)
 McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
 ## combining the data with site infomation, filtering to just serpentine sites
 McLAnn <- left_join(McLAnn, McL_Sites, by = "Site")
 McLAnn <- McLAnn %>%
   filter(Serpentine == "N") %>%
-  dplyr::rename(plot = Site)
+  rename(plot = Site)
 ## combining the guild information, creating a "guild" column, selecting only the desired info
 McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
-  dplyr::rename(
+  rename(
     nat.exo = Native.Exotic,
     lifeform = Grass.Forb.Shrub,
     ann.per = Annual.Perennial
@@ -569,11 +569,10 @@ McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   summarise(cover = mean(Cover)) %>%
   ungroup()
 mclann_data <- McLAnn %>%
-  dplyr::rename(
+  rename(
     species.name = Species_Name,
     year = Year
   ) %>%
-  mutate(species.name = recode(species.name, !!!spp_renamings_vec)) %>%
   filter(
     species.name != "Bare",
     species.name != "Rock",
