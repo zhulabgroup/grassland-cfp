@@ -287,7 +287,7 @@ These data were collected by K.B. Suttle from 2002 to 2015.
 ```{r Angelo Data Import and Clean, message=FALSE}
 Angelo <- read_csv("data/community/raw/Angelo/Angelo_CommCompData.csv") %>%
   filter(TMT == "C") %>%
-  gather("Dan":"Thistle", key = species, value = cover)
+  pivot_longer(-c(Year, Plot, TMT), names_to = "species", values_to = "cover")
 names(Angelo) <- tolower(names(Angelo))
 Angelo_spp <- read_csv("data/community/raw/Angelo/Angelo_spp_guilds.csv")
 Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
@@ -301,13 +301,12 @@ angelo_data <- Angelo %>%
     guild != "Moss",
     guild != "Litter"
   ) %>%
-  mutate(site = "angelo") %>%
-  mutate(species.name = as.factor(species.name))
+  mutate(site = "angelo")
 
 angelo_data <- angelo_data %>%
   as_tibble() %>%
   select(site, year, plot, species = species.name, guild, abund = cover) %>%
-  mutate(species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
+  mutate(species = str_trim(species), guild = as.character(guild), abund_type = "cover") %>%
   arrange(site, year, plot, species)
 
 write_csv(angelo_data, "data/community/tidy/angelo.csv")
