@@ -527,7 +527,9 @@ rm(Jasper, Jasper_species, jasper_spp_check, Jasper_Veg, JR_spp)
 rm(jasper_data)
 ```
 
-### McLaughlin Annual
+### McLaughlin
+
+#### Annual
 
 Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrants. Data is richness only from 2000-2005, but full community data 2006-2014. 
 
@@ -597,7 +599,7 @@ rm(McL_Sites, McL_spp, McLAnn)
 rm(mclann_data)
 ```
 
-### McLaughlin Serpentine
+#### Serpentine
 
 These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern California. These data are for 38 plots that were measured using 1m^2^ quadrants. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
 
