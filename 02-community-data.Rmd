@@ -23,6 +23,38 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = FALSE)
 library(tidyverse)
 ```
 
+## Study sites
+
+```{r, eval=FALSE}
+site_sf <- tribble(
+  ~abbr, ~name, ~latitude, ~longitude, ~grass_type, ~data_method,
+  "angelo", "Angelo Coast Range Reserve", "39 43 02.5", "-123 39 11.1", "Valley", "Cover in 30x0.09 m2 quadrats",
+  "carrizo", "Carrizo Plain", "35 11 20.6", "-119 51 45.2", "Valley", "9x9 point intercept in 1 m2 quadrats",
+  "elkhorn", "Elkhorn Slough", "36 52 02.4", "-121 44 27.5", "Coastal prairie", "5x5 point intercept in 1 m2 quadrats",
+  "jasper", "Jasper Ridge", "37 24 22.4", "-122 14 31.8", "Serpentine", "Cover in 1 m2 quadrats",
+  "jrgce", "Jasper Ridge Global Change Experiment", "37 24 22.4", "-122 14 31.8", "???", "Point intercept (?)",
+  "mclann", "McLaughlin (Annual)", "38 52 11.2", "-122 25 15.6", "Valley", "Cover in 1 m2 quadrats; first 6 years are richness only",
+  "mclserp", "McLaughlin (Serpentine)", "38 52 11.2", "-122 25 15.6", "Serpentine", "Cover in 1 m2 quadrats; first 6 years are richness only",
+  "pleasantonridge", "Pleasanton Ridge Regional Park", "37 36 55.47384", "-121 53 4.4142", "???", "???",
+  "scide", "IDE Arboretum", "36 58 38.856", "-122 03 8.136", "???", "???",
+  "scide", "IDE Marshall Field", "37 0 57", "-122 4 45", "???", "???",
+  "scide", "IDE Younger Lagoon", "36 57 0", "-122 4 0", "???", "???",
+  "sunol", "Sunol Regional Wilderness", "37 30 36.66", "-121 49 42.78", "???", "???",
+  "swanton", "Swanton Ranch", "37 02 43.1", "-122 13 16.1", "Coastal prairie", "1 m2 quadrats; 5x5 point-intercept",
+  "ucsc", "UCSC", "36 59 11.1", "-122 03 09.2", "Coastal prairie", "5x5 point intercept in 1 m2 quadrats",
+  "vascocaves", "Vasco Caves Regional Preserve", "37 48 18", "121 41 13.2", "???", "???"
+) %>%
+  mutate(
+    latitude = measurements::conv_unit(latitude, from = "deg_min_sec", to = "dec_deg") %>% as.numeric(),
+    longitude = measurements::conv_unit(longitude, from = "deg_min_sec", to = "dec_deg") %>% as.numeric()
+  ) %>%
+  sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+write_rds(site_sf, file = "data/community/site-info.rds")
+
+rm(site_sf)
+```
+
 ## Experimental community data
 
 ### Jasper Ridge Global Change Experiment
@@ -1189,50 +1221,4 @@ Remove intermediate objects.
 ```{r}
 rm(tidy_exp_tbl, tidy_obs_tbl, spp_clean_tbl, spp_tidy_tbl)
 # rm(spp_expert_tbl, spp_taxize_tbl)
-```
-
-## Gather site information
-
-Input site table from Josie's dissertation. Plus additional sites: JRGCE, Santa Cruz IDE, East Bay, etc.
-
-```{r, echo = F}
-knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.8wuzredrn9p5")
-```
-
-```{r}
-site_sf <- tribble(
-  ~abbr, ~name, ~latitude, ~longitude, ~grass_type, ~data_method,
-  "angelo", "Angelo Coast Range Reserve", "39 43 02.5", "-123 39 11.1", "Valley", "Cover in 30x0.09 m2 quadrats",
-  "carrizo", "Carrizo Plain", "35 11 20.6", "-119 51 45.2", "Valley", "9x9 point intercept in 1 m2 quadrats",
-  "elkhorn", "Elkhorn Slough", "36 52 02.4", "-121 44 27.5", "Coastal prairie", "5x5 point intercept in 1 m2 quadrats",
-  "jasper", "Jasper Ridge", "37 24 22.4", "-122 14 31.8", "Serpentine", "Cover in 1 m2 quadrats",
-  "jrgce", "Jasper Ridge Global Change Experiment", "37 24 22.4", "-122 14 31.8", "???", "Point intercept (?)",
-  "mclann", "McLaughlin (Annual)", "38 52 11.2", "-122 25 15.6", "Valley", "Cover in 1 m2 quadrats; first 6 years are richness only",
-  "mclserp", "McLaughlin (Serpentine)", "38 52 11.2", "-122 25 15.6", "Serpentine", "Cover in 1 m2 quadrats; first 6 years are richness only",
-  "pleasantonridge", "Pleasanton Ridge Regional Park", "37 36 55.47384", "-121 53 4.4142", "???", "???",
-  "scide", "IDE Arboretum", "36 58 38.856", "-122 03 8.136", "???", "???",
-  "scide", "IDE Marshall Field", "37 0 57", "-122 4 45", "???", "???",
-  "scide", "IDE Younger Lagoon", "36 57 0", "-122 4 0", "???", "???",
-  "sunol", "Sunol Regional Wilderness", "37 30 36.66", "-121 49 42.78", "???", "???",
-  "swanton", "Swanton Ranch", "37 02 43.1", "-122 13 16.1", "Coastal prairie", "1 m2 quadrats; 5x5 point-intercept",
-  "ucsc", "UCSC", "36 59 11.1", "-122 03 09.2", "Coastal prairie", "5x5 point intercept in 1 m2 quadrats",
-  "vascocaves", "Vasco Caves Regional Preserve", "37 48 18", "121 41 13.2", "???", "???"
-) %>%
-  mutate(
-    latitude = measurements::conv_unit(latitude, from = "deg_min_sec", to = "dec_deg") %>% as.numeric(),
-    longitude = measurements::conv_unit(longitude, from = "deg_min_sec", to = "dec_deg") %>% as.numeric()
-  ) %>%
-  sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
-```
-
-Save it to RDS.
-
-```{r}
-write_rds(site_sf, file = "data/community/site-info.rds")
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(site_sf)
 ```
