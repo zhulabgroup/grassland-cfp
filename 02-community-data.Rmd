@@ -605,17 +605,17 @@ These data were collected by Susan Harrison from serpentine grassland sites at M
 ```{r Import and Clean McL Serpentine, message=FALSE}
 ## importing the data
 McLSerp <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
-McL_Sites <- read.csv("data/community/raw/McLaughlin/AbioticSiteData.csv") %>% # Cannot be read using read_csv
-  dplyr::rename(Site = site)
+McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>%
+  rename(Site = site)
 McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
-## combining the data with site infomation, filtering to just serptentine sites
+## combining the data with site information, filtering to just serpentine sites
 McLSerp <- left_join(McLSerp, McL_Sites, by = "Site")
 McLSerp <- McLSerp %>%
   filter(Serpentine == "S") %>%
-  dplyr::rename(plot = Site)
+  rename(plot = Site)
 ## combining the guild information, creating a "guild" column, selecting only the desired info
 McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
-  dplyr::rename(
+  rename(
     nat.exo = Native.Exotic,
     lifeform = Grass.Forb.Shrub,
     ann.per = Annual.Perennial
@@ -632,11 +632,10 @@ McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
   summarise(cover = mean(Cover))
 mclserp_data <- McLSerp %>%
-  dplyr::rename(
+  rename(
     species.name = Species_Name,
     year = Year
   ) %>%
-  mutate(species.name = recode(species.name, !!!spp_renamings_vec)) %>%
   filter(
     species.name != "Bare",
     species.name != "Rock",
