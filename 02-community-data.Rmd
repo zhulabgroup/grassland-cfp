@@ -1113,6 +1113,22 @@ tidy_obs_tbl <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/vascocaves.csv", col_types = "cicccdc"))
 ```
 
+Show sampling year for plot by site
+
+```{r}
+tidy_exp_tbl %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+
+tidy_obs_tbl %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+```
+
 ## Correct species names
 
 Prepare a master species list from tidy data.
