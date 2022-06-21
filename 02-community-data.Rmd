@@ -451,10 +451,12 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
   col_types = "cicidc"
 ) %>%
   rename(plot = plot.ID, species_code = species) %>%
-  group_by(site, year, plot, transect, species_code) %>%
-  summarize(point = mean(point)) %>%
   group_by(site, year, plot, species_code) %>%
-  summarize(abund = sum(point)) %>%
+  summarize(hits = n()) %>% 
+  group_by(site, year, plot) %>% 
+  mutate(tot_hits = sum(hits)) %>% 
+  group_by(site, year, plot, species_code) %>% 
+  summarize(abund = hits/tot_hits) %>% 
   left_join(eb_spp_tbl, by = "species_code") %>%
   mutate(abund_type = "point_intercept") %>%
   mutate(species = coalesce(species, species_code)) %>% # if species == NA, replace with species_code
