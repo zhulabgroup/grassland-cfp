@@ -452,11 +452,11 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
 ) %>%
   rename(plot = plot.ID, species_code = species) %>%
   group_by(site, year, plot, species_code) %>%
-  summarize(hits = n()) %>% 
-  group_by(site, year, plot) %>% 
-  mutate(tot_hits = sum(hits)) %>% 
-  group_by(site, year, plot, species_code) %>% 
-  summarize(abund = hits/tot_hits) %>% 
+  summarize(hits = n()) %>%
+  group_by(site, year, plot) %>%
+  mutate(tot_hits = sum(hits)) %>%
+  group_by(site, year, plot, species_code) %>%
+  summarize(abund = hits / tot_hits) %>%
   left_join(eb_spp_tbl, by = "species_code") %>%
   mutate(abund_type = "point_intercept") %>%
   mutate(species = coalesce(species, species_code)) %>% # if species == NA, replace with species_code
@@ -494,21 +494,35 @@ inner_join(eb_guild_sum_tbl1, eb_guild_sum_tbl2, by = c("site", "year", "plot", 
 rm(eb_guild_sum_tbl1, eb_guild_sum_tbl2)
 ```
 
-Separately save three site files.
+#### Pleasanton Ridge
+
+Include PR4-9 plots that have 10 yr of data, 2003-2012.
 
 ```{r}
 eb_com_tbl %>%
-  filter(site == "PR") %>%
+  filter(site == "PR", plot %in% str_c("PR", 4:9)) %>%
   mutate(site = "pleasantonridge") %>%
   write_csv("data/community/tidy/pleasantonridge.csv")
+```
 
+#### Sunol
+
+Include SU1-6 plots that have 8 yr of data, 2005-2012. Include SU7-9 plots that have 7 yr of data, 2005-2011.
+
+```{r}
 eb_com_tbl %>%
-  filter(site == "SU") %>%
+  filter(site == "SU", plot %in% str_c("SU", 1:9)) %>%
   mutate(site = "sunol") %>%
   write_csv("data/community/tidy/sunol.csv")
+```
 
+#### Vasco Caves
+
+Include VC1-3 plots that have 12 yr of data, 2002-2012. Include VC4-6 plots that have 11 yr of data, 2002-2011. Include VC7-9 plots that have 11 yr of data, 2003-2012. Include VC10 plot that has 10 yr of data, 2003-2011. 
+
+```{r}
 eb_com_tbl %>%
-  filter(site == "VC") %>%
+  filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
   mutate(site = "vascocaves") %>%
   write_csv("data/community/tidy/vascocaves.csv")
 ```
