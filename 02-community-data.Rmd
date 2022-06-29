@@ -520,6 +520,10 @@ eb_com_tbl %>%
 
 Include VC1-3 plots that have 12 yr of data, 2002-2012. Include VC4-6 plots that have 11 yr of data, 2002-2011. Include VC7-9 plots that have 11 yr of data, 2003-2012. Include VC10 plot that has 10 yr of data, 2003-2011. 
 
+Joan's additional notes: 
+
+> I'd probably remove VC1, 8 & 9 to stay consistent with the remaining plots (and 9 interceptions is low), but if you're feeling like more is better, I can see the argument to keep them in:)
+
 ```{r}
 eb_com_tbl %>%
   filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
