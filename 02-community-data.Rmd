@@ -343,68 +343,66 @@ rm(angelo_data)
 
 ### Carrizo
 
-This data represents Carrizo, from 2007 to 2018. The data are taken in plots, with a variable number of plots measured annually. However, for each plot, 81 pin drops (9x9 frame) were used to assess the community structure of the site. 
+Carrizo Plain data from Loralee Larios, from 2007 to 2021, updated on June 28, 2022. The data are taken in plots, with a variable number of plots measured annually. These data only have the control plots after 2015 so replication will go from 10 20m x 20m plots with 8 1m2 subplots  to 4 20m x 20m plots with 8 1m2 subplots. Those plots that are kept would correspond to Center Well plots 2, 3, 4, 6 and Swain plots 1,2,7,9.
 
-In the raw data, there should be be eight 1x1m plots per site (e.g. EP1, EP2) and ten of those sites per Site.Type (EP, SC) through 2014. After 2015 that level of replication decreases to four sites per Site.Type. This reduction is due to the addition of a new experiment involving precipitation that some plots were cannibalized for. 
-
-**At a later date, we may want to consider changing the level of analysis. For now, we will treat each plot as a separate replicate.**
-
-```{r Import & clean Carrizo, message=FALSE}
-## importing all of the files
-carrizo_spp <- read_csv("data/community/raw/Carrizo/Carrizo_plant list.csv")
-carrizo <- read_csv("data/community/raw/Carrizo/Carrizo_data.csv",
-  col_types = c("cfDcccccccdcic")
-)
-carrizo_forms <- read_csv("data/community/raw/Carrizo/Carrizo_plant forms.csv")
-carrizo_extras <- read_csv("data/community/raw/Carrizo/carrizo_extraspecies.csv")
-
-## renaming some columns and selecting only the columns we care about
-carrizo <- carrizo %>%
-  rename(Intercepts = Count) %>%
-  mutate(Code = tolower(Code)) %>%
-  select(Site, Plot, Site.type, year, Intercepts, Code)
-
-## combining the species guild info to the main data
-carrizo_spp <- carrizo_spp %>%
-  rename_with(~ sub(" ", ".", .x)) %>%
-  left_join(carrizo_forms, by = "newform") %>%
-  select(NewCode, SCIENTIFIC.NAME, nat.exo, ann.per, lifeform, guild) %>%
-  rename(
-    Code = NewCode,
-    Species.Name = SCIENTIFIC.NAME
+```{r}
+carrizo_com <- readxl::read_xlsx(
+  "data/community/raw/Carrizo/2022-06-28/Carrizo_data for Joise_2007_2021.xlsx",
+  sheet = 1,
+  col_types = c(
+    "date", "numeric", "text", "text", "text",
+    "numeric", "text", "text", "text", "text",
+    "text", "numeric", "text", "text", "text",
+    "text", "text", "text", "text", "numeric",
+    "numeric", "text"
+  ),
+  na = "NA"
+) %>%
+  filter(cattle == "Ungrazed") %>% # only ungrazed plots
+  select(
+    plot = Site, year,
+    species_code = SpeciesCode, species_name = Species.Name,
+    intercept = Count # or Count2 = Updated number of hits, where any species that was present but not hit were given a 1
   ) %>%
-  full_join(carrizo_extras, by = c("Code", "Species.Name", "nat.exo", "ann.per", "lifeform", "guild"))
+  filter(intercept > 0, !is.na(intercept))
 
-## adding the missing guild info (for things like "moss" and "bare"), getting rid of a very small number of NA datapoints, and adding a "site" column.
-carrizo_data <- left_join(carrizo, carrizo_spp, by = "Code") %>%
+carrizo_spp <- read_csv(
+  "data/community/raw/Carrizo/2022-06-28/Carrizo_global_species list.csv",
+  col_types = "c"
+) %>%
+  mutate(guild = case_when(
+    newform == "ia" ~ "EAG", # Invasive (Exotic) Annual Grass
+    newform == "ih" ~ "EAF", # Invasive (Exotic) Annual Forb
+    newform == "ip" ~ "EPF", # Invasive (Exotic) Perennial Forb
+    newform == "na" ~ "NAG", # Native Annual Grass
+    newform == "nh" ~ "NAF", # Native Annual Forb
+    newform == "np" ~ "NPF", # Native	Perennial	Forb
+    newform == "npg" ~ "NPG" # Native Perennial Grass
+  ))
+
+carrizo_data <- carrizo_com %>%
   filter(
-    !is.na(Intercepts),
-    Intercepts > 0,
-    !is.na(guild)
+    !(species_code == "AMSMEN" & is.na(species_name)),
+    !(species_code == "ASTspp" & is.na(species_name)),
+    !(species_code == "BARE" & species_name == "Bare ground"),
+    !(species_code == "BURROW" & species_name == "Animal burrow"),
+    !(species_code == "CRYPTO" & is.na(species_name)),
+    !(species_code == "EUPPOL" & is.na(species_name)),
+    !(species_code == "FRESHDIRT" & species_name == "freshly disturbed dirt"),
+    !(species_code == "GOPHER" & species_name == "gopher mound"),
+    !(species_code == "HOLE" & species_name == "hole in ground"),
+    !(species_code == "LITTER" & species_name == "litter"),
+    !(species_code == "MOSS" & is.na(species_name)),
+    !(species_code == "UNK 11" & is.na(species_name))
   ) %>%
-  mutate(site = "carrizo")
-
-## There are a very small number of unidentified species (*remember to check the number of NA guilds*), so I have omitted them from the dataset. Because carrizo has a weird plot vs. site issue, we'll group by "site" for all analyses.
-carrizo_data <- carrizo_data %>%
-  rename(species.name = Species.Name) %>%
-  group_by(Site, year, species.name, guild, site) %>%
-  summarise(Intercepts = sum(Intercepts)) %>%
-  rename(plot = Site) %>%
-  filter(
-    species.name != "litter",
-    species.name != "bare",
-    species.name != "hole",
-    species.name != "moss"
-  )
-
-carrizo_data <- carrizo_data %>%
-  as_tibble() %>%
-  select(site, year, plot, species = species.name, guild, abund = Intercepts) %>%
-  mutate(
-    plot = as.character(plot), species = as.character(species) %>% str_trim(),
-    guild = as.character(guild), abund_type = "point_intercept"
+  left_join(carrizo_spp %>% select(species_code = spp.code, species_name = SCIENTIFIC.NAME, guild),
+    by = c("species_code", "species_name")
   ) %>%
-  arrange(site, year, plot, species)
+  group_by(plot, year, species_code, species_name, guild) %>%
+  summarize(abund = sum(intercept)) %>%
+  mutate(site = "carrizo", species_name = str_trim(species_name), abund_type = "point_intercept") %>%
+  select(site, year, plot, species_code, species_name, guild, abund, abund_type) %>%
+  arrange(site, year, plot, species_name)
 
 write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 ```
