@@ -403,9 +403,10 @@ carrizo_data <- carrizo_com %>%
   ) %>%
   group_by(plot, year, species_code, species_name, guild) %>%
   summarize(abund = sum(intercept)) %>%
+  ungroup() %>%
   mutate(site = "carrizo", species_name = str_trim(species_name), abund_type = "point_intercept") %>%
-  select(site, year, plot, species_code, species_name, guild, abund, abund_type) %>%
-  arrange(site, year, plot, species_name)
+  select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
+  arrange(site, year, plot, species)
 
 write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 ```
