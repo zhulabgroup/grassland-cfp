@@ -77,7 +77,7 @@ pin_tbl <- read_csv("data/community/raw/JRGCE/Pin count.csv", col_types = "iicci
     str_starts(species, "Crepis"),
     "Crepis vesicaria ssp. taraxacifolia",
     species
-  )) %>% 
+  )) %>%
   filter(!is.na(abund))
 ```
 
@@ -646,7 +646,8 @@ mclann_data <- mclann_data %>%
   ungroup() %>%
   select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
   mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
-  arrange(site, year, plot, species)
+  arrange(site, year, plot, species) %>%
+  filter(!is.na(abund), abund > 0)
 
 write_csv(mclann_data, "data/community/tidy/mclann.csv")
 ```
@@ -700,7 +701,8 @@ mclserp_data <- mclserp_data %>%
   ungroup() %>%
   select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
   mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
-  arrange(site, year, plot, species)
+  arrange(site, year, plot, species) %>%
+  filter(!is.na(abund), abund > 0)
 
 write_csv(mclserp_data, "data/community/tidy/mclserp.csv")
 ```
