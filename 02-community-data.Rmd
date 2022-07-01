@@ -464,7 +464,7 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
   mutate(abund_type = "point_intercept") %>%
   mutate(species = coalesce(species, species_code)) %>% # if species == NA, replace with species_code
   filter(
-    !(species %in% c("bare", "gopher", "litter", "mosses", "rock", "soil")),
+    !(species %in% c("bare", "COWPIE", "gopher", "litter", "mosses", "rock", "soil")),
     !str_detect(species, "unknown"),
     is.na(guild) | guild != "UUU"
   ) %>%
