@@ -77,7 +77,8 @@ pin_tbl <- read_csv("data/community/raw/JRGCE/Pin count.csv", col_types = "iicci
     str_starts(species, "Crepis"),
     "Crepis vesicaria ssp. taraxacifolia",
     species
-  ))
+  )) %>% 
+  filter(!is.na(abund))
 ```
 
 ```{r species table}
