@@ -416,8 +416,7 @@ write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 Remove intermediate objects.
 
 ```{r}
-rm(carrizo, carrizo_extras, carrizo_forms, carrizo_spp)
-rm(carrizo_data)
+rm(carrizo_com, carrizo_data, carrizo_spp)
 ```
 
 ### East Bay
