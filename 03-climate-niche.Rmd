@@ -95,10 +95,10 @@ cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
 gbif_box_ls <-
   foreach(
-    i = 1:length(spp_vec),
+    i = 1:length(spp_tbl$query_name),
     .packages = c("spocc", "sf", "tidyverse")
   ) %dopar% {
-    sp <- spp_vec[i]
+    sp <- spp_tbl$query_name[i]
     res <- occ(
       query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
       geometry = st_bbox(cfp_sf),
@@ -123,7 +123,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-06-13.rds")
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-07-01.rds")
 
 rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 ```
