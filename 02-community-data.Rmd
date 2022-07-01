@@ -1155,7 +1155,9 @@ tidy_obs_tbl %>%
 
 ## Correct species names
 
-Prepare a master species list from tidy data.
+### Prepare species list
+
+Compile a unique species-guild list from the tidy data.
 
 ```{r}
 tidy_tax_tbl <- tidy_exp_tbl %>%
@@ -1176,87 +1178,7 @@ taxize::get_gbifid_(tidy_tax_tbl$species) %>%
   write_rds("data/taxonomy/taxize-2022-06-15.rds")
 ```
 
-Automatic match original names with taxize names based on the conversation with Justin Luong, 2/15/22.
-
-1. Filter plants (kingdom == "Plantae").
-1. For each query, choose the top row (highest confidence).
-1. Set species_match = canonicalname (= species if species is not NA; = genus if species is NA; = family if genus and species = NA).
-
-```{r, eval=FALSE}
-spp_taxize_tbl <- read_rds("data/taxonomy/taxize-2022-06-15.rds") %>%
-  filter(kingdom == "Plantae") %>%
-  group_by(queryname) %>%
-  slice_head(n = 1) %>% # choose the top 1
-  ungroup() %>%
-  select(queryname, canonicalname, everything())
-```
-
-Combining all species name corrections: taxize, expert, and drop genus-only "species."
-
-```{r, eval=FALSE}
-spp_clean_tbl <- spp_tidy_tbl %>%
-  select(tidy_name = species) %>%
-  left_join(
-    spp_taxize_tbl %>%
-      select(tidy_name = queryname, taxize_name = canonicalname),
-    by = "tidy_name"
-  ) %>%
-  left_join(
-    spp_expert_tbl %>%
-      select(taxize_name = original_name, expert_name = revised_name, expert_issue = issue),
-    by = "taxize_name"
-  ) %>%
-  mutate(
-    clean_name = if_else(
-      (!is.na(expert_name) | !is.na(expert_issue)), # if expert correction or drop
-      expert_name,
-      taxize_name
-    )
-  ) %>%
-  mutate(
-    clean_name = if_else(
-      str_detect(clean_name, " "), # genus-species combo has a space; otherwise drop genus-only "species"
-      clean_name,
-      "DROP"
-    ),
-    clean_name = na_if(clean_name, "DROP")
-  )
-
-write_csv(spp_clean_tbl, "data/community/species-table-clean-2022-05-02.csv")
-```
-
-Finally, replace clean species names in all data and save to RDS. The species clean table is based on the above code, supplemented by Justin's manual adjustments on 5/6/22 and Kai's edits on 5/10/22.
-
-Updated on 6/8/22. Directly use the species table reviewed by Justin.
-
-```{r}
-spp_clean_tbl <- read_csv("data/community/species-table-clean-2022-06-08.csv", col_types = "c")
-
-tidy_exp_tbl %>%
-  rename(tidy_name = species) %>%
-  inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
-  drop_na(clean_name) %>%
-  filter(abund > 0) %>%
-  select(
-    site, year, plot,
-    treat,
-    species = clean_name,
-    guild, abund, abund_type
-  ) %>%
-  write_rds("data/community/all-experimental-data.rds")
-
-tidy_obs_tbl %>%
-  rename(tidy_name = species) %>%
-  inner_join(spp_clean_tbl %>% select(tidy_name, clean_name), by = "tidy_name") %>%
-  drop_na(clean_name) %>%
-  filter(abund > 0) %>%
-  select(
-    site, year, plot,
-    species = clean_name,
-    guild, abund, abund_type
-  ) %>%
-  write_rds("data/community/all-observational-data.rds")
-```
+Send the list to Josie and Justin for manual correction.
 
 Remove intermediate objects.
 
