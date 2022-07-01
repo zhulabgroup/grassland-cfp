@@ -25,6 +25,22 @@ library(tidyverse)
 library(sf)
 ```
 
+Show sampling year for plot by site for experimental and observational data.
+
+```{r}
+tidy_exp_tbl %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+
+tidy_obs_tbl %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+```
+
 Load niche estimates.
 
 ```{r}
