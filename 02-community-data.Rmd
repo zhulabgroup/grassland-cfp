@@ -1180,9 +1180,57 @@ taxize::get_gbifid_(tidy_tax_tbl$species) %>%
 
 Send the list to Josie and Justin for manual correction.
 
+### Rename species
+
+Read the expert table manually complied by Josie and Justin.
+
+```{r}
+googlesheets4::gs4_deauth()
+misspelling_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck")
+```
+
+Rename species and guild using the expert table.
+
+```{r}
+tidy_exp_tbl %>%
+  rename(
+    "original_species" = "species",
+    "original_guild" = "guild"
+  ) %>%
+  left_join(
+    misspelling_tbl,
+    by = c("original_species", "original_guild")
+  ) %>%
+  filter(keep) %>%
+  select(
+    site, year, plot, treat,
+    species = corrected_species, guild = corrected_guild,
+    abund, abund_type
+  ) %>%
+  arrange(site, year, plot, species) %>%
+  write_rds("data/community/all-experimental-data.rds")
+
+tidy_obs_tbl %>%
+  rename(
+    "original_species" = "species",
+    "original_guild" = "guild"
+  ) %>%
+  left_join(
+    misspelling_tbl,
+    by = c("original_species", "original_guild")
+  ) %>%
+  filter(keep) %>%
+  select(
+    site, year, plot,
+    species = corrected_species, guild = corrected_guild,
+    abund, abund_type
+  ) %>%
+  arrange(site, year, plot, species) %>%
+  write_rds("data/community/all-observational-data.rds")
+```
+
 Remove intermediate objects.
 
 ```{r}
-rm(tidy_exp_tbl, tidy_obs_tbl, spp_clean_tbl, spp_tidy_tbl)
-# rm(spp_expert_tbl, spp_taxize_tbl)
+rm(misspelling_tbl, tidy_exp_tbl, tidy_obs_tbl, tidy_tax_tbl)
 ```
