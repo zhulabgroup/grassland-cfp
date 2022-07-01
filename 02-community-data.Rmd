@@ -1110,7 +1110,6 @@ rm(ucsc_data)
 Remove intermediate objects.
 
 ```{r}
-rm(spp_renamings, spp_renamings_vec)
 rm(cleanElkhornData, cleanElkhornPlot)
 ```
 
