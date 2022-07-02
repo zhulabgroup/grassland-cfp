@@ -701,8 +701,8 @@ sp_gbif_vec <- gbif_chelsa_sf %>%
   pull(species) %>%
   unique() %>%
   sort()
-sp_tab_vec <- spp_comm_tbl %>%
-  pull(species) %>%
+sp_tab_vec <- spp_tbl %>%
+  pull(query_name) %>%
   unique() %>%
   sort()
 sp_gbif_vec %in% sp_tab_vec
@@ -785,7 +785,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-2022-06-13.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-07-01.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
