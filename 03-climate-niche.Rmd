@@ -76,7 +76,7 @@ spp_tbl <- spp_comm_tbl %>%
         "query_name" = "old_species_name",
         "consolidated_name" = "new_species_name"
       )
-  ) %>% 
+  ) %>%
   arrange(query_name)
 
 rm(spp_comm_tbl, spp_consol_tbl)
@@ -133,10 +133,9 @@ Note that GBIF depends on download dates. So we'll keep the download file with d
 Consolidate species names in GBIF.
 
 ```{r, eval=FALSE}
-read_rds("data/occurrence/gbif/gbif-cfp-2022-06-13.rds") %>%
-  left_join(spp_consol_tbl, by = c("queryName" = "query_name")) %>%
-  select(consolidated_name, everything()) %>%
-  rename(consolidatedName = consolidated_name) %>%
+read_rds("data/occurrence/gbif/gbif-cfp-2022-07-01.rds") %>%
+  left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
+  select(consolidatedName = consolidated_name, everything()) %>%
   mutate(
     consolidatedName =
       ifelse(
@@ -145,13 +144,13 @@ read_rds("data/occurrence/gbif/gbif-cfp-2022-06-13.rds") %>%
         consolidatedName
       )
   ) %>%
-  write_rds("data/occurrence/gbif/gbif-consolidated-2022-06-13.rds")
+  write_rds("data/occurrence/gbif/gbif-consolidated-2022-07-01.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-06-13.rds"
+gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-07-01.rds"
 ```
 
 ### iNaturalist
