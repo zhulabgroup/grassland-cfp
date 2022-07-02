@@ -77,7 +77,9 @@ spp_tbl <- spp_comm_tbl %>%
         "consolidated_name" = "new_species_name"
       )
   ) %>%
-  arrange(query_name)
+  filter(!str_detect(query_name, "AVERAGE")) %>% 
+  arrange(query_name) %>% 
+  distinct(query_name, consolidated_name)
 
 rm(spp_comm_tbl, spp_consol_tbl)
 ```
