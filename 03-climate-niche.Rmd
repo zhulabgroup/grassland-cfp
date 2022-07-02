@@ -194,10 +194,10 @@ cl <- makeCluster(num_cores)
 registerDoSNOW(cl)
 bien_df_list <-
   foreach(
-    i = 1:length(spp_vec),
+    i = 1:length(spp_tbl$query_name),
     .packages = c("BIEN", "tidyverse")
   ) %dopar% {
-    sp <- spp_vec[i]
+    sp <- spp_tbl$query_name[i]
     res <- BIEN_occurrence_species(species = sp)
     print(i)
     tibble(queryName = sp, res) %>%
