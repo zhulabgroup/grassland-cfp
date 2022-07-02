@@ -507,7 +507,6 @@ gbif_sf_wgs84 <- read_rds(gbif_file) %>%
     species = consolidatedName,
     key = as.character(key)
   ) %>%
-  filter(species %in% spp_comm_tbl$species) %>%
   dplyr::select(key, species, longitude, latitude) %>%
   st_as_sf(
     coords = c("longitude", "latitude"),
@@ -545,13 +544,13 @@ bind_cols(
   terraclim_gbif_sf %>%
     dplyr::select(starts_with("terraclim_"))
 ) %>%
-  write_rds("data/climate/climate-gbif-2022-06-13.rds")
+  write_rds("data/climate/climate-gbif-2022-07-01.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-clim_file <- "data/climate/climate-gbif-2022-06-13.rds"
+clim_file <- "data/climate/climate-gbif-2022-07-01.rds"
 ```
 
 Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
