@@ -173,13 +173,13 @@ res <- occ(
 ```{r, eval=FALSE}
 read_rds(gbif_file) %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
-  write_rds("data/occurrence/inat/inat-cfp-2022-06-13.rds")
+  write_rds("data/occurrence/inat/inat-cfp-2022-07-01.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-inat_file <- "data/occurrence/inat/inat-cfp-2022-06-13.rds"
+inat_file <- "data/occurrence/inat/inat-cfp-2022-07-01.rds"
 ```
 
 ### BIEN
