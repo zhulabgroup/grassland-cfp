@@ -939,5 +939,5 @@ niche_tbl %>%
     vpd_occ_mean, vpd_occ_sd,
     vpd_occ_median, vpd_occ_q05, vpd_occ_q25, vpd_occ_q75, vpd_occ_q95
   ) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-06-13.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-07-01.rds")
 ```
