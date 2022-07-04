@@ -158,21 +158,17 @@ fig1_gg <- occ_geog_gg + occ_clim_gg + niche_gg +
 
 Render (slow) and save.
 
-```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 367,657 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 894 records, blue points) and *Stipa pulchra* in the south (*n* = 481 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 182 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
+```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 766,889 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 916 records, blue points) and *Stipa pulchra* in the south (*n* = 3,087 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 352 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
 fig1_gg
+```
 
-# ggsave(
-#   plot = fig1_gg,
-#   filename = str_c(
-#     "figures/fig1-",
-#     word(cool_species, 1) %>% tolower(),
-#     "-",
-#     word(warm_species, 1) %>% tolower(),
-#     ".png"
-#   ),
-#   width = 7.5,
-#   height = 7.5 * 1.618
-# )
+```{r, eval=FALSE}
+ggsave(
+  plot = fig1_gg,
+  filename = "figures/fig1.png",
+  width = 7.5,
+  height = 7.5 * 1.618
+)
 ```
 
 ### Community shift analyses
