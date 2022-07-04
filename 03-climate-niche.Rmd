@@ -366,7 +366,7 @@ ggplot() +
 rm(prop_samp)
 ```
 
-Remove all occurrance data (but leave file name pointers).
+Remove all occurrence data (but leave file name pointers).
 
 ```{r}
 rm(bien_tbl, cch_tbl, gbif_tbl, inat_tbl, occ_sf)
