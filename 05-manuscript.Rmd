@@ -284,7 +284,7 @@ obs_gg_fun <- function(tbl, site_lab, cti_lab = "", cpi_lab = "", yr_lab = NULL)
         CPI = cpi_lab # "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    xlim(1983, 2019) +
+    expand_limits(x = range(obs_tbl$year)) +
     labs(
       x = yr_lab, y = NULL,
       title = site_lab
