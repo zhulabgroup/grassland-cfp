@@ -297,14 +297,17 @@ obs_gg_fun <- function(tbl, site_lab, cti_lab = "", cpi_lab = "", yr_lab = NULL)
 }
 
 site_vec <- c(
-  angelo = "Angelo Coast Range Reserve",
+  angelo = "Angelo Coast",
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
-  jasper = "Jasper Ridge Biological Preserve",
-  mclann = "McLaughlin Reserve Annual",
-  mclserp = "McLaughlin Reserve Serpentine",
+  jasper = "Jasper Ridge",
+  mclann = "McLaughlin Annual",
+  mclserp = "McLaughlin Serpentine",
+  pleasantonridge = "Pleasanton Ridge",
+  sunol = "Sunol",
   swanton = "Swanton Ranch",
-  ucsc = "UC Santa Cruz"
+  ucsc = "UC Santa Cruz",
+  vascocaves = "Vasco Caves"
 )
 ```
 
@@ -354,40 +357,57 @@ mclserp_gg <- obs_com_mean_tbl %>%
   filter(site == "mclserp") %>%
   obs_gg_fun(site_vec["mclserp"])
 
+pleasantonridge_gg <- obs_com_mean_tbl %>%
+  filter(site == "pleasantonridge") %>%
+  obs_gg_fun(site_vec["pleasantonridge"])
+
+sunol_gg <- obs_com_mean_tbl %>%
+  filter(site == "sunol") %>%
+  obs_gg_fun(site_vec["sunol"])
+
 swanton_gg <- obs_com_mean_tbl %>%
   filter(site == "swanton") %>%
-  obs_gg_fun(site_vec["swanton"])
+  obs_gg_fun(site_vec["swanton"],
+    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
+  )
 
 ucsc_gg <- obs_com_mean_tbl %>%
   filter(site == "ucsc") %>%
   obs_gg_fun(site_vec["ucsc"])
+
+vascocaves_gg <- obs_com_mean_tbl %>%
+  filter(site == "vascocaves") %>%
+  obs_gg_fun(site_vec["vascocaves"])
 ```
 
 Combine panels.
 
 ```{r}
-fig2_gg <- jrgce_gg +
+obs_gg <-
   angelo_gg + carrizo_gg + elkhorn_gg + jasper_gg +
-  mclann_gg + mclserp_gg + swanton_gg + ucsc_gg +
+  mclann_gg + mclserp_gg + pleasantonridge_gg + sunol_gg +
+  swanton_gg + ucsc_gg + vascocaves_gg +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
-  AAAA
-  BCDE
-  FGHI
+  ABCD
+  EFGH
+  IJKL
   ")
 ```
 
 Render and save.
 
-```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term experiments and observations. (A) Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). (B to I) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in six long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by *t*-test, *p* < 0.05)."}
-fig2_gg
+```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term observations. (A to K) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 11 long-term observational sites across the California Floristic Province (dashed trend lines by linear regression, all significant slopes by *t*-test, *p* < 0.05)."}
+obs_gg
+```
 
-# ggsave(
-#   plot = fig2_gg,
-#   filename = "figures/fig2.png",
-#   width = 10,
-#   height = 10 * 1.618
-# )
+```{r, eval=FALSE}
+ggsave(
+  plot = obs_gg,
+  filename = "figures/fig3-obs.png",
+  width = 10,
+  height = 10 * 1.618
+)
 ```
 
 ## Supplements
