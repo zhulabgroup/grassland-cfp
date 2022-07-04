@@ -959,3 +959,10 @@ niche_tbl %>%
   ) %>%
   write_rds("data/occurrence/niche-estimates-cfp-2022-07-04.rds")
 ```
+
+Remove intermediate objects.
+
+```{r}
+rm(cfp_sf, niche_tbl, spp_tbl)
+rm(clim_file, gbif_file)
+```
