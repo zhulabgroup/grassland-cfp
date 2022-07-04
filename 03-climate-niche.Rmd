@@ -47,6 +47,8 @@ cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
 ) %>%
   plotly::ggplotly(tooltip = "text")
+
+rm(site_sf)
 ```
 
 Load two species tables. 
@@ -247,12 +249,12 @@ cch_all_tbl <- read_csv("data/occurrence/cch/occurrences.csv") %>%
     latitude = decimalLatitude,
     key = id
   ) %>%
-  left_join(spp_tbl, by = c("queryName" = "query_name")) %>% 
+  left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
   mutate(species_name = ifelse(
     is.na(consolidated_name),
     queryName,
     consolidated_name
-  )) %>% 
+  )) %>%
   select(species_name, longitude, latitude, key)
 
 cch_cfp_tbl <- cch_all_tbl %>%
@@ -366,10 +368,12 @@ ggplot() +
 rm(prop_samp)
 ```
 
-Remove all occurrence data (but leave file name pointers).
+Remove intermediate objects and all occurrence data (but leave GBIF file name pointers).
 
 ```{r}
+rm(cfp_sf, spp_tbl)
 rm(bien_tbl, cch_tbl, gbif_tbl, inat_tbl, occ_sf)
+rm(bien_file, cch_file, inat_file)
 ```
 
 ## Get climate data
@@ -687,6 +691,13 @@ ggplot() +
   scale_color_viridis() +
   labs(x = "Longitude", y = "Latitude") +
   coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
+```
+
+Remove intermediate objects.
+
+```{r}
+rm(chelsa_ras, prism_ras, terraclim_ras)
+rm(clim_gbif_tbl, clim_gbif_tbl_compare)
 ```
 
 ## Quantify species climate niches
