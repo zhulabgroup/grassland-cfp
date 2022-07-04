@@ -4,6 +4,7 @@ author: "Kai Zhu"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 site: bookdown::bookdown_site
 output: bookdown::html_document2
+  fig_caption: true
 editor_options: 
   chunk_output_type: console
 documentclass: book
