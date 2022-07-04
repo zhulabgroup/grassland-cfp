@@ -716,14 +716,14 @@ sp_gbif_vec <- gbif_chelsa_sf %>%
   pull(species) %>%
   unique() %>%
   sort()
-sp_comm_vec <- spp_tbl %>% 
+sp_comm_vec <- spp_tbl %>%
   mutate(final_name = ifelse(
     is.na(consolidated_name),
     query_name,
     consolidated_name
-  )) %>% 
-  pull(final_name) %>% 
-  unique() %>% 
+  )) %>%
+  pull(final_name) %>%
+  unique() %>%
   sort()
 sp_gbif_vec %in% sp_comm_vec
 
