@@ -108,7 +108,11 @@ occ_clim_gg <-
 
 niche_gg <-
   ggplot(
-    data = niche_tbl,
+    data = niche_tbl %>%
+      filter(
+        occ_n > 1,
+        !str_detect(species, "DUMMY")
+      ),
     mapping = aes(
       x = tmp_occ_mean,
       y = ppt_occ_mean,
