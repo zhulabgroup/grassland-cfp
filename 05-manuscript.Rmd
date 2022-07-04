@@ -4,6 +4,10 @@ Setup and load packages.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE, warning = FALSE)
+climate_file <- "data/climate/climate-gbif-2022-07-04.rds"
+niche_file <- "data/occurrence/niche-estimates-cfp-2022-07-04.rds"
+exp_file <- "data/community/all-experimental-data.rds"
+obs_file <- "data/community/all-observational-data.rds"
 ```
 
 ```{r}
@@ -22,11 +26,11 @@ Figures and tables in the main text.
 Read in GBIF-CHELSA, and niche estimate data.
 
 ```{r}
-gbif_chelsa_sf <- read_rds("data/climate/climate-gbif-2022-05-28.rds") %>%
+gbif_chelsa_sf <- read_rds(climate_file) %>%
   dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
-niche_tbl <- read_rds("data/occurrence/niche-estimates-cfp-2022-05-10.rds")
+niche_tbl <- read_rds(niche_file)
 ```
 
 Choose two example species and assign colors. From Justin's email 5/10/22:
