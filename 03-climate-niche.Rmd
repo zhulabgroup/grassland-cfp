@@ -246,7 +246,14 @@ cch_all_tbl <- read_csv("data/occurrence/cch/occurrences.csv") %>%
     longitude = decimalLongitude,
     latitude = decimalLatitude,
     key = id
-  )
+  ) %>%
+  left_join(spp_tbl, by = c("queryName" = "query_name")) %>% 
+  mutate(species_name = ifelse(
+    is.na(consolidated_name),
+    queryName,
+    consolidated_name
+  )) %>% 
+  select(species_name, longitude, latitude, key)
 
 cch_cfp_tbl <- cch_all_tbl %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
@@ -278,16 +285,14 @@ bien_tbl <- read_rds(bien_file) %>%
     species = queryName,
     key = as.character(key)
   ) %>%
-  # filter(species %in% spp_comm_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
 cch_tbl <- read_rds(cch_file) %>%
   mutate(
     dataset = "cch",
-    species = queryName,
+    species = species_name,
     key = as.character(key)
   ) %>%
-  # filter(species %in% spp_comm_tbl$species) %>%
   select(dataset, key, species, longitude, latitude)
 
 gbif_tbl <- read_rds(gbif_file) %>%
@@ -296,7 +301,6 @@ gbif_tbl <- read_rds(gbif_file) %>%
     species = consolidatedName,
     key = as.character(key)
   ) %>%
-  # filter(species %in% spp_comm_tbl$species) %>%
   filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
   filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
@@ -308,7 +312,6 @@ inat_tbl <- read_rds(inat_file) %>%
     species = consolidatedName,
     key = as.character(key)
   ) %>%
-  # filter(species %in% spp_comm_tbl$species) %>%
   filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
   filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
