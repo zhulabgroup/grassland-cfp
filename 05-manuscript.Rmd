@@ -171,6 +171,12 @@ ggsave(
 )
 ```
 
+Clear large objects.
+
+```{r}
+rm(fig1_gg, gbif_chelsa_sf, niche_gg, occ_clim_gg, occ_geog_gg)
+```
+
 ### Community shift analyses
 
 Read in experimental and observational data.
