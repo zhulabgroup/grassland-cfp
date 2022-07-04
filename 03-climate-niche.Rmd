@@ -371,7 +371,6 @@ rm(prop_samp)
 Remove intermediate objects and all occurrence data (but leave GBIF file name pointers).
 
 ```{r}
-rm(cfp_sf, spp_tbl)
 rm(bien_tbl, cch_tbl, gbif_tbl, inat_tbl, occ_sf)
 rm(bien_file, cch_file, inat_file)
 ```
@@ -717,11 +716,16 @@ sp_gbif_vec <- gbif_chelsa_sf %>%
   pull(species) %>%
   unique() %>%
   sort()
-sp_tab_vec <- spp_tbl %>%
-  pull(query_name) %>%
-  unique() %>%
+sp_comm_vec <- spp_tbl %>% 
+  mutate(final_name = ifelse(
+    is.na(consolidated_name),
+    query_name,
+    consolidated_name
+  )) %>% 
+  pull(final_name) %>% 
+  unique() %>% 
   sort()
-sp_gbif_vec %in% sp_tab_vec
+sp_gbif_vec %in% sp_comm_vec
 
 # gbif summary
 tmp_rng <- range(gbif_chelsa_sf$tmp)
