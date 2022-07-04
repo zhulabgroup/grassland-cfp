@@ -176,7 +176,7 @@ ggsave(
 Read in experimental and observational data.
 
 ```{r}
-exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
+exp_tbl <- read_rds(exp_file) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -184,7 +184,7 @@ exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
 
-obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
+obs_tbl <- read_rds(obs_file) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
@@ -197,7 +197,7 @@ JRGCE warming treatment to CTI and CPI comparisons.
 
 ```{r}
 jrgce_gg <-
-  exp_com_tbl %>%
+  exp_tbl %>%
   filter(site == "jrgce") %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
   dplyr::select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
@@ -288,7 +288,7 @@ site_vec <- c(
 Reshape data and make individual panels.
 
 ```{r}
-obs_com_mean_tbl <- obs_com_tbl %>%
+obs_com_mean_tbl <- obs_tbl %>%
   dplyr::select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
   pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
   mutate(com_idx_name = factor(com_idx_name,
@@ -296,7 +296,7 @@ obs_com_mean_tbl <- obs_com_tbl %>%
     labels = c("CTI", "CPI")
   ))
 
-samp_size_tbl <- obs_com_tbl %>%
+samp_size_tbl <- obs_tbl %>%
   group_by(site) %>%
   summarize(
     n_plot = n_distinct(plot),
