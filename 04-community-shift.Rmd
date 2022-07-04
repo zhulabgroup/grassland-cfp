@@ -18,6 +18,9 @@ Setup and load packages.
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
+exp_file <- "data/community/all-experimental-data.rds"
+obs_file <- "data/community/all-observational-data.rds"
+niche_file <- "data/occurrence/niche-estimates-cfp-2022-07-04.rds"
 ```
 
 ```{r}
@@ -28,13 +31,13 @@ library(sf)
 Show sampling year for plot by site for experimental and observational data.
 
 ```{r}
-tidy_exp_tbl %>%
+read_rds(exp_file) %>%
   distinct(site, plot, year) %>%
   ggplot(aes(year, plot)) +
   geom_point() +
   facet_wrap(~site, scales = "free")
 
-tidy_obs_tbl %>%
+read_rds(obs_file) %>%
   distinct(site, plot, year) %>%
   ggplot(aes(year, plot)) +
   geom_point() +
@@ -44,7 +47,6 @@ tidy_obs_tbl %>%
 Load niche estimates.
 
 ```{r}
-niche_file <- "data/occurrence/niche-estimates-cfp-2022-06-13.rds"
 niche_tbl <- read_rds(niche_file)
 ```
 
@@ -53,7 +55,7 @@ niche_tbl <- read_rds(niche_file)
 Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
-exp_com_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
+exp_com_tbl <- read_rds(exp_file) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -1144,7 +1146,7 @@ exp_com_tbl %>%
 Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
-obs_com_tbl <- read_rds("data/community/all-observational-data.rds") %>%
+obs_com_tbl <- read_rds(obs_file) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
