@@ -1170,7 +1170,7 @@ Read the expert table manually complied by Josie and Justin.
 
 ```{r}
 googlesheets4::gs4_deauth()
-misspelling_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck")
+misspelling_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck", na = c("", "NA")) # guild = "NA" means NA
 ```
 
 Rename species and guild using the expert table.

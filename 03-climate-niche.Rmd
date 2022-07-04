@@ -67,7 +67,7 @@ spp_comm_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
   arrange(species)
 
 googlesheets4::gs4_deauth()
-spp_consol_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck", sheet = "Consolidation")
+spp_consol_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck", sheet = "Consolidation", na = c("", "NA"))
 
 spp_tbl <- spp_comm_tbl %>%
   rename("query_name" = "species") %>%
