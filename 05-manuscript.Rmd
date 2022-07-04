@@ -199,6 +199,8 @@ obs_tbl <- read_rds(obs_file) %>%
   )
 ```
 
+#### Experimental data
+
 JRGCE warming treatment to CTI and CPI comparisons. 
 
 ```{r}
@@ -243,6 +245,21 @@ jrgce_gg <-
     plot.subtitle = ggtext::element_markdown()
   )
 ```
+
+```{r, fig.width=10, fig.height=6.18, fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01). "}
+jrgce_gg
+```
+
+```{r, eval=FALSE}
+ggsave(
+  plot = jrgce_gg,
+  filename = "figures/fig2.png",
+  width = 10,
+  height = 6.18
+)
+```
+
+#### Observational data
 
 Observational data CTI and CPI comparisons, arranged by observational sites. Set up plotting functions and labels.
 
