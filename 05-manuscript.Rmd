@@ -264,8 +264,13 @@ ggsave(
 Observational data CTI and CPI comparisons, arranged by observational sites. Set up plotting functions and labels.
 
 ```{r}
-obs_gg_fun <- function(tbl, site_lab, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
-  ggplot(data = tbl, aes(year, com_idx_value, group = year)) +
+obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
+  # prepare site data
+  site_tbl <- tbl %>%
+    filter(site == site_name)
+  site_lab <- site_vec[site_name]
+
+  ggplot(site_tbl, aes(year, com_idx_value, group = year)) +
     geom_boxplot() +
     geom_smooth(
       method = "lm", formula = y ~ x, se = FALSE,
@@ -284,7 +289,7 @@ obs_gg_fun <- function(tbl, site_lab, cti_lab = "", cpi_lab = "", yr_lab = NULL)
         CPI = cpi_lab # "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    expand_limits(x = range(obs_tbl$year)) +
+    expand_limits(x = range(tbl$year)) +
     labs(
       x = yr_lab, y = NULL,
       title = site_lab
@@ -330,54 +335,37 @@ samp_size_tbl <- obs_tbl %>%
   )
 
 angelo_gg <- obs_com_mean_tbl %>%
-  filter(site == "angelo") %>%
-  obs_gg_fun(site_vec["angelo"],
-    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
-  )
+  obs_gg_fun("angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
 
 carrizo_gg <- obs_com_mean_tbl %>%
-  filter(site == "carrizo") %>%
-  obs_gg_fun(site_vec["carrizo"])
+  obs_gg_fun("carrizo")
 
 elkhorn_gg <- obs_com_mean_tbl %>%
-  filter(site == "elkhorn") %>%
-  obs_gg_fun(site_vec["elkhorn"])
+  obs_gg_fun("elkhorn")
 
 jasper_gg <- obs_com_mean_tbl %>%
-  filter(site == "jasper") %>%
-  obs_gg_fun(site_vec["jasper"])
+  obs_gg_fun("jasper")
 
 mclann_gg <- obs_com_mean_tbl %>%
-  filter(site == "mclann") %>%
-  obs_gg_fun(site_vec["mclann"],
-    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
-  )
+  obs_gg_fun("mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
 
 mclserp_gg <- obs_com_mean_tbl %>%
-  filter(site == "mclserp") %>%
-  obs_gg_fun(site_vec["mclserp"])
+  obs_gg_fun("mclserp")
 
 pleasantonridge_gg <- obs_com_mean_tbl %>%
-  filter(site == "pleasantonridge") %>%
-  obs_gg_fun(site_vec["pleasantonridge"])
+  obs_gg_fun("pleasantonridge")
 
 sunol_gg <- obs_com_mean_tbl %>%
-  filter(site == "sunol") %>%
-  obs_gg_fun(site_vec["sunol"])
+  obs_gg_fun("sunol")
 
 swanton_gg <- obs_com_mean_tbl %>%
-  filter(site == "swanton") %>%
-  obs_gg_fun(site_vec["swanton"],
-    cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"
-  )
+  obs_gg_fun("swanton", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
 
 ucsc_gg <- obs_com_mean_tbl %>%
-  filter(site == "ucsc") %>%
-  obs_gg_fun(site_vec["ucsc"])
+  obs_gg_fun("ucsc")
 
 vascocaves_gg <- obs_com_mean_tbl %>%
-  filter(site == "vascocaves") %>%
-  obs_gg_fun(site_vec["vascocaves"])
+  obs_gg_fun("vascocaves")
 ```
 
 Combine panels.
