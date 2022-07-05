@@ -334,38 +334,17 @@ samp_size_tbl <- obs_tbl %>%
     n_year = n_distinct(year)
   )
 
-angelo_gg <- obs_idx_tbl %>%
-  obs_gg_fun("angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
-
-carrizo_gg <- obs_idx_tbl %>%
-  obs_gg_fun("carrizo")
-
-elkhorn_gg <- obs_idx_tbl %>%
-  obs_gg_fun("elkhorn")
-
-jasper_gg <- obs_idx_tbl %>%
-  obs_gg_fun("jasper")
-
-mclann_gg <- obs_idx_tbl %>%
-  obs_gg_fun("mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
-
-mclserp_gg <- obs_idx_tbl %>%
-  obs_gg_fun("mclserp")
-
-pleasantonridge_gg <- obs_idx_tbl %>%
-  obs_gg_fun("pleasantonridge")
-
-sunol_gg <- obs_idx_tbl %>%
-  obs_gg_fun("sunol")
-
-swanton_gg <- obs_idx_tbl %>%
-  obs_gg_fun("swanton", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
-
-ucsc_gg <- obs_idx_tbl %>%
-  obs_gg_fun("ucsc")
-
-vascocaves_gg <- obs_idx_tbl %>%
-  obs_gg_fun("vascocaves")
+angelo_gg <- obs_gg_fun(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
+carrizo_gg <- obs_gg_fun(obs_idx_tbl, "carrizo")
+elkhorn_gg <- obs_gg_fun(obs_idx_tbl, "elkhorn")
+jasper_gg <- obs_gg_fun(obs_idx_tbl, "jasper")
+mclann_gg <- obs_gg_fun(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
+mclserp_gg <- obs_gg_fun(obs_idx_tbl, "mclserp")
+pleasantonridge_gg <- obs_gg_fun(obs_idx_tbl, "pleasantonridge")
+sunol_gg <- obs_gg_fun(obs_idx_tbl, "sunol")
+swanton_gg <- obs_gg_fun(obs_idx_tbl, "swanton", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
+ucsc_gg <- obs_gg_fun(obs_idx_tbl, "ucsc")
+vascocaves_gg <- obs_gg_fun(obs_idx_tbl, "vascocaves")
 ```
 
 Combine panels.
