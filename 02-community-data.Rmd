@@ -527,9 +527,14 @@ Joan's additional notes:
 
 > I'd probably remove VC1, 8 & 9 to stay consistent with the remaining plots (and 9 interceptions is low), but if you're feeling like more is better, I can see the argument to keep them in:)
 
+Josie's additional notes:
+
+> Were you able to sort out why some transects only had 9 interceptions? When I poked at the data, it looked like only several plots at Vasco Caves had 9 hits (VC1, VC8, and VC9, matching your notes) but only in 2012. Does that match what you found? If that's the case, it seems like our best bet might be to include those plots for all years except 2012.
+
 ```{r}
 eb_com_tbl %>%
   filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
+  filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>% 
   mutate(site = "vascocaves") %>%
   write_csv("data/community/tidy/vascocaves.csv")
 ```
