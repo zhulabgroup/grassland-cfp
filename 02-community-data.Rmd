@@ -374,7 +374,7 @@ carrizo_com <- readxl::read_xlsx(
 
 # species data
 carrizo_spp <- read_csv(
-  "data/community/raw/Carrizo/2022-06-28/Carrizo_global_species list.csv",
+  "data/community/raw/Carrizo/2022-07-05/Carrizo_global_species list.csv",
   col_types = "c"
 ) %>%
   mutate(guild = case_when(
@@ -384,7 +384,8 @@ carrizo_spp <- read_csv(
     newform == "na" ~ "NAG", # Native Annual Grass
     newform == "nh" ~ "NAF", # Native Annual Forb
     newform == "np" ~ "NPF", # Native	Perennial	Forb
-    newform == "npg" ~ "NPG" # Native Perennial Grass
+    newform == "npg" ~ "NPG", # Native Perennial Grass
+    newform == "nps" ~ "NPS" # Native Perennial Shrub
   ))
 
 # join community and species data
