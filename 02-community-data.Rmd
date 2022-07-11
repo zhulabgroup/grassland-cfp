@@ -408,6 +408,11 @@ carrizo_data <- carrizo_com %>%
   left_join(carrizo_spp %>% select(species_code = spp.code, species_name = SCIENTIFIC.NAME, guild),
     by = c("species_code", "species_name")
   ) %>%
+  mutate(species_name = case_when(
+    species_code == "AMSMEN" ~ "Amsinckia menziesii",
+    species_code == "EUPPOL" ~ "Chamaesyce polycarpa (Euphorbia polycarpa)",
+    TRUE ~ species_name
+  )) %>% 
   group_by(plot, year, species_code, species_name, guild) %>%
   summarize(abund = sum(intercept)) %>%
   ungroup() %>%
