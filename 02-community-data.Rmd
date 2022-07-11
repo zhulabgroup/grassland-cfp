@@ -392,12 +392,12 @@ carrizo_spp <- read_csv(
 carrizo_data <- carrizo_com %>%
   filter(
     plot %in% c("EP2", "EP3", "EP4", "EP6", "SC1", "SC2", "SC7", "SC9"),
-    !(species_code == "AMSMEN" & is.na(species_name)),
+    # !(species_code == "AMSMEN" & is.na(species_name)),
     !(species_code == "ASTspp" & is.na(species_name)),
     !(species_code == "BARE" & species_name == "Bare ground"),
     !(species_code == "BURROW" & species_name == "Animal burrow"),
     !(species_code == "CRYPTO" & is.na(species_name)),
-    !(species_code == "EUPPOL" & is.na(species_name)),
+    # !(species_code == "EUPPOL" & is.na(species_name)),
     !(species_code == "FRESHDIRT" & species_name == "freshly disturbed dirt"),
     !(species_code == "GOPHER" & species_name == "gopher mound"),
     !(species_code == "HOLE" & species_name == "hole in ground"),
