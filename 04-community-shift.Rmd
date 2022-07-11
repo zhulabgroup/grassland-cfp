@@ -1123,17 +1123,27 @@ Community temperature niches change over years.
 CTI community-level mean in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
 ```{r, fig.cap="Compare mean(CTI) across sites over years"}
+tmp_com_mean_lm <- obs_tbl %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate(lm = map(data, ~ lm(tmp_com_mean ~ year, data = .))) %>%
+  mutate(p_val = map_dbl(lm, ~ broom::glance(.) %>% pull(p.value)))
+
 obs_tbl %>%
   ggplot(aes(year, tmp_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
+    data = obs_tbl %>%
+      filter(
+        site %in% (
+          tmp_com_mean_lm %>%
+            filter(p_val < .05) %>% # plot only .05 significant trends
+            pull(site)
+        )
+      ),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1169,17 +1179,27 @@ Community precipitation niches change over years.
 CPI community-level mean in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
 
 ```{r, fig.cap="Compare mean(CPI) across sites over years"}
+ppt_com_mean_lm <- obs_tbl %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate(lm = map(data, ~ lm(ppt_com_mean ~ year, data = .))) %>%
+  mutate(p_val = map_dbl(lm, ~ broom::glance(.) %>% pull(p.value)))
+
 obs_tbl %>%
   ggplot(aes(year, ppt_com_mean, group = year)) +
   geom_boxplot() +
   geom_smooth(
+    data = obs_tbl %>%
+      filter(
+        site %in% (
+          ppt_com_mean_lm %>%
+            filter(p_val < .05) %>% # plot only .05 significant trends
+            pull(site)
+        )
+      ),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
