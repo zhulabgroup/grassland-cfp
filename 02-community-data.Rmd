@@ -346,6 +346,10 @@ rm(angelo_data)
 
 Carrizo Plain data from Loralee Larios, from 2007 to 2021, updated on June 28, 2022. The data are taken in plots, with a variable number of plots measured annually. These data only have the control plots after 2015 so replication will go from 10 20m x 20m plots with 8 1m2 subplots  to 4 20m x 20m plots with 8 1m2 subplots. Those plots that are kept would correspond to Center Well plots 2, 3, 4, 6 and Swain plots 1,2,7,9.
 
+Loralee's email (7/5/22) on Count vs. Count2:
+
+> For the point of whether to use Count or Count2. I would suggest using Count 2, while this does capture species that were likely rare in that 1m2 plot, these species may be regionally dominant and just rare in that plot so I think it would give you a better representation of the range of abundance for a species. 
+
 ```{r}
 # community data spreadsheet
 carrizo_com <- readxl::read_xlsx(
@@ -364,7 +368,7 @@ carrizo_com <- readxl::read_xlsx(
   select(
     plot = Site, year,
     species_code = SpeciesCode, species_name = Species.Name,
-    intercept = Count # or Count2 = Updated number of hits, where any species that was present but not hit were given a 1
+    intercept = Count2 # Updated number of hits, where any species that was present but not hit were given a 1
   ) %>%
   filter(intercept > 0, !is.na(intercept))
 
