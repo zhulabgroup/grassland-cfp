@@ -420,7 +420,7 @@ carrizo_data <- carrizo_com %>%
   select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
   arrange(site, year, plot, species)
 
-write_csv(carrizo_data, "data/community/tidy/carrizo2.csv")
+write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
 ```
 
 Remove intermediate objects.
