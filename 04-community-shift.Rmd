@@ -1124,16 +1124,21 @@ CTI community-level mean in several sites increases over years, suggesting commu
 
 ```{r, fig.cap="Compare mean(CTI) across sites over years"}
 obs_tbl %>%
-  ggplot(aes(year, tmp_com_mean, group = year)) +
-  geom_boxplot() +
-  geom_smooth(
+  select(site, year, plot, com_idx = tmp_com_mean) %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate( # lm and p value
+    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
+      map_dbl(~ broom::glance(.) %>% pull(p.value))
+  ) %>%
+  unnest(cols = data) %>%
+  ggplot(aes(year, com_idx)) +
+  geom_boxplot(aes(group = year)) +
+  geom_smooth( # add lm trend line when significant
+    data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1145,16 +1150,22 @@ CTI community-level standard deviation.
 
 ```{r, fig.cap="Compare sd(CTI) across sites over years"}
 obs_tbl %>%
-  ggplot(aes(year, sqrt(tmp_com_var), group = year)) +
-  geom_boxplot() +
-  geom_smooth(
+  mutate(com_idx = sqrt(tmp_com_var)) %>%
+  select(site, year, plot, com_idx) %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate( # lm and p value
+    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
+      map_dbl(~ broom::glance(.) %>% pull(p.value))
+  ) %>%
+  unnest(cols = data) %>%
+  ggplot(aes(year, com_idx)) +
+  geom_boxplot(aes(group = year)) +
+  geom_smooth( # add lm trend line when significant
+    data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1170,16 +1181,21 @@ CPI community-level mean in several sites decreases over years, suggesting commu
 
 ```{r, fig.cap="Compare mean(CPI) across sites over years"}
 obs_tbl %>%
-  ggplot(aes(year, ppt_com_mean, group = year)) +
-  geom_boxplot() +
-  geom_smooth(
+  select(site, year, plot, com_idx = ppt_com_mean) %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate( # lm and p value
+    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
+      map_dbl(~ broom::glance(.) %>% pull(p.value))
+  ) %>%
+  unnest(cols = data) %>%
+  ggplot(aes(year, com_idx)) +
+  geom_boxplot(aes(group = year)) +
+  geom_smooth( # add lm trend line when significant
+    data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1191,16 +1207,22 @@ CPI community-level standard deviation.
 
 ```{r, fig.cap="Compare sd(CPI) across sites over years"}
 obs_tbl %>%
-  ggplot(aes(year, sqrt(ppt_com_var), group = year)) +
-  geom_boxplot() +
-  geom_smooth(
+  mutate(com_idx = sqrt(ppt_com_var)) %>%
+  select(site, year, plot, com_idx) %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate( # lm and p value
+    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
+      map_dbl(~ broom::glance(.) %>% pull(p.value))
+  ) %>%
+  unnest(cols = data) %>%
+  ggplot(aes(year, com_idx)) +
+  geom_boxplot(aes(group = year)) +
+  geom_smooth( # add lm trend line when significant
+    data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1216,16 +1238,21 @@ CVI community-level mean in several sites changes over years, but no clear direc
 
 ```{r, fig.cap="Compare mean(CVI) across sites over years"}
 obs_tbl %>%
-  ggplot(aes(year, vpd_com_mean, group = year)) +
-  geom_boxplot() +
-  geom_smooth(
+  select(site, year, plot, com_idx = vpd_com_mean) %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate( # lm and p value
+    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
+      map_dbl(~ broom::glance(.) %>% pull(p.value))
+  ) %>%
+  unnest(cols = data) %>%
+  ggplot(aes(year, com_idx)) +
+  geom_boxplot(aes(group = year)) +
+  geom_smooth( # add lm trend line when significant
+    data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1233,20 +1260,26 @@ obs_tbl %>%
   )
 ```
 
-CPI community-level standard deviation.
+CVI community-level standard deviation.
 
 ```{r, fig.cap="Compare sd(CVI) across sites over years"}
 obs_tbl %>%
-  ggplot(aes(year, sqrt(vpd_com_var), group = year)) +
-  geom_boxplot() +
-  geom_smooth(
+  mutate(com_idx = sqrt(vpd_com_var)) %>%
+  select(site, year, plot, com_idx) %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate( # lm and p value
+    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
+      map_dbl(~ broom::glance(.) %>% pull(p.value))
+  ) %>%
+  unnest(cols = data) %>%
+  ggplot(aes(year, com_idx)) +
+  geom_boxplot(aes(group = year)) +
+  geom_smooth( # add lm trend line when significant
+    data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", lty = "dashed",
+    color = "red", # lty = "dashed",
     aes(group = 1)
-  ) +
-  ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
