@@ -412,7 +412,7 @@ carrizo_data <- carrizo_com %>%
     species_code == "AMSMEN" ~ "Amsinckia menziesii",
     species_code == "EUPPOL" ~ "Chamaesyce polycarpa (Euphorbia polycarpa)",
     TRUE ~ species_name
-  )) %>% 
+  )) %>%
   group_by(plot, year, species_code, species_name, guild) %>%
   summarize(abund = sum(intercept)) %>%
   ungroup() %>%
@@ -544,7 +544,7 @@ Josie's additional notes:
 ```{r}
 eb_com_tbl %>%
   filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
-  filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>% 
+  filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>%
   mutate(site = "vascocaves") %>%
   write_csv("data/community/tidy/vascocaves.csv")
 ```
@@ -1185,7 +1185,12 @@ Read the expert table manually complied by Josie and Justin.
 
 ```{r}
 googlesheets4::gs4_deauth()
-misspelling_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck", na = c("", "NA")) # guild = "NA" means NA
+misspelling_tbl <- googlesheets4::read_sheet(
+  "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
+  sheet = "Misspelling",
+  n_max = 654,
+  na = c("", "NA") # guild = "NA" means NA
+)
 ```
 
 Rename species and guild using the expert table.
