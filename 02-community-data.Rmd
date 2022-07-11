@@ -374,7 +374,7 @@ carrizo_com <- readxl::read_xlsx(
 
 # species data
 carrizo_spp <- read_csv(
-  "data/community/raw/Carrizo/2022-07-05/Carrizo_global_species list.csv",
+  "data/community/raw/Carrizo/2022-07-05/Carrizo_global_species list_v2.csv",
   col_types = "c"
 ) %>%
   mutate(guild = case_when(
@@ -415,7 +415,7 @@ carrizo_data <- carrizo_com %>%
   select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
   arrange(site, year, plot, species)
 
-write_csv(carrizo_data, "data/community/tidy/carrizo.csv")
+write_csv(carrizo_data, "data/community/tidy/carrizo2.csv")
 ```
 
 Remove intermediate objects.
