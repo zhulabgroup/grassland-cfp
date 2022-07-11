@@ -972,7 +972,6 @@ Avena_tbl <- niche_tbl %>%
 Festuca_tbl <- niche_tbl %>%
   filter(species %in% c(
     "Festuca bromoides",
-    "Festuca myuros",
     "Festuca perennis"
   )) %>%
   summarize(across(-c(species:occ_n), mean))
