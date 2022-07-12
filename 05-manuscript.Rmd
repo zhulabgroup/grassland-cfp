@@ -345,29 +345,21 @@ obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL
 }
 ```
 
-Apply the plotting function to make individual panels.
-
-```{r}
-angelo_gg <- obs_gg_fun(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
-carrizo_gg <- obs_gg_fun(obs_idx_tbl, "carrizo")
-elkhorn_gg <- obs_gg_fun(obs_idx_tbl, "elkhorn")
-jasper_gg <- obs_gg_fun(obs_idx_tbl, "jasper")
-mclann_gg <- obs_gg_fun(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
-mclserp_gg <- obs_gg_fun(obs_idx_tbl, "mclserp")
-pleasantonridge_gg <- obs_gg_fun(obs_idx_tbl, "pleasantonridge")
-sunol_gg <- obs_gg_fun(obs_idx_tbl, "sunol")
-swanton_gg <- obs_gg_fun(obs_idx_tbl, "swanton", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
-ucsc_gg <- obs_gg_fun(obs_idx_tbl, "ucsc")
-vascocaves_gg <- obs_gg_fun(obs_idx_tbl, "vascocaves")
-```
-
-Combine panels.
+Apply the plotting function, make individual panels, and combine them.
 
 ```{r}
 obs_gg <-
-  angelo_gg + carrizo_gg + elkhorn_gg + jasper_gg +
-  mclann_gg + mclserp_gg + pleasantonridge_gg + sunol_gg +
-  swanton_gg + ucsc_gg + vascocaves_gg +
+  obs_gg_fun(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "carrizo") +
+  obs_gg_fun(obs_idx_tbl, "elkhorn") +
+  obs_gg_fun(obs_idx_tbl, "jasper") +
+  obs_gg_fun(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "mclserp") +
+  obs_gg_fun(obs_idx_tbl, "pleasantonridge") +
+  obs_gg_fun(obs_idx_tbl, "sunol") +
+  obs_gg_fun(obs_idx_tbl, "swanton", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "ucsc") +
+  obs_gg_fun(obs_idx_tbl, "vascocaves") +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
   ABCD
