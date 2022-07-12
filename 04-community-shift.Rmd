@@ -1137,8 +1137,7 @@ obs_tbl %>%
   geom_smooth( # add lm trend line when significant
     data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", # lty = "dashed",
-    aes(group = 1)
+    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1164,8 +1163,7 @@ obs_tbl %>%
   geom_smooth( # add lm trend line when significant
     data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", # lty = "dashed",
-    aes(group = 1)
+    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1194,8 +1192,7 @@ obs_tbl %>%
   geom_smooth( # add lm trend line when significant
     data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", # lty = "dashed",
-    aes(group = 1)
+    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1221,8 +1218,7 @@ obs_tbl %>%
   geom_smooth( # add lm trend line when significant
     data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", # lty = "dashed",
-    aes(group = 1)
+    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1251,8 +1247,7 @@ obs_tbl %>%
   geom_smooth( # add lm trend line when significant
     data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", # lty = "dashed",
-    aes(group = 1)
+    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
@@ -1278,8 +1273,7 @@ obs_tbl %>%
   geom_smooth( # add lm trend line when significant
     data = . %>% filter(p_val < 0.05),
     method = "lm", se = FALSE,
-    color = "red", # lty = "dashed",
-    aes(group = 1)
+    color = "red"
   ) +
   facet_wrap(~site, scales = "free_y") +
   labs(
