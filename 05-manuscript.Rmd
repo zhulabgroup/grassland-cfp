@@ -265,7 +265,46 @@ ggsave(
 
 #### Observational data
 
-Observational data CTI and CPI comparisons, arranged by observational sites. Set up plotting functions and labels.
+Observational data CTI and CPI comparisons, arranged by observational sites. 
+
+Set up site labels.
+
+```{r}
+site_vec <- c(
+  angelo = "Angelo Coast",
+  carrizo = "Carrizo Plain",
+  elkhorn = "Elkhorn Slough",
+  jasper = "Jasper Ridge",
+  mclann = "McLaughlin Annual",
+  mclserp = "McLaughlin Serpentine",
+  pleasantonridge = "Pleasanton Ridge",
+  sunol = "Sunol",
+  swanton = "Swanton Ranch",
+  ucsc = "UC Santa Cruz",
+  vascocaves = "Vasco Caves"
+)
+```
+
+Reshape data.
+
+```{r}
+obs_idx_tbl <- obs_tbl %>%
+  dplyr::select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
+  pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
+  mutate(com_idx_name = factor(com_idx_name,
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
+  ))
+
+samp_size_tbl <- obs_tbl %>%
+  group_by(site) %>%
+  summarize(
+    n_plot = n_distinct(plot),
+    n_year = n_distinct(year)
+  )
+```
+
+Define the plotting function.
 
 ```{r}
 obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
@@ -304,40 +343,11 @@ obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL
       plot.title = element_text(size = 11)
     )
 }
-
-site_vec <- c(
-  angelo = "Angelo Coast",
-  carrizo = "Carrizo Plain",
-  elkhorn = "Elkhorn Slough",
-  jasper = "Jasper Ridge",
-  mclann = "McLaughlin Annual",
-  mclserp = "McLaughlin Serpentine",
-  pleasantonridge = "Pleasanton Ridge",
-  sunol = "Sunol",
-  swanton = "Swanton Ranch",
-  ucsc = "UC Santa Cruz",
-  vascocaves = "Vasco Caves"
-)
 ```
 
-Reshape data and make individual panels.
+Apply the plotting function to make individual panels.
 
 ```{r}
-obs_idx_tbl <- obs_tbl %>%
-  dplyr::select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
-  pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
-  mutate(com_idx_name = factor(com_idx_name,
-    levels = c("tmp_com_mean", "ppt_com_mean"),
-    labels = c("CTI", "CPI")
-  ))
-
-samp_size_tbl <- obs_tbl %>%
-  group_by(site) %>%
-  summarize(
-    n_plot = n_distinct(plot),
-    n_year = n_distinct(year)
-  )
-
 angelo_gg <- obs_gg_fun(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)")
 carrizo_gg <- obs_gg_fun(obs_idx_tbl, "carrizo")
 elkhorn_gg <- obs_gg_fun(obs_idx_tbl, "elkhorn")
