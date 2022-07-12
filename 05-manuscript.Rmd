@@ -309,19 +309,23 @@ Define the plotting function.
 ```{r}
 obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
   # prepare site data
-  site_tbl <- tbl %>%
-    filter(site == site_name)
   site_lab <- site_vec[site_name]
+  site_tbl <- tbl %>%
+    filter(site == site_name) %>%
+    group_by(com_idx_name) %>%
+    nest() %>%
+    mutate( # lm and p value
+      p_val = map(data, ~ lm(com_idx_value ~ year, data = .)) %>%
+        map_dbl(~ broom::glance(.) %>% pull(p.value))
+    ) %>%
+    unnest(cols = data)
 
-  ggplot(site_tbl, aes(year, com_idx_value, group = year)) +
-    geom_boxplot() +
-    geom_smooth(
-      method = "lm", formula = y ~ x, se = FALSE,
-      color = "red", lty = "dashed",
-      aes(group = 1)
-    ) +
-    ggpubr::stat_cor(aes(group = 1, label = ..p.label..),
-      p.accuracy = 0.05,
+  # plot
+  ggplot(site_tbl, aes(year, com_idx_value)) +
+    geom_boxplot(aes(group = year)) +
+    geom_smooth( # add lm trend line when significant
+      data = . %>% filter(p_val < 0.05),
+      method = "lm", se = FALSE,
       color = "red"
     ) +
     facet_wrap(~com_idx_name,
