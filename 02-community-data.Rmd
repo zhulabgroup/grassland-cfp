@@ -1188,7 +1188,7 @@ googlesheets4::gs4_deauth()
 misspelling_tbl <- googlesheets4::read_sheet(
   "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
   sheet = "Misspelling",
-  n_max = 654,
+  n_max = Inf,
   na = c("", "NA") # guild = "NA" means NA
 )
 ```
