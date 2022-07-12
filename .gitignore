@@ -1,6 +1,7 @@
 # data -> /data/ZHULAB/grassland/
 data
 figures/
+tmp/
 
 # bookdown
 *.rds
