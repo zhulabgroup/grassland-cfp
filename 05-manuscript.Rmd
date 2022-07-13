@@ -43,17 +43,7 @@ gbif_chelsa_sf <- read_rds(clim_file) %>%
 niche_tbl <- read_rds(niche_file)
 ```
 
-Choose two example species and assign colors. From Justin's email 5/10/22:
-
-> Are you aiming for natives specifically? I think Stipa pulchra works well for the dry, Festuca perennis is also commonly known since its a weed, in the same area. 
-> 
-> For wet species I don't recommend Allium, I might recommend Danthonia californica, or Juncus bufonis (Juncus are rushes and also typically though of as 'wetter' or cooler species). For a non-native if desired - Holcus lanatus would be a good choice.
->
-> Danthonia californica looks like its in a good spot, but I'm sure how well known it is - Juncus bufonis could be good - most people would know Juncus typically likes 'wet and cooler' but it is not in as an extreme location.
->
-> Note: Juncus bufonis should be Juncus bufonius.
-
-Michael confirmed Danthonia californica and Stipa pulchra are two important native species in California on 5/16/22.
+Choose two example species and assign colors.
 
 ```{r}
 cool_species <- "Danthonia californica" # "Juncus bufonius"
@@ -168,7 +158,7 @@ niche_gg <- occ_geog_gg + occ_clim_gg + clim_niche_gg +
 
 Render (slow) and save.
 
-```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 766,889 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 916 records, blue points) and *Stipa pulchra* in the south (*n* = 3,087 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 352 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
+```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 824,478 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 916 records, blue points) and *Stipa pulchra* in the south (*n* = 3,087 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 372 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
 niche_gg
 ```
 
