@@ -20,7 +20,7 @@ Setup and load packages.
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
 exp_file <- "data/community/all-experimental-data.rds"
 obs_file <- "data/community/all-observational-data.rds"
-niche_file <- "data/occurrence/niche-estimates-cfp-2022-07-04.rds"
+niche_file <- "data/occurrence/niche-estimates-cfp-2022-07-12.rds"
 ```
 
 ```{r}
