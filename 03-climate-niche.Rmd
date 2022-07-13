@@ -127,7 +127,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-07-04.rds")
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-07-12.rds")
 
 rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 ```
@@ -137,7 +137,7 @@ Note that GBIF depends on download dates. So we'll keep the download file with d
 Consolidate species names in GBIF.
 
 ```{r, eval=FALSE}
-read_rds("data/occurrence/gbif/gbif-cfp-2022-07-04.rds") %>%
+read_rds("data/occurrence/gbif/gbif-cfp-2022-07-12.rds") %>%
   left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
   select(consolidatedName = consolidated_name, everything()) %>%
   mutate(
@@ -148,13 +148,13 @@ read_rds("data/occurrence/gbif/gbif-cfp-2022-07-04.rds") %>%
         consolidatedName
       )
   ) %>%
-  write_rds("data/occurrence/gbif/gbif-consolidated-2022-07-04.rds")
+  write_rds("data/occurrence/gbif/gbif-consolidated-2022-07-12.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-07-04.rds"
+gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-07-12.rds"
 ```
 
 ### iNaturalist
@@ -177,13 +177,13 @@ res <- occ(
 ```{r, eval=FALSE}
 read_rds(gbif_file) %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
-  write_rds("data/occurrence/inat/inat-cfp-2022-07-04.rds")
+  write_rds("data/occurrence/inat/inat-cfp-2022-07-12.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-inat_file <- "data/occurrence/inat/inat-cfp-2022-07-04.rds"
+inat_file <- "data/occurrence/inat/inat-cfp-2022-07-12.rds"
 ```
 
 ### BIEN
@@ -264,8 +264,8 @@ cch_cfp_tbl <- cch_all_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(cch_all_tbl, ., by = "key")
 
-write_rds(cch_all_tbl, "data/occurrence/cch/cch-all-2022-07-04.rds")
-write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-07-04.rds")
+write_rds(cch_all_tbl, "data/occurrence/cch/cch-all-2022-07-12.rds")
+write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-07-12.rds")
 
 rm(cch_all_tbl, cch_cfp_tbl)
 ```
@@ -273,7 +273,7 @@ rm(cch_all_tbl, cch_cfp_tbl)
 Pointer to file name.
 
 ```{r}
-cch_file <- "data/occurrence/cch/cch-cfp-2022-07-04.rds"
+cch_file <- "data/occurrence/cch/cch-cfp-2022-07-12.rds"
 ```
 
 ### Compare occurrence data sets
@@ -552,13 +552,13 @@ bind_cols(
   terraclim_gbif_sf %>%
     dplyr::select(starts_with("terraclim_"))
 ) %>%
-  write_rds("data/climate/climate-gbif-2022-07-04.rds")
+  write_rds("data/climate/climate-gbif-2022-07-12.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-clim_file <- "data/climate/climate-gbif-2022-07-04.rds"
+clim_file <- "data/climate/climate-gbif-2022-07-12.rds"
 ```
 
 Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
@@ -805,7 +805,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-2022-07-04.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-07-12.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
@@ -987,7 +987,7 @@ niche_tbl %>%
   add_row(species = "Avena DUMMY", occ_n = NA, Avena_tbl) %>%
   add_row(species = "Festuca DUMMY", occ_n = NA, Festuca_tbl) %>%
   add_row(species = "Hypochaeris DUMMY", occ_n = NA, Hypochaeris_tbl) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-07-04.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-07-12.rds")
 ```
 
 Remove intermediate objects.
