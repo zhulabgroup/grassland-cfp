@@ -46,8 +46,8 @@ niche_tbl <- read_rds(niche_file)
 Choose two example species and assign colors.
 
 ```{r}
-cool_species <- "Danthonia californica" # "Juncus bufonius"
-warm_species <- "Stipa pulchra" # "Festuca perennis"
+cool_species <- "Danthonia californica" # Michael: important native species in California
+warm_species <- "Stipa pulchra" # Susan: Stipa pulchra is the state grass, and is the subject of a lot of ecological research and restoration effort
 
 gbif_chelsa_sf <- gbif_chelsa_sf %>%
   mutate(species_type = case_when(
