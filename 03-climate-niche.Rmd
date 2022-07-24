@@ -1065,3 +1065,40 @@ sp_sum_tbl %>%
 rm(loc_full_tbl, loc_thin_ls, occ_clim_sf, occ_clim_tbl, sp_sum_tbl, sp_thin_tbl)
 rm(clim_file, i, sp)
 ```
+
+Post-thinning analysis.
+
+```{r}
+thin_file <- "data/occurrence/niche-estimates-cfp-2022-07-12-thin.rds"
+thin_tbl <- read_rds(thin_file)
+```
+
+The comparison shows full vs. thinned niche estimates are very similar.
+
+```{r fig.cap="Species temperature niche statistics (°C)"}
+thin_tbl %>%
+  select(
+    tmp_mean_full, tmp_mean_thin,
+    tmp_median_full, tmp_median_thin
+  ) %>%
+  GGally::ggpairs(
+    title = "Species temperature niche (°C)",
+    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+  )
+```
+
+```{r fig.cap="Species precipitation niche statistics (mm)"}
+thin_tbl %>%
+  select(
+    ppt_mean_full, ppt_mean_thin,
+    ppt_median_full, ppt_median_thin
+  ) %>%
+  GGally::ggpairs(
+    title = "Species precipitation niche (mm)",
+    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+  )
+```
+
+```{r}
+rm(thin_file, thin_tbl)
+```
