@@ -18,6 +18,8 @@ inat_file <- "data/occurrence/inat/inat-cfp-2022-07-12.rds"
 
 cfp_file <- "data/occurrence/hotspots/hotspots_2016_1.shp"
 site_file <- "data/community/site-info.rds"
+
+thin_file <- "data/occurrence/niche-estimates-cfp-2022-07-12-thin.rds"
 ```
 
 ```{r}
@@ -648,6 +650,42 @@ niche_tbl %>%
     columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
   ) +
   theme(strip.background = element_blank())
+```
+
+### Spatial thinning occurrence-climate records
+
+```{r}
+thin_tbl <- read_rds(thin_file)
+```
+
+```{r fig.cap="Species temperature niche statistics (°C)"}
+thin_tbl %>%
+  select(
+    tmp_mean_full, tmp_mean_thin,
+    tmp_median_full, tmp_median_thin
+  ) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species temperature niche (°C)",
+    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+  )
+```
+
+```{r fig.cap="Species precipitation niche statistics (mm)"}
+thin_tbl %>%
+  select(
+    ppt_mean_full, ppt_mean_thin,
+    ppt_median_full, ppt_median_thin
+  ) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species precipitation niche (mm)",
+    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+  )
+```
+
+```{r}
+rm(thin_tbl)
 ```
 
 ### Individual species climate niches
