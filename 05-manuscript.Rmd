@@ -848,15 +848,10 @@ Experimental and observational site information in table and map.
 
 ```{r}
 site_sf <- read_rds(path_ls$geo_site) %>%
-  filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "ucsc")) %>%
-  mutate(short_name = case_when(
-    abbr == "angelo" ~ "Angelo",
-    abbr == "carrizo" ~ "Carrizo Plain",
-    abbr == "elkhorn" ~ "Elkhorn Slough",
-    abbr == "jasper" ~ "Jasper Ridge",
-    abbr == "mclann" ~ "McLaughlin",
-    abbr == "ucsc" ~ "UC Santa Cruz"
-  ))
+  filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
+  arrange(abbr) %>%
+  add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:11]))
+
 site_sf %>%
   as_tibble() %>% # drop geometry
   knitr::kable()
@@ -910,7 +905,10 @@ ggplot() +
   geom_sf(data = site_sf, color = "red") +
   ggrepel::geom_label_repel(
     data = site_sf,
-    mapping = aes(label = short_name, geometry = geometry),
+    mapping = aes(
+      label = lab, # name,
+      geometry = geometry
+    ),
     stat = "sf_coordinates",
     size = 3,
     color = "red",
