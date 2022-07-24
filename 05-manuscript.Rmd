@@ -15,6 +15,7 @@ path_ls <- list(
   com_obs = "data/community/all-observational-data.rds",
   geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
   geo_clim = "data/climate/climate-gbif-2022-07-12.rds",
+  geo_grass = "data/occurrence/grassland/",
   geo_site = "data/community/site-info.rds",
   occ_bien = "data/occurrence/bien/bien-cfp-2022-04-27.rds",
   occ_cch = "data/occurrence/cch/cch-cfp-2022-07-12.rds",
@@ -36,7 +37,7 @@ theme_set(ggthemes::theme_few())
 
 Figures and tables in the main text.
 
-### Climate niche estimation
+### Climate niche estimates
 
 Read in GBIF-CHELSA, and niche estimate data.
 
@@ -176,11 +177,19 @@ ggsave(
 )
 ```
 
-### Community shift analyses
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
 
-Read in experimental and observational data.
+### Experimental community shifts
+
+JRGCE warming experment to CTI and CPI comparisons. 
+
+Read in niche and experimental data.
 
 ```{r}
+niche_tbl <- read_rds(path_ls$sum_niche)
+
 exp_tbl <- read_rds(path_ls$com_exp) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
@@ -188,19 +197,9 @@ exp_tbl <- read_rds(path_ls$com_exp) %>%
     tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
-
-obs_tbl <- read_rds(path_ls$com_obs) %>%
-  inner_join(niche_tbl, by = "species") %>%
-  group_by(site, year, plot) %>%
-  summarize(
-    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
-  )
 ```
 
-#### Experimental data
-
-JRGCE warming treatment to CTI and CPI comparisons. 
+Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
 
 ```{r}
 exp_gg <-
@@ -258,9 +257,27 @@ ggsave(
 )
 ```
 
-#### Observational data
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+### Observational community shifts
 
 Observational data CTI and CPI comparisons, arranged by observational sites. 
+
+Read in niche and observational data.
+
+```{r}
+niche_tbl <- read_rds(path_ls$sum_niche)
+
+obs_tbl <- read_rds(path_ls$com_obs) %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
+  )
+```
 
 Set up site labels.
 
@@ -382,6 +399,10 @@ ggsave(
 )
 ```
 
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
 ## Supplements
 
 Figures and tables in the supplements.
@@ -493,6 +514,10 @@ ggplot() +
     strip.background = element_blank(),
     # strip.text.x = element_text(hjust = 0)
   )
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
 ```
 
 ### Climate data sources
@@ -615,11 +640,15 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
 chelsa_prism_gg / chelsa_terraclim_gg
 ```
 
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
 ### Climate variable correlations
 
 TODO: different bioclim variables are highly correlated
 
-### Species climate niche summary statistics
+### Climate niche summary statistics
 
 Read species climate niche estimates.
 
@@ -655,6 +684,10 @@ niche_tbl %>%
   theme(strip.background = element_blank())
 ```
 
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
 ### Spatial thinning occurrence-climate records
 
 ```{r}
@@ -688,7 +721,7 @@ thin_tbl %>%
 ```
 
 ```{r}
-rm(thin_tbl)
+rm(list = setdiff(ls(), "path_ls"))
 ```
 
 ### Individual species climate niches
@@ -706,6 +739,10 @@ cfp_sf <- st_read(path_ls$geo_cfp) %>%
 Read GBIF-CHELSA data.
 
 ```{r}
+gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
+  dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
+
 # check species lists
 sp_gbif_vec <- gbif_chelsa_sf %>%
   pull(species) %>%
@@ -801,6 +838,10 @@ dev.off()
 
 The file can be viewed at this [link](https://zhulab.ucsc.edu/projects/grassland/figures/species-climate-niche.pdf)
 
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
 ### Site info
 
 Experimental and observational site information in table and map.
@@ -824,8 +865,13 @@ site_sf %>%
 Get grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from https://lpdaac.usgs.gov/products/mcd12c1v006/.
 
 ```{r}
-grass_path <- "data/occurrence/grassland/"
-sds <- terra::sds(paste0(grass_path, "MCD12C1.A2020001.006.2021362215328.hdf"))
+cfp_sf <- st_read(path_ls$geo_cfp) %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+
+sds <- terra::sds(paste0(path_ls$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
 lc_ras <- raster::raster(sds[1])
 raster::extent(lc_ras) <- c(-180, 180, -90, 90)
 raster::projection(lc_ras) <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
@@ -877,6 +923,10 @@ ggplot() +
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40))
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
 ```
 
 ### Site climate change
