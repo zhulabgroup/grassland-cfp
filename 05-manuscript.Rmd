@@ -1,25 +1,28 @@
 # Manuscript display items
 
-Setup and load packages.
+Setup and load packages. Data path tags are
+
+- `com`: grassland community data
+- `geo`: geography data, including GIS and climate
+- `occ`: occurrence data
+- `sum`: summary data, e.g., niche estimates
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, eval = TRUE, warning = FALSE)
 
-clim_file <- "data/climate/climate-gbif-2022-07-12.rds"
-niche_file <- "data/occurrence/niche-estimates-cfp-2022-07-12.rds"
-
-exp_file <- "data/community/all-experimental-data.rds"
-obs_file <- "data/community/all-observational-data.rds"
-
-bien_file <- "data/occurrence/bien/bien-cfp-2022-04-27.rds"
-cch_file <- "data/occurrence/cch/cch-cfp-2022-07-12.rds"
-gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-07-12.rds"
-inat_file <- "data/occurrence/inat/inat-cfp-2022-07-12.rds"
-
-cfp_file <- "data/occurrence/hotspots/hotspots_2016_1.shp"
-site_file <- "data/community/site-info.rds"
-
-thin_file <- "data/occurrence/niche-estimates-cfp-2022-07-12-thin.rds"
+path_ls <- list(
+  com_exp = "data/community/all-experimental-data.rds",
+  com_obs = "data/community/all-observational-data.rds",
+  geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
+  geo_clim = "data/climate/climate-gbif-2022-07-12.rds",
+  geo_site = "data/community/site-info.rds",
+  occ_bien = "data/occurrence/bien/bien-cfp-2022-04-27.rds",
+  occ_cch = "data/occurrence/cch/cch-cfp-2022-07-12.rds",
+  occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-07-12.rds",
+  occ_inat = "data/occurrence/inat/inat-cfp-2022-07-12.rds",
+  sum_niche = "data/occurrence/niche-estimates-cfp-2022-07-12.rds",
+  sum_thin = "data/occurrence/niche-estimates-cfp-2022-07-12-thin.rds"
+)
 ```
 
 ```{r}
@@ -38,11 +41,11 @@ Figures and tables in the main text.
 Read in GBIF-CHELSA, and niche estimate data.
 
 ```{r}
-gbif_chelsa_sf <- read_rds(clim_file) %>%
+gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
   dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
-niche_tbl <- read_rds(niche_file)
+niche_tbl <- read_rds(path_ls$sum_niche)
 ```
 
 Choose two example species and assign colors.
@@ -178,7 +181,7 @@ ggsave(
 Read in experimental and observational data.
 
 ```{r}
-exp_tbl <- read_rds(exp_file) %>%
+exp_tbl <- read_rds(path_ls$com_exp) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -186,7 +189,7 @@ exp_tbl <- read_rds(exp_file) %>%
     ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
   )
 
-obs_tbl <- read_rds(obs_file) %>%
+obs_tbl <- read_rds(path_ls$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
@@ -388,7 +391,7 @@ Figures and tables in the supplements.
 Compare BIEN, CCH, GBIF, iNat occurrence datasets.
 
 ```{r}
-bien_tbl <- read_rds(bien_file) %>%
+bien_tbl <- read_rds(path_ls$occ_bien) %>%
   mutate(
     dataset = "bien",
     species = queryName,
@@ -396,7 +399,7 @@ bien_tbl <- read_rds(bien_file) %>%
   ) %>%
   select(dataset, key, species, longitude, latitude)
 
-cch_tbl <- read_rds(cch_file) %>%
+cch_tbl <- read_rds(path_ls$occ_cch) %>%
   mutate(
     dataset = "cch",
     species = species_name,
@@ -404,7 +407,7 @@ cch_tbl <- read_rds(cch_file) %>%
   ) %>%
   select(dataset, key, species, longitude, latitude)
 
-gbif_tbl <- read_rds(gbif_file) %>%
+gbif_tbl <- read_rds(path_ls$occ_gbif) %>%
   mutate(
     dataset = "gbif",
     species = consolidatedName,
@@ -415,7 +418,7 @@ gbif_tbl <- read_rds(gbif_file) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   select(dataset, key, species, longitude, latitude)
 
-inat_tbl <- read_rds(inat_file) %>%
+inat_tbl <- read_rds(path_ls$occ_inat) %>%
   mutate(
     dataset = "inat",
     species = consolidatedName,
@@ -497,7 +500,7 @@ ggplot() +
 Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation.
 
 ```{r}
-clim_gbif_tbl <- read_rds(clim_file) %>%
+clim_gbif_tbl <- read_rds(path_ls$geo_clim) %>%
   as_tibble()
 
 chelsa_gbif_tbl <- clim_gbif_tbl %>%
@@ -621,7 +624,7 @@ TODO: different bioclim variables are highly correlated
 Read species climate niche estimates.
 
 ```{r}
-niche_tbl <- read_rds(niche_file) %>%
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
   filter(
     occ_n > 1,
     !str_detect(species, "DUMMY")
@@ -655,7 +658,7 @@ niche_tbl %>%
 ### Spatial thinning occurrence-climate records
 
 ```{r}
-thin_tbl <- read_rds(thin_file)
+thin_tbl <- read_rds(path_ls$sum_thin)
 ```
 
 ```{r fig.cap="Species temperature niche statistics (°C)"}
@@ -693,7 +696,7 @@ rm(thin_tbl)
 Read CFP data.
 
 ```{r}
-cfp_sf <- st_read(cfp_file) %>%
+cfp_sf <- st_read(path_ls$geo_cfp) %>%
   filter(
     NAME == "California Floristic Province",
     Type == "hotspot area"
@@ -803,7 +806,7 @@ The file can be viewed at this [link](https://zhulab.ucsc.edu/projects/grassland
 Experimental and observational site information in table and map.
 
 ```{r}
-site_sf <- read_rds(site_file) %>%
+site_sf <- read_rds(path_ls$geo_site) %>%
   filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "ucsc")) %>%
   mutate(short_name = case_when(
     abbr == "angelo" ~ "Angelo",
