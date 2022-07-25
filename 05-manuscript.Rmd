@@ -42,11 +42,13 @@ Figures and tables in the main text.
 Read in GBIF-CHELSA, and niche estimate data.
 
 ```{r}
-gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
-  dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
-  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100) # no dummy species
 
-niche_tbl <- read_rds(path_ls$sum_niche)
+gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
+  select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  filter(species %in% niche_tbl$species) %>%
+  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 ```
 
 Choose two example species and assign colors.
@@ -114,11 +116,7 @@ occ_clim_gg <-
 
 clim_niche_gg <-
   ggplot(
-    data = niche_tbl %>%
-      filter(
-        occ_n > 1,
-        !str_detect(species, "DUMMY")
-      ),
+    data = niche_tbl,
     mapping = aes(
       x = tmp_occ_mean,
       y = ppt_occ_mean,
@@ -188,7 +186,8 @@ JRGCE warming experment to CTI and CPI comparisons.
 Read in niche and experimental data.
 
 ```{r}
-niche_tbl <- read_rds(path_ls$sum_niche)
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100 | is.na(occ_n)) # keep dummy species
 
 exp_tbl <- read_rds(path_ls$com_exp) %>%
   inner_join(niche_tbl, by = "species") %>%
@@ -268,7 +267,8 @@ Observational data CTI and CPI comparisons, arranged by observational sites.
 Read in niche and observational data.
 
 ```{r}
-niche_tbl <- read_rds(path_ls$sum_niche)
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100 | is.na(occ_n)) # keep dummy species
 
 obs_tbl <- read_rds(path_ls$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
@@ -654,10 +654,7 @@ Read species climate niche estimates.
 
 ```{r}
 niche_tbl <- read_rds(path_ls$sum_niche) %>%
-  filter(
-    occ_n > 1,
-    !str_detect(species, "DUMMY")
-  )
+  filter(occ_n > 100) # no dummy species
 ```
 
 The mean, median, upper, lower temp and precip for all species are highly correlated.
@@ -691,7 +688,12 @@ rm(list = setdiff(ls(), "path_ls"))
 ### Spatial thinning occurrence-climate records
 
 ```{r}
-thin_tbl <- read_rds(path_ls$sum_thin)
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100) %>%
+  select(species, occ_n)
+
+thin_tbl <- read_rds(path_ls$sum_thin) %>%
+  inner_join(niche_tbl, ., by = "species")
 ```
 
 ```{r fig.cap="Species temperature niche statistics (°C)"}
