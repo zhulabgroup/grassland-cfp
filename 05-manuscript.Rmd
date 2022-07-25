@@ -746,10 +746,9 @@ gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
 # check species lists
-sp_gbif_vec <- gbif_chelsa_sf %>%
-  pull(species) %>%
-  unique() %>%
-  sort()
+sp_gbif_vec <- read_rds(path_ls$sum_niche) %>% 
+  filter(occ_n > 100) %>% # no dummy species
+  pull(species)
 
 # gbif summary
 tmp_rng <- range(gbif_chelsa_sf$tmp)
