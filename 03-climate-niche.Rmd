@@ -127,7 +127,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-07-12.rds")
+write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-09-18.rds")
 
 rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
 ```
@@ -137,7 +137,7 @@ Note that GBIF depends on download dates. So we'll keep the download file with d
 Consolidate species names in GBIF.
 
 ```{r, eval=FALSE}
-read_rds("data/occurrence/gbif/gbif-cfp-2022-07-12.rds") %>%
+read_rds("data/occurrence/gbif/gbif-cfp-2022-09-18.rds") %>%
   left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
   select(consolidatedName = consolidated_name, everything()) %>%
   mutate(
@@ -148,13 +148,13 @@ read_rds("data/occurrence/gbif/gbif-cfp-2022-07-12.rds") %>%
         consolidatedName
       )
   ) %>%
-  write_rds("data/occurrence/gbif/gbif-consolidated-2022-07-12.rds")
+  write_rds("data/occurrence/gbif/gbif-consolidated-2022-09-18.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-07-12.rds"
+gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-09-18.rds"
 ```
 
 ### iNaturalist
@@ -177,13 +177,13 @@ res <- occ(
 ```{r, eval=FALSE}
 read_rds(gbif_file) %>%
   filter(datasetName == "iNaturalist research-grade observations") %>%
-  write_rds("data/occurrence/inat/inat-cfp-2022-07-12.rds")
+  write_rds("data/occurrence/inat/inat-cfp-2022-09-18.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-inat_file <- "data/occurrence/inat/inat-cfp-2022-07-12.rds"
+inat_file <- "data/occurrence/inat/inat-cfp-2022-09-18.rds"
 ```
 
 ### BIEN
@@ -552,13 +552,13 @@ bind_cols(
   terraclim_gbif_sf %>%
     dplyr::select(starts_with("terraclim_"))
 ) %>%
-  write_rds("data/climate/climate-gbif-2022-07-12.rds")
+  write_rds("data/climate/climate-gbif-2022-09-18.rds")
 ```
 
 Pointer to file name.
 
 ```{r}
-clim_file <- "data/climate/climate-gbif-2022-07-12.rds"
+clim_file <- "data/climate/climate-gbif-2022-09-18.rds"
 ```
 
 Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
@@ -805,7 +805,7 @@ Print all species into a multi-page PDF.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche-2022-07-12.pdf", width = 8, height = 8 * .618)
+pdf("figures/species-climate-niche-2022-09-18.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
