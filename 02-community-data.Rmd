@@ -35,6 +35,7 @@ site_sf <- tribble(
   "jrgce", "Jasper Ridge Global Change Experiment", "37 24 22.4", "-122 14 31.8", "???", "Point intercept (?)",
   "mclann", "McLaughlin Annual", "38 52 11.2", "-122 25 15.6", "Valley", "Cover in 1 m2 quadrats; first 6 years are richness only",
   "mclserp", "McLaughlin Serpentine", "38 52 11.2", "-122 25 15.6", "Serpentine", "Cover in 1 m2 quadrats; first 6 years are richness only",
+  "morganterritory", "Morgan Territory", "37 49 5.92", "-121 47 45.18", "???", "???",
   "pleasantonridge", "Pleasanton Ridge", "37 36 55.47384", "-121 53 4.4142", "???", "???",
   "scide", "IDE Arboretum", "36 58 38.856", "-122 03 8.136", "???", "???",
   "scide", "IDE Marshall Field", "37 0 57", "-122 4 45", "???", "???",
