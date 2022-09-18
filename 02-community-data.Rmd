@@ -742,36 +742,21 @@ Contact: Peter Hopkinson, phopkinson@ebparks.org,
 East Bay Regional Park District, 
 August 24, 2022
 
+Justin Luong corrected species names on Sep 16, 2022. Guild codes are
+- 1st letter: Native vs. Exotic
+- 2nd letter: Annual vs. Perennial; AP = Annual or Perennial--to be consolidated
+- 3rd letter: Grass vs. Forb vs. Rush (non-grass graminoid) vs. Shrub vs. Tree
+- U = unknown
+
 ```{r}
-mt_spp_tbl <- readxl::read_xlsx(
-  "data/community/raw/MorganTerritory/UCBerkeley Range Lab Morgan Territory all plots transect data 2003-2011.xlsx",
-  sheet = "Species codes & attributes"
+googlesheets4::gs4_deauth()
+mt_spp_tbl <- googlesheets4::read_sheet(
+  "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
+  sheet = "Morgan Territory",
+  n_max = Inf,
+  na = c("", "NA") # guild = "NA" means NA
 ) %>%
-  mutate(
-    species_code = toupper(species),
-    guild = str_c(
-      case_when(
-        `native/exotic` == "e" ~ "E", # Exotic
-        `native/exotic` == "n" ~ "N", # Native
-        TRUE ~ "U" # else is Unknown
-      ),
-      case_when(
-        `annual/perennial` == "a" ~ "A", # Annual
-        `annual/perennial` == "p" ~ "P", # Perennial
-        `annual/perennial` == "a, p" ~ "AP", # both Annual and Perennial?
-        TRUE ~ "U" # else is Unknown
-      ),
-      case_when(
-        `forb/grass` == "f" ~ "F", # Forb
-        `forb/grass` == "g" ~ "G", # Grass
-        `forb/grass` == "n" ~ "R", # Rush
-        `forb/grass` == "s" ~ "S", # Shurb
-        `forb/grass` == "t" ~ "T", # Tree
-        TRUE ~ "U" # else is Unknown
-      )
-    )
-  ) %>%
-  select(species_code, species = latin, guild)
+  mutate(species_code = toupper(species_code))
 
 mt_plt_tbl <-
   readxl::read_xlsx(
@@ -793,16 +778,15 @@ mt_com_tbl <- readxl::read_xlsx(
   mutate(tot_hits = sum(hits)) %>%
   group_by(year, plot, species_code) %>%
   summarize(abund = hits / tot_hits) %>% # rel abundance
-  left_join(mt_spp_tbl, by = "species_code") %>%
-  mutate(abund_type = "point_intercept") %>%
-  filter(
-    !(species %in% c("litter", "Moss", "no data collected", "Rock", "soil")),
-    !str_detect(species, "unknown|Unknown"),
-    is.na(guild) | guild != "UUU"
+  left_join(mt_spp_tbl, by = "species_code") %>% # only keep species in species table
+  filter(keep) %>% # only keep real species (excluding litter, moss, rock, soil, etc.)
+  mutate(
+    abund_type = "point_intercept",
+    site = "morganterritory",
+    year = as.integer(year)
   ) %>%
-  mutate(site = "morganterritory", year = as.integer(year)) %>%
-  select(site, year, plot, species, guild, abund, abund_type) %>%
-  right_join(
+  select(site, year, plot, species = corrected_species, guild = corrected_guild, abund, abund_type) %>%
+  right_join( # join plot table
     mt_plt_tbl %>%
       filter(grazed == "n") %>% # non-grazed plots
       mutate(year = as.integer(year)) %>%
