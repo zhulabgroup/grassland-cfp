@@ -730,8 +730,7 @@ rm(McL_Sites, McL_spp, McLAnn, mclann_data, McLSerp, mclserp_data)
 
 ### Morgan Territory
 
-These grassland cover data were collected as part of the Grassland Monitoring Project by the UC Berkeley Range Lab, Professor James Bartolome, PI (jwbart@berkeley.edu),
-from 2003-2011, in the East Bay Regional Park District's Morgan Territory Regional Preserve.
+These grassland cover data were collected as part of the Grassland Monitoring Project by the UC Berkeley Range Lab, Professor James Bartolome, PI (jwbart@berkeley.edu), from 2003-2011, in the East Bay Regional Park District's Morgan Territory Regional Preserve.
 
 - Plots comprised 4 70-point line-point intercept transects in the cardinal directions.
 - Points started 1-meter from plot centroid, with a point every decimeter from 0-4.5 meters and every 0.5 meter from 4.5 to 17 meters.
