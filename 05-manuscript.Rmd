@@ -289,6 +289,7 @@ site_vec <- c(
   jasper = "Jasper Ridge",
   mclann = "McLaughlin Annual",
   mclserp = "McLaughlin Serpentine",
+  morganterritory = "Morgan Territory",
   pleasantonridge = "Pleasanton Ridge",
   sunol = "Sunol",
   swanton = "Swanton Ranch",
@@ -371,9 +372,10 @@ obs_gg <-
   obs_gg_fun(obs_idx_tbl, "jasper") +
   obs_gg_fun(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
   obs_gg_fun(obs_idx_tbl, "mclserp") +
+  obs_gg_fun(obs_idx_tbl, "morganterritory") +
   obs_gg_fun(obs_idx_tbl, "pleasantonridge") +
-  obs_gg_fun(obs_idx_tbl, "sunol") +
-  obs_gg_fun(obs_idx_tbl, "swanton", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "swanton") +
   obs_gg_fun(obs_idx_tbl, "ucsc") +
   obs_gg_fun(obs_idx_tbl, "vascocaves") +
   plot_annotation(tag_levels = "A") +
@@ -849,9 +851,9 @@ Experimental and observational site information in table and map.
 
 ```{r}
 site_sf <- read_rds(path_ls$geo_site) %>%
-  filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
+  filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
   arrange(abbr) %>%
-  add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:11]))
+  add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
 
 site_sf %>%
   as_tibble() %>% # drop geometry
