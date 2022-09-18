@@ -1220,6 +1220,7 @@ tidy_obs_tbl <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/jasper.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/mclann.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/mclserp.csv", col_types = "cicccdc")) %>%
+  bind_rows(read_csv("data/community/tidy/morganterritory.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/pleasantonridge.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/sunol.csv", col_types = "cicccdc")) %>%
   bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
@@ -1290,6 +1291,7 @@ tidy_exp_tbl %>%
   write_rds("data/community/all-experimental-data.rds")
 
 tidy_obs_tbl %>%
+  filter(site != "morganterritory") %>% # Morgan Territory data species names were cleaned separately by Justin
   rename(
     "original_species" = "species",
     "original_guild" = "guild"
@@ -1304,6 +1306,7 @@ tidy_obs_tbl %>%
     species = corrected_species, guild = corrected_guild,
     abund, abund_type
   ) %>%
+  bind_rows(filter(tidy_obs_tbl, site == "morganterritory")) %>%
   arrange(site, year, plot, species) %>%
   write_rds("data/community/all-observational-data.rds")
 ```
