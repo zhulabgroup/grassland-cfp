@@ -794,14 +794,13 @@ mt_com_tbl <- readxl::read_xlsx(
     by = c("year", "plot")
   )
 
-mt_com_tbl %>%
-  write_csv("tmp/mt-community.csv")
+write_csv(mt_com_tbl, "data/community/tidy/morganterritory.csv")
+```
 
-mt_com_tbl %>%
-  ungroup() %>%
-  distinct(species, guild) %>%
-  arrange(species) %>%
-  write_csv("tmp/mt-species.csv")
+Remove intermediate objects.
+
+```{r}
+rm(mt_com_tbl, mt_plt_tbl, mt_spp_tbl)
 ```
 
 ### Santa Cruz
