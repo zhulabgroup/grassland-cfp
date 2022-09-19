@@ -994,7 +994,7 @@ niche_tbl %>%
   add_row(species = "Avena DUMMY", occ_n = NA, Avena_tbl) %>%
   add_row(species = "Festuca DUMMY", occ_n = NA, Festuca_tbl) %>%
   add_row(species = "Hypochaeris DUMMY", occ_n = NA, Hypochaeris_tbl) %>%
-  add_row(species = "Raphanus DUMMY", occ_n = NA, Raphanus_tbl) %>% 
+  add_row(species = "Raphanus DUMMY", occ_n = NA, Raphanus_tbl) %>%
   write_rds("data/occurrence/niche-estimates-cfp-2022-09-18.rds")
 ```
 
@@ -1068,7 +1068,7 @@ for (i in seq_along(sp_sum_tbl$species)) {
 
 sp_sum_tbl %>%
   full_join(sp_thin_tbl, by = "species") %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-07-12-thin.rds")
+  write_rds("data/occurrence/niche-estimates-cfp-2022-09-18-thin.rds")
 
 rm(loc_full_tbl, loc_thin_ls, occ_clim_sf, occ_clim_tbl, sp_sum_tbl, sp_thin_tbl)
 rm(clim_file, i, sp)
@@ -1077,7 +1077,7 @@ rm(clim_file, i, sp)
 Post-thinning analysis.
 
 ```{r}
-thin_file <- "data/occurrence/niche-estimates-cfp-2022-07-12-thin.rds"
+thin_file <- "data/occurrence/niche-estimates-cfp-2022-09-18-thin.rds"
 thin_tbl <- read_rds(thin_file)
 ```
 
