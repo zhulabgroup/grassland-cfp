@@ -1,0 +1,382 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+# Main figures
+
+Setup: load packages and link data paths
+
+```{r}
+source("_setup.R")
+```
+
+## Climate niche estimates
+
+Read in GBIF-CHELSA, and niche estimate data.
+
+```{r}
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100) # no dummy species
+
+gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
+  select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  filter(species %in% niche_tbl$species) %>%
+  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
+```
+
+Choose two example species and assign colors.
+
+```{r}
+cool_species <- "Danthonia californica" # Michael: important native species in California
+warm_species <- "Stipa pulchra" # Susan: Stipa pulchra is the state grass, and is the subject of a lot of ecological research and restoration effort
+
+gbif_chelsa_sf <- gbif_chelsa_sf %>%
+  mutate(species_type = case_when(
+    species == cool_species ~ "cool",
+    species == warm_species ~ "warm",
+    TRUE ~ "other"
+  ))
+
+niche_tbl <- niche_tbl %>%
+  mutate(species_type = case_when(
+    species == cool_species ~ "cool",
+    species == warm_species ~ "warm",
+    TRUE ~ "other"
+  ))
+```
+
+Create three panels separately (fast without rendering).
+
+```{r}
+# set up plot params using alphabetical species type names
+color_vec <- c(cool = "blue", other = gray(.9), warm = "red")
+shape_vec <- c(cool = 19, other = 20, warm = 19)
+alpha_vec <- c(cool = .6, other = .005, warm = .6)
+
+occ_geog_gg <-
+  ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = gray(.25)
+  ) +
+  geom_sf(
+    data = gbif_chelsa_sf,
+    aes(color = species_type, shape = species_type, alpha = species_type)
+  ) +
+  scale_color_manual(values = color_vec) +
+  scale_shape_manual(values = shape_vec) +
+  scale_alpha_manual(values = alpha_vec) +
+  coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
+  scale_x_continuous(breaks = c(-125, -120, -115)) +
+  scale_y_continuous(breaks = c(30, 35, 40)) +
+  labs(x = "Longitude", y = "Latitude") +
+  guides(color = "none", shape = "none", alpha = "none")
+
+occ_clim_gg <-
+  ggplot(data = gbif_chelsa_sf, mapping = aes(tmp, ppt)) +
+  geom_point(
+    aes(color = species_type, shape = species_type, alpha = species_type)
+  ) +
+  scale_color_manual(values = color_vec) +
+  scale_shape_manual(values = shape_vec) +
+  scale_alpha_manual(values = alpha_vec) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  guides(color = "none", shape = "none", alpha = "none")
+
+clim_niche_gg <-
+  ggplot(
+    data = niche_tbl,
+    mapping = aes(
+      x = tmp_occ_mean,
+      y = ppt_occ_mean,
+      xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
+      xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
+      ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
+      ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n),
+      label = species,
+      color = species_type
+    )
+  ) +
+  geom_point() +
+  geom_errorbar() +
+  geom_errorbarh() +
+  scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
+  scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
+  scale_y_continuous(expand = expansion(mult = .1)) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  guides(color = "none") +
+  geom_label(
+    data = niche_tbl %>% filter(species_type %in% c("cool", "warm")),
+    fill = NA,
+    fontface = "italic",
+    label.padding = unit(.5, "lines"),
+    label.size = 0,
+    vjust = "outward", hjust = "outward"
+  )
+```
+
+Combine three panels.
+
+```{r}
+niche_gg <- occ_geog_gg + occ_clim_gg + clim_niche_gg +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  ABB
+  ABB
+  CCC
+  CCC
+  CCC
+  ")
+```
+
+Render (slow) and save.
+
+```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 824,478 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 916 records, blue points) and *Stipa pulchra* in the south (*n* = 3,087 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 372 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
+niche_gg
+```
+
+```{r, eval=FALSE}
+ggsave(
+  plot = niche_gg,
+  filename = "figures/fig1-niche.png",
+  width = 7.5,
+  height = 7.5 * 1.618
+)
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Experimental community shifts
+
+JRGCE warming experment to CTI and CPI comparisons. 
+
+Read in niche and experimental data.
+
+```{r}
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100 | is.na(occ_n)) # keep dummy species
+
+exp_tbl <- read_rds(path_ls$com_exp) %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot, treat) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
+  )
+```
+
+Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
+
+```{r}
+exp_gg <-
+  exp_tbl %>%
+  filter(site == "jrgce") %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  dplyr::select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
+  pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
+  mutate(com_idx_name = factor(com_idx_name,
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
+  )) %>%
+  ggplot(aes(year, com_idx_value, col = treat_T, group = interaction(treat_T, year))) +
+  geom_boxplot() +
+  ggpubr::stat_compare_means(
+    aes(group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(~com_idx_name,
+    ncol = 1, scales = "free_y",
+    strip.position = "left",
+    labeller = labeller(com_idx_name = c(
+      CTI = "Community Temperature Index\n(CTI, °C)",
+      CPI = "Community Precipitation Index\n(CPI, mm)"
+    ))
+  ) +
+  scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+  labs(
+    x = NULL, # "Year",
+    y = NULL,
+    color = "Warming treatment",
+    title = "Jasper Ridge Global Change Experiment",
+    subtitle = "<span style='color:black'>Ambient vs. </span><span style='color:red'>warming treatment</span>"
+  ) +
+  scale_color_manual(values = c("black", "red")) +
+  theme(
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    legend.position = "none",
+    plot.subtitle = ggtext::element_markdown()
+  )
+```
+
+```{r, fig.width=10, fig.height=6.18, fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "}
+exp_gg
+```
+
+```{r, eval=FALSE}
+ggsave(
+  plot = exp_gg,
+  filename = "figures/fig2-exp.png",
+  width = 10,
+  height = 6.18
+)
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Observational community shifts
+
+Observational data CTI and CPI comparisons, arranged by observational sites. 
+
+Read in niche and observational data.
+
+```{r}
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100 | is.na(occ_n)) # keep dummy species
+
+obs_tbl <- read_rds(path_ls$com_obs) %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
+  )
+```
+
+Set up site labels.
+
+```{r}
+site_vec <- c(
+  angelo = "Angelo Coast",
+  carrizo = "Carrizo Plain",
+  elkhorn = "Elkhorn Slough",
+  jasper = "Jasper Ridge",
+  mclann = "McLaughlin Annual",
+  mclserp = "McLaughlin Serpentine",
+  morganterritory = "Morgan Territory",
+  pleasantonridge = "Pleasanton Ridge",
+  sunol = "Sunol",
+  swanton = "Swanton Ranch",
+  ucsc = "UC Santa Cruz",
+  vascocaves = "Vasco Caves"
+)
+```
+
+Reshape data.
+
+```{r}
+obs_idx_tbl <- obs_tbl %>%
+  dplyr::select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
+  pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
+  mutate(com_idx_name = factor(com_idx_name,
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
+  ))
+
+samp_size_tbl <- obs_tbl %>%
+  group_by(site) %>%
+  summarize(
+    n_plot = n_distinct(plot),
+    n_year = n_distinct(year)
+  )
+```
+
+Define the plotting function.
+
+```{r}
+obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
+  # prepare site data
+  site_lab <- site_vec[site_name]
+  site_tbl <- tbl %>%
+    filter(site == site_name) %>%
+    group_by(com_idx_name) %>%
+    nest() %>%
+    mutate( # lm and p value
+      p_val = map(data, ~ lm(com_idx_value ~ year, data = .)) %>%
+        map_dbl(~ broom::glance(.) %>% pull(p.value))
+    ) %>%
+    unnest(cols = data)
+
+  # plot
+  ggplot(site_tbl, aes(year, com_idx_value)) +
+    geom_boxplot(aes(group = year)) +
+    geom_smooth( # add lm trend line when significant
+      data = . %>% filter(p_val < 0.05),
+      method = "lm", se = FALSE,
+      color = "red"
+    ) +
+    facet_wrap(~com_idx_name,
+      ncol = 1, scales = "free_y",
+      strip.position = "left",
+      labeller = labeller(com_idx_name = c(
+        CTI = cti_lab, # "Community Temperature Index\n(CTI, °C)",
+        CPI = cpi_lab # "Community Precipitation Index\n(CPI, mm)"
+      ))
+    ) +
+    expand_limits(x = range(tbl$year)) +
+    labs(
+      x = yr_lab, y = NULL,
+      title = site_lab
+    ) +
+    theme(
+      strip.background = element_blank(),
+      strip.placement = "outside",
+      plot.title = element_text(size = 11)
+    )
+}
+```
+
+Apply the plotting function, make individual panels, and combine them.
+
+```{r}
+obs_gg <-
+  obs_gg_fun(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "carrizo") +
+  obs_gg_fun(obs_idx_tbl, "elkhorn") +
+  obs_gg_fun(obs_idx_tbl, "jasper") +
+  obs_gg_fun(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "mclserp") +
+  obs_gg_fun(obs_idx_tbl, "morganterritory") +
+  obs_gg_fun(obs_idx_tbl, "pleasantonridge") +
+  obs_gg_fun(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  obs_gg_fun(obs_idx_tbl, "swanton") +
+  obs_gg_fun(obs_idx_tbl, "ucsc") +
+  obs_gg_fun(obs_idx_tbl, "vascocaves") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  ABCD
+  EFGH
+  IJKL
+  ")
+```
+
+Render and save.
+
+```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term observations. (A to K) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 11 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."}
+obs_gg
+```
+
+```{r, eval=FALSE}
+ggsave(
+  plot = obs_gg,
+  filename = "figures/fig3-obs.png",
+  width = 10,
+  height = 10 * 1.618
+)
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+

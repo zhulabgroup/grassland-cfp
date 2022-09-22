@@ -1,0 +1,538 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+
+# Supplementary figures
+
+Setup: load packages and link data paths
+
+```{r}
+source("_setup.R")
+```
+
+## Occurrence data sources
+
+Compare BIEN, CCH, GBIF, iNat occurrence datasets.
+
+```{r}
+bien_tbl <- read_rds(path_ls$occ_bien) %>%
+  mutate(
+    dataset = "bien",
+    species = queryName,
+    key = as.character(key)
+  ) %>%
+  select(dataset, key, species, longitude, latitude)
+
+cch_tbl <- read_rds(path_ls$occ_cch) %>%
+  mutate(
+    dataset = "cch",
+    species = species_name,
+    key = as.character(key)
+  ) %>%
+  select(dataset, key, species, longitude, latitude)
+
+gbif_tbl <- read_rds(path_ls$occ_gbif) %>%
+  mutate(
+    dataset = "gbif",
+    species = consolidatedName,
+    key = as.character(key)
+  ) %>%
+  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
+  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
+  filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
+  select(dataset, key, species, longitude, latitude)
+
+inat_tbl <- read_rds(path_ls$occ_inat) %>%
+  mutate(
+    dataset = "inat",
+    species = consolidatedName,
+    key = as.character(key)
+  ) %>%
+  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
+  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
+  filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
+  select(dataset, key, species, longitude, latitude)
+```
+
+Combine them and convert to sf.
+
+```{r}
+occ_sf <- bien_tbl %>%
+  bind_rows(cch_tbl) %>%
+  bind_rows(gbif_tbl) %>%
+  bind_rows(inat_tbl) %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+```
+
+Dataset names.
+
+```{r}
+dataset_vec <- c(
+  bien = "BIEN",
+  cch = "eJepson (CCH)",
+  gbif = "GBIF",
+  inat = "iNaturalist"
+)
+```
+
+Compare sample sizes across data sets.
+
+```{r}
+occ_sf %>%
+  as_tibble() %>%
+  group_by(dataset) %>%
+  summarise(
+    record_number = n() %>% format(trim = TRUE, scientific = FALSE, big.mark = ","),
+    species_number = unique(species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")
+  ) %>%
+  knitr::kable(caption = "Comparison of occurrence datasets.")
+```
+
+```{r fig.cap="Occurrence data comparison from multiple sources in study area"}
+set.seed(618)
+prop_samp <- .1 # prop to sample and plot
+ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  # geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
+  geom_sf(
+    data = occ_sf %>% slice_sample(prop = prop_samp), # randomly sample certain proportion, otherwise too slow to render
+    color = "black", alpha = .1, size = .1
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
+  scale_x_continuous(breaks = c(-125, -120, -115)) +
+  scale_y_continuous(breaks = c(30, 35, 40)) +
+  facet_wrap(. ~ dataset,
+    nrow = 1,
+    labeller = labeller(dataset = dataset_vec)
+  ) +
+  theme(
+    strip.background = element_blank(),
+    # strip.text.x = element_text(hjust = 0)
+  )
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Climate data sources
+
+Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation.
+
+```{r}
+clim_gbif_tbl <- read_rds(path_ls$geo_clim) %>%
+  as_tibble()
+
+chelsa_gbif_tbl <- clim_gbif_tbl %>%
+  dplyr::select(
+    geometry, key, species,
+    chelsa_tmp, chelsa_ppt
+  ) %>%
+  pivot_longer(chelsa_tmp:chelsa_ppt,
+    names_to = "variable",
+    values_to = "CHELSA"
+  ) %>%
+  mutate(variable = str_sub(variable, start = -3L, end = -1L))
+
+prism_gbif_tbl <- clim_gbif_tbl %>%
+  dplyr::select(
+    geometry, key, species,
+    prism_tmp, prism_ppt
+  ) %>%
+  pivot_longer(prism_tmp:prism_ppt,
+    names_to = "variable",
+    values_to = "PRISM"
+  ) %>%
+  mutate(variable = str_sub(variable, start = -3L, end = -1L))
+
+terraclim_gbif_tbl <- clim_gbif_tbl %>%
+  select(
+    geometry, key, species,
+    terraclim_tmp, terraclim_ppt
+  ) %>%
+  pivot_longer(terraclim_tmp:terraclim_ppt,
+    names_to = "variable",
+    values_to = "TerraClim"
+  ) %>%
+  mutate(variable = str_sub(variable, start = -3L, end = -1L))
+
+clim_comp_tbl <- chelsa_gbif_tbl %>%
+  inner_join(
+    prism_gbif_tbl,
+    by = c("geometry", "key", "species", "variable")
+  ) %>%
+  inner_join(
+    terraclim_gbif_tbl,
+    by = c("geometry", "key", "species", "variable")
+  )
+```
+
+```{r fig.cap="Climate data comparison from multiple sources shows high consistency in study area."}
+chelsa_prism_gg <- ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "*`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  facet_wrap(. ~ factor(
+    variable,
+    levels = c("tmp", "ppt"),
+    labels = c(
+      "Mean annual temperature (°C)",
+      "Mean annual precipitation (mm)"
+    )
+  ),
+  scales = "free"
+  ) +
+  labs(
+    x = "",
+    y = "PRISM",
+    # fill = "Occurrence record"
+  ) +
+  guides(fill = "none") +
+  theme(
+    aspect.ratio = 1, # can't do + coord_fixed() with facet_wrap(scales = "free")
+    strip.background = element_blank(),
+    strip.text.x = element_text(size = 12)
+  )
+
+chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
+  geom_hex(bins = 100) +
+  viridis::scale_fill_viridis() +
+  geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
+  ggpubr::stat_cor(
+    aes(label = paste(..r.label.., ..p.label.., sep = "*`,`~")),
+    p.accuracy = 0.05,
+    color = "red"
+  ) +
+  geom_abline(slope = 1, intercept = 0, color = "red") +
+  facet_wrap(. ~ factor(
+    variable,
+    levels = c("tmp", "ppt"),
+    labels = c(
+      "Mean annual temperature (°C)",
+      "Mean annual precipitation (mm)"
+    )
+  ),
+  scales = "free"
+  ) +
+  labs(
+    x = "CHELSA",
+    y = "TerraClim",
+    # fill = "Occurrence record"
+  ) +
+  guides(fill = "none") +
+  theme(
+    aspect.ratio = 1, # can't do + coord_fixed() with facet_wrap(scales = "free")
+    strip.background = element_blank(),
+    strip.text.x = element_blank()
+  )
+
+chelsa_prism_gg / chelsa_terraclim_gg
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Climate variable correlations
+
+TODO: different bioclim variables are highly correlated
+
+## Climate niche summary statistics
+
+Read species climate niche estimates.
+
+```{r}
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100) # no dummy species
+```
+
+The mean, median, upper, lower temp and precip for all species are highly correlated.
+
+```{r, fig.cap="Species temperature niche statistics are highly correlated"}
+niche_tbl %>%
+  dplyr::select(tmp_occ_mean, tmp_occ_median, tmp_occ_q05, tmp_occ_q95) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species temperature niche (°C)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+  ) +
+  theme(strip.background = element_blank())
+```
+
+```{r, fig.cap="Species precipitation niche statistics are highly correlated"}
+niche_tbl %>%
+  dplyr::select(ppt_occ_mean, ppt_occ_median, ppt_occ_q05, ppt_occ_q95) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species precipitation niche (mm)",
+    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
+  ) +
+  theme(strip.background = element_blank())
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Spatial thinning occurrence-climate records
+
+```{r}
+niche_tbl <- read_rds(path_ls$sum_niche) %>%
+  filter(occ_n > 100) %>%
+  select(species, occ_n)
+
+thin_tbl <- read_rds(path_ls$sum_thin) %>%
+  inner_join(niche_tbl, ., by = "species")
+```
+
+```{r fig.cap="Species temperature niche statistics (°C)"}
+thin_tbl %>%
+  select(
+    tmp_mean_full, tmp_mean_thin,
+    tmp_median_full, tmp_median_thin
+  ) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species temperature niche (°C)",
+    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+  )
+```
+
+```{r fig.cap="Species precipitation niche statistics (mm)"}
+thin_tbl %>%
+  select(
+    ppt_mean_full, ppt_mean_thin,
+    ppt_median_full, ppt_median_thin
+  ) %>%
+  GGally::ggpairs(
+    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
+    title = "Species precipitation niche (mm)",
+    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+  )
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Individual species climate niches
+
+Read CFP data.
+
+```{r}
+cfp_sf <- st_read(path_ls$geo_cfp) %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+```
+
+Read GBIF-CHELSA data.
+
+```{r}
+gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
+  dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
+
+# check species lists
+sp_gbif_vec <- read_rds(path_ls$sum_niche) %>% 
+  filter(occ_n > 100) %>% # no dummy species
+  pull(species)
+
+# gbif summary
+tmp_rng <- range(gbif_chelsa_sf$tmp)
+ppt_rng <- range(gbif_chelsa_sf$ppt)
+n_occ_tot <- nrow(gbif_chelsa_sf)
+```
+
+Multi-page PDF, each for a single species (to avoid overplotting), left geo-space, right clim-space.
+
+```{r eval=TRUE}
+# multi-species plot
+niche_gg <- vector(mode = "list")
+for (i in seq_along(sp_gbif_vec)) {
+  sp <- sp_gbif_vec[i]
+  occ_sp_sf <- filter(gbif_chelsa_sf, species == sp)
+  occ_sp_stat <- occ_sp_sf %>%
+    as_tibble() %>%
+    summarise(
+      occ_n = n(),
+      tmp_occ_mean = mean(tmp, na.rm = TRUE),
+      tmp_occ_sd = sd(tmp, na.rm = TRUE),
+      ppt_occ_mean = mean(ppt, na.rm = TRUE),
+      ppt_occ_sd = sd(ppt, na.rm = TRUE)
+    )
+
+  occ_geog <-
+    ggplot() +
+    geom_sf(
+      data = rnaturalearth::ne_states(
+        country = c("Mexico", "United States of America"),
+        returnclass = "sf"
+      ),
+      fill = NA,
+      color = alpha("black", .1)
+    ) +
+    geom_sf(
+      data = cfp_sf,
+      color = alpha("black", .3),
+      fill = alpha("white", .1)
+    ) +
+    geom_sf(data = occ_sp_sf, alpha = .1, size = .5) +
+    labs(x = "Longitude", y = "Latitude", title = sp) +
+    coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
+    scale_x_continuous(breaks = c(-125, -120, -115)) +
+    scale_y_continuous(breaks = c(30, 35, 40)) +
+    theme(plot.title = element_text(face = "italic"))
+
+  occ_clim <-
+    ggplot(occ_sp_sf, aes(tmp, ppt)) +
+    geom_point(alpha = .1, size = .5) +
+    geom_rug(alpha = .1) +
+    stat_ellipse(col = "red") +
+    geom_point(
+      data = occ_sp_stat,
+      aes(x = tmp_occ_mean, y = ppt_occ_mean),
+      shape = 3, col = "red", size = 10
+    ) +
+    lims(x = tmp_rng, y = ppt_rng) +
+    labs(
+      x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)",
+      title = bquote(italic("n") ~ "=" ~ .(format(occ_sp_stat$occ_n, big.mark = ",", trim = TRUE)))
+    )
+
+  # print(sp)
+  niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
+}
+names(niche_gg) <- sp_gbif_vec
+```
+
+Show two example species.
+
+```{r fig.cap="Example species *Danthonia californica*"}
+niche_gg["Danthonia californica"]
+```
+
+```{r fig.cap="Example species *Stipa pulchra*"}
+niche_gg["Stipa pulchra"]
+```
+
+Print all species into a multi-page PDF.
+
+```{r, eval=FALSE}
+# runtime ~= 4 min
+pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
+print(niche_gg)
+dev.off()
+```
+
+The file can be viewed at this [link](https://zhulab.ucsc.edu/projects/grassland/figures/species-climate-niche.pdf)
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Site info
+
+Experimental and observational site information in table and map.
+
+```{r}
+site_sf <- read_rds(path_ls$geo_site) %>%
+  filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
+  arrange(abbr) %>%
+  add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
+
+site_sf %>%
+  as_tibble() %>% # drop geometry
+  knitr::kable()
+```
+
+Get grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from https://lpdaac.usgs.gov/products/mcd12c1v006/.
+
+```{r}
+cfp_sf <- st_read(path_ls$geo_cfp) %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+
+sds <- terra::sds(paste0(path_ls$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
+lc_ras <- raster::raster(sds[1])
+raster::extent(lc_ras) <- c(-180, 180, -90, 90)
+raster::projection(lc_ras) <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
+lc_ras <- raster::flip(lc_ras)
+lc_ras <- raster::crop(lc_ras, raster::extent(cfp_sf))
+lc_ras <- raster::mask(lc_ras, cfp_sf)
+
+grass_ras <- lc_ras
+grass_ras[grass_ras != 10] <- NA # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
+grass_ras[grass_ras == 10] <- 1
+grass_df <- raster::as.data.frame(grass_ras, xy = T) %>%
+  drop_na()
+```
+
+```{r fig.cap="Map of experimental and observational study sites"}
+set.seed(618)
+ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(
+    data = cfp_sf,
+    color = alpha("black", .3),
+    fill = alpha("white", .1)
+  ) +
+  geom_raster(
+    data = grass_df,
+    aes(x = x, y = y),
+    fill = "yellow green"
+  ) +
+  geom_sf(data = site_sf, color = "red") +
+  ggrepel::geom_label_repel(
+    data = site_sf,
+    mapping = aes(
+      label = lab, # name,
+      geometry = geometry
+    ),
+    stat = "sf_coordinates",
+    size = 3,
+    color = "red",
+    fill = NA,
+    min.segment.length = 0,
+    label.padding = unit(.1, "lines"),
+    label.size = NA
+  ) +
+  labs(x = "Longitude", y = "Latitude") +
+  coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
+  scale_x_continuous(breaks = c(-125, -120, -115)) +
+  scale_y_continuous(breaks = c(30, 35, 40))
+```
+
+```{r}
+rm(list = setdiff(ls(), "path_ls"))
+```
+
+## Site climate change
+
+TODO: get PRISM/CHELSA data on six sites and plot climate change; may compare with CTI and CPI changes
