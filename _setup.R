@@ -2,7 +2,15 @@
 library(tidyverse)
 library(sf)
 library(patchwork)
+
+# set parameters
 theme_set(ggthemes::theme_few())
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  eval = TRUE,
+  warning = FALSE
+)
 
 # link paths
 if (!dir.exists("data")) { # create symlink; final release needs to copy relevant files
