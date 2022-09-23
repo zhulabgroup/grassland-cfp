@@ -1,12 +1,18 @@
 ---
-output:
-  word_document: default
-  html_document: default
+title: "Main figures"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console
+output:
+  bookdown::html_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+  bookdown::word_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
 ---
-
-# Main figures
 
 Setup: load packages and link data paths
 
@@ -14,7 +20,7 @@ Setup: load packages and link data paths
 source("_setup.R")
 ```
 
-## Climate niche estimates
+# Climate niche estimates
 
 Read in GBIF-CHELSA, and niche estimate data.
 
@@ -156,7 +162,7 @@ ggsave(
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Experimental community shifts
+# Experimental community shifts
 
 JRGCE warming experment to CTI and CPI comparisons. 
 
@@ -237,7 +243,7 @@ ggsave(
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Observational community shifts
+# Observational community shifts
 
 Observational data CTI and CPI comparisons, arranged by observational sites. 
 
