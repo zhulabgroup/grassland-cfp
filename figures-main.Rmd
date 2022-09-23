@@ -164,7 +164,7 @@ rm(list = setdiff(ls(), "path_ls"))
 
 # Experimental community shifts
 
-JRGCE warming experment to CTI and CPI comparisons. 
+JRGCE warming experment to CTI and CPI comparisons.
 
 Read in niche and experimental data.
 
@@ -245,7 +245,7 @@ rm(list = setdiff(ls(), "path_ls"))
 
 # Observational community shifts
 
-Observational data CTI and CPI comparisons, arranged by observational sites. 
+Observational data CTI and CPI comparisons, arranged by observational sites.
 
 Read in niche and observational data.
 
