@@ -104,3 +104,13 @@ obs_gg <-
   EFGH
   IJKL
   ")
+
+# save figure file
+if (FALSE) {
+  ggsave(
+    plot = obs_gg,
+    filename = "figures/fig3-obs.png",
+    width = 10,
+    height = 10 * 1.618
+  )
+}

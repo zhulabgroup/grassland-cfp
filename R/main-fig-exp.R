@@ -51,3 +51,13 @@ exp_gg <-
     legend.position = "none",
     plot.subtitle = ggtext::element_markdown()
   )
+
+# save figure file
+if (FALSE) {
+  ggsave(
+    plot = exp_gg,
+    filename = "figures/fig2-exp.png",
+    width = 10,
+    height = 6.18
+  )
+}

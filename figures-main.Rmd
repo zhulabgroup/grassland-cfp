@@ -34,16 +34,6 @@ Species distributions show clear patterns in both geographical space and climate
 
 ```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (*n* = 824,478 records, gray points), highlighting two example species *Danthonia californica* in the north (*n* = 916 records, blue points) and *Stipa pulchra* in the south (*n* = 3,087 records, red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (*n* = 372 species, mean ± standard error, gray), highlighting the two species (blue and red)."}
 niche_gg
-
-if (FALSE) { # save figure file
-  ggsave(
-    plot = niche_gg,
-    filename = "figures/fig1-niche.png",
-    width = 7.5,
-    height = 7.5 * 1.618
-  )
-}
-
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
@@ -57,16 +47,6 @@ JRGCE warming experment to CTI and CPI comparisons. Read in niche and experiment
 
 ```{r, fig.width=10, fig.height=6.18, fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "}
 exp_gg
-
-if (FALSE) {
-  ggsave(
-    plot = exp_gg,
-    filename = "figures/fig2-exp.png",
-    width = 10,
-    height = 6.18
-  )
-}
-
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
@@ -81,15 +61,5 @@ Render and save.
 
 ```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term observations. (A to K) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 11 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."}
 obs_gg
-
-if (FALSE) {
-  ggsave(
-    plot = obs_gg,
-    filename = "figures/fig3-obs.png",
-    width = 10,
-    height = 10 * 1.618
-  )
-}
-
 rm(list = setdiff(ls(), "path_ls"))
 ```
