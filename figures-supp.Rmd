@@ -8,9 +8,7 @@ editor_options:
 
 # Supplementary figures
 
-Setup: load packages and link data paths
-
-```{r}
+```{r, echo=FALSE, message=FALSE}
 source("_setup.R")
 ```
 
