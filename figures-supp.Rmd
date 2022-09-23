@@ -1,18 +1,24 @@
 ---
-output:
-  word_document: default
-  html_document: default
+title: "Supplementary figures"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console
+output:
+  bookdown::html_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+  bookdown::word_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
 ---
-
-# Supplementary figures
 
 ```{r, echo=FALSE, message=FALSE}
 source("_setup.R")
 ```
 
-## Occurrence data sources
+# Occurrence data sources
 
 Compare BIEN, CCH, GBIF, iNat occurrence datasets.
 
@@ -125,7 +131,7 @@ ggplot() +
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Climate data sources
+# Climate data sources
 
 Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making scatter plots with correlation.
 
@@ -249,11 +255,11 @@ chelsa_prism_gg / chelsa_terraclim_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Climate variable correlations
+# Climate variable correlations
 
 TODO: different bioclim variables are highly correlated
 
-## Climate niche summary statistics
+# Climate niche summary statistics
 
 Read species climate niche estimates.
 
@@ -290,7 +296,7 @@ niche_tbl %>%
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Spatial thinning occurrence-climate records
+# Spatial thinning occurrence-climate records
 
 ```{r}
 niche_tbl <- read_rds(path_ls$sum_niche) %>%
@@ -331,7 +337,7 @@ thin_tbl %>%
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Individual species climate niches
+# Individual species climate niches
 
 Read CFP data.
 
@@ -448,7 +454,7 @@ The file can be viewed at this [link](https://zhulab.ucsc.edu/projects/grassland
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Site info
+# Site info
 
 Experimental and observational site information in table and map.
 
@@ -533,6 +539,6 @@ ggplot() +
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-## Site climate change
+# Site climate change
 
 TODO: get PRISM/CHELSA data on six sites and plot climate change; may compare with CTI and CPI changes
