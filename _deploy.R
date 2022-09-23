@@ -1,12 +1,10 @@
-# upload/update figure docs to google drive
-library(googledrive)
-drive_put("figures-main.docx",
-  path = "1cEXTonrqpdGTY-FNnI7LsY4MBX9Amkip" %>%
-    as_id() %>%
-    as_dribble()
+# render word docx and upload/update to google drive
+rmarkdown::render(
+  input = "figures-main.Rmd",
+  output_format = "bookdown::word_document2",
+  output_dir = "tmp"
 )
-drive_put("figures-supp.docx",
-  path = "1cEXTonrqpdGTY-FNnI7LsY4MBX9Amkip" %>%
-    as_id() %>%
-    as_dribble()
+googledrive::drive_put(
+  media = "tmp/figures-main.docx",
+  path = googledrive::as_id("1cEXTonrqpdGTY-FNnI7LsY4MBX9Amkip")
 )
