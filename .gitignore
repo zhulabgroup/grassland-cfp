@@ -1,7 +1,7 @@
 # data -> /data/ZHULAB/grassland/
 data
 figures/
-tmp/
+tests/
 
 # rmarkdown
 *.docx
