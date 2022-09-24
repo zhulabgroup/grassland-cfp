@@ -1,9 +1,10 @@
 # render word docx and upload/update to google drive
+# ok to run in console; background jobs set working dir to project dir
 rmarkdown::render(
-  knit_root_dir = "..", # set to project dir
-  input = "../vignettes/main-figures.Rmd",
+  input = "01-main-figures.Rmd",
   output_format = "bookdown::word_document2",
   output_file = paste0(tempdir(), "/Main figures.docx")
+  # knit_root_dir = ".." # set to project dir
 )
 googledrive::drive_put(
   media = paste0(tempdir(), "/Main figures.docx"),
