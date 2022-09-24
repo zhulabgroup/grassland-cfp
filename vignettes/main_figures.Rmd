@@ -37,7 +37,15 @@ niche_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-# Experimental community shifts
+# Community climate shifts
+
+Let us begin with the theory of moment method estimation, which is a generalization of the CTI/CPI approach. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species trait (e.g., optimal temperature) as $T_j$. At the community level, the expected trait (i.e., first moment), which is equivalent to CTI/CPI, is
+
+$$
+\mathrm{E}(T_i) = \bar{T_i} = \frac{\sum_j A_{ij}T_j}{\sum_j A_{ij}}.
+$$
+
+## Experimental community shifts
 
 ```{r}
 source("R/plot_main_exp.R")
@@ -50,7 +58,7 @@ exp_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
-# Observational community shifts
+## Observational community shifts
 
 ```{r}
 source("R/plot_main_obs.R")
