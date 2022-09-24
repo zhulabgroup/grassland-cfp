@@ -14,13 +14,13 @@ output:
     global_numbering: true
 ---
 
-```{r setup, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE}
 source("R/setup.R")
 ```
 
 # Species climate niches
 
-```{r plot_main_niche}
+```{r}
 source("R/plot_main_niche.R")
 ```
 
@@ -37,7 +37,7 @@ rm(list = setdiff(ls(), "path_ls"))
 
 # Experimental community shifts
 
-```{r plot_main_exp}
+```{r}
 source("R/plot_main_exp.R")
 ```
 
@@ -50,7 +50,7 @@ rm(list = setdiff(ls(), "path_ls"))
 
 # Observational community shifts
 
-```{r plot_main_obs}
+```{r}
 source("R/plot_main_obs.R")
 ```
 
