@@ -1,10 +1,11 @@
 # render word docx and upload/update to google drive
 rmarkdown::render(
-  input = "../figures_main.Rmd",
+  knit_root_dir = "..", # from R/ to project dir
+  input = "../vignettes/main_figures.Rmd",
   output_format = "bookdown::word_document2",
-  output_dir = "../tests/"
+  output_file = paste0(tempdir(), "/Main figures.docx")
 )
 googledrive::drive_put(
-  media = "../tests/figures_main.docx",
+  media = paste0(tempdir(), "/Main figures.docx"),
   path = googledrive::as_id("1cEXTonrqpdGTY-FNnI7LsY4MBX9Amkip")
 )
