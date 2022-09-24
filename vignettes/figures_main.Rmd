@@ -3,8 +3,6 @@ title: "Main figures"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console
-knit: (function(inputFile, encoding) {
-  rmarkdown::render(inputFile, encoding = encoding, output_dir = "tests") })
 output:
   bookdown::html_document2: 
     fig_caption: true
