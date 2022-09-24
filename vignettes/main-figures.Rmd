@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r, echo=FALSE, message=FALSE}
-source("R/setup.R")
+source("scripts/setup.R")
 text_only <- TRUE
 knitr::opts_chunk$set(eval = !text_only) # override eval if text only
 ```
@@ -23,7 +23,7 @@ knitr::opts_chunk$set(eval = !text_only) # override eval if text only
 # Species climate niches
 
 ```{r}
-source("R/plot_main_niche.R")
+source("scripts/plot_main_niche.R")
 ```
 
 We estimated species' climate niches from the GBIF occurrence data and CHELSA climate data in the California Floristic Province (CFP). In brief, we extracted the mean annual temperature and precipitation for each of the `r ifelse(text_only, "TBD", n_spp)` species with more than 100 occurrences at each of the `r ifelse(text_only, "TBD", n_occ)` locations. For each species, we then calculated the average temperature and precipitation across all locations as its climate niche centroids. We visualized all the species in both the geographical space (longitude and latitude) and climate space (temperature and precipitation).
@@ -48,7 +48,7 @@ $$
 ## Experimental community shifts
 
 ```{r}
-source("R/plot_main_exp.R")
+source("scripts/plot_main_exp.R")
 ```
 
 JRGCE warming experment to CTI and CPI comparisons. Read in niche and experimental data. Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
@@ -61,7 +61,7 @@ rm(list = setdiff(ls(), "path_ls"))
 ## Observational community shifts
 
 ```{r}
-source("R/plot_main_obs.R")
+source("scripts/plot_main_obs.R")
 ```
 
 Observational data CTI and CPI comparisons, arranged by observational sites.
