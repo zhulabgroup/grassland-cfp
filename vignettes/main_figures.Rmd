@@ -16,6 +16,8 @@ output:
 
 ```{r, echo=FALSE, message=FALSE}
 source("R/setup.R")
+text_only <- TRUE
+knitr::opts_chunk$set(eval = !text_only) # override eval if text only
 ```
 
 # Species climate niches
@@ -24,9 +26,9 @@ source("R/setup.R")
 source("R/plot_main_niche.R")
 ```
 
-We estimated species' climate niches from the GBIF occurrence data and CHELSA climate data in the California Floristic Province (CFP). In brief, we extracted the mean annual temperature and precipitation for each of the `r nrow(niche_tbl)` species with more than 100 occurrences at each of the `r format(nrow(gbif_chelsa_sf), big.mark = ",")` locations. For each species, we then calculated the average temperature and precipitation across all locations as its climate niche centroids. We visualized all the species in both the geographical space (longitude and latitude) and climate space (temperature and precipitation).
+We estimated species' climate niches from the GBIF occurrence data and CHELSA climate data in the California Floristic Province (CFP). In brief, we extracted the mean annual temperature and precipitation for each of the `r ifelse(text_only, "TBD", n_spp)` species with more than 100 occurrences at each of the `r ifelse(text_only, "TBD", n_occ)` locations. For each species, we then calculated the average temperature and precipitation across all locations as its climate niche centroids. We visualized all the species in both the geographical space (longitude and latitude) and climate space (temperature and precipitation).
 
-For illustration, we chose two example species: *Danthonia californica* and *Stipa pulchra*. Both are important native species in California and have abundantly distributed. *D. californica* (`r format(length(which(gbif_chelsa_sf$species_type == "cool")), big.mark = ",")` occurrences) is a northern species and prefers cool and wet climates, while *S. pulchra* (`r format(length(which(gbif_chelsa_sf$species_type == "warm")), big.mark = ",")` occurrences) is a southern species and prefers warm and dry climates. We visualized the two example species in the context of all the species.
+For illustration, we chose two example species: *Danthonia californica* and *Stipa pulchra*. Both are important native species in California and have abundantly distributed. *D. californica* (`r ifelse(text_only, "TBD", n_occ_cool)` occurrences) is a northern species and prefers cool and wet climates, while *S. pulchra* (`r ifelse(text_only, "TBD", n_occ_warm)` occurrences) is a southern species and prefers warm and dry climates. We visualized the two example species in the context of all the species.
 
 Species distributions show clear patterns in both geographical space and climate species.
 

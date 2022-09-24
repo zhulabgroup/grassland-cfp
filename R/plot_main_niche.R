@@ -116,3 +116,16 @@ if (FALSE) {
     height = 7.5 * 1.618
   )
 }
+
+# report stats
+n_spp <- nrow(niche_tbl)
+n_occ <- sum(niche_tbl$occ_n) %>%
+  format(big.mark = ",")
+n_occ_cool <- niche_tbl %>%
+  filter(species_type == "cool") %>%
+  pull(occ_n) %>%
+  format(big.mark = ",")
+n_occ_warm <- niche_tbl %>%
+  filter(species_type == "warm") %>%
+  pull(occ_n) %>%
+  format(big.mark = ",")
