@@ -1,3 +1,19 @@
+---
+title: "Preliminary analyses"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+editor_options: 
+  chunk_output_type: console
+output:
+  bookdown::html_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+  bookdown::word_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+---
+
 # Preliminary analyses
 
 Setup and load packages.

@@ -1,3 +1,19 @@
+---
+title: "Community shift analyses"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+editor_options: 
+  chunk_output_type: console
+output:
+  bookdown::html_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+  bookdown::word_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+---
+
 # Community shift analyses
 
 Let us begin with the theory of moment method estimation, which is a generalization of the CTI/CPI approach. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species trait (e.g., optimal temperature) as $T_j$. At the community level, the expected trait (i.e., first moment), which is equivalent to CTI/CPI, is
