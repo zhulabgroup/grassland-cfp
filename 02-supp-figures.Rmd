@@ -162,38 +162,15 @@ TODO: different bioclim variables are highly correlated
 
 # Climate niche summary statistics
 
-Read species climate niche estimates.
-
-```{r}
-niche_tbl <- read_rds(path_ls$sum_niche) %>%
-  filter(occ_n > 100) # no dummy species
-```
-
 The mean, median, upper, lower temp and precip for all species are highly correlated.
 
-```{r, fig.cap="Species temperature niche statistics are highly correlated"}
-niche_tbl %>%
-  dplyr::select(tmp_occ_mean, tmp_occ_median, tmp_occ_q05, tmp_occ_q95) %>%
-  GGally::ggpairs(
-    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
-    title = "Species temperature niche (°C)",
-    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
-  ) +
-  theme(strip.background = element_blank())
+```{r tmp-niche-fig, fig.cap="Species temperature niche statistics are highly correlated"}
+source("scripts/compare-niche-stat.R")
+niche_tmp_gg
 ```
 
-```{r, fig.cap="Species precipitation niche statistics are highly correlated"}
-niche_tbl %>%
-  dplyr::select(ppt_occ_mean, ppt_occ_median, ppt_occ_q05, ppt_occ_q95) %>%
-  GGally::ggpairs(
-    lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
-    title = "Species precipitation niche (mm)",
-    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
-  ) +
-  theme(strip.background = element_blank())
-```
-
-```{r}
+```{r ppt-niche-fig, fig.cap="Species precipitation niche statistics are highly correlated"}
+niche_ppt_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
 
