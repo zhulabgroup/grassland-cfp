@@ -14,7 +14,7 @@ output:
     global_numbering: true
 ---
 
-```{r, echo=FALSE, message=FALSE}
+```{r setup, echo=FALSE, message=FALSE}
 source("scripts/setup.R")
 text_only <- TRUE
 knitr::opts_chunk$set(eval = !text_only) # override eval if text only
@@ -32,7 +32,11 @@ For illustration, we chose two example species: *Danthonia californica* and *Sti
 
 Species distributions show clear patterns in both geographical space and climate species.
 
-```{r, fig.width=7.5, fig.height=7.5*1.168, fig.cap="Grassland species occur along geographic and climatic gradients to estimate ecological niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (gray points), highlighting two example species *Danthonia californica* in the north (blue points) and *Stipa pulchra* in the south (red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red). (C) Ecological niche estimates from average temperature and precipitation for each species (mean ± standard error, gray), highlighting the two species (blue and red)."}
+```{r niche-fig, fig.width=7.5, fig.height=7.5*1.168}
+#| fig.cap = "Grassland species occur along geographic and climatic gradients to estimate ecological niches.
+#|  (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (gray points), highlighting two example species *Danthonia californica* in the north (blue points) and *Stipa pulchra* in the south (red points).
+#|  (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red).
+#|  (C) Ecological niche estimates from average temperature and precipitation for each species (mean ± standard error, gray), highlighting the two species (blue and red)."
 niche_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
@@ -53,7 +57,8 @@ source("scripts/plot-main-exp.R")
 
 JRGCE warming experment to CTI and CPI comparisons. Read in niche and experimental data. Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
 
-```{r, fig.width=10, fig.height=6.18, fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "}
+```{r exp-fig, fig.width=10, fig.height=6.18}
+#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "
 exp_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
@@ -67,7 +72,8 @@ source("scripts/plot-main-obs.R")
 Observational data CTI and CPI comparisons, arranged by observational sites.
 Render and save.
 
-```{r, fig.width=10, fig.height=10*1.618, fig.cap="Grassland community shifts from long-term observations. (A to K) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 11 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."}
+```{r obs-fig, fig.width=10, fig.height=10*1.618}
+#| fig.cap="Grassland community shifts from long-term observations. (A to K) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 11 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."
 obs_gg
 rm(list = setdiff(ls(), "path_ls"))
 ```
