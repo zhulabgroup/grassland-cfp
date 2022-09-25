@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
-source("scripts/setup.R")
+source("scripts/_setup.R")
 ```
 
 # Occurrence data sources
