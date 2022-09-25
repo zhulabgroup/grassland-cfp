@@ -14,8 +14,8 @@ output:
     global_numbering: true
 ---
 
-```{r, echo=FALSE, message=FALSE}
-source("_setup.R")
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/setup.R")
 ```
 
 # Occurrence data sources
