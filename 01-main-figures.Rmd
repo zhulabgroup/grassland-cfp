@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
-source("scripts/_setup.R")
+source("scripts/utils/setup.R")
 text_only <- FALSE
 knitr::opts_chunk$set(eval = !text_only) # override eval if text only
 ```
