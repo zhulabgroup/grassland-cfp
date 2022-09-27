@@ -14,7 +14,10 @@ output:
     global_numbering: true
 ---
 
-# Community data preparation 
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/utils/setup.R")
+knitr::opts_chunk$set(eval = FALSE)
+```
 
 Objectives
 
@@ -29,17 +32,7 @@ Key results
 - Tidy data path: `data/community/tidy/`
 - Processed data path: `data/community/`
 
-Setup and load packages.
-
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = FALSE)
-```
-
-```{r}
-library(tidyverse)
-```
-
-## Study sites
+# Study sites
 
 ```{r, eval=FALSE}
 site_sf <- tribble(
@@ -72,9 +65,9 @@ write_rds(site_sf, file = "data/community/site-info.rds")
 rm(site_sf)
 ```
 
-## Experimental community data
+# Experimental community data
 
-### Jasper Ridge Global Change Experiment
+## Jasper Ridge Global Change Experiment
 
 ![Jasper Ridge Global Change Experiment (JRGCE)](images/jasper-ridge.jpg)
 
@@ -165,7 +158,7 @@ rm(pin_tbl, spp_tbl, trt_tbl)
 rm(jrgce_data)
 ```
 
-### McLaughlin Water Experiment
+## McLaughlin Water Experiment
 
 The experiment was introduced in Harrison, Susan P., Marina L. LaForgia, and Andrew M. Latimer. “Climate‐driven Diversity Change in Annual Grasslands: Drought plus Deluge Does Not Equal Normal.” Global Change Biology 24, no. 4 (April 2018): 1782–92. https://doi.org/10.1111/gcb.14018.
 
@@ -260,7 +253,7 @@ rm(cover_2015_tbl, cover_2016_tbl, cover_2017_tbl, cover_2018_tbl, cover_2019_tb
 rm(mclexp_data)
 ```
 
-### Santa Cruz International Drought Experiment
+## Santa Cruz International Drought Experiment
 
 ![Michael Loik and the Santa Cruz International Drought Experiment (IDE). Image credit: Lobsang Wangdu. Source: https://ucnrs.org/doctor-drought/](images/santa-cruz-ide.jpeg)
 
@@ -318,9 +311,9 @@ Remove intermediate objects.
 rm(scide_data)
 ```
 
-## Observational community data
+# Observational community data
 
-### Angelo
+## Angelo
 
 These data were collected by K.B. Suttle from 2002 to 2015.  
 
@@ -359,7 +352,7 @@ rm(Angelo, Angelo_spp)
 rm(angelo_data)
 ```
 
-### Carrizo
+## Carrizo
 
 Carrizo Plain data from Loralee Larios, from 2007 to 2021, updated on June 28, 2022. The data are taken in plots, with a variable number of plots measured annually. These data only have the control plots after 2015 so replication will go from 10 20m x 20m plots with 8 1m2 subplots  to 4 20m x 20m plots with 8 1m2 subplots. Those plots that are kept would correspond to Center Well plots 2, 3, 4, 6 and Swain plots 1,2,7,9.
 
@@ -446,7 +439,7 @@ Remove intermediate objects.
 rm(carrizo_com, carrizo_data, carrizo_spp)
 ```
 
-### East Bay
+## East Bay
 
 East Bay Regional Park District (EBRPD) data from Joan Dudney. Three sites: PR = Pleasant Ridge, VC = Vasco Cave, SU = Sunol.
 
@@ -524,7 +517,7 @@ inner_join(eb_guild_sum_tbl1, eb_guild_sum_tbl2, by = c("site", "year", "plot", 
 rm(eb_guild_sum_tbl1, eb_guild_sum_tbl2)
 ```
 
-#### Pleasanton Ridge
+### Pleasanton Ridge
 
 Include PR4-9 plots that have 10 yr of data, 2003-2012.
 
@@ -535,7 +528,7 @@ eb_com_tbl %>%
   write_csv("data/community/tidy/pleasantonridge.csv")
 ```
 
-#### Sunol
+### Sunol
 
 Include SU1-6 plots that have 8 yr of data, 2005-2012. Include SU7-9 plots that have 7 yr of data, 2005-2011.
 
@@ -546,7 +539,7 @@ eb_com_tbl %>%
   write_csv("data/community/tidy/sunol.csv")
 ```
 
-#### Vasco Caves
+### Vasco Caves
 
 Include VC1-3 plots that have 12 yr of data, 2002-2012. Include VC4-6 plots that have 11 yr of data, 2002-2011. Include VC7-9 plots that have 11 yr of data, 2003-2012. Include VC10 plot that has 10 yr of data, 2003-2011. 
 
@@ -572,7 +565,7 @@ Remove intermediate objects.
 rm(eb_com_tbl, eb_spp_tbl)
 ```
 
-### Jasper
+## Jasper
 
 These data were collected from Jasper Ridge Biological Preserve by Lauren Hallett and Richard Hobbs from 1983 to 2015.  
 
@@ -612,7 +605,7 @@ rm(Jasper, Jasper_species, jasper_spp_check, Jasper_Veg, JR_spp)
 rm(jasper_data)
 ```
 
-### McLaughlin
+## McLaughlin
 
 Data provided by Susan Harrison for two sites: Annual and Serpentine. First, read common site and species tables.
 
@@ -622,12 +615,12 @@ McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>
 McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
 ```
 
-#### Annual
+### Annual
 
 Like the McLauglin Serpentine dataset, these data were collected at McLauglin Reserve in Northern California from 2000-2014 by Susan Harrison. These data represent 42 annual grassland plots, and were measured using 1m^2^ quadrants. Data is richness only from 2000-2005, but full community data 2006-2014. 
 
 ```{r McLaughlin Importing and Cleaning Data, message=FALSE}
-## importing the data
+# importing the data
 McLAnn <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv",
   col_types = c(
     id = "i", Year = "i", Site = "d", Quadrat = "i", Species_Name = "c",
@@ -635,13 +628,13 @@ McLAnn <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv",
   )
 )
 
-## combining the data with site infomation, filtering to just serpentine sites
+# combining the data with site infomation, filtering to just serpentine sites
 McLAnn <- left_join(McLAnn, McL_Sites, by = "Site")
 McLAnn <- McLAnn %>%
   filter(Serpentine == "N") %>%
   rename(plot = Site)
 
-## combining the guild information, creating a "guild" column, selecting only the desired info
+# combining the guild information, creating a "guild" column, selecting only the desired info
 McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
   rename(
     nat.exo = Native.Exotic,
@@ -684,21 +677,21 @@ mclann_data <- mclann_data %>%
 write_csv(mclann_data, "data/community/tidy/mclann.csv")
 ```
 
-#### Serpentine
+### Serpentine
 
 These data were collected by Susan Harrison from serpentine grassland sites at McLaughlin Reserve in Northern California. These data are for 38 plots that were measured using 1m^2^ quadrants. Data collected 2000-2014; richness only from 2000-2005 but full community data 2006-2014. 
 
 ```{r Import and Clean McL Serpentine, message=FALSE}
-## importing the data
+# importing the data
 McLSerp <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
 
-## combining the data with site information, filtering to just serpentine sites
+# combining the data with site information, filtering to just serpentine sites
 McLSerp <- left_join(McLSerp, McL_Sites, by = "Site")
 McLSerp <- McLSerp %>%
   filter(Serpentine == "S") %>%
   rename(plot = Site)
 
-## combining the guild information, creating a "guild" column, selecting only the desired info
+# combining the guild information, creating a "guild" column, selecting only the desired info
 McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
   rename(
     nat.exo = Native.Exotic,
@@ -745,7 +738,7 @@ Remove intermediate objects.
 rm(McL_Sites, McL_spp, McLAnn, mclann_data, McLSerp, mclserp_data)
 ```
 
-### Morgan Territory
+## Morgan Territory
 
 These grassland cover data were collected as part of the Grassland Monitoring Project by the UC Berkeley Range Lab, Professor James Bartolome, PI (jwbart@berkeley.edu), from 2003-2011, in the East Bay Regional Park District's Morgan Territory Regional Preserve.
 
@@ -820,11 +813,11 @@ Remove intermediate objects.
 rm(mt_com_tbl, mt_plt_tbl, mt_spp_tbl)
 ```
 
-### Santa Cruz
+## Santa Cruz
 
 Three sites provided by Karen Holl: Elkhorn Slough, Swanton Ranch, and UC Santa Cruz. 
 
-#### Elkhorn
+### Elkhorn
 
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
@@ -982,7 +975,7 @@ rm(filename, i, skips, year)
 rm(elkhorn_data)
 ```
 
-#### Swanton
+### Swanton
 
 These are data for grassland plots at Swanton Ranch. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, I am using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
@@ -1102,7 +1095,7 @@ read_csv("data/community/raw/HollData/swanton-updated.csv") %>%
   write_csv("data/community/tidy/swanton.csv")
 ```
 
-#### UCSC
+### UCSC
 
 These are data for grassland plots at UCSC. Data were collected by Karen Holl and Grey Hayes between 1999 and 2012. These data are structured similarly to the Elkhorn slough plots, so the code is also similar. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
@@ -1222,7 +1215,7 @@ Remove intermediate objects.
 rm(cleanElkhornData, cleanElkhornPlot)
 ```
 
-## Combine all community data
+# Combine all community data
 
 Read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
 
@@ -1245,9 +1238,9 @@ tidy_obs_tbl <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc"
   bind_rows(read_csv("data/community/tidy/vascocaves.csv", col_types = "cicccdc"))
 ```
 
-## Correct species names
+# Correct species names
 
-### Prepare species list
+## Prepare species list
 
 Compile a unique species-guild list from the tidy data.
 
@@ -1272,7 +1265,7 @@ taxize::get_gbifid_(tidy_tax_tbl$species) %>%
 
 Send the list to Josie and Justin for manual correction.
 
-### Rename species
+## Rename species
 
 Read the expert table manually complied by Josie and Justin.
 
