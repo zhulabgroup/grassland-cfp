@@ -1,6 +1,6 @@
 # read species data
 eb_spp_tbl <- .path$com_raw %>%
-  paste0("Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
+  str_c("Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
   readxl::read_xlsx() %>%
   mutate(
     species_code = toupper(species),
@@ -29,7 +29,7 @@ eb_spp_tbl <- .path$com_raw %>%
 
 # join community data
 eb_com_tbl <- .path$com_raw %>%
-  paste0("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
+  str_c("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
   read_csv(col_types = "cicidc") %>%
   rename(plot = plot.ID, species_code = species) %>%
   group_by(site, year, plot, species_code) %>%

@@ -1,6 +1,7 @@
 # pin count table
-pin_tbl <- read_csv(paste0(.path$com_raw, "JRGCE/Pin count.csv"), 
-                    col_types = "iiccicc") %>%
+pin_tbl <- .path$com_raw %>%
+  str_c("JRGCE/Pin count.csv") %>%
+  read_csv(col_types = "iiccicc") %>%
   select(year = YEAR, plot = ID, species = SPECIES, abund = TOTAL) %>%
   mutate(species = if_else(
     str_starts(species, "Acmispon americanus"),
@@ -15,8 +16,9 @@ pin_tbl <- read_csv(paste0(.path$com_raw, "JRGCE/Pin count.csv"),
   filter(!is.na(abund))
 
 # species table
-spp_tbl <- read_csv(paste0(.path$com_raw, "JRGCE/Species.csv"),
-                    col_types = "ccccccccccccccc") %>%
+spp_tbl <- .path$com_raw %>%
+  str_c("JRGCE/Species.csv") %>%
+  read_csv(col_types = "c") %>%
   mutate(guild = str_c(case_when(
     NATIVE_CODE == "I" ~ "E", # Invasive -> Exotic
     NATIVE_CODE == "N" ~ "N", # Native
@@ -26,13 +28,16 @@ spp_tbl <- read_csv(paste0(.path$com_raw, "JRGCE/Species.csv"),
   select(species = `Species or unit name`, guild)
 
 # treatment table
-trt_tbl <- read_csv(paste0(.path$com_raw, "JRGCE/Treatment.csv"),
-                    col_types = "iiiiciiiiiiiiic") %>%
+trt_tbl_raw <- .path$com_raw %>%
+  str_c("JRGCE/Treatment.csv") %>%
+  read_csv(col_types = "iiiiciiiiiiiiic")
+
+trt_tbl <- trt_tbl_raw %>%
   pull(id) %>%
   expand_grid(year = 1998:2014, plot = .) %>% # full year-treatment tibble
-  full_join(read_csv("data/community/raw/JRGCE/Treatment.csv", col_types = "iiiiciiiiiiiiic") %>%
-              select(plot = id, starts_with("Heat_"), Precip, CO2, Nitrogen),
-            by = "plot"
+  full_join(trt_tbl_raw %>%
+    select(plot = id, starts_with("Heat_"), Precip, CO2, Nitrogen),
+  by = "plot"
   ) %>%
   mutate( # recode treatment
     tmp = case_when(

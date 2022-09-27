@@ -1,6 +1,6 @@
-scide_data <- read_csv(paste0(.path$com_raw, "SantaCruzIDE/IDESpeciesComp_LongFormat_2015_2021.csv"),
-                       col_types = c("ciicdicdcc")
-) %>%
+scide_data <- .path$com_raw %>%
+  str_c("SantaCruzIDE/IDESpeciesComp_LongFormat_2015_2021.csv") %>%
+  read_csv(col_types = c("ciicdicdcc")) %>%
   mutate(
     site = Site %>%
       str_replace(" ", "") %>%

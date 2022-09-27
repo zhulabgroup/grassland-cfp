@@ -1,6 +1,6 @@
 # community data spreadsheet
 carrizo_com <- .path$com_raw %>%
-  paste0("Carrizo/2022-06-28/Carrizo_data for Joise_2007_2021.xlsx") %>%
+  str_c("Carrizo/2022-06-28/Carrizo_data for Joise_2007_2021.xlsx") %>%
   readxl::read_xlsx(
     sheet = 1,
     col_types = c(
@@ -22,7 +22,7 @@ carrizo_com <- .path$com_raw %>%
 
 # species data
 carrizo_spp <- .path$com_raw %>%
-  paste0("Carrizo/2022-07-05/Carrizo_global_species list_v2.csv") %>%
+  str_c("Carrizo/2022-07-05/Carrizo_global_species list_v2.csv") %>%
   read_csv(col_types = "c") %>%
   mutate(guild = case_when(
     newform == "ia" ~ "EAG", # Invasive (Exotic) Annual Grass

@@ -1,6 +1,6 @@
 # read in raw data
 # note 2020 data is missing.
-excel_file <- paste0(.path$com_raw, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
+excel_file <- str_c(.path$com_raw, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
 cover_2015_tbl <- readxl::read_excel(excel_file, sheet = "2015")
 cover_2016_tbl <- readxl::read_excel(excel_file, sheet = "2016")
 cover_2017_tbl <- readxl::read_excel(excel_file, sheet = "2017")

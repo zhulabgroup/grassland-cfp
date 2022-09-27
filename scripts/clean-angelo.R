@@ -1,16 +1,18 @@
 # community data
-com_tbl <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_CommCompData.csv"),
-                   col_types = cols(.default = "d", Year = "i", Plot = "i", TMT = "c")) %>%
+com_tbl <- .path$com_raw %>%
+  str_c("Angelo/Angelo_CommCompData.csv") %>%
+  read_csv(col_types = cols(.default = "d", Year = "i", Plot = "i", TMT = "c")) %>%
   filter(TMT == "C") %>%
-  pivot_longer(-c(Year, Plot, TMT), names_to = "species", values_to = "cover") %>% 
+  pivot_longer(-c(Year, Plot, TMT), names_to = "species", values_to = "cover") %>%
   rename_with(tolower)
 
 # species data
-spp_tbl <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_spp_guilds.csv"),
-                    col_types = "c")
+spp_tbl <- .path$com_raw %>%
+  str_c("Angelo/Angelo_spp_guilds.csv") %>%
+  read_csv(col_types = "c")
 
 # combine
-angelo_data <- com_tbl %>% 
+angelo_data <- com_tbl %>%
   left_join(spp_tbl, by = "species") %>%
   select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
   filter(
