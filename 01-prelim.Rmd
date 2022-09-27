@@ -14,15 +14,8 @@ output:
     global_numbering: true
 ---
 
-Setup and load packages.
-
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE)
-```
-
-```{r}
-library(tidyverse)
-library(patchwork)
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/utils/setup.R")
 ```
 
 # Species climate niches
