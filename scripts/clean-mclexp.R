@@ -1,13 +1,14 @@
 # read in raw data
 # note 2020 data is missing.
-cover_2015_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2015")
-cover_2016_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2016")
-cover_2017_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2017")
-cover_2018_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2018")
-cover_2019_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2019")
-# cover_2020_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2020")
-cover_2021_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "2021")
-plot_tbl <- readxl::read_excel("data/community/raw/HarrisonExperiment/2015-2021 Water Experiment Data.xlsx", sheet = "Plot codes")
+excel_file <- paste0(.path$com_raw, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
+cover_2015_tbl <- readxl::read_excel(excel_file, sheet = "2015")
+cover_2016_tbl <- readxl::read_excel(excel_file, sheet = "2016")
+cover_2017_tbl <- readxl::read_excel(excel_file, sheet = "2017")
+cover_2018_tbl <- readxl::read_excel(excel_file, sheet = "2018")
+cover_2019_tbl <- readxl::read_excel(excel_file, sheet = "2019")
+# cover_2020_tbl <- readxl::read_excel(excel_file, sheet = "2020")
+cover_2021_tbl <- readxl::read_excel(excel_file, sheet = "2021")
+plot_tbl <- readxl::read_excel(excel_file, sheet = "Plot codes")
 
 # combine cover data across years and join with plot-treatment data.
 cover_long_tbl <- (
