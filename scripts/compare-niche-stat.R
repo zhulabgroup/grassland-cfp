@@ -1,5 +1,5 @@
 # read species climate niche estimates
-niche_tbl <- read_rds(.path_ls$sum_niche) %>%
+niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100) # no dummy species
 
 # temperature niche stats

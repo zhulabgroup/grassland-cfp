@@ -1,5 +1,5 @@
 # read data
-site_sf <- read_rds(.path_ls$geo_site) %>%
+site_sf <- read_rds(.path$geo_site) %>%
   filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
   arrange(abbr) %>%
   add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
@@ -9,13 +9,13 @@ site_tbl <- site_sf %>%
   as_tibble() # drop geometry
 
 # read geo data
-cfp_sf <- st_read(.path_ls$geo_cfp) %>%
+cfp_sf <- st_read(.path$geo_cfp) %>%
   filter(
     NAME == "California Floristic Province",
     Type == "hotspot area"
   )
 
-sds <- terra::sds(paste0(.path_ls$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
+sds <- terra::sds(paste0(.path$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
 lc_ras <- raster::raster(sds[1])
 raster::extent(lc_ras) <- c(-180, 180, -90, 90)
 raster::projection(lc_ras) <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")

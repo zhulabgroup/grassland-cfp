@@ -1,5 +1,5 @@
 # compare BIEN, CCH, GBIF, iNat occurrence datasets
-bien_tbl <- read_rds(.path_ls$occ_bien) %>%
+bien_tbl <- read_rds(.path$occ_bien) %>%
   mutate(
     dataset = "bien",
     species = queryName,
@@ -7,7 +7,7 @@ bien_tbl <- read_rds(.path_ls$occ_bien) %>%
   ) %>%
   select(dataset, key, species, longitude, latitude)
 
-cch_tbl <- read_rds(.path_ls$occ_cch) %>%
+cch_tbl <- read_rds(.path$occ_cch) %>%
   mutate(
     dataset = "cch",
     species = species_name,
@@ -15,7 +15,7 @@ cch_tbl <- read_rds(.path_ls$occ_cch) %>%
   ) %>%
   select(dataset, key, species, longitude, latitude)
 
-gbif_tbl <- read_rds(.path_ls$occ_gbif) %>%
+gbif_tbl <- read_rds(.path$occ_gbif) %>%
   mutate(
     dataset = "gbif",
     species = consolidatedName,
@@ -26,7 +26,7 @@ gbif_tbl <- read_rds(.path_ls$occ_gbif) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   select(dataset, key, species, longitude, latitude)
 
-inat_tbl <- read_rds(.path_ls$occ_inat) %>%
+inat_tbl <- read_rds(.path$occ_inat) %>%
   mutate(
     dataset = "inat",
     species = consolidatedName,

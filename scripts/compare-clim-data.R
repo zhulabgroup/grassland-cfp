@@ -1,5 +1,5 @@
 # read climate datasets
-clim_gbif_tbl <- read_rds(.path_ls$geo_clim) %>%
+clim_gbif_tbl <- read_rds(.path$geo_clim) %>%
   as_tibble()
 
 chelsa_gbif_tbl <- clim_gbif_tbl %>%

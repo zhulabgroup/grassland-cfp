@@ -1,9 +1,9 @@
 # read original and thinned niche tables
-niche_tbl <- read_rds(.path_ls$sum_niche) %>%
+niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100) %>%
   select(species, occ_n)
 
-thin_tbl <- read_rds(.path_ls$sum_thin) %>%
+thin_tbl <- read_rds(.path$sum_thin) %>%
   inner_join(niche_tbl, ., by = "species")
 
 thin_tmp_gg <- thin_tbl %>%
