@@ -3,10 +3,10 @@
 rmarkdown::render(
   input = "02-community-data.Rmd",
   output_format = "bookdown::word_document2",
-  output_file = paste0(tempdir(), "/Community data.docx")
+  output_file = paste0(tempdir(), "/Community data preparation.docx")
   # knit_root_dir = ".." # set to project dir
 )
 googledrive::drive_put(
-  media = paste0(tempdir(), "/Community data.docx"),
+  media = paste0(tempdir(), "/Community data preparation.docx"),
   path = googledrive::as_id("1rxRSHDlcoz8_iOQcQyi1y3ep1uZNV76z")
 )
