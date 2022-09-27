@@ -161,12 +161,6 @@ eb_com_tbl %>%
 rm(list = ls())
 ```
 
-Remove intermediate objects.
-
-```{r}
-rm(eb_com_tbl, eb_spp_tbl)
-```
-
 ## Jasper
 
 These data were collected from Jasper Ridge Biological Preserve by Lauren Hallett and Richard Hobbs from 1983 to 2015.  
