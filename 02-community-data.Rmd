@@ -34,7 +34,7 @@ Key results
 
 # Study sites
 
-```{r, eval=TRUE}
+```{r site-info, eval=TRUE}
 source("scripts/input-site-info.R")
 knitr::kable(site_sf)
 ```
@@ -52,7 +52,7 @@ rm(list = ls())
 
 JRGCE data provided by Nona Chiariello. The raw CSV files include pin count, species, and treatment data.
 
-```{r}
+```{r jrgce}
 source("scripts/clean-jrgce.R")
 write_csv(jrgce_data, paste0(.path$com_tidy, "jrgce.csv"))
 rm(list = ls())
