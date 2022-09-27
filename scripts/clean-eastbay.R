@@ -1,5 +1,7 @@
-# read East Bay combo data
-eb_spp_tbl <- readxl::read_xlsx("data/community/raw/Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
+# read species data
+eb_spp_tbl <- .path$com_raw %>%
+  paste0("Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
+  readxl::read_xlsx() %>%
   mutate(
     species_code = toupper(species),
     guild = str_c(
@@ -25,9 +27,10 @@ eb_spp_tbl <- readxl::read_xlsx("data/community/raw/Dudney/_VegSpCodeAttributes_
   ) %>%
   select(species_code, species = latin, guild)
 
-eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv",
-  col_types = "cicidc"
-) %>%
+# join community data
+eb_com_tbl <- .path$com_raw %>%
+  paste0("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
+  read_csv(col_types = "cicidc") %>%
   rename(plot = plot.ID, species_code = species) %>%
   group_by(site, year, plot, species_code) %>%
   summarize(hits = n()) %>%
@@ -45,28 +48,3 @@ eb_com_tbl <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRX
   ) %>%
   select(site, year, plot, species, guild, abund, abund_type) %>%
   arrange(site, year, plot, species)
-
-# Validate with Joan's functional group (guild) spreadsheet
-if (FALSE) {
-  eb_guild_sum_tbl1 <- readxl::read_xlsx("data/community/raw/Dudney/FunctionalGroups_EBParks.xlsx",
-    range = readxl::cell_cols("A:E")
-  ) %>%
-    rename(plot = plot.ID, guild = fungrp)
-
-  eb_guild_sum_tbl2 <- read_csv("data/community/raw/Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv",
-    col_types = "cicidc"
-  ) %>%
-    rename(plot = plot.ID, species_code = species) %>%
-    left_join(eb_spp_tbl, by = "species_code") %>%
-    group_by(site, year, plot, guild) %>%
-    summarize(abund = n())
-
-  inner_join(eb_guild_sum_tbl1, eb_guild_sum_tbl2, by = c("site", "year", "plot", "guild")) %>%
-    ggplot(aes(abund.x, abund.y)) +
-    geom_point() +
-    geom_abline(intercept = 0, slope = 1, color = "red") +
-    labs(x = "Species hit from Dudney", y = "Species hit from Zhu")
-
-  rm(eb_guild_sum_tbl1, eb_guild_sum_tbl2)
-}
-
