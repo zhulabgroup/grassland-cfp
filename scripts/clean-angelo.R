@@ -10,7 +10,7 @@ spp_tbl <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_spp_guilds.csv"),
                     col_types = "c")
 
 # combine
-com_tbl %>% 
+angelo_data <- com_tbl %>% 
   left_join(spp_tbl, by = "species") %>%
   select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
   filter(
