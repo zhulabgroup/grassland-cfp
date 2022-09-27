@@ -14,8 +14,6 @@ output:
     global_numbering: true
 ---
 
-# Preliminary analyses
-
 Setup and load packages.
 
 ```{r, include=FALSE}
@@ -27,7 +25,7 @@ library(tidyverse)
 library(patchwork)
 ```
 
-## Species climate niches
+# Species climate niches
 
 Let's get community climate indexes: community temperature index (CTI) and community precipitation index (CPI) estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`. Then plot CTI and CPI for all species.
 
@@ -65,7 +63,7 @@ Note the strong negative correlation between mean temp and precip. Warmer locati
 
 Update: Karen said it would be helpful to plot native vs. exotic species. I found Josie had a column "guild" with some codes: `r unique(gbif_dat$guild)`. From Josie's code `ComComp Data Cleanup/Data_CleanupOnly.Rmd` lines 697-699, it looks like the 1st letter is **N**ative vs. **E**xotic, the 2nd letter is **A**nnual vs. **P**erennial, and the 3rd letter is lifeform **G**rass vs. **F**orb (but what are other characters?). So I extracted the 1st letter and recoded them into native vs. exotic. Karen confirmed that "The species that I know look correct as far as what I know about their temperature and precipitation distribution." (email 1/26/22)
 
-## Experimental data
+# Experimental data
 
 Analyze JRGCE species/community data.
 
@@ -416,13 +414,12 @@ cci_scide_dat %>%
   scale_color_manual(values = c("black", "red"))
 ```
 
-## Observational data
+# Observational data
 
 The objectives are
 
 1. Replicate Josie's key results on CTI change
 1. Compare with site-level climate change
-
 
 Get plot-level and site-level summaries.
 
@@ -471,12 +468,7 @@ cci_site_gg +
   )
 ```
 
-```{r, echo = F}
-knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.9hwhiklx2jp")
-```
-
 Note that the goal was to replicate Josie's manuscript Figure CTI. The data look right, but two sites, Jasper and UCSC, seem to be mislabeled. 
-
 Then, get site climate data. Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
 
 ```{r, fig.cap="Replicate Josie's Figure weather"}
@@ -499,10 +491,6 @@ clim_site_gg +
     x = "Year",
     y = "Growing season temperature (°C)"
   )
-```
-
-```{r, echo=FALSE}
-knitr::include_url("https://docs.google.com/document/d/1oFf3xn-CiWB4kllw1DMqRl3BnVSRb0DY/preview#bookmark=id.l2cvtag9lu5y")
 ```
 
 Note that the goal was to replicate Josie's manuscript Figure weather and Table weather models. It looks right to me (no mislabel).
