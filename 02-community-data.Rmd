@@ -40,7 +40,7 @@ knitr::kable(site_sf)
 ```
 
 ```{r}
-write_rds(site_sf, file = .path_ls$geo_site)
+write_rds(site_sf, file = .path$geo_site)
 rm(list = ls())
 ```
 
