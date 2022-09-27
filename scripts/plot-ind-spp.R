@@ -1,17 +1,17 @@
 # read CFP data
-cfp_sf <- st_read(path_ls$geo_cfp) %>%
+cfp_sf <- st_read(.path_ls$geo_cfp) %>%
   filter(
     NAME == "California Floristic Province",
     Type == "hotspot area"
   )
 
 # read GBIF-CHELSA data
-gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
+gbif_chelsa_sf <- read_rds(.path_ls$geo_clim) %>%
   dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
 # check species lists
-sp_gbif_vec <- read_rds(path_ls$sum_niche) %>%
+sp_gbif_vec <- read_rds(.path_ls$sum_niche) %>%
   filter(occ_n > 100) %>% # no dummy species
   pull(species)
 

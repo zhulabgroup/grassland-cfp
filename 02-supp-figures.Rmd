@@ -29,7 +29,7 @@ knitr::kable(occ_samp_tbl, caption = "Comparison of occurrence datasets.")
 
 ```{r occ-data-fig, fig.cap="Occurrence data comparison from multiple sources in study area"}
 occ_comp_gg
-rm(list = setdiff(ls(), "path_ls"))
+rm(list = ls())
 ```
 
 # Climate data sources
@@ -39,7 +39,7 @@ Compare CHELSA and PRISM climate data at GBIF occurrence locations, by making sc
 ```{r clim-data-fig, fig.cap="Climate data comparison from multiple sources shows high consistency in study area."}
 source("scripts/compare-clim-data.R")
 chelsa_prism_gg / chelsa_terraclim_gg
-rm(list = setdiff(ls(), "path_ls"))
+rm(list = ls())
 ```
 
 # Climate variable correlations
@@ -57,7 +57,7 @@ niche_tmp_gg
 
 ```{r ppt-niche-fig, fig.cap="Species precipitation niche statistics are highly correlated"}
 niche_ppt_gg
-rm(list = setdiff(ls(), "path_ls"))
+rm(list = ls())
 ```
 
 # Spatial thinning occurrence-climate records
@@ -69,7 +69,7 @@ thin_tmp_gg
 
 ```{r thin-ppt-fig, fig.cap="Species precipitation niche statistics (mm)"}
 thin_ppt_gg
-rm(list = setdiff(ls(), "path_ls"))
+rm(list = ls())
 ```
 
 # Individual species climate niches
@@ -102,7 +102,7 @@ dev.off()
 The file can be viewed at this [link](https://zhulab.ucsc.edu/projects/grassland/figures/species-climate-niche.pdf)
 
 ```{r}
-rm(list = setdiff(ls(), "path_ls"))
+rm(list = ls())
 ```
 
 # Site info
@@ -116,7 +116,7 @@ knitr::kable(site_tbl)
 
 ```{r site-fig, fig.cap="Map of experimental and observational study sites"}
 site_gg
-rm(list = setdiff(ls(), "path_ls"))
+rm(list = ls())
 ```
 
 # Site climate change

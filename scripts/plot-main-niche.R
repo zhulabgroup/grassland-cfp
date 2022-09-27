@@ -1,8 +1,8 @@
 # import data
-niche_tbl <- read_rds(path_ls$sum_niche) %>%
+niche_tbl <- read_rds(.path_ls$sum_niche) %>%
   filter(occ_n > 100) # no dummy species
 
-gbif_chelsa_sf <- read_rds(path_ls$geo_clim) %>%
+gbif_chelsa_sf <- read_rds(.path_ls$geo_clim) %>%
   select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   filter(species %in% niche_tbl$species) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")

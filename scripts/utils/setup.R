@@ -22,7 +22,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 # - `geo`: geography data, including GIS and climate
 # - `occ`: occurrence data
 # - `sum`: summary data, e.g., niche estimates
-path_ls <- list(
+.path_ls <- list( # hidden variable won't be removed
   com_exp = "data/community/all-experimental-data.rds",
   com_obs = "data/community/all-observational-data.rds",
   geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
