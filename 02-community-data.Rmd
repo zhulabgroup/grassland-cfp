@@ -96,16 +96,6 @@ write_csv(angelo_data, paste0(.path$com_tidy, "angelo.csv"))
 rm(list = ls())
 ```
 
-Remove intermediate objects.
-
-```{r}
-rm(Angelo, Angelo_spp)
-rm(angelo_data)
-```
-```
-
-
-
 ## Carrizo
 
 Carrizo Plain data from Loralee Larios, from 2007 to 2021, updated on June 28, 2022. The data are taken in plots, with a variable number of plots measured annually. These data only have the control plots after 2015 so replication will go from 10 20m x 20m plots with 8 1m2 subplots  to 4 20m x 20m plots with 8 1m2 subplots. Those plots that are kept would correspond to Center Well plots 2, 3, 4, 6 and Swain plots 1,2,7,9.

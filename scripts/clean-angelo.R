@@ -1,25 +1,24 @@
 # community data
-Angelo <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_CommCompData.csv")) %>%
+com_tbl <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_CommCompData.csv"),
+                   col_types = cols(.default = "d", Year = "i", Plot = "i", TMT = "c")) %>%
   filter(TMT == "C") %>%
-  pivot_longer(-c(Year, Plot, TMT), names_to = "species", values_to = "cover")
-names(Angelo) <- tolower(names(Angelo))
+  pivot_longer(-c(Year, Plot, TMT), names_to = "species", values_to = "cover") %>% 
+  rename_with(tolower)
 
 # species data
-Angelo_spp <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_spp_guilds.csv"))
-Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
-  mutate(Site = "angelo") %>%
-  filter(cover > 0)
+spp_tbl <- read_csv(paste0(.path$com_raw, "Angelo/Angelo_spp_guilds.csv"),
+                    col_types = "c")
 
-# filter
-angelo_data <- Angelo %>%
+# combine
+com_tbl %>% 
+  left_join(spp_tbl, by = "species") %>%
   select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "angelo") %>%
   filter(
+    cover > 0,
     guild != "Bare",
     guild != "Moss",
     guild != "Litter"
   ) %>%
-  mutate(site = "angelo") %>% 
-  select(site, year, plot, species = species.name, guild, abund = cover) %>%
-  mutate(species = str_trim(species), guild = as.character(guild), abund_type = "cover") %>%
+  mutate(site = "angelo", species = str_trim(species.name), abund_type = "cover") %>%
+  select(site, year, plot, species, guild, abund = cover, abund_type) %>%
   arrange(site, year, plot, species)
