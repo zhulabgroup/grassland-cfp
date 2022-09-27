@@ -89,34 +89,11 @@ rm(list = ls())
 
 ## Angelo
 
-These data were collected by K.B. Suttle from 2002 to 2015.  
-
-```{r Angelo Data Import and Clean, message=FALSE}
-Angelo <- read_csv("data/community/raw/Angelo/Angelo_CommCompData.csv") %>%
-  filter(TMT == "C") %>%
-  pivot_longer(-c(Year, Plot, TMT), names_to = "species", values_to = "cover")
-names(Angelo) <- tolower(names(Angelo))
-Angelo_spp <- read_csv("data/community/raw/Angelo/Angelo_spp_guilds.csv")
-Angelo <- left_join(Angelo, Angelo_spp, by = "species") %>%
-  mutate(Site = "angelo") %>%
-  filter(cover > 0)
-angelo_data <- Angelo %>%
-  select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "angelo") %>%
-  filter(
-    guild != "Bare",
-    guild != "Moss",
-    guild != "Litter"
-  ) %>%
-  mutate(site = "angelo")
-
-angelo_data <- angelo_data %>%
-  as_tibble() %>%
-  select(site, year, plot, species = species.name, guild, abund = cover) %>%
-  mutate(species = str_trim(species), guild = as.character(guild), abund_type = "cover") %>%
-  arrange(site, year, plot, species)
-
-write_csv(angelo_data, "data/community/tidy/angelo.csv")
+These data were collected by K.B. Suttle from 2002 to 2015. 
+```{r angelo}
+source("scripts/clean-angelo.R")
+write_csv(angelo_data, paste0(.path$com_tidy, "angelo.csv"))
+rm(list = ls())
 ```
 
 Remove intermediate objects.
@@ -125,6 +102,9 @@ Remove intermediate objects.
 rm(Angelo, Angelo_spp)
 rm(angelo_data)
 ```
+```
+
+
 
 ## Carrizo
 
