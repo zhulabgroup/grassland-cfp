@@ -1,24 +1,27 @@
-Jasper_Veg <- read_csv("data/community/raw/Jasper/JR_cover_forJosie.csv",
-                       col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")
-) %>%
+# read cover data
+cover_tbl <- .path$com_raw %>% 
+  str_c("Jasper/JR_cover_forJosie.csv") %>% 
+  read_csv(col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")) %>%
   pivot_wider(names_from = species, values_from = cover) %>%
   replace(is.na(.), 0) %>%
   pivot_longer(cols = aghe:vumi, names_to = "species", values_to = "cover") %>%
   group_by(uniqueID, year, species) %>%
-  summarize(cover = mean(cover))
-JR_spp <- read_csv("data/community/raw/Jasper/JR_speciesnames2.csv")
-Jasper <- left_join(Jasper_Veg, JR_spp, by = "species")
-Jasper_species <- Jasper %>%
-  select("uniqueID", "year", "species.name", "cover", "guild") %>%
-  mutate(site = "jasper") %>%
-  filter(cover > 0) %>%
+  summarize(cover = mean(cover)) %>% 
   ungroup()
-jasper_spp_check <- Jasper_species %>%
-  group_by(species.name, guild) %>%
-  summarise(mean = mean(cover))
 
-jasper_data <- Jasper_species %>%
-  as_tibble() %>%
-  select(site, year, plot = uniqueID, species = species.name, guild, abund = cover) %>%
-  mutate(plot = as.character(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
+# read species data
+spp_tbl <- .path$com_raw %>% 
+  str_c("Jasper/JR_speciesnames2.csv") %>% 
+  read_csv(col_types = "c")
+
+# combine
+jasper_data <- cover_tbl %>%
+  left_join(spp_tbl, by = "species") %>% 
+  filter(cover > 0) %>%
+  mutate(site = "jasper",
+         species.name = str_trim(species.name),
+         abund_type = "cover") %>% 
+  select(site, year, plot = uniqueID,
+         species = species.name, guild,
+         abund = cover, abund_type) %>% 
   arrange(site, year, plot, species)
