@@ -67,7 +67,7 @@ trt_tbl <- trt_tbl_raw %>%
   arrange(year, plot)
 
 # join all tables
-jrgce_data <- pin_tbl %>%
+jrgce_tbl <- pin_tbl %>%
   left_join(spp_tbl, by = "species") %>%
   left_join(trt_tbl, by = c("year", "plot")) %>%
   mutate(site = "jrgce", abund_type = "point_intercept") %>%

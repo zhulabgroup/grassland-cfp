@@ -36,7 +36,7 @@ carrizo_spp <- .path$com_raw %>%
   ))
 
 # join community and species data
-carrizo_data <- carrizo_com %>%
+carrizo_tbl <- carrizo_com %>%
   filter(
     plot %in% c("EP2", "EP3", "EP4", "EP6", "SC1", "SC2", "SC7", "SC9"),
     # !(species_code == "AMSMEN" & is.na(species_name)),

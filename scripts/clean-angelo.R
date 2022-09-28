@@ -12,7 +12,7 @@ spp_tbl <- .path$com_raw %>%
   read_csv(col_types = "c")
 
 # combine
-angelo_data <- com_tbl %>%
+angelo_tbl <- com_tbl %>%
   left_join(spp_tbl, by = "species") %>%
   select("tmt", "plot", "year", "species.name", "cover", "guild") %>%
   filter(

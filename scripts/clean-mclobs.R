@@ -27,7 +27,7 @@ spp_tbl <- .path$com_raw %>%
   )
 
 # combine
-mclobs_data <- plt_tbl %>%
+mclobs_tbl <- plt_tbl %>%
   left_join(com_tbl, by = "plot") %>%
   left_join(spp_tbl, by = "species_name") %>%
   group_by(year, plot, serpentine, species_name, guild) %>%
@@ -48,13 +48,13 @@ mclobs_data <- plt_tbl %>%
   arrange(year, plot, species)
 
 # annual plot data
-mclann_data <- mclobs_data %>%
+mclann_tbl <- mclobs_tbl %>%
   filter(serpentine == "N") %>%
   mutate(site = "mclann") %>%
   select(site, year, plot, species, guild, abund, abund_type)
 
 # serpentine plot data
-mclserp_data <- mclobs_data %>%
+mclserp_tbl <- mclobs_tbl %>%
   filter(serpentine == "S") %>%
   mutate(site = "mclserp") %>%
   select(site, year, plot, species, guild, abund, abund_type)

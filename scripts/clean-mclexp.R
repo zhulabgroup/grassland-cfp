@@ -50,7 +50,7 @@ cover_long_tbl <- (
   select(year, plot, species, abund) %>%
   mutate(plot = as.integer(plot))
 
-mclexp_data <- plot_tbl %>%
+mclexp_tbl <- plot_tbl %>%
   mutate(
     plot = as.integer(Site),
     treat = case_when(

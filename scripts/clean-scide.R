@@ -1,4 +1,4 @@
-scide_data <- .path$com_raw %>%
+scide_tbl <- .path$com_raw %>%
   str_c("SantaCruzIDE/IDESpeciesComp_LongFormat_2015_2021.csv") %>%
   read_csv(col_types = c("ciicdicdcc")) %>%
   mutate(

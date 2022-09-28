@@ -15,7 +15,7 @@ spp_tbl <- .path$com_raw %>%
   read_csv(col_types = "c")
 
 # combine
-jasper_data <- cover_tbl %>%
+jasper_tbl <- cover_tbl %>%
   left_join(spp_tbl, by = "species") %>% 
   filter(cover > 0) %>%
   mutate(site = "jasper",
