@@ -1,107 +1,73 @@
-# site and species data
-McL_Sites <- read_csv("data/community/raw/McLaughlin/AbioticSiteDataNew.csv") %>%
-  rename(Site = site)
-McL_spp <- read_csv("data/community/raw/McLaughlin/McLaughlin_FunctionalGroups.csv")
+# community data
+com_tbl <- .path$com_raw %>%
+  str_c("McLaughlin/Core_Community_Data2019.csv") %>%
+  read_csv(col_types = "iiiicdcc") %>%
+  rename_with(tolower) %>%
+  rename(plot = site)
 
-# annual site community data
-McLAnn <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv",
-                   col_types = c(
-                     id = "i", Year = "i", Site = "d", Quadrat = "i", Species_Name = "c",
-                     Cover = "d", Notes = "c", Merged_Species = "c"
-                   )
-)
+# plot data
+plt_tbl <- .path$com_raw %>%
+  str_c("McLaughlin/AbioticSiteDataNew.csv") %>%
+  read_csv(col_types = "iicdd") %>%
+  rename_with(tolower) %>%
+  rename(plot = site)
 
-# combining the data with site infomation, filtering to just serpentine sites
-McLAnn <- left_join(McLAnn, McL_Sites, by = "Site")
-McLAnn <- McLAnn %>%
-  filter(Serpentine == "N") %>%
-  rename(plot = Site)
+# species data
+spp_tbl <- .path$com_raw %>%
+  str_c("McLaughlin/McLaughlin_FunctionalGroups.csv") %>%
+  read_csv(col_types = "c") %>%
+  rename_with(tolower) %>%
+  mutate(
+    species_name = str_trim(species_name),
+    guild = str_c(
+      str_sub(native.exotic, 1, 1),
+      str_sub(annual.perennial, 1, 1),
+      str_sub(grass.forb.shrub, 1, 1)
+    )
+  )
 
-# combining the guild information, creating a "guild" column, selecting only the desired info
-McLAnn <- left_join(McLAnn, McL_spp, by = "Species_Name") %>%
-  rename(
-    nat.exo = Native.Exotic,
-    lifeform = Grass.Forb.Shrub,
-    ann.per = Annual.Perennial
+# annual plot data
+mclann_data <- plt_tbl %>%
+  filter(serpentine == "N") %>%
+  left_join(com_tbl, by = "plot") %>%
+  left_join(spp_tbl, by = "species_name") %>%
+  group_by(year, plot, species_name, guild) %>%
+  summarize(abund = mean(cover)) %>%
+  ungroup() %>%
+  filter(
+    !is.na(abund),
+    abund > 0,
+    species_name != "Bare",
+    species_name != "Rock",
+    species_name != "Unknown grass",
+    species_name != "Unknown forb"
   ) %>%
   mutate(
-    Guild1 = str_sub(nat.exo, 1, 1),
-    Guild3 = str_sub(lifeform, 1, 1),
-    Guild2 = str_sub(ann.per, 1, 1)
+    site = "mclann",
+    abund_type = "cover"
   ) %>%
-  unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
-  unite(Guild1, Guild3, col = "guild", sep = "") %>%
-  mutate(Site = "mclann") %>%
-  select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
-  group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
-  summarise(cover = mean(Cover)) %>%
-  ungroup()
-mclann_data <- McLAnn %>%
-  rename(
-    species.name = Species_Name,
-    year = Year
-  ) %>%
-  filter(
-    species.name != "Bare",
-    species.name != "Rock",
-    species.name != "Unknown grass",
-    species.name != "Unknown forb"
-  ) %>%
-  mutate(site = "mclann")
+  select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
+  arrange(site, year, plot, species)
 
-mclann_data <- mclann_data %>%
-  as_tibble() %>%
+# serpentine plot data
+mclserp_data <- plt_tbl %>%
+  filter(serpentine == "S") %>%
+  left_join(com_tbl, by = "plot") %>%
+  left_join(spp_tbl, by = "species_name") %>%
+  group_by(year, plot, species_name, guild) %>%
+  summarize(abund = mean(cover)) %>%
   ungroup() %>%
-  select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
-  mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
-  arrange(site, year, plot, species) %>%
-  filter(!is.na(abund), abund > 0)
-
-
-
-# importing the data
-McLSerp <- read_csv("data/community/raw/McLaughlin/Core_Community_Data2019.csv")
-
-# combining the data with site information, filtering to just serpentine sites
-McLSerp <- left_join(McLSerp, McL_Sites, by = "Site")
-McLSerp <- McLSerp %>%
-  filter(Serpentine == "S") %>%
-  rename(plot = Site)
-
-# combining the guild information, creating a "guild" column, selecting only the desired info
-McLSerp <- left_join(McLSerp, McL_spp, by = "Species_Name") %>%
-  rename(
-    nat.exo = Native.Exotic,
-    lifeform = Grass.Forb.Shrub,
-    ann.per = Annual.Perennial
+  filter(
+    !is.na(abund),
+    abund > 0,
+    species_name != "Bare",
+    species_name != "Rock",
+    species_name != "Unknown grass",
+    species_name != "Unknown forb"
   ) %>%
   mutate(
-    Guild1 = str_sub(nat.exo, 1, 1),
-    Guild3 = str_sub(lifeform, 1, 1),
-    Guild2 = str_sub(ann.per, 1, 1)
+    site = "mclserp",
+    abund_type = "cover"
   ) %>%
-  unite(Guild1, Guild2, col = "Guild1", sep = "") %>%
-  unite(Guild1, Guild3, col = "guild", sep = "") %>%
-  mutate(Site = "mclserp") %>%
-  select(Year, Site, plot, Quadrat, Cover, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
-  group_by(Year, Site, plot, Species_Name, nat.exo, ann.per, lifeform, guild) %>%
-  summarise(cover = mean(Cover))
-mclserp_data <- McLSerp %>%
-  rename(
-    species.name = Species_Name,
-    year = Year
-  ) %>%
-  filter(
-    species.name != "Bare",
-    species.name != "Rock",
-    species.name != "Unknown forb"
-  ) %>%
-  mutate(site = "mclserp")
-
-mclserp_data <- mclserp_data %>%
-  as_tibble() %>%
-  ungroup() %>%
-  select(site = Site, year, plot, species = species.name, guild, abund = cover) %>%
-  mutate(plot = as.integer(plot), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund_type = "cover") %>%
-  arrange(site, year, plot, species) %>%
-  filter(!is.na(abund), abund > 0)
+  select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
+  arrange(site, year, plot, species)
