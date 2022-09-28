@@ -54,7 +54,7 @@ JRGCE data provided by Nona Chiariello. The raw CSV files include pin count, spe
 
 ```{r jrgce}
 source("scripts/clean-jrgce.R")
-write_csv(jrgce_data, paste0(.path$com_tidy, "jrgce.csv"))
+write_csv(jrgce_data, str_c(.path$com_tidy, "jrgce.csv"))
 rm(list = ls())
 ```
 
@@ -69,7 +69,7 @@ Susan's notes (email on 4/22/22):
 
 ```{r mclexp}
 source("scripts/clean-mclexp.R")
-write_csv(mclexp_data, paste0(.path$com_tidy, "mclexp.csv"))
+write_csv(mclexp_data, str_c(.path$com_tidy, "mclexp.csv"))
 rm(list = ls())
 ```
 
@@ -81,7 +81,7 @@ Data provided by Michael Loik.
 
 ```{r scide}
 source("scripts/clean-scide.R")
-write_csv(scide_data, paste0(.path$com_tidy, "scide.csv"))
+write_csv(scide_data, str_c(.path$com_tidy, "scide.csv"))
 rm(list = ls())
 ```
 
@@ -92,7 +92,7 @@ rm(list = ls())
 These data were collected by K.B. Suttle from 2002 to 2015. 
 ```{r angelo}
 source("scripts/clean-angelo.R")
-write_csv(angelo_data, paste0(.path$com_tidy, "angelo.csv"))
+write_csv(angelo_data, str_c(.path$com_tidy, "angelo.csv"))
 rm(list = ls())
 ```
 
@@ -106,7 +106,7 @@ Loralee's email (7/5/22) on Count vs. Count2:
 
 ```{r carrizo}
 source("scripts/clean-carrizo.R")
-write_csv(carrizo_data, paste0(.path$com_tidy, "carrizo.csv"))
+write_csv(carrizo_data, str_c(.path$com_tidy, "carrizo.csv"))
 rm(list = ls())
 ```
 
@@ -126,7 +126,7 @@ Include PR4-9 plots that have 10 yr of data, 2003-2012.
 eb_com_tbl %>%
   filter(site == "PR", plot %in% str_c("PR", 4:9)) %>%
   mutate(site = "pleasantonridge") %>%
-  write_csv(paste0(.path$com_tidy, "pleasantonridge.csv"))
+  write_csv(str_c(.path$com_tidy, "pleasantonridge.csv"))
 ```
 
 ### Sunol
@@ -137,7 +137,7 @@ Include SU1-6 plots that have 8 yr of data, 2005-2012. Include SU7-9 plots that 
 eb_com_tbl %>%
   filter(site == "SU", plot %in% str_c("SU", 1:9)) %>%
   mutate(site = "sunol") %>%
-  write_csv(paste0(.path$com_tidy, "sunol.csv"))
+  write_csv(str_c(.path$com_tidy, "sunol.csv"))
 ```
 
 ### Vasco Caves
@@ -157,7 +157,7 @@ eb_com_tbl %>%
   filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
   filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>%
   mutate(site = "vascocaves") %>%
-  write_csv(paste0(.path$com_tidy, "vascocaves.csv"))
+  write_csv(str_c(.path$com_tidy, "vascocaves.csv"))
 rm(list = ls())
 ```
 
@@ -167,7 +167,7 @@ These data were collected from Jasper Ridge Biological Preserve by Lauren Hallet
 
 ```{r jasper}
 source("scripts/clean-jasper.R")
-write_csv(jasper_data, paste0(.path$com_tidy, "jasper.csv"))
+write_csv(jasper_data, str_c(.path$com_tidy, "jasper.csv"))
 rm(list = ls())
 ```
 
