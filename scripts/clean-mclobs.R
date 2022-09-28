@@ -26,12 +26,11 @@ spp_tbl <- .path$com_raw %>%
     )
   )
 
-# annual plot data
-mclann_data <- plt_tbl %>%
-  filter(serpentine == "N") %>%
+# combine
+mclobs_data <- plt_tbl %>%
   left_join(com_tbl, by = "plot") %>%
   left_join(spp_tbl, by = "species_name") %>%
-  group_by(year, plot, species_name, guild) %>%
+  group_by(year, plot, serpentine, species_name, guild) %>%
   summarize(abund = mean(cover)) %>%
   ungroup() %>%
   filter(
@@ -43,31 +42,19 @@ mclann_data <- plt_tbl %>%
     species_name != "Unknown forb"
   ) %>%
   mutate(
-    site = "mclann",
     abund_type = "cover"
   ) %>%
-  select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
-  arrange(site, year, plot, species)
+  select(year, plot, serpentine, species = species_name, guild, abund, abund_type) %>%
+  arrange(year, plot, species)
+
+# annual plot data
+mclann_data <- mclobs_data %>%
+  filter(serpentine == "N") %>%
+  mutate(site = "mclann") %>%
+  select(site, year, plot, species, guild, abund, abund_type)
 
 # serpentine plot data
-mclserp_data <- plt_tbl %>%
+mclserp_data <- mclobs_data %>%
   filter(serpentine == "S") %>%
-  left_join(com_tbl, by = "plot") %>%
-  left_join(spp_tbl, by = "species_name") %>%
-  group_by(year, plot, species_name, guild) %>%
-  summarize(abund = mean(cover)) %>%
-  ungroup() %>%
-  filter(
-    !is.na(abund),
-    abund > 0,
-    species_name != "Bare",
-    species_name != "Rock",
-    species_name != "Unknown grass",
-    species_name != "Unknown forb"
-  ) %>%
-  mutate(
-    site = "mclserp",
-    abund_type = "cover"
-  ) %>%
-  select(site, year, plot, species = species_name, guild, abund, abund_type) %>%
-  arrange(site, year, plot, species)
+  mutate(site = "mclserp") %>%
+  select(site, year, plot, species, guild, abund, abund_type)
