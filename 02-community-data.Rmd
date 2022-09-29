@@ -266,23 +266,17 @@ rm(list = ls())
 
 Read directly from CSV file(s) for all experimental and observational data. Make sure data types are correct. 
 
-```{r}
-tidy_exp_tbl <- read_csv("data/community/tidy/jrgce.csv", col_types = "ciccccdc") %>%
-  bind_rows(read_csv("data/community/tidy/mclexp.csv", col_types = "ciccccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/scide.csv", col_types = "ciccccdc"))
+```{r combine-tidy-com}
+tidy_exp_tbl <- c("jrgce", "mclexp", "scide") %>%
+  str_c(.path$com_tidy, ., ".csv") %>%
+  map_df(~ read_csv(., col_types = "ciccccdc"))
 
-tidy_obs_tbl <- read_csv("data/community/tidy/angelo.csv", col_types = "cicccdc") %>%
-  bind_rows(read_csv("data/community/tidy/carrizo.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/elkhorn.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/jasper.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/mclann.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/mclserp.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/morganterritory.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/pleasantonridge.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/sunol.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/swanton.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/ucsc.csv", col_types = "cicccdc")) %>%
-  bind_rows(read_csv("data/community/tidy/vascocaves.csv", col_types = "cicccdc"))
+tidy_obs_tbl <- c(
+  "angelo", "carrizo", "elkhorn", "jasper", "mclann", "mclserp", "morganterritory",
+  "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves"
+) %>%
+  str_c(.path$com_tidy, ., ".csv") %>%
+  map_df(~ read_csv(., col_types = "cicccdc"))
 ```
 
 # Correct species names
