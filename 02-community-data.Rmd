@@ -123,7 +123,7 @@ source("scripts/clean-eastbay.R")
 Include PR4-9 plots that have 10 yr of data, 2003-2012.
 
 ```{r pleasantonridge}
-eb_com_tbl %>%
+eastbay_tbl %>%
   filter(site == "PR", plot %in% str_c("PR", 4:9)) %>%
   mutate(site = "pleasantonridge") %>%
   write_csv(str_c(.path$com_tidy, "pleasantonridge.csv"))
@@ -134,7 +134,7 @@ eb_com_tbl %>%
 Include SU1-6 plots that have 8 yr of data, 2005-2012. Include SU7-9 plots that have 7 yr of data, 2005-2011.
 
 ```{r sunol}
-eb_com_tbl %>%
+eastbay_tbl %>%
   filter(site == "SU", plot %in% str_c("SU", 1:9)) %>%
   mutate(site = "sunol") %>%
   write_csv(str_c(.path$com_tidy, "sunol.csv"))
@@ -153,7 +153,7 @@ Josie's additional notes:
 > Were you able to sort out why some transects only had 9 interceptions? When I poked at the data, it looked like only several plots at Vasco Caves had 9 hits (VC1, VC8, and VC9, matching your notes) but only in 2012. Does that match what you found? If that's the case, it seems like our best bet might be to include those plots for all years except 2012.
 
 ```{r vascocaves}
-eb_com_tbl %>%
+eastbay_tbl %>%
   filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
   filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>%
   mutate(site = "vascocaves") %>%

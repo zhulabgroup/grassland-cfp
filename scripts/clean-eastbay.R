@@ -1,5 +1,17 @@
-# read species data
-eb_spp_tbl <- .path$com_raw %>%
+# community data
+com_tbl <- .path$com_raw %>%
+  str_c("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
+  read_csv(col_types = "cicidc") %>%
+  rename(plot = plot.ID, species_code = species) %>%
+  group_by(site, year, plot, species_code) %>%
+  summarize(hits = n()) %>%
+  group_by(site, year, plot) %>%
+  mutate(tot_hits = sum(hits)) %>%
+  group_by(site, year, plot, species_code) %>%
+  summarize(abund = hits / tot_hits) 
+
+# species data
+spp_tbl <- .path$com_raw %>%
   str_c("Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
   readxl::read_xlsx() %>%
   mutate(
@@ -27,18 +39,9 @@ eb_spp_tbl <- .path$com_raw %>%
   ) %>%
   select(species_code, species = latin, guild)
 
-# join community data
-eb_com_tbl <- .path$com_raw %>%
-  str_c("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
-  read_csv(col_types = "cicidc") %>%
-  rename(plot = plot.ID, species_code = species) %>%
-  group_by(site, year, plot, species_code) %>%
-  summarize(hits = n()) %>%
-  group_by(site, year, plot) %>%
-  mutate(tot_hits = sum(hits)) %>%
-  group_by(site, year, plot, species_code) %>%
-  summarize(abund = hits / tot_hits) %>%
-  left_join(eb_spp_tbl, by = "species_code") %>%
+# combine
+eastbay_tbl <- com_tbl %>%
+  left_join(spp_tbl, by = "species_code") %>%
   mutate(abund_type = "point_intercept") %>%
   mutate(species = coalesce(species, species_code)) %>% # if species == NA, replace with species_code
   filter(
