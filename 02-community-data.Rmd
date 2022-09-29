@@ -207,16 +207,10 @@ Contact: Peter Hopkinson, phopkinson@ebparks.org,
 East Bay Regional Park District, 
 August 24, 2022
 
-Justin Luong corrected species names on Sep 16, 2022. Guild codes are
-- 1st letter: Native vs. Exotic
-- 2nd letter: Annual vs. Perennial; AP = Annual or Perennial--to be consolidated
-- 3rd letter: Grass vs. Forb vs. Rush (non-grass graminoid) vs. Shrub vs. Tree
-- U = unknown
-
 ```{r morganterritory}
 source("scripts/clean-morganterritory.R")
-write_csv(mt_com_tbl, "data/community/tidy/morganterritory.csv")
-rm(ls = list())
+write_csv(morganterritory_tbl, str_c(.path$com_tidy, "morganterritory.csv"))
+rm(list = ls())
 ```
 
 ## Santa Cruz
@@ -683,6 +677,22 @@ misspelling_tbl <- googlesheets4::read_sheet(
   n_max = Inf,
   na = c("", "NA") # guild = "NA" means NA
 )
+```
+
+Note for the Morgan Territory data, Justin Luong corrected species names on Sep 16, 2022. Guild codes are
+- 1st letter: Native vs. Exotic
+- 2nd letter: Annual vs. Perennial; AP = Annual or Perennial--to be consolidated
+- 3rd letter: Grass vs. Forb vs. Rush (non-grass graminoid) vs. Shrub vs. Tree
+- U = unknown
+
+```{r}
+mt_spp_tbl <- googlesheets4::read_sheet(
+  "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
+  sheet = "Morgan Territory",
+  n_max = Inf,
+  na = c("", "NA") # guild = "NA" means NA
+) %>%
+  mutate(species_code = toupper(species_code))
 ```
 
 Rename species and guild using the expert table.
