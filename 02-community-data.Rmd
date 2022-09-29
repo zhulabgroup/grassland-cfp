@@ -217,162 +217,16 @@ rm(list = ls())
 
 Three sites provided by Karen Holl: Elkhorn Slough, Swanton Ranch, and UC Santa Cruz. 
 
+```{r santacruz}
+source("scripts/clean-santacruz.R")
+```
+
 ### Elkhorn
 
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
-Josie's comments (5/12/22): Elkhorn site is in Elkhorn Ranch; not so coastal and might not be windy.
-
-```{r Importing Elkhorn, warning=FALSE, message=FALSE}
-elkspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
-  mutate(species.code = tolower(species.code))
-elk_guilds <- read_csv("data/community/raw/HollData/ElkhornGuilds.csv")
-elk_counts <- list()
-for (i in 1:20) {
-  year <- as.character(1999:2018)[i]
-  skips <- c(4, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 1, 1, 1, 1, 1)
-  filename <- paste0("data/community/raw/HollData/Elk_", year, ".csv")
-  out <- read_csv(filename, skip = skips[i], show_col_types = FALSE)
-  # elk_counts[[year]] <- select_if(out, has_data)
-  elk_counts[[year]] <- out
-}
-elk_counts <- lapply(seq_along(elk_counts), function(i) {
-  rename_with(elk_counts[[i]], tolower) %>%
-    rename_with(~ sub("frequency", "freq", sub("treatment", "treat", sub("replicate", "rep", sub("9$", "", .x))))) %>%
-    select(-starts_with("comment"), -starts_with("..."), -starts_with("0"))
-})
-
-# lapply(elk_counts, names)
-```
-
-Because these data are in separate files (one year per file), we need to clean the data and compile all of the years into a single object. To clean the data, we selected only the Elkhorn plots (these files also contained the data from two other sites; UCSC and Swanton, removed the non-control plots, restructured the data to make sure only non-zero datapoints were included, and added the year.
-
-We then combined the file with species guild information to each yearly object. 
-
-```{r Cleaning Elkhorn, warning=FALSE}
-cleanElkhornData <- function(data, gathercol1, gathercol2, site = c("elk", "swa", "ucsc")) {
-  filtersite <- match.arg(site, c("elk", "swa", "ucsc"))
-  keep_cols <- c("site", "freq", "treat", "rep", "species.code", "intercepts", "plot")
-  if (!(gathercol1 %in% names(data)) | !(gathercol2 %in% names(data))) {
-    stop("gathercol1 and gathercol2 must be columns in data.")
-  }
-  ind_col1 <- which(names(data) == gathercol1)
-  ind_col2 <- which(names(data) == gathercol2)
-  if (ind_col1 > ind_col2) stop("gathercol1 must come before gathercol2 in the column names of the data.")
-  columns <- names(data)[ind_col1:ind_col2]
-  data <- suppressWarnings(mutate(data, across(all_of(columns), function(x) as.numeric(x))))
-  data %>%
-    mutate(
-      freq = tolower(freq),
-      freq = if_else(freq == "control", "con", freq),
-      site = tolower(site),
-      site = if_else(site == "swan", "swa", site),
-      site = if_else(site == "swanton", "swa", site)
-    ) %>%
-    filter(
-      site == filtersite,
-      freq == "con"
-    ) %>%
-    pivot_longer(all_of(columns), names_to = "species.code", values_to = "intercepts") %>%
-    mutate(
-      intercepts = as.numeric(intercepts),
-      intercepts = if_else(is.na(intercepts), 0, intercepts),
-      species.code = tolower(species.code)
-    ) %>%
-    select(any_of(keep_cols)) %>%
-    return()
-}
-cleanElkhornPlot <- function(data) {
-  data %>%
-    pivot_wider(names_from = "plot", values_from = "intercepts", names_prefix = "plot") %>%
-    mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%
-    select(-plot1, -plot2, -plot3, -plot4)
-}
-
-elk_counts_clean <- list()
-elk_counts_clean[[1]] <- elk_counts[[1]] %>% cleanElkhornData("anaarv", "bare")
-elk_counts_clean[[2]] <- elk_counts[[2]] %>%
-  cleanElkhornData("aircar", "naspul") %>%
-  cleanElkhornPlot()
-elk_counts_clean[[3]] <- elk_counts[[3]] %>%
-  cleanElkhornData("anaarv", "thatch") %>%
-  cleanElkhornPlot()
-elk_counts_clean[[4]] <- elk_counts[[4]] %>% cleanElkhornData("anaarv", "thatch")
-elk_counts_clean[[5]] <- elk_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[6]] <- elk_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[7]] <- elk_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[8]] <- elk_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[9]] <- elk_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[10]] <- elk_counts[[10]] %>% cleanElkhornData("aircar", "hormur")
-elk_counts_clean[[11]] <- elk_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[12]] <- elk_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[13]] <- elk_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[14]] <- elk_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[15]] <- elk_counts[[15]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[16]] <- elk_counts[[16]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[17]] <- elk_counts[[17]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[18]] <- elk_counts[[18]] %>% cleanElkhornData("aircar", "vulpia")
-elk_counts_clean[[19]] <- elk_counts[[19]] %>% cleanElkhornData("aircar", "vulpia")
-elk_counts_clean[[20]] <- elk_counts[[20]] %>% cleanElkhornData("aircar", "vulpia")
-
-# lapply(elk_counts_clean, dim)
-for (i in 1:length(elk_counts_clean)) {
-  elk_counts_clean[[i]]$year <- (1999:2018)[i]
-}
-```
-
-At this point, all that is left to do is to combine the objects so that we have one large object with each year of data in it. 
-
-```{r Elkhorn graph prep, warning=FALSE}
-elk_counts_df <- do.call(rbind, elk_counts_clean) %>%
-  left_join(elkspp, by = "species.code") %>%
-  filter(intercepts > 0) %>%
-  select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(
-    site = "elkhorn",
-    species.name = factor(species.name)
-  )
-# removing unwanted guilds (moss, litter, etc.)
-elk_counts_df <- elk_counts_df %>%
-  group_by(rep, year, guild, species.name) %>%
-  summarize(intercepts = sum(intercepts)) %>%
-  filter(
-    guild != "Moss",
-    guild != "Thatch",
-    guild != "Bare"
-  )
-# unique(elk_counts_df$species.name)
-# unique(elk_counts_df$guild)
-elk_guilds <- elk_counts_df %>%
-  group_by(rep, year, guild) %>%
-  summarize(guildtotal = sum(intercepts)) %>%
-  ungroup() %>%
-  group_by(year, guild) %>%
-  summarize(mean.intercepts = mean(guildtotal))
-
-elkhorn_data <- elk_counts_df %>%
-  filter(
-    species.name != "Moss",
-    species.name != "Thatch",
-    species.name != "Bare ground"
-  ) %>%
-  mutate(site = "elkhorn")
-
-elkhorn_data <- elkhorn_data %>%
-  as_tibble() %>%
-  select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
-  arrange(site, year, plot, species)
-
-write_csv(elkhorn_data, "data/community/tidy/elkhorn.csv")
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(elk_counts, elk_counts_clean, elk_counts_df, elk_guilds, elkspp, out)
-rm(filename, i, skips, year)
-rm(elkhorn_data)
+```{r elkhorn}
+write_csv(elkhorn_data, str_c(.path$com_tidy, "elkhorn.csv"))
 ```
 
 ### Swanton
@@ -381,118 +235,19 @@ These are data for grassland plots at Swanton Ranch. Data were collected by Kare
 
 Josie's comment (5/12/22): Swanton is close to the coast, always windy. The treatment is grazing.
 
-```{r, message=FALSE}
-Swanspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
-  mutate(species.code = tolower(species.code))
-Swan_guilds <- read_csv("data/community/raw/HollData/ElkhornGuilds.csv")
-swan_counts <- list()
-for (i in 1:14) {
-  year <- as.character(1999:2012)[i]
-  skips <- c(4, 3, 3, 3, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0)
-  if (i != 10) {
-    filename <- paste0("data/community/raw/HollData/Elk_", year, ".csv")
-  } else {
-    filename <- "data/community/raw/HollData/swanton_08.csv"
-  }
-  out <- read_csv(filename, skip = skips[i], show_col_types = FALSE)
-  swan_counts[[year]] <- out
-}
-swan_counts <- lapply(seq_along(swan_counts), function(i) {
-  rename_with(swan_counts[[i]], tolower) %>%
-    rename_with(~ sub("frequency", "freq", sub("treatment", "treat", sub("replicate", "rep", sub("9$", "", .x))))) %>%
-    select(-starts_with("comment"), -starts_with("..."), -starts_with("0"))
-})
-
-# lapply(swan_counts, names)
+```{r swanton-old, eval=FALSE}
+source("scripts/clean-swanton.R")
+write_csv(swanton_data, str_c(.path$com_tidy, "swanton.csv"))
 ```
 
-```{r Cleaning Swanton, warning=FALSE}
-swan_counts_clean <- list()
-swan_counts_clean[[1]] <- swan_counts[[1]] %>% cleanElkhornData("anaarv", "bare", site = "swa")
-swan_counts_clean[[2]] <- swan_counts[[2]] %>%
-  cleanElkhornData("aircar", "naspul", site = "swa") %>%
-  cleanElkhornPlot()
-swan_counts_clean[[3]] <- swan_counts[[3]] %>%
-  cleanElkhornData("anaarv", "thatch", site = "swa") %>%
-  cleanElkhornPlot()
-swan_counts_clean[[4]] <- swan_counts[[4]] %>% cleanElkhornData("anaarv", "thatch", site = "swa")
-swan_counts_clean[[5]] <- swan_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[6]] <- swan_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[7]] <- swan_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[8]] <- swan_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[9]] <- swan_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[10]] <- swan_counts[[10]] %>% cleanElkhornData("aircar", "spearv", site = "swa")
-swan_counts_clean[[11]] <- swan_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[12]] <- swan_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[13]] <- swan_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[14]] <- swan_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
+Update on 6/3/22 and 6/9/22: Karen corrected species names, so use Karen's updated CSV file for Swanton data.
 
-# lapply(swan_counts_clean, dim)
-for (i in 1:length(swan_counts_clean)) {
-  swan_counts_clean[[i]]$year <- (1999:2012)[i]
-}
-```
-
-```{r Swanton Graph Prep, warning=FALSE}
-swan_counts_df <- do.call(rbind, swan_counts_clean) %>%
-  left_join(Swanspp, by = "species.code") %>%
-  filter(intercepts > 0) %>%
-  select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(
-    site = "swanton",
-    species.name = factor(species.name)
-  )
-# removing unwanted guilds (moss, litter, etc.)
-swan_counts_df <- swan_counts_df %>%
-  group_by(rep, year, guild, species.name) %>%
-  summarize(intercepts = sum(intercepts)) %>%
-  filter(
-    guild != "Moss",
-    guild != "Thatch",
-    guild != "Bare"
-  )
-# unique(swan_counts_df$species.name)
-# unique(swan_counts_df$guild)
-elk_guilds <- swan_counts_df %>%
-  group_by(rep, year, guild) %>%
-  summarize(guildtotal = sum(intercepts)) %>%
-  ungroup() %>%
-  group_by(year, guild) %>%
-  summarize(mean.intercepts = mean(guildtotal))
-
-swanton_data <- swan_counts_df %>%
-  filter(
-    species.name != "Moss",
-    species.name != "Thatch",
-    species.name != "Bare ground"
-  ) %>%
-  mutate(site = "swanton")
-
-swanton_data <- swanton_data %>%
-  as_tibble() %>%
-  select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
-  arrange(site, year, plot, species)
-
-write_csv(swanton_data, "data/community/tidy/swanton.csv")
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(elk_guilds, out, swan_counts, swan_counts_clean, swan_counts_df, Swan_guilds, Swanspp)
-rm(filename, i, skips, year)
-rm(swanton_data)
-```
-
-Update on 6/3/22. Karen corrected species names, so use the new CSV file for Swanton data.
-
-Further update on 6/9/22. Karen made one more minor correction. Same file.
-
-```{r}
-read_csv("data/community/raw/HollData/swanton-updated.csv") %>%
+```{r swanton}
+.path$com_raw %>%
+  str_c("HollData/swanton-updated.csv") %>%
+  read_csv(col_types = "ciiccic") %>%
   arrange(site, year, plot, species) %>%
-  write_csv("data/community/tidy/swanton.csv")
+  write_csv(str_c(.path$com_tidy, "swanton.csv"))
 ```
 
 ### UCSC
@@ -501,118 +256,10 @@ These are data for grassland plots at UCSC. Data were collected by Karen Holl an
 
 Josie's comment (5/12/22): The site is in East Meadow. The treatment is grazing.
 
-```{r Importing UCSC, warning=FALSE, message=FALSE}
-UCSCspp <- read_csv("data/community/raw/HollData/ElkhornSpecies.csv") %>%
-  mutate(species.code = tolower(species.code))
-UCSC_guilds <- read_csv("data/community/raw/HollData/ElkhornGuilds.csv")
-ucsc_counts <- list()
-for (i in 1:14) {
-  year <- as.character(1999:2012)[i]
-  skips <- c(4, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0)
-  if (i != 10) {
-    filename <- paste0("data/community/raw/HollData/Elk_", year, ".csv")
-  } else {
-    filename <- "data/community/raw/HollData/ucsc_08.csv"
-  }
-  out <- read_csv(filename, skip = skips[i], show_col_types = FALSE)
-  ucsc_counts[[year]] <- out
-}
-ucsc_counts <- lapply(seq_along(ucsc_counts), function(i) {
-  rename_with(ucsc_counts[[i]], tolower) %>%
-    rename_with(~ sub("frequency", "freq", sub("treatment", "treat", sub("replicate", "rep", sub("9$", "", .x))))) %>%
-    select(-starts_with("comment"), -starts_with("..."), -starts_with("0"))
-})
-
-# lapply(ucsc_counts, names)
-```
-
-After creating objects for each year, we will clean each to a compatible structure. 
-
-```{r Cleaning UCSC, warning=FALSE}
-ucsc_counts_clean <- list()
-ucsc_counts_clean[[1]] <- ucsc_counts[[1]] %>% cleanElkhornData("anaarv", "bare", site = "ucsc")
-ucsc_counts_clean[[2]] <- ucsc_counts[[2]] %>%
-  cleanElkhornData("aircar", "naspul", site = "ucsc") %>%
-  cleanElkhornPlot()
-ucsc_counts_clean[[3]] <- ucsc_counts[[3]] %>%
-  cleanElkhornData("anaarv", "thatch", site = "ucsc") %>%
-  cleanElkhornPlot()
-ucsc_counts_clean[[4]] <- ucsc_counts[[4]] %>% cleanElkhornData("anaarv", "thatch", site = "ucsc")
-ucsc_counts_clean[[5]] <- ucsc_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[6]] <- ucsc_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[7]] <- ucsc_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[8]] <- ucsc_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[9]] <- ucsc_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[10]] <- ucsc_counts[[10]] %>% cleanElkhornData("aircar", "brohor", site = "ucsc")
-ucsc_counts_clean[[11]] <- ucsc_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[12]] <- ucsc_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[13]] <- ucsc_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[14]] <- ucsc_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-
-# lapply(ucsc_counts_clean, dim)
-for (i in 1:length(ucsc_counts_clean)) {
-  ucsc_counts_clean[[i]]$year <- (1999:2012)[i]
-}
-```
-
-Once the data is cleaned and in a similar format, it's ready to be compiled. 
-
-```{r Compiling UCSC, warning=FALSE}
-ucsc_counts_df <- do.call(rbind, ucsc_counts_clean) %>%
-  left_join(UCSCspp, by = "species.code") %>%
-  filter(intercepts > 0) %>%
-  select("rep", "year", "species.name", "intercepts", "guild") %>%
-  mutate(
-    site = "ucsc",
-    species.name = factor(species.name)
-  )
-# removing unwanted guilds (moss, litter, etc.)
-ucsc_counts_df <- ucsc_counts_df %>%
-  group_by(rep, year, guild, species.name) %>%
-  summarize(intercepts = sum(intercepts)) %>%
-  filter(
-    guild != "Moss",
-    guild != "Thatch",
-    guild != "Bare"
-  )
-# unique(ucsc_counts_df$species.name)
-# unique(ucsc_counts_df$guild)
-elk_guilds <- ucsc_counts_df %>%
-  group_by(rep, year, guild) %>%
-  summarize(guildtotal = sum(intercepts)) %>%
-  ungroup() %>%
-  group_by(year, guild) %>%
-  summarize(mean.intercepts = mean(guildtotal))
-
-ucsc_data <- ucsc_counts_df %>%
-  filter(
-    species.name != "Moss",
-    species.name != "Thatch",
-    species.name != "Bare ground"
-  ) %>%
-  mutate(site = "ucsc")
-
-ucsc_data <- ucsc_data %>%
-  as_tibble() %>%
-  select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
-  mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%
-  arrange(site, year, plot, species)
-
-write_csv(ucsc_data, "data/community/tidy/ucsc.csv")
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(elk_guilds, out, ucsc_counts, ucsc_counts_clean, ucsc_counts_df, UCSC_guilds, UCSCspp)
-rm(filename, i, skips, year)
-rm(ucsc_data)
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(cleanElkhornData, cleanElkhornPlot)
+```{r ucsc}
+source("scripts/clean-ucsc.R")
+write_csv(ucsc_data, str_c(.path$com_tidy, "ucsc.csv"))
+rm(list = ls())
 ```
 
 # Combine all community data
