@@ -1,5 +1,5 @@
 # read cover data
-cover_tbl <- .path$com_raw %>% 
+com_tbl <- .path$com_raw %>% 
   str_c("Jasper/JR_cover_forJosie.csv") %>% 
   read_csv(col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")) %>%
   pivot_wider(names_from = species, values_from = cover) %>%
@@ -15,7 +15,7 @@ spp_tbl <- .path$com_raw %>%
   read_csv(col_types = "c")
 
 # combine
-jasper_tbl <- cover_tbl %>%
+jasper_tbl <- com_tbl %>%
   left_join(spp_tbl, by = "species") %>% 
   filter(cover > 0) %>%
   mutate(site = "jasper",
