@@ -1,5 +1,5 @@
 # community data spreadsheet
-carrizo_com <- .path$com_raw %>%
+com_tbl <- .path$com_raw %>%
   str_c("Carrizo/2022-06-28/Carrizo_data for Joise_2007_2021.xlsx") %>%
   readxl::read_xlsx(
     sheet = 1,
@@ -21,7 +21,7 @@ carrizo_com <- .path$com_raw %>%
   filter(intercept > 0, !is.na(intercept))
 
 # species data
-carrizo_spp <- .path$com_raw %>%
+spp_tbl <- .path$com_raw %>%
   str_c("Carrizo/2022-07-05/Carrizo_global_species list_v2.csv") %>%
   read_csv(col_types = "c") %>%
   mutate(guild = case_when(
@@ -36,7 +36,7 @@ carrizo_spp <- .path$com_raw %>%
   ))
 
 # join community and species data
-carrizo_tbl <- carrizo_com %>%
+carrizo_tbl <- com_tbl %>%
   filter(
     plot %in% c("EP2", "EP3", "EP4", "EP6", "SC1", "SC2", "SC7", "SC9"),
     # !(species_code == "AMSMEN" & is.na(species_name)),
@@ -52,7 +52,7 @@ carrizo_tbl <- carrizo_com %>%
     !(species_code == "MOSS" & is.na(species_name)),
     !(species_code == "UNK 11" & is.na(species_name))
   ) %>%
-  left_join(carrizo_spp %>% select(species_code = spp.code, species_name = SCIENTIFIC.NAME, guild),
+  left_join(spp_tbl %>% select(species_code = spp.code, species_name = SCIENTIFIC.NAME, guild),
     by = c("species_code", "species_name")
   ) %>%
   mutate(species_name = case_when(
