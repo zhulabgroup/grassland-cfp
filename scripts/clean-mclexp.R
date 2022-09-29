@@ -1,48 +1,48 @@
 # read in raw data
 # note 2020 data is missing.
 excel_file <- str_c(.path$com_raw, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
-cover_2015_tbl <- readxl::read_excel(excel_file, sheet = "2015")
-cover_2016_tbl <- readxl::read_excel(excel_file, sheet = "2016")
-cover_2017_tbl <- readxl::read_excel(excel_file, sheet = "2017")
-cover_2018_tbl <- readxl::read_excel(excel_file, sheet = "2018")
-cover_2019_tbl <- readxl::read_excel(excel_file, sheet = "2019")
-# cover_2020_tbl <- readxl::read_excel(excel_file, sheet = "2020")
-cover_2021_tbl <- readxl::read_excel(excel_file, sheet = "2021")
-plot_tbl <- readxl::read_excel(excel_file, sheet = "Plot codes")
+com_2015_tbl <- readxl::read_excel(excel_file, sheet = "2015")
+com_2016_tbl <- readxl::read_excel(excel_file, sheet = "2016")
+com_2017_tbl <- readxl::read_excel(excel_file, sheet = "2017")
+com_2018_tbl <- readxl::read_excel(excel_file, sheet = "2018")
+com_2019_tbl <- readxl::read_excel(excel_file, sheet = "2019")
+# com_2020_tbl <- readxl::read_excel(excel_file, sheet = "2020")
+com_2021_tbl <- readxl::read_excel(excel_file, sheet = "2021")
+plt_tbl <- readxl::read_excel(excel_file, sheet = "Plot codes")
 
 # combine cover data across years and join with plot-treatment data.
-cover_long_tbl <- (
-  cover_2015_tbl %>%
+com_long_tbl <- (
+  com_2015_tbl %>%
     rename(species = "Plots") %>%
     pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
     mutate(year = 2015)
 ) %>%
   bind_rows(
-    cover_2016_tbl %>%
+    com_2016_tbl %>%
       rename(species = "Plots") %>%
       pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
       mutate(year = 2016)
   ) %>%
   bind_rows(
-    cover_2017_tbl %>%
+    com_2017_tbl %>%
       rename(species = "Plots") %>%
       pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
       mutate(year = 2017)
   ) %>%
   bind_rows(
-    cover_2018_tbl %>%
+    com_2018_tbl %>%
       rename(species = "Plots") %>%
       pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
       mutate(year = 2018)
   ) %>%
   bind_rows(
-    cover_2019_tbl %>%
+    com_2019_tbl %>%
       rename(species = "Plots") %>%
       pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
       mutate(year = 2019)
   ) %>%
   bind_rows(
-    cover_2021_tbl %>%
+    com_2021_tbl %>%
       rename(species = "Plots") %>%
       pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
       mutate(year = 2021)
@@ -50,7 +50,7 @@ cover_long_tbl <- (
   select(year, plot, species, abund) %>%
   mutate(plot = as.integer(plot))
 
-mclexp_tbl <- plot_tbl %>%
+mclexp_tbl <- plt_tbl %>%
   mutate(
     plot = as.integer(Site),
     treat = case_when(
@@ -62,7 +62,7 @@ mclexp_tbl <- plot_tbl %>%
       str_c(Soil) # S = serpentine soil, N = non-serpentine soil
   ) %>%
   select(plot, treat) %>%
-  full_join(cover_long_tbl, by = "plot") %>%
+  full_join(com_long_tbl, by = "plot") %>%
   mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
   select(site, year, plot, treat, species, guild, abund, abund_type) %>%
   filter(
