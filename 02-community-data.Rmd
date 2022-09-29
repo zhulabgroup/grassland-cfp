@@ -226,6 +226,7 @@ source("scripts/clean-santacruz.R")
 Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl and Grey Hayes between 1999 and 2018. For these analyses, we are using on the control plots (n = 3), and removing all other treatments from the dataset. 
 
 ```{r elkhorn}
+source("scripts/clean-elkhorn.R")
 write_csv(elkhorn_data, str_c(.path$com_tidy, "elkhorn.csv"))
 ```
 
