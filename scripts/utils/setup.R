@@ -25,6 +25,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   com_exp = "data/community/all-experimental-data.rds",
   com_obs = "data/community/all-observational-data.rds",
   com_raw = "data/community/raw/",
+  com_spp = "data/community/species/",
   com_tidy = "data/community/tidy/",
   geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
   geo_clim = "data/climate/climate-gbif-2022-09-18.rds",
