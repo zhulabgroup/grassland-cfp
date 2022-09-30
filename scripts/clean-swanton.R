@@ -74,7 +74,7 @@ elk_guilds <- swan_counts_df %>%
   group_by(year, guild) %>%
   summarize(mean.intercepts = mean(guildtotal))
 
-swanton_data <- swan_counts_df %>%
+swanton_tbl <- swan_counts_df %>%
   filter(
     species.name != "Moss",
     species.name != "Thatch",
@@ -82,7 +82,7 @@ swanton_data <- swan_counts_df %>%
   ) %>%
   mutate(site = "swanton")
 
-swanton_data <- swanton_data %>%
+swanton_tbl <- swanton_tbl %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
   mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%

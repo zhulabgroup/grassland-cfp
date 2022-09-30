@@ -77,7 +77,7 @@ elk_guilds <- elk_counts_df %>%
   group_by(year, guild) %>%
   summarize(mean.intercepts = mean(guildtotal))
 
-elkhorn_data <- elk_counts_df %>%
+elkhorn_tbl <- elk_counts_df %>%
   filter(
     species.name != "Moss",
     species.name != "Thatch",
@@ -85,7 +85,7 @@ elkhorn_data <- elk_counts_df %>%
   ) %>%
   mutate(site = "elkhorn")
 
-elkhorn_data <- elkhorn_data %>%
+elkhorn_tbl <- elkhorn_tbl %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
   mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%

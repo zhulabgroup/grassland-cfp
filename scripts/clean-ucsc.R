@@ -76,7 +76,7 @@ elk_guilds <- ucsc_counts_df %>%
   group_by(year, guild) %>%
   summarize(mean.intercepts = mean(guildtotal))
 
-ucsc_data <- ucsc_counts_df %>%
+ucsc_tbl <- ucsc_counts_df %>%
   filter(
     species.name != "Moss",
     species.name != "Thatch",
@@ -84,7 +84,7 @@ ucsc_data <- ucsc_counts_df %>%
   ) %>%
   mutate(site = "ucsc")
 
-ucsc_data <- ucsc_data %>%
+ucsc_tbl <- ucsc_tbl %>%
   as_tibble() %>%
   select(site, year, plot = rep, species = species.name, guild, abund = intercepts) %>%
   mutate(year = as.integer(year), species = as.character(species) %>% str_trim(), guild = as.character(guild), abund = as.integer(abund), abund_type = "point_intercept") %>%

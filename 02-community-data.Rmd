@@ -227,7 +227,7 @@ Data for grassland plots at Elkhorn Slough. Data were collected by Karen Holl an
 
 ```{r elkhorn}
 source("scripts/clean-elkhorn.R")
-write_csv(elkhorn_data, str_c(.path$com_tidy, "elkhorn.csv"))
+write_csv(elkhorn_tbl, str_c(.path$com_tidy, "elkhorn.csv"))
 ```
 
 ### Swanton
@@ -238,7 +238,7 @@ Josie's comment (5/12/22): Swanton is close to the coast, always windy. The trea
 
 ```{r swanton-old, eval=FALSE}
 source("scripts/clean-swanton.R")
-write_csv(swanton_data, str_c(.path$com_tidy, "swanton.csv"))
+write_csv(swanton_tbl, str_c(.path$com_tidy, "swanton.csv"))
 ```
 
 Update on 6/3/22 and 6/9/22: Karen corrected species names, so use Karen's updated CSV file for Swanton data.
@@ -259,7 +259,7 @@ Josie's comment (5/12/22): The site is in East Meadow. The treatment is grazing.
 
 ```{r ucsc}
 source("scripts/clean-ucsc.R")
-write_csv(ucsc_data, str_c(.path$com_tidy, "ucsc.csv"))
+write_csv(ucsc_tbl, str_c(.path$com_tidy, "ucsc.csv"))
 rm(list = ls())
 ```
 
