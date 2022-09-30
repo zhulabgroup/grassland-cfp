@@ -282,30 +282,13 @@ tidy_obs_tbl <- c(
 
 # Correct species names
 
-## Prepare species list
+Prepare a species list from all tidy data. Send the list to Josie and Justin for manual correction.
 
-Compile a unique species-guild list from the tidy data.
-
-```{r}
-tidy_tax_tbl <- tidy_exp_tbl %>%
-  select(species, guild) %>%
-  bind_rows(tidy_obs_tbl %>% select(species, guild)) %>%
-  distinct() %>%
-  arrange(species, guild)
+```{r tidy-spp, eval=FALSE}
+source("scripts/compile-species.R")
+rm(tidy_tax_tbl)
 ```
 
-Download species name using the taxize package. 
-
-```{r, eval=FALSE}
-taxize::get_gbifid_(tidy_tax_tbl$species) %>%
-  as_tibble_col(column_name = "gbif") %>%
-  mutate(queryname = tidy_tax_tbl$species) %>%
-  unnest(cols = c(gbif)) %>%
-  select(queryname, everything()) %>%
-  write_rds("data/taxonomy/taxize-2022-06-15.rds")
-```
-
-Send the list to Josie and Justin for manual correction.
 
 ## Rename species
 
