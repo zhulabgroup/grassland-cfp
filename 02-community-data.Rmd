@@ -26,12 +26,6 @@ Objectives
 - Clean up observational community data (~10 datasets)
 - Correct species names
 
-Key results
-
-- Raw data path: `data/community/raw/`
-- Tidy data path: `data/community/tidy/`
-- Processed data path: `data/community/`
-
 # Study sites
 
 ```{r site-info, eval=TRUE}
