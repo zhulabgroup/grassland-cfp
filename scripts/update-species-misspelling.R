@@ -3,6 +3,11 @@
 source("scripts/clean-morganterritory.R")
 
 # Justin's manual species table
+# Note for the Morgan Territory data, Justin Luong corrected species names on Sep 16, 2022. Guild codes are
+# - 1st letter: Native vs. Exotic
+# - 2nd letter: Annual vs. Perennial; AP = Annual or Perennial--to be consolidated
+# - 3rd letter: Grass vs. Forb vs. Rush (non-grass graminoid) vs. Shrub vs. Tree
+# - U = unknown
 googlesheets4::gs4_deauth()
 justin_tbl <- googlesheets4::read_sheet(
   "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
