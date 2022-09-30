@@ -25,24 +25,24 @@ ucsc_counts <- lapply(seq_along(ucsc_counts), function(i) {
 # clean data
 # After creating objects for each year, we will clean each to a compatible structure.
 ucsc_counts_clean <- list()
-ucsc_counts_clean[[1]] <- ucsc_counts[[1]] %>% cleanElkhornData("anaarv", "bare", site = "ucsc")
+ucsc_counts_clean[[1]] <- ucsc_counts[[1]] %>% clean_com("anaarv", "bare", site = "ucsc")
 ucsc_counts_clean[[2]] <- ucsc_counts[[2]] %>%
-  cleanElkhornData("aircar", "naspul", site = "ucsc") %>%
-  cleanElkhornPlot()
+  clean_com("aircar", "naspul", site = "ucsc") %>%
+  clean_plt()
 ucsc_counts_clean[[3]] <- ucsc_counts[[3]] %>%
-  cleanElkhornData("anaarv", "thatch", site = "ucsc") %>%
-  cleanElkhornPlot()
-ucsc_counts_clean[[4]] <- ucsc_counts[[4]] %>% cleanElkhornData("anaarv", "thatch", site = "ucsc")
-ucsc_counts_clean[[5]] <- ucsc_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[6]] <- ucsc_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[7]] <- ucsc_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[8]] <- ucsc_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[9]] <- ucsc_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[10]] <- ucsc_counts[[10]] %>% cleanElkhornData("aircar", "brohor", site = "ucsc")
-ucsc_counts_clean[[11]] <- ucsc_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[12]] <- ucsc_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[13]] <- ucsc_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
-ucsc_counts_clean[[14]] <- ucsc_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp", site = "ucsc")
+  clean_com("anaarv", "thatch", site = "ucsc") %>%
+  clean_plt()
+ucsc_counts_clean[[4]] <- ucsc_counts[[4]] %>% clean_com("anaarv", "thatch", site = "ucsc")
+ucsc_counts_clean[[5]] <- ucsc_counts[[5]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[6]] <- ucsc_counts[[6]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[7]] <- ucsc_counts[[7]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[8]] <- ucsc_counts[[8]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[9]] <- ucsc_counts[[9]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[10]] <- ucsc_counts[[10]] %>% clean_com("aircar", "brohor", site = "ucsc")
+ucsc_counts_clean[[11]] <- ucsc_counts[[11]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[12]] <- ucsc_counts[[12]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[13]] <- ucsc_counts[[13]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
+ucsc_counts_clean[[14]] <- ucsc_counts[[14]] %>% clean_com("aircar", "vulpsp", site = "ucsc")
 
 # lapply(ucsc_counts_clean, dim)
 for (i in 1:length(ucsc_counts_clean)) {

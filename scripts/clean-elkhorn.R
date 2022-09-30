@@ -19,30 +19,30 @@ elk_counts <- lapply(seq_along(elk_counts), function(i) {
 
 # Because these data are in separate files (one year per file), we need to clean the data and compile all of the years into a single object. To clean the data, we selected only the Elkhorn plots (these files also contained the data from two other sites; UCSC and Swanton, removed the non-control plots, restructured the data to make sure only non-zero datapoints were included, and added the year. We then combined the file with species guild information to each yearly object.
 elk_counts_clean <- list()
-elk_counts_clean[[1]] <- elk_counts[[1]] %>% cleanElkhornData("anaarv", "bare")
+elk_counts_clean[[1]] <- elk_counts[[1]] %>% clean_com("anaarv", "bare")
 elk_counts_clean[[2]] <- elk_counts[[2]] %>%
-  cleanElkhornData("aircar", "naspul") %>%
-  cleanElkhornPlot()
+  clean_com("aircar", "naspul") %>%
+  clean_plt()
 elk_counts_clean[[3]] <- elk_counts[[3]] %>%
-  cleanElkhornData("anaarv", "thatch") %>%
-  cleanElkhornPlot()
-elk_counts_clean[[4]] <- elk_counts[[4]] %>% cleanElkhornData("anaarv", "thatch")
-elk_counts_clean[[5]] <- elk_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[6]] <- elk_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[7]] <- elk_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[8]] <- elk_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[9]] <- elk_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[10]] <- elk_counts[[10]] %>% cleanElkhornData("aircar", "hormur")
-elk_counts_clean[[11]] <- elk_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[12]] <- elk_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[13]] <- elk_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[14]] <- elk_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[15]] <- elk_counts[[15]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[16]] <- elk_counts[[16]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[17]] <- elk_counts[[17]] %>% cleanElkhornData("aircar", "vulpsp")
-elk_counts_clean[[18]] <- elk_counts[[18]] %>% cleanElkhornData("aircar", "vulpia")
-elk_counts_clean[[19]] <- elk_counts[[19]] %>% cleanElkhornData("aircar", "vulpia")
-elk_counts_clean[[20]] <- elk_counts[[20]] %>% cleanElkhornData("aircar", "vulpia")
+  clean_com("anaarv", "thatch") %>%
+  clean_plt()
+elk_counts_clean[[4]] <- elk_counts[[4]] %>% clean_com("anaarv", "thatch")
+elk_counts_clean[[5]] <- elk_counts[[5]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[6]] <- elk_counts[[6]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[7]] <- elk_counts[[7]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[8]] <- elk_counts[[8]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[9]] <- elk_counts[[9]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[10]] <- elk_counts[[10]] %>% clean_com("aircar", "hormur")
+elk_counts_clean[[11]] <- elk_counts[[11]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[12]] <- elk_counts[[12]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[13]] <- elk_counts[[13]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[14]] <- elk_counts[[14]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[15]] <- elk_counts[[15]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[16]] <- elk_counts[[16]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[17]] <- elk_counts[[17]] %>% clean_com("aircar", "vulpsp")
+elk_counts_clean[[18]] <- elk_counts[[18]] %>% clean_com("aircar", "vulpia")
+elk_counts_clean[[19]] <- elk_counts[[19]] %>% clean_com("aircar", "vulpia")
+elk_counts_clean[[20]] <- elk_counts[[20]] %>% clean_com("aircar", "vulpia")
 
 # lapply(elk_counts_clean, dim)
 for (i in 1:length(elk_counts_clean)) {

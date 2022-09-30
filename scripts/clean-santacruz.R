@@ -1,4 +1,4 @@
-cleanElkhornData <- function(data, gathercol1, gathercol2, site = c("elk", "swa", "ucsc")) {
+clean_com <- function(data, gathercol1, gathercol2, site = c("elk", "swa", "ucsc")) {
   filtersite <- match.arg(site, c("elk", "swa", "ucsc"))
   keep_cols <- c("site", "freq", "treat", "rep", "species.code", "intercepts", "plot")
   if (!(gathercol1 %in% names(data)) | !(gathercol2 %in% names(data))) {
@@ -31,7 +31,7 @@ cleanElkhornData <- function(data, gathercol1, gathercol2, site = c("elk", "swa"
     return()
 }
 
-cleanElkhornPlot <- function(data) {
+clean_plt <- function(data) {
   data %>%
     pivot_wider(names_from = "plot", values_from = "intercepts", names_prefix = "plot") %>%
     mutate(intercepts = (plot1 + plot2 + plot3 + plot4)) %>%

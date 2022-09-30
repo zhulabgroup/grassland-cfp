@@ -24,24 +24,24 @@ swan_counts <- lapply(seq_along(swan_counts), function(i) {
 
 # clean data
 swan_counts_clean <- list()
-swan_counts_clean[[1]] <- swan_counts[[1]] %>% cleanElkhornData("anaarv", "bare", site = "swa")
+swan_counts_clean[[1]] <- swan_counts[[1]] %>% clean_com("anaarv", "bare", site = "swa")
 swan_counts_clean[[2]] <- swan_counts[[2]] %>%
-  cleanElkhornData("aircar", "naspul", site = "swa") %>%
-  cleanElkhornPlot()
+  clean_com("aircar", "naspul", site = "swa") %>%
+  clean_plt()
 swan_counts_clean[[3]] <- swan_counts[[3]] %>%
-  cleanElkhornData("anaarv", "thatch", site = "swa") %>%
-  cleanElkhornPlot()
-swan_counts_clean[[4]] <- swan_counts[[4]] %>% cleanElkhornData("anaarv", "thatch", site = "swa")
-swan_counts_clean[[5]] <- swan_counts[[5]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[6]] <- swan_counts[[6]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[7]] <- swan_counts[[7]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[8]] <- swan_counts[[8]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[9]] <- swan_counts[[9]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[10]] <- swan_counts[[10]] %>% cleanElkhornData("aircar", "spearv", site = "swa")
-swan_counts_clean[[11]] <- swan_counts[[11]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[12]] <- swan_counts[[12]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[13]] <- swan_counts[[13]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
-swan_counts_clean[[14]] <- swan_counts[[14]] %>% cleanElkhornData("aircar", "vulpsp", site = "swa")
+  clean_com("anaarv", "thatch", site = "swa") %>%
+  clean_plt()
+swan_counts_clean[[4]] <- swan_counts[[4]] %>% clean_com("anaarv", "thatch", site = "swa")
+swan_counts_clean[[5]] <- swan_counts[[5]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[6]] <- swan_counts[[6]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[7]] <- swan_counts[[7]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[8]] <- swan_counts[[8]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[9]] <- swan_counts[[9]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[10]] <- swan_counts[[10]] %>% clean_com("aircar", "spearv", site = "swa")
+swan_counts_clean[[11]] <- swan_counts[[11]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[12]] <- swan_counts[[12]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[13]] <- swan_counts[[13]] %>% clean_com("aircar", "vulpsp", site = "swa")
+swan_counts_clean[[14]] <- swan_counts[[14]] %>% clean_com("aircar", "vulpsp", site = "swa")
 
 # lapply(swan_counts_clean, dim)
 for (i in 1:length(swan_counts_clean)) {
