@@ -2,7 +2,7 @@
 # ok to run in console; background jobs set working dir to project dir
 Sys.setenv(RSTUDIO_PANDOC = "/usr/lib/rstudio-server/bin/pandoc")
 rmarkdown::render(
-  input = "02-community-data.Rmd",
+  input = "2-community-data.Rmd",
   output_format = "bookdown::word_document2",
   output_file = paste0(tempdir(), "/Community data preparation.docx")
   # knit_root_dir = ".." # set to project dir
