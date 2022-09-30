@@ -289,81 +289,16 @@ source("scripts/compile-species.R")
 rm(tidy_tax_tbl)
 ```
 
+After Josie and Justin manually reviewed, read the misspelling table and rename species. 
 
-## Rename species
-
-Read the expert table manually complied by Josie and Justin.
-
-```{r}
-googlesheets4::gs4_deauth()
-misspelling_tbl <- googlesheets4::read_sheet(
-  "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
-  sheet = "Misspelling",
-  n_max = Inf,
-  na = c("", "NA") # guild = "NA" means NA
-)
+```{r rename-spp}
+source("scripts/rename-species.R")
 ```
 
-Note for the Morgan Territory data, Justin Luong corrected species names on Sep 16, 2022. Guild codes are
-- 1st letter: Native vs. Exotic
-- 2nd letter: Annual vs. Perennial; AP = Annual or Perennial--to be consolidated
-- 3rd letter: Grass vs. Forb vs. Rush (non-grass graminoid) vs. Shrub vs. Tree
-- U = unknown
+Finally, save tidy data with corrected species names.
 
-```{r}
-mt_spp_tbl <- googlesheets4::read_sheet(
-  "1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck",
-  sheet = "Morgan Territory",
-  n_max = Inf,
-  na = c("", "NA") # guild = "NA" means NA
-) %>%
-  mutate(species_code = toupper(species_code))
-```
-
-Rename species and guild using the expert table.
-
-```{r}
-tidy_exp_tbl %>%
-  rename(
-    "original_species" = "species",
-    "original_guild" = "guild"
-  ) %>%
-  left_join(
-    misspelling_tbl,
-    by = c("original_species", "original_guild")
-  ) %>%
-  filter(keep) %>%
-  select(
-    site, year, plot, treat,
-    species = corrected_species, guild = corrected_guild,
-    abund, abund_type
-  ) %>%
-  arrange(site, year, plot, species) %>%
-  write_rds("data/community/all-experimental-data.rds")
-
-tidy_obs_tbl %>%
-  filter(site != "morganterritory") %>% # Morgan Territory data species names were cleaned separately by Justin
-  rename(
-    "original_species" = "species",
-    "original_guild" = "guild"
-  ) %>%
-  left_join(
-    misspelling_tbl,
-    by = c("original_species", "original_guild")
-  ) %>%
-  filter(keep) %>%
-  select(
-    site, year, plot,
-    species = corrected_species, guild = corrected_guild,
-    abund, abund_type
-  ) %>%
-  bind_rows(filter(tidy_obs_tbl, site == "morganterritory")) %>%
-  arrange(site, year, plot, species) %>%
-  write_rds("data/community/all-observational-data.rds")
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(misspelling_tbl, tidy_exp_tbl, tidy_obs_tbl, tidy_tax_tbl)
+```{r save}
+write_rds(final_exp_tbl, .path$com_exp)
+write_rds(final_obs_tbl, .path$com_obs)
+rm(list = ls())
 ```
