@@ -11,12 +11,14 @@ com_tbl <- excel_file %>%
   group_by(year, plot) %>%
   mutate(tot_hits = sum(hits)) %>%
   group_by(year, plot, species_code) %>%
-  summarize(abund = hits / tot_hits) # rel abundance
+  summarize(abund = hits / tot_hits) %>% # rel abundance
+  ungroup()
 
 spp_tbl <- excel_file %>%
   readxl::read_xlsx(sheet = "Species codes & attributes") %>%
   mutate(
-    species_code = toupper(species),
+    species_code = toupper(species) %>% str_trim(),
+    latin = str_trim(latin),
     guild = str_c(
       case_when(
         `native/exotic` == "e" ~ "E", # Exotic
@@ -39,7 +41,21 @@ spp_tbl <- excel_file %>%
       )
     )
   ) %>%
-  select(species_code, species = latin, guild)
+  select(species_code, species = latin, guild) %>%
+  filter(
+    !species_code %in% c(
+      "DISKED", # disked ground
+      "LITT", # litter
+      "MOSS", # moss
+      "MUD", # mud
+      "ND", # no data
+      "ROCK", # rock
+      "SOIL", # soil
+      "TRASH", # trash
+      "WATER" # water
+    ),
+    !str_starts(species_code, "UN") # unknown species
+  )
 
 plt_tbl <- excel_file %>%
   readxl::read_xlsx(sheet = "Grazed status") %>%
@@ -48,7 +64,7 @@ plt_tbl <- excel_file %>%
   mutate(year = as.integer(year))
 
 morganterritory_tbl <- com_tbl %>%
-  left_join(spp_tbl, by = "species_code") %>% # only keep species in species table
+  inner_join(spp_tbl, by = "species_code") %>% # only keep species in species table
   mutate(
     site = "morganterritory",
     abund_type = "point_intercept"
