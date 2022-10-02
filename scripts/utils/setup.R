@@ -1,7 +1,8 @@
 # load packages
-library(tidyverse)
-library(sf)
-library(patchwork)
+if (!require("pacman")) {
+  install.packages("pacman")
+}
+pacman::p_load(tidyverse, sf, patchwork)
 
 # set parameters
 knitr::opts_chunk$set(
