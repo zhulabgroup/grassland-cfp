@@ -14,21 +14,11 @@ output:
     global_numbering: true
 ---
 
-# Climate niche estimation
-
-Setup and load packages.
-
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/utils/setup.R")
 ```
 
-```{r}
-library(tidyverse)
-library(sf)
-library(patchwork)
-```
-
-## Get occurrence data
+# Get occurrence data
 
 The first question is what the geographic extent that we search for occurrence records. Joise used the state of California for convenience, but it seems to make more sense using an ecological, not administrative, boundary. We thought about using NEON domains. After much discussion, we decided to use the [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely across CFP. 
 
@@ -102,7 +92,7 @@ spp_tbl <- spp_comm_tbl %>%
 rm(spp_comm_tbl, spp_consol_tbl)
 ```
 
-### GBIF
+## GBIF
 
 Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
 
@@ -173,7 +163,7 @@ Pointer to file name.
 gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-09-18.rds"
 ```
 
-### iNaturalist
+## iNaturalist
 
 Not directly querying the data separately because:
 
@@ -202,7 +192,7 @@ Pointer to file name.
 inat_file <- "data/occurrence/inat/inat-cfp-2022-09-18.rds"
 ```
 
-### BIEN
+## BIEN
 
 Retrieve all BIEN data then select those within CFP. Note, the code can't run because of BIEN server error, as of 5/2/2022.
 
@@ -246,7 +236,7 @@ Pointer to file name.
 bien_file <- "data/occurrence/bien/bien-cfp-2022-04-27.rds"
 ```
 
-### eJepson (CCH)
+## eJepson (CCH)
 
 eJepson might be more accurate compared to iNat and GBIF.
 
@@ -292,7 +282,7 @@ Pointer to file name.
 cch_file <- "data/occurrence/cch/cch-cfp-2022-07-12.rds"
 ```
 
-### Compare occurrence data sets
+## Compare occurrence data sets
 
 Compare the above data sets, in alphabetical order, BIEN, CCH, GBIF, iNat.
 
@@ -391,9 +381,9 @@ rm(bien_tbl, cch_tbl, gbif_tbl, inat_tbl, occ_sf)
 rm(bien_file, cch_file, inat_file)
 ```
 
-## Get climate data
+# Get climate data
 
-### CHELSA
+## CHELSA
 
 Download and process [CHELSA climatology data v2.1](https://chelsa-climate.org/downloads/). We used annual data of temperature and precipitation (see [metadata](https://chelsa-climate.org/bioclim/) below). Daily and monthly data are also available.
 
@@ -433,7 +423,7 @@ names(chelsa_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(chelsa_ras) # WGS84
 ```
 
-### PRISM
+## PRISM
 
 Download and process PRISM using the prism package (not running).
 
@@ -463,7 +453,7 @@ names(prism_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(prism_ras) # NAD83
 ```
 
-### TerraClimate
+## TerraClimate
 
 Climatology data manually downloaded from http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/summaries/catalog.html
 
@@ -521,7 +511,7 @@ names(terraclim_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(terraclim_ras) # WGS84
 ```
 
-### Extract climate data at occurrence sites and then compare
+## Extract climate data at occurrence sites and then compare
 
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
 
@@ -715,9 +705,9 @@ rm(chelsa_ras, prism_ras, terraclim_ras)
 rm(clim_gbif_tbl, clim_gbif_tbl_compare)
 ```
 
-## Quantify species climate niches
+# Quantify species climate niches
 
-### Individual species
+## Individual species
 
 Visualize individual species occurrence in climate space.
 
@@ -826,7 +816,7 @@ print(niche_gg)
 dev.off()
 ```
 
-### All species
+## All species
 
 Summarize species climate niches (mean, sd, etc.).
 
@@ -1022,7 +1012,7 @@ rm(cfp_sf, spp_tbl)
 rm(clim_file, gbif_file)
 ```
 
-### Spatial thinning occurrence records
+## Spatial thinning occurrence records
 
 Spatial thinning GBIF-CHELSA data to validate climate niche estimates, using the **spThin** package.
 
