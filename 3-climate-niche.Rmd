@@ -52,7 +52,7 @@ rm(list = ls())
 
 First, extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file. Second, consolidate species names in GBIF. Note that GBIF depends on download dates. So we'll keep the download file with date stamp.
 
-```{r, eval=FALSE}
+```{r get-gbif, eval=FALSE}
 source("scripts/get-gbif.R")
 rm(list = ls())
 ```

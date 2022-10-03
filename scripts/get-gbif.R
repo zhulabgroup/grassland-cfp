@@ -4,7 +4,7 @@ library(foreach)
 library(doSNOW)
 
 # prep species list
-source("scripts/compile-all-species.R") 
+source("scripts/compile-all-species.R")
 
 # read CFP file
 cfp_sf <- st_read(.path$geo_cfp) %>%
