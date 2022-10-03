@@ -43,6 +43,9 @@ Compile two species tables.
 
 ```{r all-species}
 source("scripts/compile-all-species.R")
+spp_consol_tbl %>%
+  knitr::kable(caption = "Species consolidation table")
+rm(list = ls())
 ```
 
 ## GBIF
@@ -51,6 +54,7 @@ First, extract occurrence data from GBIF, using the species list. The query outp
 
 ```{r, eval=FALSE}
 source("scripts/get-gbif.R")
+rm(list = ls())
 ```
 
 ## iNaturalist

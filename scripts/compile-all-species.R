@@ -27,5 +27,3 @@ spp_tbl <- spp_comm_tbl %>%
   filter(!str_detect(query_name, "DUMMY")) %>%
   arrange(query_name) %>%
   distinct(query_name, consolidated_name)
-
-rm(spp_comm_tbl, spp_consol_tbl)
