@@ -8,3 +8,19 @@ chelsa_ras <- raster::stack(
 )
 names(chelsa_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(chelsa_ras) # WGS84
+
+# prism
+prism::prism_set_dl_dir(.path$cli_prism)
+prism_ras <- raster::stack(
+  prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
+    prism::pd_to_file() %>%
+    raster::raster(),
+  prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>%
+    prism::pd_to_file() %>%
+    raster::raster(),
+  prism::prism_archive_subset("vpdmax", "annual normals", resolution = "800m") %>%
+    prism::pd_to_file() %>%
+    raster::raster()
+)
+names(prism_ras) <- c("tmp", "ppt", "vpd")
+raster::proj4string(prism_ras) # NAD83

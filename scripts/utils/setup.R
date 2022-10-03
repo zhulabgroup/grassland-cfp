@@ -24,6 +24,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 # - `sum`: summary data, e.g., niche estimates
 .path <- list( # hidden variable won't be removed
   cli_chelsa = "data/climate/chelsa/2022-10-03/",
+  cli_prism = "data/climate/prism/2022-10-03/",
   com_exp = "data/community/all-experimental-data.rds",
   com_obs = "data/community/all-observational-data.rds",
   com_raw = "data/community/raw/",
