@@ -33,7 +33,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   geo_grass = "data/occurrence/grassland/",
   geo_site = "data/community/site-info.rds",
   occ_bien = "data/occurrence/bien/bien-cfp-2022-04-27.rds",
-  occ_cch = "data/occurrence/cch/cch-cfp-2022-07-12.rds",
+  occ_cch = "data/occurrence/cch/cch-cfp-2022-10-03.rds",
   occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-10-03.rds",
   occ_inat = "data/occurrence/inat/inat-cfp-2022-10-03.rds",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-09-18.rds",

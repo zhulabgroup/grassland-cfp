@@ -90,41 +90,9 @@ Download full dataset at https://www.cch2.org/portal/collections/harvestparams.p
 
 Keep records with species of interest and within CFP.
 
-```{r, eval=FALSE}
-cch_all_tbl <- read_csv("data/occurrence/cch/occurrences.csv") %>%
-  filter(scientificName %in% spp_tbl$query_name) %>%
-  drop_na(decimalLongitude, decimalLatitude) %>%
-  select(
-    queryName = scientificName,
-    longitude = decimalLongitude,
-    latitude = decimalLatitude,
-    key = id
-  ) %>%
-  left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
-  mutate(species_name = ifelse(
-    is.na(consolidated_name),
-    queryName,
-    consolidated_name
-  )) %>%
-  select(species_name, longitude, latitude, key)
-
-cch_cfp_tbl <- cch_all_tbl %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
-  st_intersection(cfp_sf) %>% # find CCH and CFP intersection
-  as_tibble() %>% # drop geometry
-  select(key) %>% # use key to join (fast)
-  right_join(cch_all_tbl, ., by = "key")
-
-write_rds(cch_all_tbl, "data/occurrence/cch/cch-all-2022-07-12.rds")
-write_rds(cch_cfp_tbl, "data/occurrence/cch/cch-cfp-2022-07-12.rds")
-
-rm(cch_all_tbl, cch_cfp_tbl)
-```
-
-Pointer to file name.
-
-```{r}
-cch_file <- "data/occurrence/cch/cch-cfp-2022-07-12.rds"
+```{r get-cch, eval=FALSE}
+source("scripts/get-cch.R")
+rm(list = ls())
 ```
 
 ## Compare occurrence data sets
