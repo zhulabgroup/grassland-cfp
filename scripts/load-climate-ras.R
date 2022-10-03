@@ -24,3 +24,12 @@ prism_ras <- raster::stack(
 )
 names(prism_ras) <- c("tmp", "ppt", "vpd")
 raster::proj4string(prism_ras) # NAD83
+
+# terraclimate
+terraclim_ras <- raster::stack(
+  str_c(.path$cli_terraclimate, "tmp.tif"),
+  str_c(.path$cli_terraclimate, "ppt.tif"),
+  str_c(.path$cli_terraclimate, "vpd.tif")
+)
+names(terraclim_ras) <- c("tmp", "ppt", "vpd")
+raster::proj4string(terraclim_ras) # WGS84
