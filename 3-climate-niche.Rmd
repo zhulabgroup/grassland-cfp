@@ -36,39 +36,13 @@ site_gg
 rm(list = ls())
 ```
 
-Load two species tables. 
+Compile two species tables. 
 
 1. All the species from community data (experimental and observational).
 1. Species consolidation table.
 
-```{r}
-spp_comm_tbl <- read_rds("data/community/all-experimental-data.rds") %>%
-  dplyr::select(species) %>%
-  bind_rows(
-    read_rds("data/community/all-observational-data.rds") %>%
-      dplyr::select(species)
-  ) %>%
-  distinct(species) %>%
-  arrange(species)
-
-googlesheets4::gs4_deauth()
-spp_consol_tbl <- googlesheets4::read_sheet("1ez43lbFMsTJwmkW_23icDabt30ttDhVZ-1vK8Ts_Mck", sheet = "Consolidation", na = c("", "NA"))
-
-spp_tbl <- spp_comm_tbl %>%
-  rename("query_name" = "species") %>%
-  bind_cols("consolidated_name" = as.character(NA)) %>%
-  bind_rows(
-    spp_consol_tbl %>%
-      rename(
-        "query_name" = "old_species_name",
-        "consolidated_name" = "new_species_name"
-      )
-  ) %>%
-  filter(!str_detect(query_name, "DUMMY")) %>%
-  arrange(query_name) %>%
-  distinct(query_name, consolidated_name)
-
-rm(spp_comm_tbl, spp_consol_tbl)
+```{r all-species}
+source("scripts/compile-all-species.R")
 ```
 
 ## GBIF
