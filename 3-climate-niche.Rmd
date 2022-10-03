@@ -159,145 +159,15 @@ Use GBIF occurrence data longitude and latitude to extract site climate values f
 ```{r extract-climate, eval=FALSE}
 source("scripts/load-climate-ras.R")
 source("scripts/extract-climate-gbif.R")
-rm(list = ls)
+rm(list = ls())
 ```
 
 Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
 
-```{r}
-clim_gbif_tbl <- read_rds(clim_file) %>%
-  as_tibble() %>%
-  drop_na() # PRISM = NA in Mexico
-
-clim_gbif_tbl_compare <- bind_rows(
-  clim_gbif_tbl %>%
-    dplyr::select(
-      tmp1 = chelsa_tmp,
-      tmp2 = prism_tmp,
-      ppt1 = chelsa_ppt,
-      ppt2 = prism_ppt,
-      vpd1 = chelsa_vpd,
-      vpd2 = prism_vpd
-    ) %>%
-    mutate(compare = "chelsa-prism"),
-  clim_gbif_tbl %>%
-    dplyr::select(
-      tmp1 = chelsa_tmp,
-      tmp2 = terraclim_tmp,
-      ppt1 = chelsa_ppt,
-      ppt2 = terraclim_ppt,
-      vpd1 = chelsa_vpd,
-      vpd2 = terraclim_vpd
-    ) %>%
-    mutate(compare = "chelsa-terraclim"),
-  clim_gbif_tbl %>%
-    dplyr::select(
-      tmp1 = prism_tmp,
-      tmp2 = terraclim_tmp,
-      ppt1 = prism_ppt,
-      ppt2 = terraclim_ppt,
-      vpd1 = prism_vpd,
-      vpd2 = terraclim_vpd
-    ) %>%
-    mutate(compare = "prism-terraclim")
-)
-
-ggplot(clim_gbif_tbl_compare, aes(tmp1, tmp2)) +
-  geom_hex(bins = 100) +
-  viridis::scale_fill_viridis() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
-  ggpubr::stat_cor(
-    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  coord_fixed() +
-  labs(
-    x = "Temperature 1 (°C)",
-    y = "Temperature 2 (°C)",
-    fill = "Occurrence site"
-  ) +
-  facet_wrap(. ~ compare)
-
-ggplot(clim_gbif_tbl_compare, aes(ppt1, ppt2)) +
-  geom_hex(bins = 100) +
-  viridis::scale_fill_viridis() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
-  ggpubr::stat_cor(
-    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  coord_fixed() +
-  labs(
-    x = "Precipitation 1 (mm)",
-    y = "Precipitation 2 (mm)",
-    fill = "Occurrence site"
-  ) +
-  facet_wrap(. ~ compare)
-
-ggplot(clim_gbif_tbl_compare, aes(vpd1, vpd2)) +
-  geom_hex(bins = 100) +
-  viridis::scale_fill_viridis() +
-  geom_smooth(method = "lm", formula = y ~ x, se = FALSE, color = "red", lty = "dashed") +
-  ggpubr::stat_cor(
-    aes(label = paste(..r.label.., ..p.label.., sep = "~`,`~")),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  geom_abline(slope = 1, intercept = 0, color = "red") +
-  coord_fixed() +
-  labs(
-    x = "VPD max 1 (Pa)",
-    y = "VPD max 2 (Pa)",
-    fill = "Occurrence site"
-  ) +
-  facet_wrap(. ~ compare)
-```
-
-Making maps is possible but too time consuming.
-
-```{r, eval=FALSE}
-clim_long_sf <- read_rds(clim_file) %>%
-  pivot_longer(
-    contains(match = c("chelsa", "prism")),
-    names_to = "dataset_variable",
-    values_to = "value"
-  ) %>%
-  separate(
-    col = dataset_variable,
-    into = c("dataset", "variable"),
-    sep = "_"
-  )
-
-ggplot() +
-  geom_sf(
-    data = rnaturalearth::ne_states(
-      country = c("Mexico", "United States of America"),
-      returnclass = "sf"
-    ),
-    fill = NA,
-    color = alpha("black", .1)
-  ) +
-  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-  geom_sf(
-    data = clim_long_sf,
-    aes(geometry = geometry, color = value),
-    alpha = .1, size = .1
-  ) +
-  facet_wrap(variable ~ dataset) +
-  scale_color_viridis() +
-  labs(x = "Longitude", y = "Latitude") +
-  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(chelsa_ras, prism_ras, terraclim_ras)
-rm(clim_gbif_tbl, clim_gbif_tbl_compare)
+```{r compare-climate, fig.cap="Compare climate data from different sources."}
+source("scripts/compare-clim-data.R")
+tmp_gg / ppt_gg / vpd_gg
+rm(list = ls())
 ```
 
 # Quantify species climate niches
