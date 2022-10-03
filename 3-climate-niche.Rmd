@@ -156,56 +156,10 @@ rm(list = ls())
 
 Use GBIF occurrence data longitude and latitude to extract site climate values from CHELSA and PRISM rasters.
 
-```{r, eval=FALSE}
-gbif_sf_wgs84 <- read_rds(gbif_file) %>%
-  mutate(
-    species = consolidatedName,
-    key = as.character(key)
-  ) %>%
-  dplyr::select(key, species, longitude, latitude) %>%
-  st_as_sf(
-    coords = c("longitude", "latitude"),
-    crs = "+proj=longlat +datum=WGS84 +no_defs"
-  )
-
-gbif_sf_nad83 <- gbif_sf_wgs84 %>%
-  st_transform(crs = "+proj=longlat +datum=NAD83 +no_defs")
-
-chelsa_gbif_sf <- chelsa_ras %>%
-  raster::extract(gbif_sf_wgs84) %>%
-  as_tibble() %>%
-  rename_with(~ str_c("chelsa_", .)) %>%
-  bind_cols(gbif_sf_wgs84)
-
-prism_gbif_sf <- prism_ras %>%
-  raster::extract(gbif_sf_nad83) %>%
-  as_tibble() %>%
-  mutate(vpd = vpd * 100) %>% # prism vpd * 100 = chelsa vpd unit
-  rename_with(~ str_c("prism_", .)) %>%
-  bind_cols(gbif_sf_nad83)
-
-terraclim_gbif_sf <- terraclim_ras %>%
-  raster::extract(gbif_sf_wgs84) %>%
-  as_tibble() %>%
-  mutate(vpd = vpd * 1000) %>% # terraclim vpd * 1000 = chelsa vpd unit
-  rename_with(~ str_c("terraclim_", .)) %>%
-  bind_cols(gbif_sf_wgs84)
-
-bind_cols(
-  chelsa_gbif_sf %>%
-    dplyr::select(geometry, key, species, starts_with("chelsa_")),
-  prism_gbif_sf %>%
-    dplyr::select(starts_with("prism_")),
-  terraclim_gbif_sf %>%
-    dplyr::select(starts_with("terraclim_"))
-) %>%
-  write_rds("data/climate/climate-gbif-2022-09-18.rds")
-```
-
-Pointer to file name.
-
-```{r}
-clim_file <- "data/climate/climate-gbif-2022-09-18.rds"
+```{r extract-climate, eval=FALSE}
+source("scripts/load-climate-ras.R")
+source("scripts/extract-climate-gbif.R")
+rm(list = ls)
 ```
 
 Compare CHELSA, PRISM, and TerraClimate data at GBIF occurrence locations, by making scatter plots with correlation. 
