@@ -99,8 +99,15 @@ rm(list = ls())
 
 Compare the above data sets, in alphabetical order, BIEN, CCH, GBIF, iNat.
 
-```{r compare-occurrence-data}
+```{r compare-occ-data-tab}
 source("scripts/compare-occ-data.R")
+knitr::kable(occ_comp_tbl,
+  caption = "Compare occurrence data samples in the study area."
+)
+```
+
+```{r compare-occ-data-fig, fig.cap="Compare occurrence data samples in the study area."}
+occ_comp_gg
 rm(list = ls())
 ```
 

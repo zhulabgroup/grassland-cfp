@@ -46,8 +46,11 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
   select(key) %>% # use key to join (fast)
   right_join(gbif_box_tbl, ., by = "key")
 
-# consolidate species
+# filter coords and consolidate species
 gbif_cfp_tbl %>%
+  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
+  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
+  filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
   select(consolidatedName = consolidated_name, everything()) %>%
   mutate(
