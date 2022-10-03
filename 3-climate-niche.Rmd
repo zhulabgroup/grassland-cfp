@@ -47,73 +47,10 @@ source("scripts/compile-all-species.R")
 
 ## GBIF
 
-Extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file.
+First, extract occurrence data from GBIF, using the species list. The query output is an object of class `occdat`. Convert it to nested data, then unnest the data. Save GBIF occurrence data to a file. Second, consolidate species names in GBIF. Note that GBIF depends on download dates. So we'll keep the download file with date stamp.
 
 ```{r, eval=FALSE}
-# ~ 15 min to run
-library(foreach)
-library(doSNOW)
-num_cores <- 22 # socs-stats has 44 cores
-cl <- makeCluster(num_cores)
-registerDoSNOW(cl)
-gbif_box_ls <-
-  foreach(
-    i = 1:length(spp_tbl$query_name),
-    .packages = c("spocc", "sf", "tidyverse")
-  ) %dopar% {
-    sp <- spp_tbl$query_name[i]
-    res <- occ(
-      query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
-      geometry = st_bbox(cfp_sf),
-      gbifopts = list(
-        # occ_options(from = "gbif", where = "console")
-        hasGeospatialIssue = FALSE
-      )
-    )
-    print(i)
-    tibble(queryName = sp, gbif = res$gbif$data) %>%
-      unnest(cols = c(gbif))
-  }
-stopCluster(cl)
-
-gbif_box_tbl <- bind_rows(gbif_box_ls) # collapse from list to tibble
-
-gbif_cfp_tbl <- gbif_box_tbl %>%
-  select(key, longitude, latitude) %>%
-  st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
-  st_intersection(cfp_sf) %>% # find GBIF and CFP intersection
-  as_tibble() %>% # drop geometry
-  select(key) %>% # use key to join (fast)
-  right_join(gbif_box_tbl, ., by = "key")
-
-write_rds(gbif_cfp_tbl, "data/occurrence/gbif/gbif-cfp-2022-09-18.rds")
-
-rm(cl, num_cores, gbif_box_ls, gbif_box_tbl, gbif_cfp_tbl)
-```
-
-Note that GBIF depends on download dates. So we'll keep the download file with date stamp.
-
-Consolidate species names in GBIF.
-
-```{r, eval=FALSE}
-read_rds("data/occurrence/gbif/gbif-cfp-2022-09-18.rds") %>%
-  left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
-  select(consolidatedName = consolidated_name, everything()) %>%
-  mutate(
-    consolidatedName =
-      ifelse(
-        is.na(consolidatedName),
-        queryName,
-        consolidatedName
-      )
-  ) %>%
-  write_rds("data/occurrence/gbif/gbif-consolidated-2022-09-18.rds")
-```
-
-Pointer to file name.
-
-```{r}
-gbif_file <- "data/occurrence/gbif/gbif-consolidated-2022-09-18.rds"
+source("scripts/get-gbif.R")
 ```
 
 ## iNaturalist
