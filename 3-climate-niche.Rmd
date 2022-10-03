@@ -21,9 +21,8 @@ source("scripts/utils/setup.R")
 # Get occurrence data
 
 The first question is what the geographic extent that we search for occurrence records. Joise used the state of California for convenience, but it seems to make more sense using an ecological, not administrative, boundary. We thought about using NEON domains. After much discussion, we decided to use the [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely across CFP. 
-
-```{r}
-site_sf <- read_rds("data/community/site-info.rds")
+```{r site-info}
+site_sf <- read_rds(.path$geo_site)
 site_sf %>%
   as_tibble() %>% # drop geometry
   knitr::kable()
@@ -31,30 +30,10 @@ site_sf %>%
 
 Make a map overlaying sites with CFP and admin boundaries from [Natural Earth](https://www.naturalearthdata.com/). 
 
-```{r}
-cfp_sf <- st_read("data/occurrence/hotspots/hotspots_2016_1.shp") %>%
-  filter(
-    NAME == "California Floristic Province",
-    Type == "hotspot area"
-  )
-
-(ggplot() +
-  geom_sf(
-    data = rnaturalearth::ne_states(
-      country = c("Mexico", "United States of America"),
-      returnclass = "sf"
-    ),
-    fill = NA,
-    color = alpha("black", .1)
-  ) +
-  geom_sf(data = cfp_sf, fill = "white", alpha = .5) +
-  geom_sf(data = site_sf, color = "red", aes(text = name)) +
-  labs(x = "Longitude", y = "Latitude") +
-  coord_sf(xlim = c(-125, -115), ylim = c(28, 44))
-) %>%
-  plotly::ggplotly(tooltip = "text")
-
-rm(site_sf)
+```{r site-map, fig.cap="Site map"}
+source("scripts/plot-site-map.R")
+site_gg
+rm(list = ls())
 ```
 
 Load two species tables. 
