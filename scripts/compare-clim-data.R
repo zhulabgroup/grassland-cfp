@@ -3,6 +3,7 @@ clim_wide_tbl <- read_rds(.path$cli_all_gbif) %>%
   as_tibble() %>%
   drop_na() # PRISM = NA in Mexico
 
+# reshape
 clim_long_tbl <- bind_rows(
   clim_wide_tbl %>%
     dplyr::select(
@@ -35,6 +36,10 @@ clim_long_tbl <- bind_rows(
     ) %>%
     mutate(compare = "prism-terraclim")
 )
+
+# temporarily remove CHELSA--need to debug
+clim_long_tbl <- clim_long_tbl %>% 
+  filter(compare == "prism-terraclim")
 
 tmp_gg <- ggplot(clim_long_tbl, aes(tmp1, tmp2)) +
   geom_hex(bins = 100) +
