@@ -59,31 +59,17 @@ rm(list = ls())
 
 ## iNaturalist
 
-Not directly querying the data separately because:
+We do not directly querying the data separately because:
 
-1. Hard limit of 10,000 records
-2. Very slow
-3. May be blocked if running too many queries in a minute
+1. it has a hard limit of 10,000 records;
+2. it is very slow;
+3. running too many queries per minute may be blocked.
 
-```{r, eval=FALSE}
-res <- occ(
-  query = gbif_occ_df_today, from = "inat", has_coords = TRUE, limit = 10000,
-  geometry = st_bbox(cfp_sf)
-)
-```
+Instead, we get massive data at once by using the dataset of research grade observations submitted weekly to GBIF, as [recommended](https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7).
 
-4. A recommended way to get a lot of data at once is to use the dataset of research grade observations submitted weekly to GBIF https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7
-
-```{r, eval=FALSE}
-read_rds(gbif_file) %>%
-  filter(datasetName == "iNaturalist research-grade observations") %>%
-  write_rds("data/occurrence/inat/inat-cfp-2022-09-18.rds")
-```
-
-Pointer to file name.
-
-```{r}
-inat_file <- "data/occurrence/inat/inat-cfp-2022-09-18.rds"
+```{r get-inat, eval=FALSE}
+source("scripts/get-inat.R")
+rm(list = ls())
 ```
 
 ## BIEN
