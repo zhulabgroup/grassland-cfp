@@ -129,28 +129,9 @@ tribble(
 
 Note that precipitation unit, kg m^-2^ year^-1^, is equivalent to mm yr^-1^. 
 
-Download data (not running).
-
-```{r, eval=FALSE}
-param_list <- c("bio1", "bio12", "vpd_max")
-chelsa_path <- "data/climate/chelsa/"
-for (param in param_list) {
-  url <- paste0("https://os.zhdk.cloud.switch.ch/envicloud/chelsa/chelsa_V2/GLOBAL/climatologies/1981-2010/bio/CHELSA_", param, "_1981-2010_V.2.1.tif")
-  httr::GET(url = url, httr::write_disk(path = paste0(chelsa_path, param, ".tif"), overwrite = TRUE))
-  print(param)
-}
-```
-
-Load raster data using the raster package.
-
-```{r}
-chelsa_ras <- raster::stack(
-  "data/climate/chelsa/bio1.tif",
-  "data/climate/chelsa/bio12.tif",
-  "data/climate/chelsa/vpd_max.tif"
-)
-names(chelsa_ras) <- c("tmp", "ppt", "vpd")
-raster::proj4string(chelsa_ras) # WGS84
+```{r get-chelsa, eval=FALSE}
+source("scripts/get-chelsa.R")
+rm(list = ls())
 ```
 
 ## PRISM
