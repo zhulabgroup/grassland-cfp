@@ -18,6 +18,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 }
 
 # data path tags are
+# - `cli`: climate data
 # - `com`: grassland community data
 # - `geo`: geography data, including GIS and climate
 # - `occ`: occurrence data
@@ -41,5 +42,6 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-10-03.rds",
   occ_inat = "data/occurrence/inat/inat-cfp-2022-10-03.rds",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-09-18.rds",
+  sum_niche_fig = "figures/species-climate-niche-2022-10-03.pdf",
   sum_thin = "data/occurrence/niche-estimates-cfp-2022-09-18-thin.rds"
 )
