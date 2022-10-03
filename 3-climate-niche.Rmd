@@ -62,8 +62,8 @@ rm(list = ls())
 We do not directly querying the data separately because:
 
 1. it has a hard limit of 10,000 records;
-2. it is very slow;
-3. running too many queries per minute may be blocked.
+1. it is very slow;
+1. running too many queries per minute may be blocked.
 
 Instead, we get massive data at once by using the dataset of research grade observations submitted weekly to GBIF, as [recommended](https://www.gbif.org/dataset/50c9509d-22c7-4a22-a47d-8c48425ef4a7).
 
