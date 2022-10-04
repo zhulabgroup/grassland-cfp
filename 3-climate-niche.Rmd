@@ -343,7 +343,7 @@ niche_tbl %>%
   add_row(species = "Festuca DUMMY", occ_n = NA, Festuca_tbl) %>%
   add_row(species = "Hypochaeris DUMMY", occ_n = NA, Hypochaeris_tbl) %>%
   add_row(species = "Raphanus DUMMY", occ_n = NA, Raphanus_tbl) %>%
-  write_rds("data/occurrence/niche-estimates-cfp-2022-09-18.rds")
+  write_rds(.path$sum_niche)
 ```
 
 Remove intermediate objects.
