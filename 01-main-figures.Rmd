@@ -30,7 +30,7 @@ We estimated species' climate niches from the GBIF occurrence data and CHELSA cl
 
 For illustration, we chose two example species: *Danthonia californica* and *Stipa pulchra*. Both are important native species in California and have abundantly distributed. *D. californica* (`r ifelse(text_only, "TBD", n_occ_cool)` occurrences) is a northern species and prefers cool and wet climates, while *S. pulchra* (`r ifelse(text_only, "TBD", n_occ_warm)` occurrences) is a southern species and prefers warm and dry climates. We visualized the two example species in the context of all the species.
 
-Species distributions show clear patterns in both geographical space and climate species.
+Species distributions show clear patterns in both geographical space and climate space.
 
 ```{r niche-fig, fig.width=7.5, fig.height=7.5*1.168}
 #| fig.cap = "Grassland species occur along geographic and climatic gradients to estimate ecological niches.
