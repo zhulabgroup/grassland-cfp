@@ -189,7 +189,7 @@ dev.off()
 
 Summarize species climate niches (mean, sd, etc.).
 
-```{r summarize-all-spp}
+```{r summarize-all-spp-niche}
 source("scripts/estimate-all-spp-niche.R")
 source("scripts/plot-all-spp-niche.R")
 ```
@@ -227,7 +227,7 @@ niche_tp_gg %>%
 
 Create dummy species, append to niche estimates, and save.
 
-```{r}
+```{r dummy-spp-niche}
 source("scripts/add-dummy-spp-niche.R")
 write_rds(niche_tbl, .path$sum_niche)
 rm(list = ls())
@@ -240,43 +240,21 @@ Spatial thinning GBIF-CHELSA data to validate climate niche estimates, using the
 Reference:
 Aiello-Lammens, Matthew E., Robert A. Boria, Aleksandar Radosavljevic, Bruno Vilela, and Robert P. Anderson. “SpThin: An R Package for Spatial Thinning of Species Occurrence Records for Use in Ecological Niche Models.” Ecography 38, no. 5 (2015): 541–45. https://doi.org/10.1111/ecog.01132.
 
-```{r, eval=FALSE}
-
+```{r estimate-thin-niche, eval=FALSE}
+source("scripts/estimate-thin-occ-niche.R")
 ```
 
-Post-thinning analysis.
+Post-thinning analysis. The comparison shows full vs. thinned niche estimates are very similar.
 
-```{r}
-thin_file <- "data/occurrence/niche-estimates-cfp-2022-09-18-thin.rds"
-thin_tbl <- read_rds(thin_file)
+```{r compare-thin-niche}
+source("scripts/compare-thin-spp-niche.R")
 ```
-
-The comparison shows full vs. thinned niche estimates are very similar.
 
 ```{r fig.cap="Species temperature niche statistics (°C)"}
-thin_tbl %>%
-  select(
-    tmp_mean_full, tmp_mean_thin,
-    tmp_median_full, tmp_median_thin
-  ) %>%
-  GGally::ggpairs(
-    title = "Species temperature niche (°C)",
-    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
-  )
+thin_tmp_gg
 ```
 
 ```{r fig.cap="Species precipitation niche statistics (mm)"}
-thin_tbl %>%
-  select(
-    ppt_mean_full, ppt_mean_thin,
-    ppt_median_full, ppt_median_thin
-  ) %>%
-  GGally::ggpairs(
-    title = "Species precipitation niche (mm)",
-    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
-  )
-```
-
-```{r}
-rm(thin_file, thin_tbl)
+thin_ppt_gg
+rm(list = ls())
 ```
