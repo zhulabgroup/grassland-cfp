@@ -191,105 +191,37 @@ Summarize species climate niches (mean, sd, etc.).
 
 ```{r summarize-all-spp}
 source("scripts/estimate-all-spp-niche.R")
+source("scripts/plot-all-spp-niche.R")
 ```
 
 These different summary statistics (mean, median, upper, and lower quantiles) are highly and significantly correlated.
 
 ```{r fig.cap="Species temperature niche statistics (°C)"}
-niche_tbl %>%
-  select(tmp_occ_mean, tmp_occ_median, tmp_occ_q05, tmp_occ_q95) %>%
-  GGally::ggpairs(
-    title = "Species temperature niche (°C)",
-    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)"),
-  )
+niche_tmp_gg
 ```
 
 ```{r fig.cap="Species precipitation niche statistics (mm)"}
-niche_tbl %>%
-  select(ppt_occ_mean, ppt_occ_median, ppt_occ_q05, ppt_occ_q95) %>%
-  GGally::ggpairs(
-    title = "Species precipitation niche (mm)",
-    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
-  )
+niche_ppt_gg
 ```
 
 ```{r fig.cap="Species VPD max niche statistics (Pa)"}
-niche_tbl %>%
-  select(vpd_occ_mean, vpd_occ_median, vpd_occ_q05, vpd_occ_q95) %>%
-  GGally::ggpairs(
-    title = "Species VPD max niche (Pa)",
-    columnLabels = c("Mean", "Median", "Lower limit (5%)", "Upper limit (95%)")
-  )
+niche_vpd_gg
 ```
 
 Different dimensions of the niche space (temperature, precipitation, and VPD max) are also correlated (using mean as summary).
 
 ```{r fig.cap="Correlation of species niche dimensions"}
-niche_tbl %>%
-  select(tmp_occ_median, ppt_occ_median, vpd_occ_median) %>%
-  GGally::ggpairs(
-    title = "Species niche dimensions",
-    columnLabels = c("Temperature (°C)", "Precipitation (mm)", "VPD max (Pa)")
-  )
+niche_dim_gg
 ```
 
-With all the correlations, we can safely use temperature and precipitation to visualize species niches in climate space. Note the strong negative correlation between temperature and precipitation (r = `r format(with(niche_tbl, cor(tmp_occ_mean, ppt_occ_mean)), digits = 3)`, p = `r format(with(niche_tbl, cor.test(tmp_occ_mean, ppt_occ_mean))$p.value, digits = 3)`).
+With all the correlations, we can safely use the mean temperature and precipitation to visualize species niches in climate space. Note the strong negative correlation between temperature and precipitation (r = `r format(with(niche_tbl, cor(tmp_occ_mean, ppt_occ_mean)), digits = 3)`, p = `r format(with(niche_tbl, cor.test(tmp_occ_mean, ppt_occ_mean))$p.value, digits = 3)`).
 
 ```{r fig.cap="Species climate niches, with mean (point) and standard error (crossbar)"}
-niche_tbl %>%
-  ggplot(aes(
-    text = species,
-    x = tmp_occ_mean,
-    y = ppt_occ_mean,
-    xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
-    xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
-    ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
-    ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n)
-  )) +
-  geom_point() +
-  geom_errorbarh(alpha = .5) +
-  geom_errorbar(alpha = .5) +
-  labs(
-    x = "Species occurrence mean temperature (°C)",
-    y = "Species occurrence mean precipitation (mm)"
-  )
+niche_tp_gg
 ```
 
-```{r fig.cap="Interactive figure, no error bars"}
-(niche_tbl %>%
-  ggplot(aes(
-    text = species,
-    x = tmp_occ_mean,
-    y = ppt_occ_mean,
-  )) +
-  geom_point() +
-  labs(
-    x = "Species occurrence mean temperature (°C)",
-    y = "Species occurrence mean precipitation (mm)"
-  )
-) %>%
-  plotly::ggplotly(tooltip = "text")
-```
-
-This figure compares well with Josie's estimates. 
-
-```{r, fig.cap="Species climate niches (mean and standard error) estimated by Josie"}
-(read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
-  filter(
-    species.name != "Linanthus jepsonii",
-    species.name != "Linanthus latisectus",
-    relcov >= 0
-  ) %>%
-  dplyr::select(species = species.name, guild, tmp = meanT, ppt = meanp) %>%
-  distinct() %>%
-  ggplot(aes(tmp, ppt, text = species)) +
-  geom_point(alpha = .5) +
-  # geom_smooth(method = "lm", aes(tmp, ppt)) +
-  labs(
-    x = "Species occurrence mean temperature (°C)",
-    y = "Species occurrence mean precipitation (mm)"
-  )
-) %>%
+```{r fig.cap="Same as last figure, interactive"}
+niche_tp_gg %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
