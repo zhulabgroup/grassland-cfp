@@ -21,6 +21,7 @@ source("scripts/utils/setup.R")
 # Get occurrence data
 
 The first question is what the geographic extent that we search for occurrence records. Joise used the state of California for convenience, but it seems to make more sense using an ecological, not administrative, boundary. We thought about using NEON domains. After much discussion, we decided to use the [biodiversity hotspots](https://www.cepf.net/our-work/biodiversity-hotspots). The most relevant one is California Floristic Province (CFP). Study sites seem to distribute nicely across CFP. 
+
 ```{r site-info}
 site_sf <- read_rds(.path$geo_site)
 site_sf %>%
