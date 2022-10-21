@@ -2,7 +2,7 @@
 # spThin package
 # run time = 22 min
 
-source("scripts/utils/setup.R")
+# source("scripts/utils/setup.R")
 
 occ_clim_sf <- read_rds(.path$cli_all_gbif) %>%
   sf::st_as_sf()
