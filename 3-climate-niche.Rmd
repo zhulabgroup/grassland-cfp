@@ -225,66 +225,12 @@ niche_tp_gg %>%
   plotly::ggplotly(tooltip = "text")
 ```
 
-Prepare to save niche estimates.
-
-```{r}
-niche_tbl <- niche_tbl %>%
-  select(
-    species, occ_n,
-    tmp_occ_mean, tmp_occ_sd,
-    tmp_occ_median, tmp_occ_q05, tmp_occ_q25, tmp_occ_q75, tmp_occ_q95,
-    ppt_occ_mean, ppt_occ_sd,
-    ppt_occ_median, ppt_occ_q05, ppt_occ_q25, ppt_occ_q75, ppt_occ_q95,
-    vpd_occ_mean, vpd_occ_sd,
-    vpd_occ_median, vpd_occ_q05, vpd_occ_q25, vpd_occ_q75, vpd_occ_q95
-  )
-```
-
 Create dummy species, append to niche estimates, and save.
 
 ```{r}
-Avena_tbl <- niche_tbl %>%
-  filter(species %in% c(
-    "Avena barbata",
-    "Avena fatua"
-  )) %>%
-  summarize(across(-c(species:occ_n), mean))
-
-Festuca_tbl <- niche_tbl %>%
-  filter(species %in% c(
-    "Festuca bromoides",
-    "Festuca perennis"
-  )) %>%
-  summarize(across(-c(species:occ_n), mean))
-
-Hypochaeris_tbl <- niche_tbl %>%
-  filter(species %in% c(
-    "Hypochaeris glabra",
-    "Hypochaeris radicata"
-  )) %>%
-  summarize(across(-c(species:occ_n), mean))
-
-Raphanus_tbl <- niche_tbl %>%
-  filter(species %in% c(
-    "Raphanus sativus",
-    "Raphanus raphanistrum" # this species doesn't exist from GBIF download
-  )) %>%
-  summarize(across(-c(species:occ_n), mean))
-
-niche_tbl %>%
-  add_row(species = "Avena DUMMY", occ_n = NA, Avena_tbl) %>%
-  add_row(species = "Festuca DUMMY", occ_n = NA, Festuca_tbl) %>%
-  add_row(species = "Hypochaeris DUMMY", occ_n = NA, Hypochaeris_tbl) %>%
-  add_row(species = "Raphanus DUMMY", occ_n = NA, Raphanus_tbl) %>%
-  write_rds(.path$sum_niche)
-```
-
-Remove intermediate objects.
-
-```{r}
-rm(Avena_tbl, Festuca_tbl, Hypochaeris_tbl, niche_tbl, Raphanus_tbl)
-rm(cfp_sf, spp_tbl)
-rm(clim_file, gbif_file)
+source("scripts/add-dummy-spp-niche.R")
+write_rds(niche_tbl, .path$sum_niche)
+rm(list = ls())
 ```
 
 ## Spatial thinning occurrence records
