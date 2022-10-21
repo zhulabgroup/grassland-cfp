@@ -32,6 +32,7 @@ niche_dim_gg <- niche_tbl %>%
 
 # mean tmp and ppt niches
 niche_tp_gg <- niche_tbl %>%
+  filter(occ_n > 1) %>% # so it has SD
   ggplot(aes(
     text = species,
     x = tmp_occ_mean,
