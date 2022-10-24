@@ -20,10 +20,12 @@ sum_cwm <- function(.) {
 exp_tbl <- read_rds(.path$com_exp) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>% # w/ treatment for exp
-  sum_cwm()
+  sum_cwm() %>% 
+  ungroup()
 
 # observational data and CWM
 obs_tbl <- read_rds(.path$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>% # w/o treatment for obs
-  sum_cwm()
+  sum_cwm() %>% 
+  ungroup()
