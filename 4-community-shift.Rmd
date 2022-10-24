@@ -14,6 +14,10 @@ output:
     global_numbering: true
 ---
 
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/utils/setup.R")
+```
+
 # Methods
 
 Let us begin with the theory of moment method estimation, which is a generalization of the CTI/CPI approach. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species trait (e.g., optimal temperature) as $T_j$. At the community level, the expected trait (i.e., first moment), which is equivalent to CTI/CPI, is
@@ -30,30 +34,16 @@ $$
 
 A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) = \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
 
-Setup and load packages.
+Show available sampling year for plot by site for experimental and observational data.
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, eval = TRUE)
-exp_file <- "data/community/all-experimental-data.rds"
-obs_file <- "data/community/all-observational-data.rds"
-niche_file <- "data/occurrence/niche-estimates-cfp-2022-09-18.rds"
-```
-
-```{r}
-library(tidyverse)
-library(sf)
-```
-
-Show sampling year for plot by site for experimental and observational data.
-
-```{r}
-read_rds(exp_file) %>%
+```{r data-avail}
+read_rds(.path$com_exp) %>%
   distinct(site, plot, year) %>%
   ggplot(aes(year, plot)) +
   geom_point() +
   facet_wrap(~site, scales = "free")
 
-read_rds(obs_file) %>%
+read_rds(.path$com_obs) %>%
   distinct(site, plot, year) %>%
   ggplot(aes(year, plot)) +
   geom_point() +
@@ -63,7 +53,7 @@ read_rds(obs_file) %>%
 Load niche estimates.
 
 ```{r}
-niche_tbl <- read_rds(niche_file)
+niche_tbl <- read_rds(.path$sum_niche)
 ```
 
 # Experimental data
@@ -71,7 +61,7 @@ niche_tbl <- read_rds(niche_file)
 Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
-exp_tbl <- read_rds(exp_file) %>%
+exp_tbl <- read_rds(.path$com_exp) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -1117,7 +1107,7 @@ exp_tbl %>%
 Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temperature and precipitation, weighted by abundance.
 
 ```{r}
-obs_tbl <- read_rds(obs_file) %>%
+obs_tbl <- read_rds(.path$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
