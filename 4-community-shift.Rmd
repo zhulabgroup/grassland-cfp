@@ -50,29 +50,13 @@ read_rds(.path$com_obs) %>%
   facet_wrap(~site, scales = "free")
 ```
 
-Load niche estimates.
+Calculate CWM using niche estimates for experimental and observational data.
 
 ```{r}
-niche_tbl <- read_rds(.path$sum_niche)
+source("scripts/calculate-cwm.R")
 ```
 
 # Experimental data
-
-Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, treatment, calculate community-averaged temperature and precipitation, weighted by abundance.
-
-```{r}
-exp_tbl <- read_rds(.path$com_exp) %>%
-  inner_join(niche_tbl, by = "species") %>%
-  group_by(site, year, plot, treat) %>%
-  summarize(
-    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
-  )
-```
 
 ## JRGCE 
 
@@ -1104,22 +1088,6 @@ exp_tbl %>%
 
 # Observational data
 
-Load all experimental community data. Join species climate niche estimates with community data, then aggregate by site, year, plot, and calculate community-averaged temperature and precipitation, weighted by abundance.
-
-```{r}
-obs_tbl <- read_rds(.path$com_obs) %>%
-  inner_join(niche_tbl, by = "species") %>%
-  group_by(site, year, plot) %>%
-  summarize(
-    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
-  )
-```
-
 ## Community change
 
 ### CTI ~ year
@@ -1287,7 +1255,7 @@ obs_tbl %>%
   )
 ```
 
-### Climate change
+## Climate change
 
 Observational site climate change over the study period.
 
