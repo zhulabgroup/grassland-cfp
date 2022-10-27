@@ -131,3 +131,47 @@ plot_cwm_mclexp <- function(cwm_tag = "mean_cti", trt_tag = "watering") {
       )
     )
 }
+
+plot_cwm_scide <- function(cwm_tag = "mean_cti") {
+  # wrapper function to plot CWM in SC-IDE Drought Experiment
+  # drought is the only treatment, so no treatment tag
+  # filter data by site
+  scide_tbl <- exp_tbl %>%
+    filter(str_detect(site, "scide"))
+
+  # filter data by response (CWM) tag
+  scide_tbl <- scide_tbl %>%
+    select(site, year, treat,
+      com_idx = switch(cwm_tag,
+        "mean_cti" = "tmp_com_mean",
+        "sd_cti" = "tmp_com_sd",
+        "mean_cpi" = "ppt_com_mean",
+        "sd_cpi" = "ppt_com_sd",
+        "mean_cvi" = "vpd_com_mean",
+        "sd_cvi" = "vpd_com_sd"
+      )
+    )
+
+  # make plot
+  plot_cwm_exp(scide_tbl,
+    cwm_lab = switch(cwm_tag,
+      "mean_cti" = "Mean CTI (°C)",
+      "sd_cti" = "Std dev CTI (°C)",
+      "mean_cpi" = "Mean CPI (mm)",
+      "sd_cpi" = "Std dev CPI (mm)",
+      "mean_cvi" = "Mean CVI (Pa)",
+      "sd_cvi" = "Std dev VPD (Pa)"
+    ),
+    trt_lab = "Drought treatment",
+    trt_col = "red"
+  ) +
+    facet_wrap(~site, # facets by site
+      labeller = as_labeller(
+        c(
+          `scide_arboretum` = "Arboretum",
+          `scide_marshallfield` = "Marshall Field",
+          `scide_ylr` = "Younger Lagoon"
+        )
+      )
+    )
+}
