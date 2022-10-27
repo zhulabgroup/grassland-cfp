@@ -1,5 +1,5 @@
 ---
-title: "Community shift analyses"
+title: "Observational community shift analyses"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console
