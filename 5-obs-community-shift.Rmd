@@ -20,6 +20,16 @@ output:
 
 # Observational data
 
+Show available sampling year for plot by site for observational data.
+
+```{r data-avail}
+read_rds(.path$com_obs) %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+```
+
 ## Community change
 
 ### CTI ~ year
