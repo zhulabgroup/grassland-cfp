@@ -32,9 +32,9 @@ read_rds(.path$com_obs) %>%
   facet_wrap(~site, scales = "free")
 ```
 
-## Community change
+# Community change
 
-### CTI ~ year
+## CTI ~ year
 
 Community temperature niches change over years.
 
@@ -89,7 +89,7 @@ obs_tbl %>%
   )
 ```
 
-### CPI ~ year
+## CPI ~ year
 
 Community precipitation niches change over years.
 
@@ -144,7 +144,7 @@ obs_tbl %>%
   )
 ```
 
-### CVI ~ year
+## CVI ~ year
 
 Community VPDmax niches change over years.
 
@@ -199,7 +199,7 @@ obs_tbl %>%
   )
 ```
 
-## Climate change
+# Climate change
 
 Observational site climate change over the study period.
 
