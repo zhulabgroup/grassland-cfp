@@ -8,10 +8,14 @@ output:
     fig_caption: true
     number_sections: true
     global_numbering: true
+    fig_width: 15
+    fig_height: 15 
   bookdown::word_document2: 
     fig_caption: true
     number_sections: true
     global_numbering: true
+    fig_width: 15
+    fig_height: 15 
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
