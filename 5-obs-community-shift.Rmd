@@ -22,6 +22,8 @@ output:
 source("scripts/utils/setup.R")
 ```
 
+# Community change
+
 Show available sampling year for plot by site for observational data.
 
 ```{r data-avail}
@@ -32,7 +34,17 @@ read_rds(.path$com_obs) %>%
   facet_wrap(~site, scales = "free")
 ```
 
-# Community change
+Calculate CWM using niche estimates for experimental and observational data.
+
+```{r cal-cwm}
+source("scripts/calculate-cwm.R")
+```
+
+Load customized plotting functions.
+
+```{r plot-cwm-obs}
+source("scripts/plot-cwm-obs.R")
+```
 
 ## CTI ~ year
 
