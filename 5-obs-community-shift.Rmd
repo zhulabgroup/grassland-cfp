@@ -18,7 +18,9 @@ output:
     fig_height: 15 
 ---
 
-# Observational data
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/utils/setup.R")
+```
 
 Show available sampling year for plot by site for observational data.
 
