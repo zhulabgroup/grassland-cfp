@@ -1,0 +1,227 @@
+---
+title: "Experimental community shift analyses"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+editor_options: 
+  chunk_output_type: console
+output:
+  bookdown::html_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+  bookdown::word_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/utils/setup.R")
+```
+
+# Methods
+
+Let us begin with the theory of moment method estimation, which is a generalization of the CTI/CPI approach. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species trait (e.g., optimal temperature) as $T_j$. At the community level, the expected trait (i.e., first moment), which is equivalent to CTI/CPI, is
+
+$$
+\mathrm{E}(T_i) = \bar{T_i} = \frac{\sum_j A_{ij}T_j}{\sum_j A_{ij}}.
+$$
+
+Furthermore, the trait variance (i.e., second central moment), using the variance-expectation formula, is
+
+$$
+\mathrm{Var}(T_i) = \mathrm{E}[T_i^2] - \mathrm{E}[T_i]^2 = \frac{\sum_j A_{ij}T_j^2}{\sum_j A_{ij}} - \bar{T_i}^2.
+$$
+
+A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) = \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
+
+Show available sampling year for plot by site for experimental and observational data.
+
+```{r data-avail}
+read_rds(.path$com_exp) %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+
+read_rds(.path$com_obs) %>%
+  distinct(site, plot, year) %>%
+  ggplot(aes(year, plot)) +
+  geom_point() +
+  facet_wrap(~site, scales = "free")
+```
+
+Calculate CWM using niche estimates for experimental and observational data.
+
+```{r cal-cwm}
+source("scripts/calculate-cwm.R")
+```
+
+Load customized plotting functions.
+
+```{r plot-cwm-exp}
+source("scripts/plot-cwm-exp.R")
+```
+
+# JRGCE 
+
+In the following figures, left-right indicates warming-only vs. warming-all treatments. Warming-only treatments have fewer plots; all warming treatments have more plots, which average over all the other precip, CO2, nitrogen treatments. Top-bottom indicates mean or std dev of the community indexes.
+
+## CTI ~ warming treatment
+
+```{r jrgce-cti-warming, fig.cap="Community Temperature Index (CTI) statistics respond to warming treatments}
+plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "tmp_only") +
+  plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "tmp_all") +
+  plot_cwm_jrgce(cwm_tag = "sd_cti", trt_tag = "tmp_only") +
+  plot_cwm_jrgce(cwm_tag = "sd_cti", trt_tag = "tmp_all") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(2, 2)
+```
+
+## CPI ~ warming treatment
+
+```{r jrgce-cpi-warming, fig.cap="Community Precipitation Index (CPI) statistics respond to warming treatments}
+plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "tmp_only") +
+  plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "tmp_all") +
+  plot_cwm_jrgce(cwm_tag = "sd_cpi", trt_tag = "tmp_only") +
+  plot_cwm_jrgce(cwm_tag = "sd_cpi", trt_tag = "tmp_all") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(2, 2)
+```
+
+## CVI ~ warming treatment
+
+```{r jrgce-cvi-warming, fig.cap="Community VPD Index (CVI) statistics respond to warming treatments}
+plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "tmp_only") +
+  plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "tmp_all") +
+  plot_cwm_jrgce(cwm_tag = "sd_cvi", trt_tag = "tmp_only") +
+  plot_cwm_jrgce(cwm_tag = "sd_cvi", trt_tag = "tmp_all") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(2, 2)
+```
+
+## CTI ~ watering treatment
+
+```{r jrgce-cti-watering, fig.cap="Community Temperature Index (CTI) statistics respond to watering treatments}
+plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "ppt_only") +
+  plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "ppt_all") +
+  plot_cwm_jrgce(cwm_tag = "sd_cti", trt_tag = "ppt_only") +
+  plot_cwm_jrgce(cwm_tag = "sd_cti", trt_tag = "ppt_all") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(2, 2)
+```
+
+## CPI ~ watering treatment
+
+```{r jrgce-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics respond to watering treatments}
+plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "ppt_only") +
+  plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "ppt_all") +
+  plot_cwm_jrgce(cwm_tag = "sd_cpi", trt_tag = "ppt_only") +
+  plot_cwm_jrgce(cwm_tag = "sd_cpi", trt_tag = "ppt_all") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(2, 2)
+```
+
+## CVI ~ watering treatment
+
+```{r jrgce-cvi-watering, fig.cap="Community VPD Index (CVI) statistics respond to warming treatments}
+plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "ppt_only") +
+  plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "ppt_all") +
+  plot_cwm_jrgce(cwm_tag = "sd_cvi", trt_tag = "ppt_only") +
+  plot_cwm_jrgce(cwm_tag = "sd_cvi", trt_tag = "ppt_all") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(2, 2)
+```
+
+# McLaughlin Water Experiment
+
+In the following figures, left-right indicates non-serpentine vs. serpentine soil types. Top-bottom indicates mean or std dev of the community indexes.
+
+## CTI ~ watering treatment
+
+```{r mclexp-cti-watering, fig.cap="Community Temperature Index (CTI) statistics respond to watering treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "watering") +
+  plot_cwm_mclexp(cwm_tag = "sd_cti", trt_tag = "watering") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CPI ~ watering treatment
+
+```{r mclexp-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics respond to watering treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "watering") +
+  plot_cwm_mclexp(cwm_tag = "sd_cpi", trt_tag = "watering") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CVI ~ watering treatment
+
+```{r mclexp-cvi-watering, fig.cap="Community VPD Index (CVI) statistics respond to watering treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "watering") +
+  plot_cwm_mclexp(cwm_tag = "sd_cvi", trt_tag = "watering") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CTI ~ drought treatment
+
+```{r mclexp-cti-drought, fig.cap="Community Temperature Index (CTI) statistics respond to drought treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "drought") +
+  plot_cwm_mclexp(cwm_tag = "sd_cti", trt_tag = "drought") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CPI ~ drought treatment
+
+```{r mclexp-cpi-drought, fig.cap="Community Precipitation Index (CPI) statistics respond to drought treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "drought") +
+  plot_cwm_mclexp(cwm_tag = "sd_cpi", trt_tag = "drought") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CVI ~ drought treatment
+
+```{r mclexp-cvi-drought, fig.cap="Community VPD Index (CVI) statistics respond to drought treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "drought") +
+  plot_cwm_mclexp(cwm_tag = "sd_cvi", trt_tag = "drought") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+# Santa Cruz IDE
+
+Michael said Marshall Field has lots of native species, while Arboretum and YLR are highly invaded (2/16/22). That might explain the difference among those sites. 
+
+In the following figures, left-right indicates different sites; top-bottom indicates mean or std dev of the community indexes.
+
+## CTI ~ drought treatment
+
+```{r scide-cti-drought, fig.cap="Community Temperature Index (CTI) statistics respond to drought treatments"}
+plot_cwm_scide(cwm_tag = "mean_cti") +
+  plot_cwm_scide(cwm_tag = "sd_cti") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CPI ~ drought treatment
+
+```{r scide-cpi-drought, fig.cap="Community Precipitation Index (CPI) statistics respond to drought treatments"}
+plot_cwm_scide(cwm_tag = "mean_cpi") +
+  plot_cwm_scide(cwm_tag = "sd_cpi") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+## CVI ~ drought treatment
+```{r scide-cvi-drought, fig.cap="Community VPD Index (CVI) statistics respond to drought treatments"}
+plot_cwm_scide(cwm_tag = "mean_cvi") +
+  plot_cwm_scide(cwm_tag = "sd_cvi") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
+```
+
+```{r clean}
+rm(list = ls())
+```
