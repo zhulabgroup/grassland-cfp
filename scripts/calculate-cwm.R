@@ -13,7 +13,10 @@ sum_cwm <- function(.) {
     ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
     vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
     vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
-  )
+  ) %>% 
+    mutate(tmp_com_sd = sqrt(tmp_com_var),
+           ppt_com_sd = sqrt(ppt_com_var),
+           vpd_com_sd = sqrt(vpd_com_var))
 }
 
 # experimental data and CWM
