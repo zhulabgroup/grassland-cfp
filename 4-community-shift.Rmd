@@ -134,364 +134,60 @@ plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "ppt_only") +
 
 ## McLaughlin Water Experiment
 
+In the following figures, left-right indicates non-serpentine vs. serpentine soil types. Top-bottom indicates mean or std dev of the community indexes.
+
 ### CTI ~ watering treatment
 
-Community temperature niches responding to watering treatments.
-
-Community-level mean CTI in ambient vs. watering plots, in non-serpentine and serpentine soils.
-
-```{r, fig.cap="Compare mean(CTI) in ambient vs. watering treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Temperature Index (CTI, °C)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
-```
-
-Community-level CTI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
-
-```{r, fig.cap="Compare sd(CTI) in ambient vs. watering treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Temperature Index (CTI, °C)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
+```{r mclexp-cti-watering, fig.cap="Community Temperature Index (CTI) statistics responde to watering treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "watering") +
+  plot_cwm_mclexp(cwm_tag = "sd_cti", trt_tag = "watering") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
 ```
 
 ### CPI ~ watering treatment
 
-Community precipitation niches responding to watering treatments.
-
-Community-level mean CPI in ambient vs. watering plots, in non-serpentine and serpentine soils.
-
-```{r, fig.cap="Compare mean(CPI) in ambient vs. watering treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
-```
-
-Community-level CPI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
-
-```{r, fig.cap="Compare sd(CPI) in ambient vs. watering treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
+```{r mclexp-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics responde to watering treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "watering") +
+  plot_cwm_mclexp(cwm_tag = "sd_cpi", trt_tag = "watering") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
 ```
 
 ### CVI ~ watering treatment
 
-Community VPDmax niches responding to watering treatments.
-
-Community-level mean CVI in ambient vs. watering plots, in non-serpentine and serpentine soils.
-
-```{r, fig.cap="Compare mean(CVI) in ambient vs. watering treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
-```
-
-Community-level CVI standard deviation in ambient vs. watering plots, in non-serpentine and serpentine soils.
-
-```{r, fig.cap="Compare sd(CVI) in ambient vs. watering treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("_X", "WX")) %>%
-  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
-    color = "Watering treatment"
-  ) +
-  scale_color_manual(values = c("black", "blue"))
+```{r mclexp-cvi-watering, fig.cap="Community VPD Index (CVI) statistics responde to watering treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "watering") +
+  plot_cwm_mclexp(cwm_tag = "sd_cvi", trt_tag = "watering") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
 ```
 
 ### CTI ~ drought treatment
 
-Community temperature niches responding to drought (shelter) treatments.
-
-Community-level mean CTI in ambient vs. drought plots, in serpentine soil.
-
-```{r, fig.cap="Compare mean(CTI) in ambient vs. drought treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, tmp_com_mean, col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Temperature Index (CTI, °C)",
-    color = "Drought treatment"
-  ) +
-  scale_color_manual(values = c("black", "red"))
-```
-
-Community-level CTI standard deviation in ambient vs. drought plots, in serpentine soil.
-
-```{r, fig.cap="Compare sd(CTI) in ambient vs. drought treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, sqrt(tmp_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Temperature Index (CTI, °C)",
-    color = "Drought treatment"
-  ) +
-  scale_color_manual(values = c("black", "red"))
+```{r mclexp-cti-drought, fig.cap="Community Temperature Index (CTI) statistics responde to drought treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "drought") +
+  plot_cwm_mclexp(cwm_tag = "sd_cti", trt_tag = "drought") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
 ```
 
 ### CPI ~ drought treatment
 
-Community precipitation niches responding to drought (shelter) treatments.
-
-Community-level mean CPI in ambient vs. drought plots, in serpentine soil.
-
-```{r, fig.cap="Compare mean(CPI) in ambient vs. drought treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, ppt_com_mean, col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)",
-    color = "Drought treatment"
-  ) +
-  scale_color_manual(values = c("black", "red"))
-```
-
-Community-level CPI standard deviation in ambient vs. drought plots, in serpentine soil.
-
-```{r, fig.cap="Compare sd(CPI) in ambient vs. drought treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, sqrt(ppt_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)",
-    color = "Drought treatment"
-  ) +
-  scale_color_manual(values = c("black", "red"))
+```{r mclexp-cpi-drought, fig.cap="Community Precipitation Index (CPI) statistics responde to drought treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "drought") +
+  plot_cwm_mclexp(cwm_tag = "sd_cpi", trt_tag = "drought") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
 ```
 
 ### CVI ~ drought treatment
 
-Community VPDmax niches responding to drought (shelter) treatments.
-
-Community-level mean CVI in ambient vs. drought plots, in serpentine soil.
-
-```{r, fig.cap="Compare mean(CVI) in ambient vs. drought treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, vpd_com_mean, col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
-    color = "Drought treatment"
-  ) +
-  scale_color_manual(values = c("black", "red"))
-```
-
-Community-level CVI standard deviation in ambient vs. drought plots, in serpentine soil.
-
-```{r, fig.cap="Compare sd(CVI) in ambient vs. drought treatments over years"}
-exp_tbl %>%
-  filter(site == "mclexp") %>%
-  separate(treat, c("treat", "soil"), sep = 2) %>%
-  mutate(
-    soil = case_when(
-      soil == "S" ~ "Serpentine soil",
-      soil == "N" ~ "Non-serpentine soil"
-    )
-  ) %>%
-  filter(treat %in% c("X_", "XD")) %>%
-  ggplot(aes(year, sqrt(vpd_com_var), col = treat, group = interaction(treat, year))) +
-  geom_boxplot() +
-  ggpubr::stat_compare_means(
-    aes(group = treat),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(~soil) +
-  labs(
-    x = "Year", y = "Community VPDmax Index (CVI, Pa)",
-    color = "Drought treatment"
-  ) +
-  scale_color_manual(values = c("black", "red"))
+```{r mclexp-cvi-drought, fig.cap="Community VPD Index (CVI) statistics responde to drought treatments}
+plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "drought") +
+  plot_cwm_mclexp(cwm_tag = "sd_cvi", trt_tag = "drought") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(1, 2)
 ```
 
 ## Santa Cruz IDE

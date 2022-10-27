@@ -73,3 +73,61 @@ plot_cwm_jrgce <- function(cwm_tag = "mean_cti", trt_tag = "tmp_all") {
       )
   )
 }
+
+plot_cwm_mclexp <- function(cwm_tag = "mean_cti", trt_tag = "watering") {
+  # wrapper function to plot CWM in McLaughlin Water Experiment
+  # filter mclexp data
+  mclexp_tbl <- exp_tbl %>%
+    filter(site == "mclexp") %>%
+    separate(treat, c("treat", "soil"), sep = 2)
+
+  # filter data by treatment tag
+  if (trt_tag == "watering") {
+    mclexp_tbl <- filter(mclexp_tbl, treat %in% c("_X", "WX"))
+  } else if (trt_tag == "drought") {
+    mclexp_tbl <- filter(mclexp_tbl, treat %in% c("X_", "XD"))
+  } else {
+    stop("Unknown treatment tag")
+  }
+
+  # filter data by response (CWM) tag
+  mclexp_tbl <- mclexp_tbl %>%
+    select(year, treat, soil,
+      com_idx = switch(cwm_tag,
+        "mean_cti" = "tmp_com_mean",
+        "sd_cti" = "tmp_com_sd",
+        "mean_cpi" = "ppt_com_mean",
+        "sd_cpi" = "ppt_com_sd",
+        "mean_cvi" = "vpd_com_mean",
+        "sd_cvi" = "vpd_com_sd"
+      )
+    )
+
+  # make plot
+  plot_cwm_exp(mclexp_tbl,
+    cwm_lab = switch(cwm_tag,
+      "mean_cti" = "Mean CTI (°C)",
+      "sd_cti" = "Std dev CTI (°C)",
+      "mean_cpi" = "Mean CPI (mm)",
+      "sd_cpi" = "Std dev CPI (mm)",
+      "mean_cvi" = "Mean CVI (Pa)",
+      "sd_cvi" = "Std dev VPD (Pa)"
+    ),
+    trt_lab = switch(trt_tag,
+      "watering" = "Watering treatment",
+      "drought" = "Drought treatment"
+    ),
+    trt_col = switch(trt_tag,
+      "watering" = "blue",
+      "drought" = "red"
+    )
+  ) +
+    facet_wrap(~soil, # facets by soil type
+      labeller = as_labeller(
+        c(
+          `S` = "Serpentine soil",
+          `N` = "Non-serpentine soil"
+        )
+      )
+    )
+}
