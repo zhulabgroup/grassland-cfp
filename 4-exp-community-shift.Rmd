@@ -34,16 +34,10 @@ $$
 
 A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) = \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
 
-Show available sampling year for plot by site for experimental and observational data.
+Show available sampling year for plot by site for experimental data.
 
 ```{r data-avail}
 read_rds(.path$com_exp) %>%
-  distinct(site, plot, year) %>%
-  ggplot(aes(year, plot)) +
-  geom_point() +
-  facet_wrap(~site, scales = "free")
-
-read_rds(.path$com_obs) %>%
   distinct(site, plot, year) %>%
   ggplot(aes(year, plot)) +
   geom_point() +
@@ -68,7 +62,7 @@ In the following figures, left-right indicates warming-only vs. warming-all trea
 
 ## CTI ~ warming treatment
 
-```{r jrgce-cti-warming, fig.cap="Community Temperature Index (CTI) statistics respond to warming treatments}
+```{r jrgce-cti-warming, fig.cap="Community Temperature Index (CTI) statistics respond to warming treatments"}
 plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "tmp_only") +
   plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "tmp_all") +
   plot_cwm_jrgce(cwm_tag = "sd_cti", trt_tag = "tmp_only") +
@@ -79,7 +73,7 @@ plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "tmp_only") +
 
 ## CPI ~ warming treatment
 
-```{r jrgce-cpi-warming, fig.cap="Community Precipitation Index (CPI) statistics respond to warming treatments}
+```{r jrgce-cpi-warming, fig.cap="Community Precipitation Index (CPI) statistics respond to warming treatments"}
 plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "tmp_only") +
   plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "tmp_all") +
   plot_cwm_jrgce(cwm_tag = "sd_cpi", trt_tag = "tmp_only") +
@@ -90,7 +84,7 @@ plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "tmp_only") +
 
 ## CVI ~ warming treatment
 
-```{r jrgce-cvi-warming, fig.cap="Community VPD Index (CVI) statistics respond to warming treatments}
+```{r jrgce-cvi-warming, fig.cap="Community VPD Index (CVI) statistics respond to warming treatments"}
 plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "tmp_only") +
   plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "tmp_all") +
   plot_cwm_jrgce(cwm_tag = "sd_cvi", trt_tag = "tmp_only") +
@@ -101,7 +95,7 @@ plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "tmp_only") +
 
 ## CTI ~ watering treatment
 
-```{r jrgce-cti-watering, fig.cap="Community Temperature Index (CTI) statistics respond to watering treatments}
+```{r jrgce-cti-watering, fig.cap="Community Temperature Index (CTI) statistics respond to watering treatments"}
 plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "ppt_only") +
   plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "ppt_all") +
   plot_cwm_jrgce(cwm_tag = "sd_cti", trt_tag = "ppt_only") +
@@ -112,7 +106,7 @@ plot_cwm_jrgce(cwm_tag = "mean_cti", trt_tag = "ppt_only") +
 
 ## CPI ~ watering treatment
 
-```{r jrgce-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics respond to watering treatments}
+```{r jrgce-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics respond to watering treatments"}
 plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "ppt_only") +
   plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "ppt_all") +
   plot_cwm_jrgce(cwm_tag = "sd_cpi", trt_tag = "ppt_only") +
@@ -123,7 +117,7 @@ plot_cwm_jrgce(cwm_tag = "mean_cpi", trt_tag = "ppt_only") +
 
 ## CVI ~ watering treatment
 
-```{r jrgce-cvi-watering, fig.cap="Community VPD Index (CVI) statistics respond to warming treatments}
+```{r jrgce-cvi-watering, fig.cap="Community VPD Index (CVI) statistics respond to warming treatments"}
 plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "ppt_only") +
   plot_cwm_jrgce(cwm_tag = "mean_cvi", trt_tag = "ppt_all") +
   plot_cwm_jrgce(cwm_tag = "sd_cvi", trt_tag = "ppt_only") +
@@ -138,7 +132,7 @@ In the following figures, left-right indicates non-serpentine vs. serpentine soi
 
 ## CTI ~ watering treatment
 
-```{r mclexp-cti-watering, fig.cap="Community Temperature Index (CTI) statistics respond to watering treatments}
+```{r mclexp-cti-watering, fig.cap="Community Temperature Index (CTI) statistics respond to watering treatments"}
 plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "watering") +
   plot_cwm_mclexp(cwm_tag = "sd_cti", trt_tag = "watering") +
   plot_annotation(tag_levels = "A") +
@@ -147,7 +141,7 @@ plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "watering") +
 
 ## CPI ~ watering treatment
 
-```{r mclexp-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics respond to watering treatments}
+```{r mclexp-cpi-watering, fig.cap="Community Precipitation Index (CPI) statistics respond to watering treatments"}
 plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "watering") +
   plot_cwm_mclexp(cwm_tag = "sd_cpi", trt_tag = "watering") +
   plot_annotation(tag_levels = "A") +
@@ -156,7 +150,7 @@ plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "watering") +
 
 ## CVI ~ watering treatment
 
-```{r mclexp-cvi-watering, fig.cap="Community VPD Index (CVI) statistics respond to watering treatments}
+```{r mclexp-cvi-watering, fig.cap="Community VPD Index (CVI) statistics respond to watering treatments"}
 plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "watering") +
   plot_cwm_mclexp(cwm_tag = "sd_cvi", trt_tag = "watering") +
   plot_annotation(tag_levels = "A") +
@@ -165,7 +159,7 @@ plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "watering") +
 
 ## CTI ~ drought treatment
 
-```{r mclexp-cti-drought, fig.cap="Community Temperature Index (CTI) statistics respond to drought treatments}
+```{r mclexp-cti-drought, fig.cap="Community Temperature Index (CTI) statistics respond to drought treatments"}
 plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "drought") +
   plot_cwm_mclexp(cwm_tag = "sd_cti", trt_tag = "drought") +
   plot_annotation(tag_levels = "A") +
@@ -174,7 +168,7 @@ plot_cwm_mclexp(cwm_tag = "mean_cti", trt_tag = "drought") +
 
 ## CPI ~ drought treatment
 
-```{r mclexp-cpi-drought, fig.cap="Community Precipitation Index (CPI) statistics respond to drought treatments}
+```{r mclexp-cpi-drought, fig.cap="Community Precipitation Index (CPI) statistics respond to drought treatments"}
 plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "drought") +
   plot_cwm_mclexp(cwm_tag = "sd_cpi", trt_tag = "drought") +
   plot_annotation(tag_levels = "A") +
@@ -183,7 +177,7 @@ plot_cwm_mclexp(cwm_tag = "mean_cpi", trt_tag = "drought") +
 
 ## CVI ~ drought treatment
 
-```{r mclexp-cvi-drought, fig.cap="Community VPD Index (CVI) statistics respond to drought treatments}
+```{r mclexp-cvi-drought, fig.cap="Community VPD Index (CVI) statistics respond to drought treatments"}
 plot_cwm_mclexp(cwm_tag = "mean_cvi", trt_tag = "drought") +
   plot_cwm_mclexp(cwm_tag = "sd_cvi", trt_tag = "drought") +
   plot_annotation(tag_levels = "A") +
