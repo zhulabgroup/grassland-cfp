@@ -52,53 +52,14 @@ Community temperature niches change over years.
 
 CTI community-level mean in several sites increases over years, suggesting communities are becoming "warmer," i.e., thermophilization.
 
-```{r, fig.cap="Compare mean(CTI) across sites over years"}
-obs_tbl %>%
-  select(site, year, plot, com_idx = tmp_com_mean) %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate( # lm and p value
-    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
-      map_dbl(~ broom::glance(.) %>% pull(p.value))
-  ) %>%
-  unnest(cols = data) %>%
-  ggplot(aes(year, com_idx)) +
-  geom_boxplot(aes(group = year)) +
-  geom_smooth( # add lm trend line when significant
-    data = . %>% filter(p_val < 0.05),
-    method = "lm", se = FALSE,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Community Temperature Index (CTI, °C)"
-  )
+```{r obs-mean-cti, fig.cap="Compare mean(CTI) across sites over years"}
+plot_cwm_obs("mean_cti")
 ```
 
 CTI community-level standard deviation.
 
-```{r, fig.cap="Compare sd(CTI) across sites over years"}
-obs_tbl %>%
-  mutate(com_idx = sqrt(tmp_com_var)) %>%
-  select(site, year, plot, com_idx) %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate( # lm and p value
-    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
-      map_dbl(~ broom::glance(.) %>% pull(p.value))
-  ) %>%
-  unnest(cols = data) %>%
-  ggplot(aes(year, com_idx)) +
-  geom_boxplot(aes(group = year)) +
-  geom_smooth( # add lm trend line when significant
-    data = . %>% filter(p_val < 0.05),
-    method = "lm", se = FALSE,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Community Temperature Index (CTI, °C)"
-  )
+```{r obs-sd-cti, fig.cap="Compare sd(CTI) across sites over years"}
+plot_cwm_obs("sd_cti")
 ```
 
 ## CPI ~ year
@@ -107,53 +68,14 @@ Community precipitation niches change over years.
 
 CPI community-level mean in several sites decreases over years, suggesting communities are becoming "drier," i.e., mesophilization.
 
-```{r, fig.cap="Compare mean(CPI) across sites over years"}
-obs_tbl %>%
-  select(site, year, plot, com_idx = ppt_com_mean) %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate( # lm and p value
-    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
-      map_dbl(~ broom::glance(.) %>% pull(p.value))
-  ) %>%
-  unnest(cols = data) %>%
-  ggplot(aes(year, com_idx)) +
-  geom_boxplot(aes(group = year)) +
-  geom_smooth( # add lm trend line when significant
-    data = . %>% filter(p_val < 0.05),
-    method = "lm", se = FALSE,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)"
-  )
+```{r obs-mean-cpi, fig.cap="Compare mean(CPI) across sites over years"}
+plot_cwm_obs("mean_cpi")
 ```
 
 CPI community-level standard deviation.
 
-```{r, fig.cap="Compare sd(CPI) across sites over years"}
-obs_tbl %>%
-  mutate(com_idx = sqrt(ppt_com_var)) %>%
-  select(site, year, plot, com_idx) %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate( # lm and p value
-    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
-      map_dbl(~ broom::glance(.) %>% pull(p.value))
-  ) %>%
-  unnest(cols = data) %>%
-  ggplot(aes(year, com_idx)) +
-  geom_boxplot(aes(group = year)) +
-  geom_smooth( # add lm trend line when significant
-    data = . %>% filter(p_val < 0.05),
-    method = "lm", se = FALSE,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Community Precipitation Index (CPI, mm)"
-  )
+```{r obs-sd-cpi, fig.cap="Compare sd(CPI) across sites over years"}
+plot_cwm_obs("sd_cpi")
 ```
 
 ## CVI ~ year
@@ -162,53 +84,14 @@ Community VPDmax niches change over years.
 
 CVI community-level mean in several sites changes over years, but no clear direction.
 
-```{r, fig.cap="Compare mean(CVI) across sites over years"}
-obs_tbl %>%
-  select(site, year, plot, com_idx = vpd_com_mean) %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate( # lm and p value
-    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
-      map_dbl(~ broom::glance(.) %>% pull(p.value))
-  ) %>%
-  unnest(cols = data) %>%
-  ggplot(aes(year, com_idx)) +
-  geom_boxplot(aes(group = year)) +
-  geom_smooth( # add lm trend line when significant
-    data = . %>% filter(p_val < 0.05),
-    method = "lm", se = FALSE,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Community VPDmax Index (CVI, Pa)"
-  )
+```{r obs-mean-cvi, fig.cap="Compare mean(CVI) across sites over years"}
+plot_cwm_obs("mean_cvi")
 ```
 
 CVI community-level standard deviation.
 
-```{r, fig.cap="Compare sd(CVI) across sites over years"}
-obs_tbl %>%
-  mutate(com_idx = sqrt(vpd_com_var)) %>%
-  select(site, year, plot, com_idx) %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate( # lm and p value
-    p_val = map(data, ~ lm(com_idx ~ year, data = .)) %>%
-      map_dbl(~ broom::glance(.) %>% pull(p.value))
-  ) %>%
-  unnest(cols = data) %>%
-  ggplot(aes(year, com_idx)) +
-  geom_boxplot(aes(group = year)) +
-  geom_smooth( # add lm trend line when significant
-    data = . %>% filter(p_val < 0.05),
-    method = "lm", se = FALSE,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Community VPDmax Index (CVI, Pa)"
-  )
+```{r obs-sd-cvi, fig.cap="Compare sd(CVI) across sites over years"}
+plot_cwm_obs("sd_cvi")
 ```
 
 # Climate change
