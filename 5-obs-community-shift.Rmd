@@ -231,7 +231,6 @@ site_clim_tbl %>%
 
 Remove intermediate objects.
 
-```{r}
-rm(site_clim_tbl, site_ppt_tbl, site_tbl, site_tmp_tbl, site_vpd_tbl)
-rm(exp_file, exp_tbl, niche_file, niche_tbl, obs_file, obs_tbl)
+```{r clean}
+rm(list = ls())
 ```
