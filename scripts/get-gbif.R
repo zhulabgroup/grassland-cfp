@@ -48,7 +48,7 @@ gbif_cfp_tbl <- gbif_box_tbl %>%
 
 # filter coords and consolidate species
 gbif_cfp_tbl %>%
-  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
+  # filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
   filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
   filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
@@ -61,4 +61,5 @@ gbif_cfp_tbl %>%
         consolidatedName
       )
   ) %>%
+  distinct() %>% # remove duplicated data entries
   write_rds(.path$occ_gbif)
