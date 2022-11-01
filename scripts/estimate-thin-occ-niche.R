@@ -10,7 +10,7 @@ occ_clim_sf <- read_rds(.path$cli_all_gbif) %>%
 occ_clim_tbl <- sf::st_coordinates(occ_clim_sf) %>%
   as_tibble() %>%
   bind_cols(occ_clim_sf) %>%
-  select(lat = Y, lon = X, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt)
+  select(lat = Y, lon = X, key, species, tmp = terraclim_tmp, ppt = terraclim_ppt)
 
 # species climate summary for full dataset
 sp_sum_tbl <- occ_clim_tbl %>%
