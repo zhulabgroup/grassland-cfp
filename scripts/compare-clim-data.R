@@ -37,10 +37,6 @@ clim_long_tbl <- bind_rows(
     mutate(compare = "prism-terraclim")
 )
 
-# temporarily remove CHELSA--need to debug
-clim_long_tbl <- clim_long_tbl %>% 
-  filter(compare == "prism-terraclim")
-
 tmp_gg <- ggplot(clim_long_tbl, aes(tmp1, tmp2)) +
   geom_hex(bins = 100) +
   viridis::scale_fill_viridis() +

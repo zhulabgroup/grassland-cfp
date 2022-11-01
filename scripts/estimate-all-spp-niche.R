@@ -1,7 +1,7 @@
 # estimate/summarize all species niches
 # temp using terraclim
 niche_tbl <- read_rds(.path$cli_all_gbif) %>%
-  select(key, species, tmp = terraclim_tmp, ppt = terraclim_ppt, vpd = terraclim_vpd) %>%
+  select(key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   group_by(species) %>%
   summarize(
     occ_n = n(),
