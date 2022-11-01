@@ -2,21 +2,15 @@
 thin_tbl <- read_rds(.path$sum_thin)
 
 thin_tmp_gg <- thin_tbl %>%
-  select(
-    tmp_mean_full, tmp_mean_thin,
-    tmp_median_full, tmp_median_thin
-  ) %>%
+  select(full_mean_tmp, thin_mean_tmp) %>%
   GGally::ggpairs(
-    title = "Species temperature niche (°C)",
-    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+    title = "Species occurrence mean temperature (°C)",
+    columnLabels = c("Full data", "Thinned data")
   )
 
 thin_ppt_gg <- thin_tbl %>%
-  select(
-    ppt_mean_full, ppt_mean_thin,
-    ppt_median_full, ppt_median_thin
-  ) %>%
+  select(full_mean_ppt, thin_mean_ppt) %>%
   GGally::ggpairs(
-    title = "Species precipitation niche (mm)",
-    columnLabels = c("Full mean", "Thinned mean", "Full median", "Thinned median")
+    title = "Species occurrence mean precipitation (mm)",
+    columnLabels = c("Full data", "Thinned data")
   )
