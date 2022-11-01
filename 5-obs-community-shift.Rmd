@@ -94,143 +94,143 @@ CVI community-level standard deviation.
 plot_cwm_obs("sd_cvi")
 ```
 
-# Climate change
+<!-- # Climate change -->
 
-Observational site climate change over the study period.
+<!-- Observational site climate change over the study period. -->
 
-```{r}
-site_tbl <- read_rds("data/community/site-info.rds")
-```
+<!-- ```{r} -->
+<!-- site_tbl <- read_rds("data/community/site-info.rds") -->
+<!-- ``` -->
 
-Download PRISM data (to be updated with Chelsa). Set PRISM dir first.
+<!-- Download PRISM data (to be updated with Chelsa). Set PRISM dir first. -->
 
-```{r}
-prism::prism_set_dl_dir("data/climate/prism/")
-```
+<!-- ```{r} -->
+<!-- prism::prism_set_dl_dir("data/climate/prism/") -->
+<!-- ``` -->
 
-Download (not run, only once).
+<!-- Download (not run, only once). -->
 
-```{r, eval=FALSE}
-range(exp_tbl$year) # 1998:2021
-range(obs_tbl$year) # 1983:2019
-prism::get_prism_annual("tmean", years = 1983:2021, keepZip = FALSE)
-prism::get_prism_annual("ppt", years = 1983:2021, keepZip = FALSE)
-prism::get_prism_annual("vpdmax", years = 1983:2021, keepZip = FALSE)
-```
+<!-- ```{r, eval=FALSE} -->
+<!-- range(exp_tbl$year) # 1998:2021 -->
+<!-- range(obs_tbl$year) # 1983:2019 -->
+<!-- prism::get_prism_annual("tmean", years = 1983:2021, keepZip = FALSE) -->
+<!-- prism::get_prism_annual("ppt", years = 1983:2021, keepZip = FALSE) -->
+<!-- prism::get_prism_annual("vpdmax", years = 1983:2021, keepZip = FALSE) -->
+<!-- ``` -->
 
-Extract site climate from PRISM.
+<!-- Extract site climate from PRISM. -->
 
-```{r}
-site_tmp_tbl <- prism::prism_archive_subset(
-  "tmean", "annual",
-  years = 1983:2020
-) %>%
-  prism::pd_stack() %>%
-  raster::extract(site_tbl) %>%
-  bind_cols(site = site_tbl$abbr, .) %>%
-  pivot_longer(-site, names_to = "year", values_to = "tmp") %>%
-  mutate(year = year %>%
-    str_sub(start = -8L, end = -5L) %>%
-    as.integer())
+<!-- ```{r} -->
+<!-- site_tmp_tbl <- prism::prism_archive_subset( -->
+<!--   "tmean", "annual", -->
+<!--   years = 1983:2020 -->
+<!-- ) %>% -->
+<!--   prism::pd_stack() %>% -->
+<!--   raster::extract(site_tbl) %>% -->
+<!--   bind_cols(site = site_tbl$abbr, .) %>% -->
+<!--   pivot_longer(-site, names_to = "year", values_to = "tmp") %>% -->
+<!--   mutate(year = year %>% -->
+<!--     str_sub(start = -8L, end = -5L) %>% -->
+<!--     as.integer()) -->
 
-site_ppt_tbl <- prism::prism_archive_subset(
-  "ppt", "annual",
-  years = 1983:2020
-) %>%
-  prism::pd_stack() %>%
-  raster::extract(site_tbl) %>%
-  bind_cols(site = site_tbl$abbr, .) %>%
-  pivot_longer(-site, names_to = "year", values_to = "ppt") %>%
-  mutate(year = year %>%
-    str_sub(start = -8L, end = -5L) %>%
-    as.integer())
+<!-- site_ppt_tbl <- prism::prism_archive_subset( -->
+<!--   "ppt", "annual", -->
+<!--   years = 1983:2020 -->
+<!-- ) %>% -->
+<!--   prism::pd_stack() %>% -->
+<!--   raster::extract(site_tbl) %>% -->
+<!--   bind_cols(site = site_tbl$abbr, .) %>% -->
+<!--   pivot_longer(-site, names_to = "year", values_to = "ppt") %>% -->
+<!--   mutate(year = year %>% -->
+<!--     str_sub(start = -8L, end = -5L) %>% -->
+<!--     as.integer()) -->
 
-site_vpd_tbl <- prism::prism_archive_subset(
-  "vpdmax", "annual",
-  years = 1983:2020
-) %>%
-  prism::pd_stack() %>%
-  raster::extract(site_tbl) %>%
-  bind_cols(site = site_tbl$abbr, .) %>%
-  pivot_longer(-site, names_to = "year", values_to = "vpd") %>%
-  mutate(year = year %>%
-    str_sub(start = -8L, end = -5L) %>%
-    as.integer())
-```
+<!-- site_vpd_tbl <- prism::prism_archive_subset( -->
+<!--   "vpdmax", "annual", -->
+<!--   years = 1983:2020 -->
+<!-- ) %>% -->
+<!--   prism::pd_stack() %>% -->
+<!--   raster::extract(site_tbl) %>% -->
+<!--   bind_cols(site = site_tbl$abbr, .) %>% -->
+<!--   pivot_longer(-site, names_to = "year", values_to = "vpd") %>% -->
+<!--   mutate(year = year %>% -->
+<!--     str_sub(start = -8L, end = -5L) %>% -->
+<!--     as.integer()) -->
+<!-- ``` -->
 
-Assemble site climate data.
+<!-- Assemble site climate data. -->
 
-```{r}
-site_clim_tbl <- site_tmp_tbl %>%
-  full_join(site_ppt_tbl, by = c("site", "year")) %>%
-  full_join(site_vpd_tbl, by = c("site", "year")) %>%
-  right_join(obs_tbl %>%
-    distinct(site, year), by = c("site", "year")) %>%
-  arrange(site, year)
-```
+<!-- ```{r} -->
+<!-- site_clim_tbl <- site_tmp_tbl %>% -->
+<!--   full_join(site_ppt_tbl, by = c("site", "year")) %>% -->
+<!--   full_join(site_vpd_tbl, by = c("site", "year")) %>% -->
+<!--   right_join(obs_tbl %>% -->
+<!--     distinct(site, year), by = c("site", "year")) %>% -->
+<!--   arrange(site, year) -->
+<!-- ``` -->
 
-Plot temperature change.
+<!-- Plot temperature change. -->
 
-```{r, fig.cap="Observational site temperature change across years"}
-site_clim_tbl %>%
-  ggplot(aes(year, tmp)) +
-  geom_point() +
-  geom_smooth(
-    method = "lm", se = FALSE,
-    color = "red", lty = "dashed"
-  ) +
-  ggpubr::stat_cor(aes(label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Mean annual temperature (°C)"
-  )
-```
+<!-- ```{r, fig.cap="Observational site temperature change across years"} -->
+<!-- site_clim_tbl %>% -->
+<!--   ggplot(aes(year, tmp)) + -->
+<!--   geom_point() + -->
+<!--   geom_smooth( -->
+<!--     method = "lm", se = FALSE, -->
+<!--     color = "red", lty = "dashed" -->
+<!--   ) + -->
+<!--   ggpubr::stat_cor(aes(label = ..p.label..), -->
+<!--     p.accuracy = 0.05, -->
+<!--     color = "red" -->
+<!--   ) + -->
+<!--   facet_wrap(~site, scales = "free_y") + -->
+<!--   labs( -->
+<!--     x = "Year", y = "Mean annual temperature (°C)" -->
+<!--   ) -->
+<!-- ``` -->
 
-Plot precipitation change.
+<!-- Plot precipitation change. -->
 
-```{r, fig.cap="Observational site precipitation change across years"}
-site_clim_tbl %>%
-  ggplot(aes(year, ppt)) +
-  geom_point() +
-  geom_smooth(
-    method = "lm", se = FALSE,
-    color = "red", lty = "dashed"
-  ) +
-  ggpubr::stat_cor(aes(label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Mean annual precipitation (mm)"
-  )
-```
+<!-- ```{r, fig.cap="Observational site precipitation change across years"} -->
+<!-- site_clim_tbl %>% -->
+<!--   ggplot(aes(year, ppt)) + -->
+<!--   geom_point() + -->
+<!--   geom_smooth( -->
+<!--     method = "lm", se = FALSE, -->
+<!--     color = "red", lty = "dashed" -->
+<!--   ) + -->
+<!--   ggpubr::stat_cor(aes(label = ..p.label..), -->
+<!--     p.accuracy = 0.05, -->
+<!--     color = "red" -->
+<!--   ) + -->
+<!--   facet_wrap(~site, scales = "free_y") + -->
+<!--   labs( -->
+<!--     x = "Year", y = "Mean annual precipitation (mm)" -->
+<!--   ) -->
+<!-- ``` -->
 
-Plot VPDmax change.
+<!-- Plot VPDmax change. -->
 
-```{r, fig.cap="Observational site VPDmax change across years"}
-site_clim_tbl %>%
-  ggplot(aes(year, vpd)) +
-  geom_point() +
-  geom_smooth(
-    method = "lm", se = FALSE,
-    color = "red", lty = "dashed"
-  ) +
-  ggpubr::stat_cor(aes(label = ..p.label..),
-    p.accuracy = 0.05,
-    color = "red"
-  ) +
-  facet_wrap(~site, scales = "free_y") +
-  labs(
-    x = "Year", y = "Mean VPDmax (hPa)"
-  )
-```
+<!-- ```{r, fig.cap="Observational site VPDmax change across years"} -->
+<!-- site_clim_tbl %>% -->
+<!--   ggplot(aes(year, vpd)) + -->
+<!--   geom_point() + -->
+<!--   geom_smooth( -->
+<!--     method = "lm", se = FALSE, -->
+<!--     color = "red", lty = "dashed" -->
+<!--   ) + -->
+<!--   ggpubr::stat_cor(aes(label = ..p.label..), -->
+<!--     p.accuracy = 0.05, -->
+<!--     color = "red" -->
+<!--   ) + -->
+<!--   facet_wrap(~site, scales = "free_y") + -->
+<!--   labs( -->
+<!--     x = "Year", y = "Mean VPDmax (hPa)" -->
+<!--   ) -->
+<!-- ``` -->
 
-Remove intermediate objects.
+<!-- Remove intermediate objects. -->
 
-```{r clean}
-rm(list = ls())
-```
+<!-- ```{r clean} -->
+<!-- rm(list = ls()) -->
+<!-- ``` -->
