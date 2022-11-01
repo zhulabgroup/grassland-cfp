@@ -1,40 +1,16 @@
 # (re)estimate niche by thinning occurrence
 # spThin package
-# run time = 22 min
+# run time = 8 min
 
 # source("scripts/utils/setup.R")
 
-occ_clim_sf <- read_rds(.path$cli_all_gbif) %>%
-  sf::st_as_sf()
+thin_occ <- function(full_tbl) {
+  # define function to use spThin to sample and return data frame
 
-occ_clim_tbl <- sf::st_coordinates(occ_clim_sf) %>%
-  as_tibble() %>%
-  bind_cols(occ_clim_sf) %>%
-  select(lat = Y, lon = X, key, species, tmp = terraclim_tmp, ppt = terraclim_ppt)
+  full_tbl <- tibble(species = "dummy", full_tbl) # create dummy species for spThin function
 
-# species climate summary for full dataset
-sp_sum_tbl <- occ_clim_tbl %>%
-  group_by(species) %>%
-  summarize(
-    tmp_mean_full = mean(tmp), ppt_mean_full = mean(ppt),
-    tmp_median_full = median(tmp), ppt_median_full = median(ppt)
-  ) %>%
-  arrange(species)
-
-sp_thin_tbl <- tibble()
-
-set.seed(31416)
-
-for (i in seq_along(sp_sum_tbl$species)) {
-  # subset species
-  sp <- sp_sum_tbl$species[i]
-  print(sp)
-  loc_full_tbl <- occ_clim_tbl %>%
-    filter(species == sp)
-
-  # thin data
-  loc_thin_ls <- spThin::thin(
-    loc.data = loc_full_tbl,
+  thin_ls <- spThin::thin(
+    loc.data = full_tbl,
     lat.col = "lat",
     long.col = "lon",
     spec.col = "species",
@@ -45,16 +21,44 @@ for (i in seq_along(sp_sum_tbl$species)) {
     write.log.file = FALSE
   )
 
-  # summarize climate
-  sp_thin_tbl <- loc_full_tbl[row.names(loc_thin_ls[[1]]), ] %>%
-    summarize(
-      tmp_mean_thin = mean(tmp), ppt_mean_thin = mean(ppt),
-      tmp_median_thin = median(tmp), ppt_median_thin = median(ppt)
-    ) %>%
-    bind_cols(species = sp, .) %>%
-    bind_rows(sp_thin_tbl, .)
+  thin_tbl <- thin_ls[[1]] %>%
+    rownames() %>%
+    as.numeric() %>%
+    slice(full_tbl, .) %>%
+    select(-species)
 }
 
-sp_sum_tbl %>%
-  full_join(sp_thin_tbl, by = "species") %>%
+set.seed(31416)
+
+# resample full to thin data
+occ_clim_tbl <- read_rds(.path$cli_all_gbif) %>%
+  # slice(1:1e4) %>% # DEBUG
+  mutate(
+    lon = unlist(map(.$geometry, 1)),
+    lat = unlist(map(.$geometry, 2))
+  ) %>%
+  select(lon, lat, species, tmp = terraclim_tmp, ppt = terraclim_ppt) %>%
+  distinct() %>% # remove duplicated records
+  group_by(species) %>%
+  nest() %>%
+  rename(full_data = data) %>%
+  mutate(thin_data = map(full_data, thin_occ))
+
+# summary stats
+sum_full_tbl <- occ_clim_tbl %>%
+  unnest(cols = full_data) %>%
+  summarize(
+    full_mean_tmp = mean(tmp, na.rm = TRUE),
+    full_mean_ppt = mean(ppt, na.rm = TRUE)
+  )
+
+sum_thin_tbl <- occ_clim_tbl %>%
+  unnest(cols = thin_data) %>%
+  summarize(
+    thin_mean_tmp = mean(tmp, na.rm = TRUE),
+    thin_mean_ppt = mean(ppt, na.rm = TRUE)
+  )
+
+sum_full_tbl %>%
+  full_join(sum_thin_tbl) %>%
   write_rds(.path$sum_thin)
