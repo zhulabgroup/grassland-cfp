@@ -1,7 +1,8 @@
 # load packages
-library(tidyverse)
-library(sf)
-library(patchwork)
+if (!require("pacman")) {
+  install.packages("pacman")
+}
+pacman::p_load(tidyverse, sf, patchwork)
 
 # set parameters
 theme_set(ggthemes::theme_few())
@@ -18,21 +19,31 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 }
 
 # data path tags are
+# - `cli`: climate data
 # - `com`: grassland community data
 # - `geo`: geography data, including GIS and climate
 # - `occ`: occurrence data
 # - `sum`: summary data, e.g., niche estimates
 .path <- list( # hidden variable won't be removed
+  cli_all_gbif = "data/climate/all/climate-gbif-2022-11-01.rds",
+  cli_chelsa = "data/climate/chelsa/2022-10-21/",
+  cli_chelsa_monthly = "data/climate/chelsa_monthly/",
+  cli_prism = "data/climate/prism/2022-10-03/",
+  cli_terraclimate = "data/climate/terraclimate/2022-10-03/",
   com_exp = "data/community/all-experimental-data.rds",
   com_obs = "data/community/all-observational-data.rds",
+  com_raw = "data/community/raw/",
+  com_spp = "data/community/species/",
+  com_tidy = "data/community/tidy/",
   geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
-  geo_clim = "data/climate/all/climate-gbif-2022-10-03.rds",
+  geo_clim = "data/climate/climate-gbif-2022-09-18.rds",
   geo_grass = "data/occurrence/grassland/",
   geo_site = "data/community/site-info.rds",
   occ_bien = "data/occurrence/bien/bien-cfp-2022-04-27.rds",
   occ_cch = "data/occurrence/cch/cch-cfp-2022-10-03.rds",
-  occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-10-03.rds",
-  occ_inat = "data/occurrence/inat/inat-cfp-2022-10-03.rds",
-  sum_niche = "data/occurrence/niche-estimates-cfp-2022-10-03.rds",
-  sum_thin = "data/occurrence/niche-estimates-cfp-2022-09-18-thin.rds"
+  occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-11-01.rds",
+  occ_inat = "data/occurrence/inat/inat-cfp-2022-11-01.rds",
+  sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
+  sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
+  sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds"
 )
