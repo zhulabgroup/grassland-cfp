@@ -43,7 +43,7 @@ samp_size_tbl <- obs_tbl %>%
   )
 
 # define plotting function
-obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
+plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
   # prepare site data
   site_lab <- site_vec[site_name]
   site_tbl <- tbl %>%
@@ -86,18 +86,18 @@ obs_gg_fun <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL
 
 # apply plotting function, make individual panels, combine
 obs_gg <-
-  obs_gg_fun(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-  obs_gg_fun(obs_idx_tbl, "carrizo") +
-  obs_gg_fun(obs_idx_tbl, "elkhorn") +
-  obs_gg_fun(obs_idx_tbl, "jasper") +
-  obs_gg_fun(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-  obs_gg_fun(obs_idx_tbl, "mclserp") +
-  obs_gg_fun(obs_idx_tbl, "morganterritory") +
-  obs_gg_fun(obs_idx_tbl, "pleasantonridge") +
-  obs_gg_fun(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-  obs_gg_fun(obs_idx_tbl, "swanton") +
-  obs_gg_fun(obs_idx_tbl, "ucsc") +
-  obs_gg_fun(obs_idx_tbl, "vascocaves") +
+  plot_cwm(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  plot_cwm(obs_idx_tbl, "carrizo") +
+  plot_cwm(obs_idx_tbl, "elkhorn") +
+  plot_cwm(obs_idx_tbl, "jasper") +
+  plot_cwm(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  plot_cwm(obs_idx_tbl, "mclserp") +
+  plot_cwm(obs_idx_tbl, "morganterritory") +
+  plot_cwm(obs_idx_tbl, "pleasantonridge") +
+  plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
+  plot_cwm(obs_idx_tbl, "swanton") +
+  plot_cwm(obs_idx_tbl, "ucsc") +
+  plot_cwm(obs_idx_tbl, "vascocaves") +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
   ABCD
