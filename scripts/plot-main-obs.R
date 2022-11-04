@@ -6,8 +6,8 @@ obs_tbl <- read_rds(.path$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
   summarize(
-    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
+    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund)
   )
 
 # setup site labels

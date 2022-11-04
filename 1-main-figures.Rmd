@@ -26,7 +26,7 @@ knitr::opts_chunk$set(eval = !text_only) # override eval if text only
 source("scripts/plot-main-niche.R")
 ```
 
-We estimated species' climate niches from the GBIF occurrence data and CHELSA climate data in the California Floristic Province (CFP). In brief, we extracted the mean annual temperature and precipitation for each of the `r ifelse(text_only, "TBD", n_spp)` species with more than 100 occurrences at each of the `r ifelse(text_only, "TBD", n_occ)` locations. For each species, we then calculated the average temperature and precipitation across all locations as its climate niche centroids. We visualized all the species in both the geographical space (longitude and latitude) and climate space (temperature and precipitation).
+We estimated species' climate niches from the GBIF occurrence data and CHELSA climate data in the California Floristic Province (CFP). In brief, we extracted the mean annual temperature and precipitation for each of the `r ifelse(text_only, "TBD", n_spp)` species with more than 100 occurrences at each of the `r ifelse(text_only, "TBD", n_occ)` locations. For each species, we then calculated the average (median) temperature and precipitation across all locations as its climate niche centroids. We visualized all the species in both the geographical space (longitude and latitude) and climate space (temperature and precipitation).
 
 For illustration, we chose two example species: *Danthonia californica* and *Stipa pulchra*. Both are important native species in California and have abundantly distributed. *D. californica* (`r ifelse(text_only, "TBD", n_occ_cool)` occurrences) is a northern species and prefers cool and wet climates, while *S. pulchra* (`r ifelse(text_only, "TBD", n_occ_warm)` occurrences) is a southern species and prefers warm and dry climates. We visualized the two example species in the context of all the species.
 
@@ -36,7 +36,7 @@ Species distributions show clear patterns in both geographical space and climate
 #| fig.cap = "Grassland species occur along geographic and climatic gradients to estimate ecological niches.
 #|  (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data (gray points), highlighting two example species *Danthonia californica* in the north (blue points) and *Stipa pulchra* in the south (red points).
 #|  (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red).
-#|  (C) Ecological niche estimates from average temperature and precipitation for each species (mean ± standard error, gray), highlighting the two species (blue and red)."
+#|  (C) Ecological niche estimates from average temperature and precipitation for each species (median ± standard error, gray), highlighting the two species (blue and red)."
 niche_gg
 rm(list = ls())
 ```

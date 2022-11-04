@@ -6,8 +6,8 @@ exp_tbl <- read_rds(.path$com_exp) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund)
+    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund)
   )
 
 # compare CTI and CPI from ambient vs. warming treatments

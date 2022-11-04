@@ -69,12 +69,12 @@ clim_niche_gg <-
   ggplot(
     data = niche_tbl,
     mapping = aes(
-      x = tmp_occ_mean,
-      y = ppt_occ_mean,
-      xmin = tmp_occ_mean - tmp_occ_sd / sqrt(occ_n),
-      xmax = tmp_occ_mean + tmp_occ_sd / sqrt(occ_n),
-      ymin = ppt_occ_mean - ppt_occ_sd / sqrt(occ_n),
-      ymax = ppt_occ_mean + ppt_occ_sd / sqrt(occ_n),
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      xmin = tmp_occ_median - tmp_occ_sd / sqrt(occ_n),
+      xmax = tmp_occ_median + tmp_occ_sd / sqrt(occ_n),
+      ymin = ppt_occ_median - ppt_occ_sd / sqrt(occ_n),
+      ymax = ppt_occ_median + ppt_occ_sd / sqrt(occ_n),
       label = species,
       color = species_type
     )
