@@ -3,23 +3,23 @@ niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
 
 exp_tbl <- read_rds(.path$com_exp) %>%
+  filter(site == "jrgce") %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
     tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
     ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund)
-  )
+  ) %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L))
 
 # compare CTI and CPI from ambient vs. warming treatments
 exp_gg <-
   exp_tbl %>%
-  filter(site == "jrgce") %>%
-  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
   dplyr::select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
   pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
   mutate(com_idx_name = factor(com_idx_name,
-                               levels = c("tmp_com_mean", "ppt_com_mean"),
-                               labels = c("CTI", "CPI")
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
   )) %>%
   ggplot(aes(year, com_idx_value, col = treat_T, group = interaction(treat_T, year))) +
   geom_boxplot() +
@@ -29,12 +29,12 @@ exp_gg <-
     label = "p.signif", hide.ns = FALSE
   ) +
   facet_wrap(~com_idx_name,
-             ncol = 1, scales = "free_y",
-             strip.position = "left",
-             labeller = labeller(com_idx_name = c(
-               CTI = "Community Temperature Index\n(CTI, °C)",
-               CPI = "Community Precipitation Index\n(CPI, mm)"
-             ))
+    ncol = 1, scales = "free_y",
+    strip.position = "left",
+    labeller = labeller(com_idx_name = c(
+      CTI = "Community Temperature Index\n(CTI, °C)",
+      CPI = "Community Precipitation Index\n(CPI, mm)"
+    ))
   ) +
   scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
   labs(
@@ -61,3 +61,11 @@ if (FALSE) {
     height = 6.18
   )
 }
+
+# report stats
+n_plt <- exp_tbl %>%
+  ungroup() %>%
+  filter(year == 2014) %>%
+  count(treat_T) %>%
+  pull(n)
+names(n_plt) <- c("ambient", "warming")

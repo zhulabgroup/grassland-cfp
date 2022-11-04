@@ -55,10 +55,10 @@ $$
 source("scripts/plot-main-exp.R")
 ```
 
-JRGCE warming experment to CTI and CPI comparisons. Read in niche and experimental data. Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
+JRGCE warming experiment, with `r n_plt["ambient"]` ambient plots and `r n_plt["warming"]` warming plots, to CTI and CPI comparisons. Read in niche and experimental data. Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
 
 ```{r exp-fig, fig.width=10, fig.height=6.18}
-#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (*n* = 200 plots, with 136 ambient plots in black, 64 warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "
+#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "
 exp_gg
 rm(list = ls())
 ```
