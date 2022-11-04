@@ -1,6 +1,6 @@
 # import niche and observational data, calculate CTI and CPI
 niche_tbl <- read_rds(.path$sum_niche) %>%
-  filter(occ_n > 100 | is.na(occ_n)) # keep dummy species
+  filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
 
 obs_tbl <- read_rds(.path$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
