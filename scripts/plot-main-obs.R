@@ -61,7 +61,7 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) 
     geom_boxplot(aes(group = year)) +
     geom_smooth( # add lm trend line when significant
       data = . %>% filter(p_val < 0.05),
-      method = "lm", se = FALSE,
+      method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
     facet_wrap(~com_idx_name,
