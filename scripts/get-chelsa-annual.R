@@ -1,8 +1,12 @@
 # download CHELSA monthly data
 # Get download links from https://envicloud.wsl.ch/#/
 
-param_list <- c( # "tas",
-  "pr", "vpd"
+# TODO: replace "/data/ZHULAB/grassland/climate/chelsa_monthly/" with .path$cli_chelsa_monthly
+
+param_list <- c(
+  # "tas",
+  "pr",
+  "vpd"
 )
 for (param in param_list) {
   dir.create(paste0("/data/ZHULAB/grassland/climate/chelsa_monthly/", param))

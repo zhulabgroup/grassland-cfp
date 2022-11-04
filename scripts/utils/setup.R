@@ -26,6 +26,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 .path <- list( # hidden variable won't be removed
   cli_all_gbif = "data/climate/all/climate-gbif-2022-11-01.rds",
   cli_chelsa = "data/climate/chelsa/2022-10-21/",
+  cli_chelsa_monthly = "data/climate/chelsa_monthly/",
   cli_prism = "data/climate/prism/2022-10-03/",
   cli_terraclimate = "data/climate/terraclimate/2022-10-03/",
   com_exp = "data/community/all-experimental-data.rds",
