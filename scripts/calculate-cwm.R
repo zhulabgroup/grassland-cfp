@@ -1,7 +1,8 @@
 # calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
 
 # load niche estimates.
-niche_tbl <- read_rds(.path$sum_niche)
+niche_tbl <- read_rds(.path$sum_niche) %>% 
+  filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
 
 # define summarize CWM function
 sum_cwm <- function(.) {
