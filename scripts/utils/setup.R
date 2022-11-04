@@ -25,7 +25,6 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 # - `occ`: occurrence data
 # - `sum`: summary data, e.g., niche estimates
 .path <- list( # hidden variable won't be removed
-  cli_all_gbif = "data/climate/all/climate-gbif-2022-11-01.rds",
   cli_chelsa = "data/climate/chelsa/2022-10-21/",
   cli_chelsa_monthly = "data/climate/chelsa_monthly/",
   cli_prism = "data/climate/prism/2022-10-03/",
@@ -36,7 +35,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   com_spp = "data/community/species/",
   com_tidy = "data/community/tidy/",
   geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
-  geo_clim = "data/climate/climate-gbif-2022-09-18.rds",
+  geo_clim = "data/climate/all/climate-gbif-2022-11-01.rds",
   geo_grass = "data/occurrence/grassland/",
   geo_site = "data/community/site-info.rds",
   occ_bien = "data/occurrence/bien/bien-cfp-2022-04-27.rds",
