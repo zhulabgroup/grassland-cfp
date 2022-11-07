@@ -70,3 +70,21 @@ site_gg <- ggplot() +
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40))
+
+# annotate table for site labels and names
+gg_tbl <- site_tbl %>%
+  select(lab, name) %>%
+  mutate(name = ifelse(lab == "E/F", str_c(name, "/Serpentine"), name))
+
+site_gg <- site_gg +
+  annotation_custom(
+    gridExtra::tableGrob(
+      gg_tbl,
+      rows = NULL,
+      cols = NULL,
+      theme = gridExtra::ttheme_minimal(
+        base_size = 6
+      )
+    ),
+    xmin = -125, xmax = -120, ymin = 28, ymax = 35
+  )
