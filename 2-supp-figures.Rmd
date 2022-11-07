@@ -107,14 +107,14 @@ rm(list = ls())
 
 # Site info
 
-Experimental and observational site information in table and map. The map has grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from <https://lpdaac.usgs.gov/products/mcd12c1v006/>.
+We present experimental and observational site information in table and map. The map also shows grassland coverage (green) downloaded from the [land cover type data](https://lpdaac.usgs.gov/products/mcd12c1v006/).
 
 ```{r site-tab}
 source("scripts/show-site-info.R")
 knitr::kable(site_tbl)
 ```
 
-```{r site-fig, fig.cap="Map of experimental and observational study sites"}
+```{r site-fig, fig.cap="Map of experimental and observational study sites with grassland cover (green)."}
 site_gg
 rm(list = ls())
 ```
