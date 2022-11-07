@@ -57,9 +57,9 @@ In the Jasper Ridge Global Change Experiment (JRGCE), treatments consisted of fo
 
 Here we focus on the warming treatment, which were applied via heaters suspended above the ciruclar plots. The warming treatment increased from +80 W m^–2^ (years 2‒5), to +100 W m^–2^ (years 6‒12), to +250 W m^–2^ (years 13‒17). In total, there were `r n_plt["ambient"]` ambient subplots and `r n_plt["warming"]` warming subplots. (Explain lumping all non-warming treatments to arrive at large sample sizes.)
 
-The grassland community composition was measured as point intercept. (Nona, please fill in the details).
+The grassland community composition was measured as point intercept. (Nona, please fill in the details.)
 
-For each subplot $i$, species $j$, we assign the pin count as species abundance $A_{ij}$ and species climate (temperature and precipitation) niche centorid as $T_j$. The community weighted mean (temperature, CTI, or precipitation, CPI) was calculated as the above equation. We compared the CTI/CPI for ambient vs. warming treatments and tested their significance. 
+In each year, for each subplot $i$, species $j$, we assigned the pin count as species abundance $A_{ij}$ and species climate (temperature and precipitation) niche centorid as $T_j$. The community weighted mean (temperature, CTI, or precipitation, CPI) was calculated as the above equation. We compared the CTI/CPI for ambient vs. warming treatments and tested their significance. 
 
 The results show warmed plots have higher CTI and lower CPI compared to ambient plots, suggesting warmed plots are consistent of species likely occur in warmer and drier climates. The pattern is especially pronounced in the later phrase of the experiment, where the warming treatments were stronger. Another explanation might be the accumulation effects of the grassland community after receiving long-term warming treatments. 
 
@@ -75,7 +75,11 @@ rm(list = ls())
 source("scripts/plot-main-obs.R")
 ```
 
-Observational data CTI and CPI comparisons, arranged by observational sites. Render and save.
+We collected grassland community composition from 12 sites in the CFP with more than * years of observations. (Fill in details from Josie's dissertation.) 
+
+We applied a similar approach to these long-term observational data. In each year, for each plot $i$, species $j$, we assigned species abundance $A_{ij}$ and species climate (temperature and precipitation) niche centorid as $T_j$. The CTI and CPI were calcuated using the same equation. We compared the CTI/CPI over the years and tested their significance. 
+
+The results show eight out of the 12 sites have significant increase in CTI and signficant decrease in CPI over the years. The remaining four sites do not have significant changes in CTI and CPI. These changes suggest that the majority of these grassland communities are shifting composition to be dominated by warmer and drier species, which is consistent with climate warming in the region.
 
 ```{r obs-fig, fig.width=10, fig.height=10*1.618}
 #| fig.cap="Grassland community shifts from long-term observations. (A to K) Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 11 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."
