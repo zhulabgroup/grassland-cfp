@@ -29,9 +29,9 @@ for (i in seq_along(sp_gbif_vec)) {
     as_tibble() %>%
     summarise(
       occ_n = n(),
-      tmp_occ_mean = mean(tmp, na.rm = TRUE),
+      tmp_occ_median = median(tmp, na.rm = TRUE),
       tmp_occ_sd = sd(tmp, na.rm = TRUE),
-      ppt_occ_mean = mean(ppt, na.rm = TRUE),
+      ppt_occ_median = median(ppt, na.rm = TRUE),
       ppt_occ_sd = sd(ppt, na.rm = TRUE)
     )
 
@@ -64,7 +64,7 @@ for (i in seq_along(sp_gbif_vec)) {
     stat_ellipse(col = "red") +
     geom_point(
       data = occ_sp_stat,
-      aes(x = tmp_occ_mean, y = ppt_occ_mean),
+      aes(x = tmp_occ_median, y = ppt_occ_median),
       shape = 3, col = "red", size = 10
     ) +
     lims(x = tmp_rng, y = ppt_rng) +
