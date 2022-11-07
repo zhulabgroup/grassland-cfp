@@ -27,7 +27,7 @@ source("scripts/compare-occ-data.R")
 knitr::kable(occ_samp_tbl, caption = "Comparison of occurrence datasets.")
 ```
 
-```{r occ-data-fig, fig.cap="Occurrence data comparison from multiple sources in study area. Randomly showing 10% of data points to avoid overplotting."}
+```{r occ-data-fig, fig.cap="Occurrence data comparison from multiple sources (BIEN, eJepson (CCH), GBIF, iNaturalist) in CFP. Randomly showing 10% of data points to avoid overplotting."}
 occ_comp_gg
 rm(list = ls())
 ```
