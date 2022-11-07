@@ -48,14 +48,16 @@ TODO: different bioclim variables are highly correlated
 
 # Climate niche summary statistics
 
-The mean, median, upper, lower temp and precip for all species are highly correlated.
+Multiple statistics (mean, median, lower 5%, upper 95%) can summarize species' climate niche. Ecologically, they represent niches differently, e.g., average vs. extreme. Numerically, however, they are all significantly, and in many cases, highly, correlated. Because our interest is in comparing CTI/CPI differences (between treatments or over years), not the absolute CTI/CPI values, our results do not depend on which statistics are chosen among the correlated collection.
 
-```{r tmp-niche-fig, fig.cap="Species temperature niche statistics are highly correlated"}
+In the main text, we used the median because it is robust to outliers and most truthfully represents the niche centroids.
+
+```{r tmp-niche-fig, fig.cap="Species temperature niche statistics. Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with t-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."}
 source("scripts/compare-niche-stat.R")
 niche_tmp_gg
 ```
 
-```{r ppt-niche-fig, fig.cap="Species precipitation niche statistics are highly correlated"}
+```{r ppt-niche-fig, fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."}
 niche_ppt_gg
 rm(list = ls())
 ```
