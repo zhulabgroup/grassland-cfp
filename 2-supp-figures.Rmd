@@ -20,7 +20,7 @@ source("scripts/utils/setup.R")
 
 # Occurrence data sources
 
-Multiple occurrence data are available in the CFP. We downloaded and compared BIEN, CCH, GBIF, iNat occurrence datasets. The comparison shows that GBIF is the most comprehensive in terms the record number and species number.
+Multiple occurrence data are available in the CFP. We downloaded and compared BIEN, CCH, GBIF, iNat occurrence datasets. The comparison shows that GBIF is the most comprehensive in terms of the record number and species number.
 
 ```{r occ-data-tab}
 source("scripts/compare-occ-data.R")
@@ -109,7 +109,7 @@ rm(list = ls())
 
 # Site info
 
-Experimental and observational site information in table and map. The map has grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from https://lpdaac.usgs.gov/products/mcd12c1v006/.
+Experimental and observational site information in table and map. The map has grassland coverage. Land cover type data on 0.05 degree resolution maunually downloaded from <https://lpdaac.usgs.gov/products/mcd12c1v006/>.
 
 ```{r site-tab}
 source("scripts/show-site-info.R")
