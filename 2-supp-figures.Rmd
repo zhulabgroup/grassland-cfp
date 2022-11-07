@@ -64,13 +64,13 @@ rm(list = ls())
 
 # Spatial thinning occurrence-climate records
 
-```{r thin-tmp-fig, fig.cap="Species temperature niche statistics (°C)"}
-source("scripts/compare-sp-thin.R")
-thin_tmp_gg
-```
+Acquiring occurrence records from biodiversity database such as GBIF is subject to sampling bias (cite). The collected records tend to bias toward accessibility, where locations proximate to roads and population centers are better sampled. To address this potential bias, we used a spatial thinning algorithm to resample the data by thinning occurrences separated by certain distances (Aiello-Lammens et al., 2015). We thinned the datasets by separating the closest records with 10 km distance.
 
-```{r thin-ppt-fig, fig.cap="Species precipitation niche statistics (mm)"}
-thin_ppt_gg
+The full and thinned data yield highly correlated climate niche statistics.
+
+```{r thin-fig, fig.cap="Species climate niche estimates from full and thinned datasets. Each point corresponds to median temperature or precipitation for a species. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
+source("scripts/compare-sp-thin.R")
+thin_tmp_gg / thin_ppt_gg
 rm(list = ls())
 ```
 
