@@ -76,7 +76,7 @@ rm(list = ls())
 
 # Individual species climate niches
 
-Generate a single species per page and assembly into a multi-page plot. Left geo-space, right clim-space.
+We present individual species distributions in geographical space (occurrence) and climate space (niche). The left panel, titled with the species name, shows GBIF occurrence records in the CFP. The right panel, titled with the GBIF record number, shows the same occurrence data in reference to their mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at 95% confidence interval and a centroid cross (median) for the joint distribution. The centroids are then assigned as species climate niche estimates.
 
 ```{r}
 source("scripts/plot-ind-spp.R")
@@ -100,8 +100,6 @@ pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```
-
-The file can be viewed at this [link](https://zhulab.ucsc.edu/projects/grassland/figures/species-climate-niche.pdf)
 
 ```{r}
 rm(list = ls())
