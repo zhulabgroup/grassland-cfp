@@ -20,14 +20,14 @@ source("scripts/utils/setup.R")
 
 # Occurrence data sources
 
-Compare BIEN, CCH, GBIF, iNat occurrence datasets.
+Multiple occurrence data are available in the CFP. We downloaded and compared BIEN, CCH, GBIF, iNat occurrence datasets. The comparison shows that GBIF is the most comprehensive in terms the record number and species number.
 
 ```{r occ-data-tab}
 source("scripts/compare-occ-data.R")
 knitr::kable(occ_samp_tbl, caption = "Comparison of occurrence datasets.")
 ```
 
-```{r occ-data-fig, fig.cap="Occurrence data comparison from multiple sources in study area"}
+```{r occ-data-fig, fig.cap="Occurrence data comparison from multiple sources in study area. Randomly showing 10% of data points to avoid overplotting."}
 occ_comp_gg
 rm(list = ls())
 ```

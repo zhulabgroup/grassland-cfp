@@ -1,4 +1,7 @@
 # compare BIEN, CCH, GBIF, iNat occurrence datasets
+niche_tbl <- read_rds(.path$sum_niche) %>%
+  filter(occ_n > 100) # no dummy species
+
 bien_tbl <- read_rds(.path$occ_bien) %>%
   mutate(
     dataset = "bien",
@@ -21,9 +24,6 @@ gbif_tbl <- read_rds(.path$occ_gbif) %>%
     species = consolidatedName,
     key = as.character(key)
   ) %>%
-  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
-  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
-  filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   select(dataset, key, species, longitude, latitude)
 
 inat_tbl <- read_rds(.path$occ_inat) %>%
@@ -32,9 +32,6 @@ inat_tbl <- read_rds(.path$occ_inat) %>%
     species = consolidatedName,
     key = as.character(key)
   ) %>%
-  filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
-  filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
-  filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
   select(dataset, key, species, longitude, latitude)
 
 # combine datasets and convert to sf
@@ -42,6 +39,8 @@ occ_sf <- bien_tbl %>%
   bind_rows(cch_tbl) %>%
   bind_rows(gbif_tbl) %>%
   bind_rows(inat_tbl) %>%
+  distinct() %>% # remove duplicated records
+  inner_join(niche_tbl, by = "species") %>% # only species w/ niche estimates
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
 
 # assign dataset names
