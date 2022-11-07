@@ -62,6 +62,7 @@ site_gg <- ggplot() +
     color = "red",
     fill = NA,
     min.segment.length = 0,
+    max.overlaps = Inf,
     label.padding = unit(.1, "lines"),
     label.size = NA
   ) +
