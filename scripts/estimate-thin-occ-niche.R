@@ -49,14 +49,18 @@ sum_full_tbl <- occ_clim_tbl %>%
   unnest(cols = full_data) %>%
   summarize(
     full_mean_tmp = mean(tmp, na.rm = TRUE),
-    full_mean_ppt = mean(ppt, na.rm = TRUE)
+    full_median_tmp = median(tmp, na.rm = TRUE),
+    full_mean_ppt = mean(ppt, na.rm = TRUE),
+    full_median_ppt = median(ppt, na.rm = TRUE)
   )
 
 sum_thin_tbl <- occ_clim_tbl %>%
   unnest(cols = thin_data) %>%
   summarize(
     thin_mean_tmp = mean(tmp, na.rm = TRUE),
-    thin_mean_ppt = mean(ppt, na.rm = TRUE)
+    thin_median_tmp = median(tmp, na.rm = TRUE),
+    thin_mean_ppt = mean(ppt, na.rm = TRUE),
+    thin_median_ppt = median(ppt, na.rm = TRUE)
   )
 
 sum_full_tbl %>%
