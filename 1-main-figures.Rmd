@@ -16,7 +16,7 @@ output:
 
 ```{r setup, echo=FALSE, message=FALSE}
 source("scripts/utils/setup.R")
-text_only <- FALSE
+text_only <- T
 knitr::opts_chunk$set(eval = !text_only) # override eval if text only
 ```
 
@@ -55,7 +55,15 @@ $$
 source("scripts/plot-main-exp.R")
 ```
 
-JRGCE warming experiment, with `r n_plt["ambient"]` ambient plots and `r n_plt["warming"]` warming plots, to CTI and CPI comparisons. Read in niche and experimental data. Side-by-side boxplots to compare CTI and CPI from ambient vs. warming treatments.
+In the Jasper Ridge Global Change Experiment (JRGCE), treatments consisted of four global change factors---temperature, precipitation, CO~2~, and nitrogen---at either ambient or an elevated level, applied in a complete factorial, randomized block design with eight replicates. Thirty-six circular plots 2 m in diameter, subdivided into 4 equal-sized subplots, were established in the summer of 1997. The 1997‒1998 growing season (year 1) was a pre-treatment year, after which treatments were applied for 16 consecutive growing seasons (years 2‒17), from the time of germination (November) to plant senescence (June).
+
+Here we focus on the warming treatment, which were applied via heaters suspended above the ciruclar plots. The warming treatment increased from +80 W m^–2^ (years 2‒5), to +100 W m^–2^ (years 6‒12), to +250 W m^–2^ (years 13‒17). In total, there were `r ifelse(text_only, "TBD", n_plt["ambient"])` ambient subplots and `r ifelse(text_only, "TBD", n_plt["warming"])` warming subplots. (Explain lumping all non-warming treatments to arrive at large sample sizes.)
+
+The grassland community composition was measured as point intercept. (Nona, please fill in the details).
+
+For each subplot $i$, species $j$, we assign the pin count as species abundance $A_{ij}$ and species climate (temperature and precipitation) niche centorid as $T_j$. The community weighted mean (temperature, CTI, or precipitation, CPI) was calculated as eqn **. We compared the CTI/CPI for ambient vs. warming treatments and tested their significance. 
+
+The results show warmed plots have higher CTI and lower CPI compared to ambient plots, suggesting warmed plots are consistent of species likely occur in warmer and drier climates. The pattern is especially pronounced in the later phrase of the experiment, where the warming treatments were stronger. Another explanation might be the accumulation effects of the grassland community after receiving long-term warming treatments. 
 
 ```{r exp-fig, fig.width=10, fig.height=6.18}
 #| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, 1998 pre-treatment year, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). "
