@@ -9,12 +9,12 @@ cfp_sf <- st_read(.path$geo_cfp) %>%
   )
 
 # read combined GBIF and terraclim data
-gbif_terraclim_sf <- read_rds(.path$cli_all_gbif) %>%
-  select(geometry, key, species, tmp = terraclim_tmp, ppt = terraclim_ppt, vpd = terraclim_vpd) %>%
+gbif_chelsa_sf <- read_rds(.path$cli_all_gbif) %>%
+  select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
 # check species lists
-sp_gbif_vec <- gbif_terraclim_sf %>%
+sp_gbif_vec <- gbif_chelsa_sf %>%
   pull(species) %>%
   unique() %>%
   sort()
@@ -30,9 +30,9 @@ sp_comm_vec <- spp_tbl %>%
 sp_gbif_vec %in% sp_comm_vec
 
 # gbif summary
-tmp_rng <- range(gbif_terraclim_sf$tmp)
-ppt_rng <- range(gbif_terraclim_sf$ppt)
-n_occ_tot <- nrow(gbif_terraclim_sf)
+tmp_rng <- range(gbif_chelsa_sf$tmp)
+ppt_rng <- range(gbif_chelsa_sf$ppt)
+n_occ_tot <- nrow(gbif_chelsa_sf)
 # exp data summary
 exp_tbl <- read_rds(.path$com_exp)
 n_exp_tot <- nrow(exp_tbl)
@@ -43,7 +43,7 @@ niche_gg <- vector(mode = "list")
 
 for (i in seq_along(sp_gbif_vec)) {
   sp <- sp_gbif_vec[i]
-  occ_sp_sf <- filter(gbif_terraclim_sf, species == sp)
+  occ_sp_sf <- filter(gbif_chelsa_sf, species == sp)
 
   occ_sp_stat <- occ_sp_sf %>%
     as_tibble() %>%
