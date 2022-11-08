@@ -1,4 +1,10 @@
 # get CCH data
+# downloading limit is 1000000 records, so download in three latitudinal bands
+# 125-115W
+# 28-34N 447325 records
+# 34-38N 914634 records
+# 38-44N 705205 records
+
 # prep species list
 source("scripts/compile-all-species.R")
 
@@ -10,13 +16,36 @@ cfp_sf <- st_read(.path$geo_cfp) %>%
   )
 
 # read manually downloaded file
-cch_all_tbl <- "data/occurrence/cch/occurrences.csv" %>%
+cch_south<-"data/occurrence/cch/south.csv" %>%
   read_csv(col_types = cols_only(
     id = "i",
     scientificName = "c",
     decimalLongitude = "d",
     decimalLatitude = "d"
-  )) %>%
+  ))
+nrow(cch_south)
+
+cch_mid<-"data/occurrence/cch/mid.csv" %>%
+  read_csv(col_types = cols_only(
+    id = "i",
+    scientificName = "c",
+    decimalLongitude = "d",
+    decimalLatitude = "d"
+  ))
+nrow(cch_mid)
+
+cch_north<-"data/occurrence/cch/north.csv" %>%
+  read_csv(col_types = cols_only(
+    id = "i",
+    scientificName = "c",
+    decimalLongitude = "d",
+    decimalLatitude = "d"
+  ))
+nrow(cch_north)
+
+cch_all_tbl <-bind_rows(cch_south,
+                        cch_mid,
+                        cch_north) %>%
   filter(scientificName %in% spp_tbl$query_name) %>%
   drop_na(decimalLongitude, decimalLatitude) %>%
   select(

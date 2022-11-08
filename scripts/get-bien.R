@@ -41,4 +41,4 @@ bien_cfp_sf <- st_intersection(bien_all_sf, cfp_sf)
 bien_cfp_df <- bien_all_df %>%
   right_join(as_tibble(bien_cfp_sf) %>% dplyr::select(key), by = "key")
 
-# write_rds(bien_cfp_df, .path$occ_bien)
+write_rds(bien_cfp_df, .path$occ_bien)
