@@ -42,9 +42,17 @@ chelsa_prism_gg / chelsa_terraclim_gg
 rm(list = ls())
 ```
 
-# Climate variable correlations
+# Bioclimatic variables
 
-TODO: different bioclim variables are highly correlated
+```{r compare-bioclim}
+source("scripts/compare-bioclim.R")
+```
+
+Species climate niche can be quantified by variables other than mean annual temperature and precipitation. We downloaded relevant bioclimatic variables defined by [WorldClim](https://www.worldclim.org/data/bioclim.html) and extracted to all the occurrence locations in the CFP. 
+
+Here we show that annual mean temperature (BIO1) used in this study is highly correlated with seasonal temperatures, i.e., mean temperature of wettest quarter (BIO8, *r* = `r round(tmp_cor["bio1", "bio8"], 3)`), mean temperature of driest quarter (BIO9, *r* = `r round(tmp_cor["bio1", "bio9"], 3)`), mean temperature of warmest quarter (BIO10, *r* = `r round(tmp_cor["bio1", "bio10"], 3)`), and mean temperature of coldest quarter (BIO11, *r* = `r round(tmp_cor["bio1", "bio11"], 3)`).
+
+We also show that annual precipitation (BIO12) used in this study is highly correlated with winter precipitations, i.e., precipitation of wettest month (BIO13, *r* = `r round(ppt_cor["bio12", "bio13"], 3)`), precipitation of wettest quarter (BIO16, *r* = `r round(ppt_cor["bio12", "bio16"], 3)`), and precipitation of coldest quarter (BIO19, *r* = `r round(ppt_cor["bio12", "bio19"], 3)`).
 
 # Climate niche summary statistics
 
