@@ -6,7 +6,7 @@ param_list <- c("tas", "pr", "vpd")
 for (param in param_list) {
   dir.create(paste0(.path$cli_chelsa_monthly, param))
   system(paste0("wget --no-host-directories --no-directories --input-file=",.path$cli_chelsa_monthly, param, "_paths.txt --continue --directory-prefix=",.path$cli_chelsa_monthly, param, "/"))
-
+}
 # can do this in parallel:
 #   cat [xxx.txt] | xargs -n 1 -P 40 wget --no-host-directories --no-directories --continue --directory-prefix=[xxx]
 
