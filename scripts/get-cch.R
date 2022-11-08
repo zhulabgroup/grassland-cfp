@@ -1,9 +1,11 @@
 # get CCH data
-# downloading limit is 1000000 records, so download in three latitudinal bands
+# downloaded the data manually from https://www.cch2.org/portal/collections/harvestparams.php
+# downloading limit is 1000000 records, so downloaded in three latitudinal bands
 # 125-115W
-# 28-34N 447325 records
-# 34-38N 914634 records
+# 28-34N 447335 records
+# 34-38N 914648 records
 # 38-44N 705205 records
+# retrieved on 11-08-2022 2pm
 
 # prep species list
 source("scripts/compile-all-species.R")
@@ -54,6 +56,7 @@ cch_all_tbl <-bind_rows(cch_south,
     latitude = decimalLatitude,
     key = id
   ) %>%
+  distinct(key, .keep_all = T) %>% 
   left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
   mutate(species_name = ifelse(
     is.na(consolidated_name),
@@ -71,3 +74,6 @@ cch_cfp_tbl <- cch_all_tbl %>%
   right_join(cch_all_tbl, ., by = "key")
 
 write_rds(cch_cfp_tbl, .path$occ_cch)
+
+ggplot(cch_cfp_tbl)+
+  geom_point(aes(x=longitude, y=latitude), alpha=0.01)
