@@ -171,6 +171,22 @@ tmp_gg / ppt_gg / vpd_gg
 rm(list = ls())
 ```
 
+## Compare bioclimatic variables
+
+Download (almost) all the bioclimatic variables, defined by [WorldClim](https://www.worldclim.org/data/bioclim.html) and [CHELSA manual](https://chelsa-climate.org/wp-admin/download-page/CHELSA_tech_specification_V2.pdf). Extract at GBIF locations. 
+
+```{r extract-bioclim, eval=FALSE}
+source("scripts/extract-bioclim-gbif.R")
+rm(list = ls())
+```
+
+Compare bioclimatic variables by correlation analysis. We see high correlation within different temperature variables (bio1, 5, 6, 8-11), precipitation variables (bio12-14, 16-19), and vpd(vpd_max, mean, min) variables.
+
+```{r compare-bioclim}
+source("scripts/compare-bioclim.R")
+rm(list = ls())
+```
+
 # Estimate species climate niches
 
 ## Individual species
