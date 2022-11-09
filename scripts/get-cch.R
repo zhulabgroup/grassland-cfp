@@ -18,7 +18,7 @@ cfp_sf <- st_read(.path$geo_cfp) %>%
   )
 
 # read manually downloaded file
-cch_south<-"data/occurrence/cch/south.csv" %>%
+cch_south <- "data/occurrence/cch/south.csv" %>%
   read_csv(col_types = cols_only(
     id = "i",
     scientificName = "c",
@@ -27,7 +27,7 @@ cch_south<-"data/occurrence/cch/south.csv" %>%
   ))
 nrow(cch_south)
 
-cch_mid<-"data/occurrence/cch/mid.csv" %>%
+cch_mid <- "data/occurrence/cch/mid.csv" %>%
   read_csv(col_types = cols_only(
     id = "i",
     scientificName = "c",
@@ -36,7 +36,7 @@ cch_mid<-"data/occurrence/cch/mid.csv" %>%
   ))
 nrow(cch_mid)
 
-cch_north<-"data/occurrence/cch/north.csv" %>%
+cch_north <- "data/occurrence/cch/north.csv" %>%
   read_csv(col_types = cols_only(
     id = "i",
     scientificName = "c",
@@ -45,9 +45,11 @@ cch_north<-"data/occurrence/cch/north.csv" %>%
   ))
 nrow(cch_north)
 
-cch_all_tbl <-bind_rows(cch_south,
-                        cch_mid,
-                        cch_north) %>%
+cch_all_tbl <- bind_rows(
+  cch_south,
+  cch_mid,
+  cch_north
+) %>%
   filter(scientificName %in% spp_tbl$query_name) %>%
   drop_na(decimalLongitude, decimalLatitude) %>%
   select(
@@ -56,7 +58,7 @@ cch_all_tbl <-bind_rows(cch_south,
     latitude = decimalLatitude,
     key = id
   ) %>%
-  distinct(key, .keep_all = T) %>% 
+  distinct(key, .keep_all = T) %>%
   left_join(spp_tbl, by = c("queryName" = "query_name")) %>%
   mutate(species_name = ifelse(
     is.na(consolidated_name),
@@ -75,5 +77,5 @@ cch_cfp_tbl <- cch_all_tbl %>%
 
 write_rds(cch_cfp_tbl, .path$occ_cch)
 
-ggplot(cch_cfp_tbl)+
-  geom_point(aes(x=longitude, y=latitude), alpha=0.01)
+ggplot(cch_cfp_tbl) +
+  geom_point(aes(x = longitude, y = latitude), alpha = 0.01)

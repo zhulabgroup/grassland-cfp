@@ -5,7 +5,7 @@
 param_list <- c("tas", "pr", "vpd")
 for (param in param_list) {
   dir.create(paste0(.path$cli_chelsa_monthly, param))
-  system(paste0("wget --no-host-directories --no-directories --input-file=",.path$cli_chelsa_monthly, param, "_paths.txt --continue --directory-prefix=",.path$cli_chelsa_monthly, param, "/"))
+  system(paste0("wget --no-host-directories --no-directories --input-file=", .path$cli_chelsa_monthly, param, "_paths.txt --continue --directory-prefix=", .path$cli_chelsa_monthly, param, "/"))
 }
 # can do this in parallel:
 #   cat [xxx.txt] | xargs -n 1 -P 40 wget --no-host-directories --no-directories --continue --directory-prefix=[xxx]
@@ -46,7 +46,7 @@ for (param in param_list) {
 }
 val_df <- bind_rows(val_list_allparam)
 
-write_rds(val_df, file = paste0(.path$cli_chelsa_monthly,"annual.rds"))
+write_rds(val_df, file = paste0(.path$cli_chelsa_monthly, "annual.rds"))
 stopcluster(cl)
 
 # Plot
@@ -55,4 +55,3 @@ ggplot(val_df) +
   geom_smooth(aes(x = year, y = value, group = name, col = name), method = "lm", se = F) +
   theme_classic() +
   facet_wrap(. ~ param, scales = "free_y", ncol = 3)
-

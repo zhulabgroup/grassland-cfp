@@ -5,7 +5,7 @@ gbif_sf_wgs84 <- read_rds(.path$occ_gbif) %>%
     key = as.character(key)
   ) %>%
   dplyr::select(key, species, longitude, latitude) %>%
-  distinct() %>% 
+  distinct() %>%
   st_as_sf(
     coords = c("longitude", "latitude"),
     crs = "+proj=longlat +datum=WGS84 +no_defs"
@@ -27,7 +27,7 @@ temp_ras <- raster::stack(
   str_c(.path$cli_chelsa, "bio10.tif"),
   str_c(.path$cli_chelsa, "bio11.tif")
 )
-names(temp_ras) <- c("bio1","bio5", "bio6", "bio8", "bio9", "bio10", "bio11")
+names(temp_ras) <- c("bio1", "bio5", "bio6", "bio8", "bio9", "bio10", "bio11")
 
 # extract climate data on GBIF locations
 temp_gbif_sf <- temp_ras %>%
@@ -36,7 +36,7 @@ temp_gbif_sf <- temp_ras %>%
   bind_cols(gbif_sf_wgs84)
 
 library("PerformanceAnalytics")
-chart.Correlation(temp_gbif_sf[, 1:7] %>% sample_n(1000), histogram=TRUE, pch=19)
+chart.Correlation(temp_gbif_sf[, 1:7] %>% sample_n(1000), histogram = TRUE, pch = 19)
 
 
 # prcp
@@ -57,7 +57,7 @@ prcp_gbif_sf <- prcp_ras %>%
   as_tibble() %>%
   bind_cols(gbif_sf_wgs84)
 
-chart.Correlation(prcp_gbif_sf[, 1:7] %>% sample_n(1000), histogram=TRUE, pch=19)
+chart.Correlation(prcp_gbif_sf[, 1:7] %>% sample_n(1000), histogram = TRUE, pch = 19)
 
 # vpd
 vpd_ras <- raster::stack(
@@ -73,6 +73,6 @@ vpd_gbif_sf <- vpd_ras %>%
   as_tibble() %>%
   bind_cols(gbif_sf_wgs84)
 
-chart.Correlation(vpd_gbif_sf[, 1:3] %>% sample_n(1000), histogram=TRUE, pch=19)
+chart.Correlation(vpd_gbif_sf[, 1:3] %>% sample_n(1000), histogram = TRUE, pch = 19)
 
 # vpd_max does not correlate well with the vpd_min but bio1 and bio12 seem okay
