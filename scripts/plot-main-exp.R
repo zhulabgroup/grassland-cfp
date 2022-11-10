@@ -24,9 +24,9 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
 warm_tbl <- tribble(
   ~tag, ~name, ~start, ~end,
   0, "Pre", 1998, 1998,
-  1, "Phrase I", 1999, 2002,
-  2, "Phrase II", 2003, 2009,
-  3, "Phrase III", 2010, Inf # end in 2014, but set to Inf to fill space
+  1, "Phase I", 1999, 2002,
+  2, "Phase II", 2003, 2009,
+  3, "Phase III", 2010, Inf # end in 2014, but set to Inf to fill space
 )
 
 exp_gg <- ggplot(jrgce_tbl) +
