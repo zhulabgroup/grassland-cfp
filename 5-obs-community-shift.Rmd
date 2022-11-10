@@ -117,13 +117,13 @@ tmp_gg
 
 Precipitation decreases.
 
-```{r plot-site-ppt, fig.cap="Precipitation change at observational sites}
+```{r plot-site-ppt, fig.cap="Precipitation change at observational sites"}
 ppt_gg
 ```
 
 VPD increases.
 
-```{r plot-site-vpd, fig.cap="VPD change at observational sites}
+```{r plot-site-vpd, fig.cap="VPD change at observational sites"}
 vpd_gg
 rm(list = ls())
 ```
