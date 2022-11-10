@@ -94,5 +94,38 @@ CVI community-level standard deviation.
 plot_cwm_obs("sd_cvi")
 ```
 
+# Site climate change
 
-<!-- ``` -->
+Download CHELSA monthly climate data from 1980 to 2019, assemble to annual, and extract at site locations.
+
+```{r get-chelsa-annual, eval=FALSE}
+source("scripts/get-chelsa-annual.R")
+rm(list = ls())
+```
+
+Plot climate change at observed grassland community sites.
+
+```{r plot-site-climate}
+source("scripts/plot-site-climate.R")
+```
+
+Temperature increases.
+
+```{r plot-site-tmp, fig.cap="Temperature change at observational sites"}
+tmp_gg
+```
+
+Precipitation decreases.
+
+```{r plot-site-ppt, fig.cap="Precipitation change at observational sites}
+ppt_gg
+```
+
+VPD increases.
+
+```{r plot-site-vpd, fig.cap="VPD change at observational sites}
+vpd_gg
+rm(list = ls())
+```
+
+Note that subsetting climate data to the observational years leads to messy patterns. It doesn't make sense because the time series is too short.
