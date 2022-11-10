@@ -1,4 +1,5 @@
 # download CHELSA monthly data
+# extract at site locations
 # Get download links from https://envicloud.wsl.ch/#/
 # data files deleted because of the large file sizes
 
@@ -46,12 +47,12 @@ for (param in param_list) {
 }
 val_df <- bind_rows(val_list_allparam)
 
-write_rds(val_df, file = paste0(.path$cli_chelsa_monthly, "annual.rds"))
-stopcluster(cl)
+val_df %>%
+  as_tibble() %>%
+  select(abbr, name, year, param, value) %>%
+  pivot_wider(names_from = param, values_from = value) %>%
+  rename(tmp = tas, ppt = pr) %>%
+  arrange(abbr) %>%
+  write_rds(.path$cli_chelsa_annual)
 
-# Plot
-ggplot(val_df) +
-  geom_line(aes(x = year, y = value, group = name, col = name)) +
-  geom_smooth(aes(x = year, y = value, group = name, col = name), method = "lm", se = F) +
-  theme_classic() +
-  facet_wrap(. ~ param, scales = "free_y", ncol = 3)
+stopcluster(cl)
