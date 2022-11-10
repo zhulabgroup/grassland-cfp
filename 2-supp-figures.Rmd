@@ -129,4 +129,10 @@ rm(list = ls())
 
 # Site climate change
 
-TODO: get PRISM/CHELSA data on six sites and plot climate change; may compare with CTI and CPI changes
+For the observational grassland communities, the CTI and CPI changes are consistent with the climate changes in those sites. We extracted historical climate data from CHELSA and show consistent temperature increases and precipitation decreases from 1980 to 2019.
+
+```{r plot-site-climate, fig.cap="Climate change in observational sites. Mean annual temperature and precipitation extracted from CHELSA. Trends are summarized by regression lines, solid p < 0.05, dashed p > 0.05."}
+source("scripts/plot-site-climate.R")
+site_cc_gg
+rm(list = ls())
+```
