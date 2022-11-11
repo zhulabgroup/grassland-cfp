@@ -9,7 +9,7 @@ site_tbl <- site_sf %>%
   as_tibble() # drop geometry
 
 # read geo data
-cfp_sf <- st_read(.path$geo_cfp) %>%
+cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
   filter(
     NAME == "California Floristic Province",
     Type == "hotspot area"
