@@ -86,7 +86,7 @@ rm(list = ls())
 
 # Individual species climate niches
 
-We present individual species distributions in geographical space (occurrence) and climate space (niche). The left panel, titled with the species name, shows GBIF occurrence records in the CFP. The right panel, titled with the GBIF record number, shows the same occurrence data in reference to their mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at 95% confidence interval and a centroid cross (median) for the joint distribution. The centroids are then assigned as species climate niche estimates.
+We present individual species distributions in geographical space (occurrence) and climate space (niche). The niche centroids (red cross on the right panel) are then assigned as species climate niche estimates, which becomes Fig 1.
 
 ```{r}
 source("scripts/plot-ind-spp.R")
@@ -94,15 +94,15 @@ source("scripts/plot-ind-spp.R")
 
 Show two example species.
 
-```{r cool-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Danthonia californica*"}
+```{r cool-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Danthonia californica* distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (*n*) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution."}
 niche_gg["Danthonia californica"]
 ```
 
-```{r warm-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Stipa pulchra*"}
+```{r warm-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Stipa pulchra* distributions in geographical space and climate space. Symbols follow the last figure."}
 niche_gg["Stipa pulchra"]
 ```
 
-Print all species into a multi-page PDF.
+A collection of figures (one page per species) is provided in the supplement.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
