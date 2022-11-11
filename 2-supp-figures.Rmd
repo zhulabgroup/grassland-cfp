@@ -119,9 +119,12 @@ rm(list = ls())
 
 We present experimental and observational site information in table and map. The map also shows grassland coverage (green) downloaded from the [land cover type data](https://lpdaac.usgs.gov/products/mcd12c1v006/).
 
-```{r site-tab}
+```{r site-tab, tab.cap="Observational site information"}
 source("scripts/show-site-info.R")
-knitr::kable(site_tbl)
+site_tbl %>%
+  flextable::flextable() %>%
+  flextable::autofit() %>%
+  flextable::fit_to_width(7.5)
 ```
 
 ```{r site-fig, fig.height=10, fig.cap="Map of experimental and observational study sites with grassland cover (green). (A) Angelo Coast, (B) Carrizo Plain, (C) Elkhorn Slough, (D) Jasper Ridge, (E/F) McLaughlin Annual/Serpentine, (G) Morgan Territory, (H) Pleasanton Ridge, (I) Sunol, (J) Swanton Ranch, (K) UC Santa Cruz, (L) Vasco Caves."}
