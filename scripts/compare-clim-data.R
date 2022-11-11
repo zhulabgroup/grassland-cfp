@@ -100,7 +100,7 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
   ) +
   labs(
     x = "CHELSA",
-    y = "TerraClim",
+    y = "TerraClimate",
     # fill = "Occurrence record"
   ) +
   guides(fill = "none") +
