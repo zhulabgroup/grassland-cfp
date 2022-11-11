@@ -59,12 +59,12 @@ Here we focus on the warming treatment, which was applied via heaters suspended 
 
 The grassland community composition was measured using the point intercept method. (Fill in details.)
 
-In each year, for each subplot $i$, species $j$, we assigned the pin count as species abundance $A_{ij}$ and species climate (temperature and precipitation) niche centroid as $T_j$. The community weighted mean (temperature, CTI, or precipitation, CPI) was calculated as the above equation. We compared the CTI/CPI for ambient vs. warming treatments and tested their significance.
+In each year, for each subplot $i$, species $j$, we assigned the pin count as species abundance $A_{ij}$ and species climate (temperature and precipitation) niche centroid as $T_j$. The community weighted mean (temperature, CTI, or precipitation, CPI) was calculated using the above equation. We compared the CTI/CPI for ambient vs. warming treatments and tested their significance.
 
-The results show warmed plots have higher CTI and lower CPI compared to ambient plots, suggesting warmed plots are consistent with species likely to occur in warmer and drier climates. The differences become more significant with stronger heating treatments over three phases. Another explanation might be the accumulation effects of the grassland community after receiving long-term warming treatments.
+The results show warmed plots have higher CTI and lower CPI compared to ambient plots, suggesting warmed plots are dominated by species likely to occur in warmer and drier climates. The differences become more significant with stronger heating treatments over three phases. Another explanation might be the accumulation effects of the grassland community after receiving long-term warming treatments.
 
 ```{r exp-fig, fig.width=10, fig.height=6.18}
-#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, with the pre-treatment year 1998, phase I heating +80 W m^–2^ in 1999-2002, phase II heating +100 W m^–2^ in 2003-2009, and phase III heating +250 W m^–2^ in 2010-2014, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, background orange shades denote the pre-treatment year 1998, phase I heating +80 W m^–2^ in 1999-2002, phase II heating +100 W m^–2^ in 2003-2009, and phase III heating +250 W m^–2^ in 2010-2014, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
 exp_gg
 rm(list = ls())
 ```
