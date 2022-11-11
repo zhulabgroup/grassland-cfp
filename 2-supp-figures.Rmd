@@ -124,7 +124,7 @@ source("scripts/show-site-info.R")
 knitr::kable(site_tbl)
 ```
 
-```{r site-fig, fig.height=10, fig.cap="Map of experimental and observational study sites with grassland cover (green)."}
+```{r site-fig, fig.height=10, fig.cap="Map of experimental and observational study sites with grassland cover (green). (A) Angelo Coast, (B) Carrizo Plain, (C) Elkhorn Slough, (D) Jasper Ridge, (E/F) McLaughlin Annual/Serpentine, (G) Morgan Territory, (H) Pleasanton Ridge, (I) Sunol, (J) Swanton Ranch, (K) UC Santa Cruz, (L) Vasco Caves."}
 site_gg
 rm(list = ls())
 ```
