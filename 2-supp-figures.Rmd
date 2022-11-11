@@ -27,7 +27,7 @@ source("scripts/compare-occ-data.R")
 knitr::kable(occ_samp_tbl, caption = "Comparison of occurrence datasets.")
 ```
 
-```{r occ-data-fig, fig.cap="Occurrence data comparison from multiple sources (BIEN, eJepson (CCH), GBIF, iNaturalist) in CFP. Randomly showing 10% of data points to avoid overplotting."}
+```{r occ-data-fig, fig.width=10, fig.cap="Occurrence data comparison from multiple sources (BIEN, eJepson (CCH), GBIF, iNaturalist) in CFP. Randomly showing 10% of data points to avoid overplotting."}
 occ_comp_gg
 rm(list = ls())
 ```
@@ -36,7 +36,7 @@ rm(list = ls())
 
 Multiple climate data are available in the CFP. We downloaded and compared CHELSA, PRISM, and TerraClimate datasets extracted at GBIF occurrence locations. The comparison suggests different climate datasets are highly correlated with each other.
 
-```{r clim-data-fig, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in CFP. Each point corresponds to a species occurrence from the GBIF data. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
+```{r clim-data-fig, fig.width=10, fig.height=10, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in CFP. Each point corresponds to a species occurrence from the GBIF data. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
 source("scripts/compare-clim-data.R")
 chelsa_prism_gg / chelsa_terraclim_gg
 rm(list = ls())
@@ -60,12 +60,12 @@ Multiple statistics (mean, median, lower 5%, upper 95%) can summarize species' c
 
 In the main text, we used the median because it is robust to outliers and most truthfully represents the niche centroids.
 
-```{r tmp-niche-fig, fig.cap="Species temperature niche statistics. Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with t-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."}
+```{r tmp-niche-fig, fig.width=10, fig.height=10, fig.cap="Species temperature niche statistics. Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with t-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."}
 source("scripts/compare-niche-stat.R")
 niche_tmp_gg
 ```
 
-```{r ppt-niche-fig, fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."}
+```{r ppt-niche-fig, fig.width=10, fig.height=10, fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."}
 niche_ppt_gg
 rm(list = ls())
 ```
@@ -76,9 +76,9 @@ Acquiring occurrence records from biodiversity database such as GBIF is subject 
 
 The full and thinned data yield highly correlated climate niche statistics.
 
-```{r thin-fig, fig.cap="Species climate niche estimates from full and thinned datasets. Each point corresponds to median temperature or precipitation for a species. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
+```{r thin-fig, fig.width=10, fig.cap="Species climate niche estimates from full and thinned datasets. Each point corresponds to median temperature or precipitation for a species. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
 source("scripts/compare-sp-thin.R")
-thin_tmp_gg / thin_ppt_gg
+thin_tmp_gg + thin_ppt_gg
 rm(list = ls())
 ```
 
@@ -92,11 +92,11 @@ source("scripts/plot-ind-spp.R")
 
 Show two example species.
 
-```{r cool-sp-fig, fig.cap="Example species *Danthonia californica*"}
+```{r cool-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Danthonia californica*"}
 niche_gg["Danthonia californica"]
 ```
 
-```{r warm-sp-fig, fig.cap="Example species *Stipa pulchra*"}
+```{r warm-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Stipa pulchra*"}
 niche_gg["Stipa pulchra"]
 ```
 
@@ -122,7 +122,7 @@ source("scripts/show-site-info.R")
 knitr::kable(site_tbl)
 ```
 
-```{r site-fig, fig.cap="Map of experimental and observational study sites with grassland cover (green)."}
+```{r site-fig, fig.height=10, fig.cap="Map of experimental and observational study sites with grassland cover (green)."}
 site_gg
 rm(list = ls())
 ```
