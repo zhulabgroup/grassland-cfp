@@ -33,7 +33,7 @@ exp_gg <- ggplot(jrgce_tbl) +
   geom_rect( # warming phrases
     data = warm_tbl,
     aes(xmin = start - .5, xmax = end + .5, fill = tag),
-    ymin = -Inf, ymax = Inf, alpha = 0.2
+    ymin = -Inf, ymax = Inf, alpha = 0.5
   ) +
   scale_fill_gradient(low = "white", high = "orange") +
   geom_boxplot( # treatment effects
@@ -60,7 +60,7 @@ exp_gg <- ggplot(jrgce_tbl) +
     y = NULL,
     color = "Warming treatment",
     title = "Jasper Ridge Global Change Experiment",
-    subtitle = "<span style='color:black'>Ambient vs. </span><span style='color:red'>warming treatment</span>"
+    # subtitle = "<span style='color:black'>Ambient vs. </span><span style='color:red'>warming treatment</span>"
   ) +
   theme(
     strip.background = element_blank(),
