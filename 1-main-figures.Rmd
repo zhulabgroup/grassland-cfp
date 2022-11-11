@@ -82,7 +82,7 @@ We applied a similar approach to these long-term observational data. In each yea
 The results show eight out of the 12 sites have significant increases in CTI and significant decreases in CPI over the years. The remaining four sites do not experience significant changes in CTI and CPI. These changes suggest that the majority of these grassland communities are shifting composition to be dominated by warmer and drier species, which is consistent with climate warming in the region.
 
 ```{r obs-fig, fig.width=10, fig.height=10*1.618}
-#| fig.cap="Grassland community shifts from long-term observations. Consistent with climate warming and drying, grassland communities shift dominance to warmer (CTI) and drier (CPI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."
+#| fig.cap="Grassland community shifts from long-term observations. Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* < 0.05)."
 obs_gg
 rm(list = ls())
 ```
