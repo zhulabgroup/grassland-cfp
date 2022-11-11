@@ -1,20 +1,26 @@
-# read data
+# read site data
 site_sf <- read_rds(.path$geo_site) %>%
   filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
   arrange(abbr) %>%
   add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
 
-# make table
+# make site table
 site_tbl <- site_sf %>%
-  as_tibble() # drop geometry
+  extract(geometry, c("latitude", "longitude"), "\\((.*), (.*)\\)", convert = TRUE) %>%
+  select(label = lab, name, latitude, longitude, grass_type, data_method) %>%
+  mutate(
+    name = if_else(label == "E/F", str_c(name, "/Serpentine"), name),
+    grass_type = if_else(label == "E/F", str_c(grass_type, "/Serpentine"), grass_type)
+  )
 
-# read geo data
+# read cfp data
 cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
   filter(
     NAME == "California Floristic Province",
     Type == "hotspot area"
   )
 
+# read grassland raster
 sds <- terra::sds(paste0(.path$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
 lc_ras <- raster::raster(sds[1])
 raster::extent(lc_ras) <- c(-180, 180, -90, 90)
