@@ -46,9 +46,9 @@ occ_sf <- bien_tbl %>%
 # assign dataset names
 dataset_vec <- c(
   bien = "BIEN",
-  cch = "eJepson (CCH)",
+  cch = "CCH",
   gbif = "GBIF",
-  inat = "iNaturalist"
+  inat = "iNat"
 )
 
 # compare sample sizes
