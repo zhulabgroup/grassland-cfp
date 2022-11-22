@@ -20,7 +20,7 @@ source("scripts/utils/setup.R")
 
 # Occurrence data sources
 
-Multiple occurrence data are available in the CFP. We downloaded and compared BIEN, CCH, GBIF, iNat occurrence datasets. The comparison shows that GBIF is the most comprehensive in terms of the record number and species number.
+Multiple occurrence data are available in the California Floristic Province (CFP). We downloaded and compared four species occurrence datasets: Botanical Information and Ecology Network (BIEN), Consortium of California Herbaria (CCH), Global Biodiversity Information Facility (GBIF), and iNaturalist (iNat). The comparison shows that GBIF is the most comprehensive in terms of the record number and species number.
 
 ```{r occ-data-tab}
 source("scripts/compare-occ-data.R")
@@ -62,12 +62,12 @@ Multiple statistics (mean, median, lower 5%, upper 95%) can summarize species' c
 
 In the main text, we used the median because it is robust to outliers and most truthfully represents the niche centroids.
 
-```{r tmp-niche-fig, fig.width=10, fig.height=10, fig.cap="Species temperature niche statistics. Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with t-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."}
+```{r tmp-niche-fig, fig.width=7, fig.height=7, fig.cap="Species temperature niche statistics. Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with t-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."}
 source("scripts/compare-niche-stat.R")
 niche_tmp_gg
 ```
 
-```{r ppt-niche-fig, fig.width=10, fig.height=10, fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."}
+```{r ppt-niche-fig, fig.width=7, fig.height=7, fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."}
 niche_ppt_gg
 rm(list = ls())
 ```
