@@ -26,7 +26,7 @@ source("scripts/plot-main-niche.R")
 
 We estimated species' climate niches from the GBIF occurrence data and CHELSA climate data in the California Floristic Province (CFP). In brief, we extracted the mean annual temperature and precipitation for each of the `r n_spp` species with more than 100 occurrences at each of the `r n_occ` locations. For each species, we then calculated the average (median) temperature and precipitation across all locations as its climate niche centroids. We visualized all the species in both the geographical space (longitude and latitude) and climate space (temperature and precipitation).
 
-For illustration, we chose two example species: *Danthonia californica* and *Stipa pulchra*. Both are important native species in California and abundantly distributed. *D. californica* (`r n_occ_cool` occurrences) is a northern species and occurs in cool and wet climates, while *S. pulchra* (`r n_occ_warm` occurrences) is a southern species and occurs in warm and dry climates. We visualized the two example species in the context of all the species.
+For illustration, we chose two example species: *Danthonia californica* and *Stipa pulchra*. Both are important native grass species in California and abundantly distributed. *D. californica* (`r n_occ_cool` occurrences) is a northern species and occurs in cool and wet climates, while *S. pulchra* (`r n_occ_warm` occurrences) is a southern species and occurs in warm and dry climates. We visualized the two example species in the context of all the species.
 
 Species distributions show clear patterns in both geographical space and climate space.
 

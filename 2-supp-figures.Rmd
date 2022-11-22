@@ -34,7 +34,7 @@ rm(list = ls())
 
 # Climate data sources
 
-Multiple climate data are available in the CFP. We downloaded and compared CHELSA, PRISM, and TerraClimate datasets extracted at GBIF occurrence locations. The comparison suggests different climate datasets are highly correlated with each other.
+Multiple climate data are available in the CFP. We downloaded and compared CHELSA, PRISM, and TerraClimate datasets extracted at GBIF occurrence locations. The comparison suggests that different climate datasets are highly correlated with each other.
 
 ```{r clim-data-fig, fig.width=10, fig.height=10, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in CFP. Each point corresponds to a GBIF occurrence location. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
 source("scripts/compare-clim-data.R")
@@ -117,7 +117,7 @@ rm(list = ls())
 
 # Site info
 
-We present experimental and observational site information in table and map. The map also shows grassland coverage (green) downloaded from the [land cover type data](https://lpdaac.usgs.gov/products/mcd12c1v006/).
+We present experimental and observational site information in table and map format. The map also shows grassland coverage (green) downloaded from the [land cover type data](https://lpdaac.usgs.gov/products/mcd12c1v006/).
 
 ```{r site-tab, tab.cap="Observational site information"}
 source("scripts/show-site-info.R")
