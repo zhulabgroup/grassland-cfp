@@ -36,7 +36,7 @@ rm(list = ls())
 
 Multiple climate data are available in the CFP. We downloaded and compared CHELSA, PRISM, and TerraClimate datasets extracted at GBIF occurrence locations. The comparison suggests that different climate datasets are highly correlated with each other.
 
-```{r clim-data-fig, fig.width=10, fig.height=10, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in CFP. Each point corresponds to a GBIF occurrence location. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
+```{r clim-data-fig, fig.width=10, fig.height=10, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in the CFP. Each point corresponds to a GBIF occurrence location. Brighter colors of hexagons indicate a greater number of data points. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
 source("scripts/compare-clim-data.R")
 chelsa_prism_gg / chelsa_terraclim_gg
 rm(list = ls())
