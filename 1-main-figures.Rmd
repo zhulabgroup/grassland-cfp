@@ -53,7 +53,7 @@ $$
 source("scripts/plot-main-exp.R")
 ```
 
-In the Jasper Ridge Global Change Experiment (JRGCE), treatments consisted of four global change factors---temperature, precipitation, CO~2~, and nitrogen---at either ambient or an elevated level, applied in a complete factorial, randomized block design with eight replicates. Thirty-six circular plots 2 m in diameter, subdivided into four equal-sized subplots, were established in the summer of 1997. The 1997‒1998 growing season (year 1) was a pre-treatment year, after which treatments were applied for 16 consecutive growing seasons (years 2‒17), from the time of germination (November) to plant senescence (June).
+In the Jasper Ridge Global Change Experiment (JRGCE), treatments consisted of four global change factors---temperature, precipitation, CO~2~, and nitrogen---at either ambient or an elevated level, applied in a complete factorial, randomized block design with eight replicates. Thirty-six circular plots 2 m in diameter, subdivided into four equal-sized subplots, were established in the summer of 1997. The 1997‒1998 growing season was a pre-treatment year, after which treatments were applied for 16 consecutive growing seasons (1999-2014), from the time of germination (November) to plant senescence (June).
 
 Here we focus on the warming treatment, which was applied via heaters suspended above the circular plots. The warming treatment increased from +80 W m^--2^ (years 2‒5), to +100 W m^--2^ (years 6‒12), to +250 W m^--2^ (years 13‒17). In total, there were `r n_plt["ambient"]` ambient subplots and `r n_plt["warming"]` warming subplots. (Explain lumping all non-warming treatments to arrive at large sample sizes.)
 
@@ -64,7 +64,7 @@ In each year, for each subplot $i$, species $j$, we assigned the pin count as sp
 The results show warmed plots have higher CTI and lower CPI compared to ambient plots, suggesting warmed plots are dominated by species likely to occur in warmer and drier climates. The differences become more significant with stronger heating treatments over three phases. Another explanation might be the accumulation effects of the grassland community after receiving long-term warming treatments.
 
 ```{r exp-fig, fig.width=10, fig.height=6.18}
-#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, background orange shades denote the pre-treatment year 1998, phase I heating +80 W m^–2^ in 1999-2002, phase II heating +100 W m^–2^ in 2003-2009, and phase III heating +250 W m^–2^ in 2010-2014, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, background orange shades denote phase I heating +80 W m^–2^ in 1999-2002, phase II heating +100 W m^–2^ in 2003-2009, and phase III heating +250 W m^–2^ in 2010-2014, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
 exp_gg
 rm(list = ls())
 ```

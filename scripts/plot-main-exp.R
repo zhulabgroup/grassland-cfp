@@ -5,7 +5,7 @@ niche_tbl <- read_rds(.path$sum_niche) %>%
 
 # JRGCE data
 jrgce_tbl <- read_rds(.path$com_exp) %>%
-  filter(site == "jrgce") %>%
+  filter(site == "jrgce", year >= 1999) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -23,8 +23,7 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
 # warming phrases: +80 W m–2 (years 2‒5), to +100 W m–2 (years 6‒12), to +250 W m–2 (years 13‒17)
 warm_tbl <- tribble(
   ~tag, ~name, ~start, ~end,
-  0, "Pre", 1998, 1998,
-  1, "Phase I", 1999, 2002,
+  1, "Phase I", -Inf, 2002,
   2, "Phase II", 2003, 2009,
   3, "Phase III", 2010, Inf # end in 2014, but set to Inf to fill space
 )
@@ -35,7 +34,7 @@ exp_gg <- ggplot(jrgce_tbl) +
     aes(xmin = start - .5, xmax = end + .5, fill = tag),
     ymin = -Inf, ymax = Inf, alpha = 0.5
   ) +
-  scale_fill_gradient(low = "white", high = "orange") +
+  scale_fill_gradient(low = "antiquewhite", high = "orange") +
   geom_boxplot( # treatment effects
     aes(x = year, y = com_idx_value, col = treat_T, group = interaction(treat_T, year))
   ) +
