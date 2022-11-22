@@ -26,11 +26,6 @@ niche_tbl <- niche_tbl %>%
   ))
 
 # create panels
-# set up plot params using alphabetical species type names
-color_vec <- c(cool = "blue", other = gray(.9), warm = "red")
-shape_vec <- c(cool = 19, other = 20, warm = 19)
-alpha_vec <- c(cool = .6, other = .005, warm = .6)
-
 occ_geog_gg <-
   ggplot() +
   geom_sf(
@@ -45,9 +40,9 @@ occ_geog_gg <-
     data = gbif_chelsa_sf,
     aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
-  scale_color_manual(values = color_vec) +
-  scale_shape_manual(values = shape_vec) +
-  scale_alpha_manual(values = alpha_vec) +
+  scale_color_manual(values = c(cool = "blue", other = gray(.9), warm = "red")) +
+  scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
+  scale_alpha_manual(values = c(cool = .1, other = .002, warm = .1)) + # more transparent
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
@@ -55,13 +50,20 @@ occ_geog_gg <-
   guides(color = "none", shape = "none", alpha = "none")
 
 occ_clim_gg <-
-  ggplot(data = gbif_chelsa_sf, mapping = aes(tmp, ppt)) +
+  ggplot(
+    data = gbif_chelsa_sf %>%
+      filter(
+        tmp > quantile(tmp, .0001), tmp < quantile(tmp, .9999), # remove extreme climate points for plotting
+        ppt > quantile(ppt, .0001), ppt < quantile(ppt, .9999)
+      ),
+    mapping = aes(tmp, ppt)
+  ) +
   geom_point(
     aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
-  scale_color_manual(values = color_vec) +
-  scale_shape_manual(values = shape_vec) +
-  scale_alpha_manual(values = alpha_vec) +
+  scale_color_manual(values = c(cool = "blue", other = gray(.9), warm = "red")) +
+  scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
+  scale_alpha_manual(values = c(cool = .6, other = .005, warm = .6)) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none", shape = "none", alpha = "none")
 
@@ -82,9 +84,7 @@ clim_niche_gg <-
   geom_point() +
   geom_errorbar() +
   geom_errorbarh() +
-  scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
-  scale_x_continuous(expand = expansion(mult = .1)) + # expand padding to show label
-  scale_y_continuous(expand = expansion(mult = .1)) +
+  scale_color_manual(values = c(cool = "blue", other = gray(.75), warm = "red")) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none") +
   geom_label(
