@@ -15,7 +15,7 @@ site_vec <- c(
   angelo = "Angelo Coast",
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
-  jasper = "Jasper Ridge",
+  jasper = "Jasper Ridge Serpentine",
   mclann = "McLaughlin Annual",
   mclserp = "McLaughlin Serpentine",
   morganterritory = "Morgan Territory",
@@ -43,9 +43,11 @@ samp_size_tbl <- obs_tbl %>%
   )
 
 # define plotting function
-plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) {
+plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
   site_lab <- site_vec[site_name]
+  site_lab <- str_c(LETTERS[which(site_vec == site_lab)], site_lab, sep = ". ")
+
   site_tbl <- tbl %>%
     filter(site == site_name) %>%
     group_by(com_idx_name) %>%
@@ -57,7 +59,7 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) 
     unnest(cols = data)
 
   # plot
-  ggplot(site_tbl, aes(year, com_idx_value)) +
+  out_gg <- ggplot(site_tbl, aes(year, com_idx_value)) +
     geom_boxplot(aes(group = year), color = "gray") +
     geom_smooth( # add lm trend line when significant
       data = . %>% filter(p_val < 0.05),
@@ -82,6 +84,13 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL) 
       strip.placement = "outside",
       plot.title = element_text(size = 11)
     )
+
+  # remove yr axis text
+  if (yr_axis) {
+    return(out_gg)
+  } else {
+    return(out_gg + theme(axis.text.x = element_blank()))
+  }
 }
 
 # apply plotting function, make individual panels, combine
@@ -94,23 +103,18 @@ obs_gg <-
   plot_cwm(obs_idx_tbl, "mclserp") +
   plot_cwm(obs_idx_tbl, "morganterritory") +
   plot_cwm(obs_idx_tbl, "pleasantonridge") +
-  plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-  plot_cwm(obs_idx_tbl, "swanton") +
-  plot_cwm(obs_idx_tbl, "ucsc") +
-  plot_cwm(obs_idx_tbl, "vascocaves") +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(design = "
-  ABCD
-  EFGH
-  IJKL
-  ")
+  plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "swanton", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "ucsc", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "vascocaves", yr_axis = TRUE) +
+  plot_layout(ncol = 4, nrow = 3)
 
 # save figure file
 if (FALSE) {
   ggsave(
     plot = obs_gg,
     filename = "figures/fig3-obs.png",
-    width = 10,
-    height = 10 * 1.618
+    width = 12,
+    height = 12
   )
 }
