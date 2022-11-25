@@ -2,6 +2,7 @@
 if (!require("pacman")) {
   install.packages("pacman")
 }
+pacman::p_install(rnaturalearth)
 pacman::p_load(tidyverse, sf, patchwork)
 
 # set parameters
