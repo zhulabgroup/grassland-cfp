@@ -1,5 +1,3 @@
 # Grassland Project
 
-CA grassland community change from 8 long-term sites.
-
-
+CA grassland community change from long-term experimental and observational sites
