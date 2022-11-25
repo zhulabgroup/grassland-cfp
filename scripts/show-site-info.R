@@ -37,7 +37,7 @@ grass_df <- raster::as.data.frame(grass_ras, xy = T) %>%
 
 # make map
 set.seed(618)
-site_gg <-
+site_map_gg <-
   ggplot() +
   geom_sf(
     data = rnaturalearth::ne_states(
@@ -77,3 +77,13 @@ site_gg <-
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40))
+
+# save figure
+if (.fig_save) {
+  ggsave(
+    plot = site_map_gg,
+    filename = "figures/fig-supp-site-map.pdf",
+    width = 7,
+    height = 10
+  )
+}

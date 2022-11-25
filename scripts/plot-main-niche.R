@@ -108,10 +108,10 @@ niche_gg <- occ_geog_gg + occ_clim_gg + clim_niche_gg +
   ")
 
 # save figure file
-if (FALSE) {
+if (.fig_save) {
   ggsave(
     plot = niche_gg,
-    filename = "figures/fig1-niche.png",
+    filename = "figures/fig-main-niche.pdf",
     width = 7.5,
     height = 7.5 * 1.618
   )

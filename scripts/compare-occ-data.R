@@ -89,3 +89,13 @@ occ_comp_gg <- ggplot() +
     strip.background = element_blank(),
     # strip.text.x = element_text(hjust = 0)
   )
+
+# save figure file
+if (.fig_save) {
+  ggsave(
+    plot = occ_comp_gg,
+    filename = "figures/fig-supp-occ-comp.pdf",
+    width = 10,
+    height = 7
+  )
+}

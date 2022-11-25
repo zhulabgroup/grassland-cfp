@@ -31,3 +31,19 @@ niche_ppt_gg <-
     strip.background = element_blank(),
     strip.placement = "outside"
   )
+
+# save figure file
+if (.fig_save) {
+  ggsave(
+    plot = niche_tmp_gg,
+    filename = "figures/fig-supp-niche-tmp.pdf",
+    width = 7,
+    height = 7
+  )
+  ggsave(
+    plot = niche_ppt_gg,
+    filename = "figures/fig-supp-niche-ppt.pdf",
+    width = 7,
+    height = 7
+  )
+}

@@ -47,3 +47,6 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
   sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds"
 )
+
+# save figures?
+.fig_save <- FALSE

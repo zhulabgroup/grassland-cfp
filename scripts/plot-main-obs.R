@@ -110,10 +110,10 @@ obs_gg <-
   plot_layout(ncol = 4, nrow = 3)
 
 # save figure file
-if (FALSE) {
+if (.fig_save) {
   ggsave(
     plot = obs_gg,
-    filename = "figures/fig3-obs.png",
+    filename = "figures/fig-main-obs.pdf",
     width = 12,
     height = 12
   )

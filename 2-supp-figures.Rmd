@@ -38,7 +38,7 @@ Multiple climate data are available in the CFP. We downloaded and compared CHELS
 
 ```{r clim-data-fig, fig.width=10, fig.height=10, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in the CFP. Each point corresponds to a GBIF occurrence location. Brighter colors of hexagons indicate a greater number of data points. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
 source("scripts/compare-clim-data.R")
-chelsa_prism_gg / chelsa_terraclim_gg
+clim_comp_gg
 rm(list = ls())
 ```
 
@@ -80,7 +80,7 @@ The full and thinned data yield highly correlated climate niche statistics.
 
 ```{r thin-fig, fig.width=10, fig.cap="Species climate niche estimates from full and thinned datasets. Each point corresponds to median temperature or precipitation for a species. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
 source("scripts/compare-sp-thin.R")
-thin_tmp_gg + thin_ppt_gg
+thin_comp_gg
 rm(list = ls())
 ```
 
@@ -128,7 +128,7 @@ site_tbl %>%
 ```
 
 ```{r site-fig, fig.height=10, fig.cap="Map of experimental and observational study sites with grassland cover (green), from MODIS/Terra+Aqua Land Cover Type. (A) Angelo Coast, (B) Carrizo Plain, (C) Elkhorn Slough, (D) Jasper Ridge, (E/F) McLaughlin Annual/Serpentine, (G) Morgan Territory, (H) Pleasanton Ridge, (I) Sunol, (J) Swanton Ranch, (K) UC Santa Cruz, (L) Vasco Caves."}
-site_gg
+site_map_gg
 rm(list = ls())
 ```
 
@@ -138,6 +138,6 @@ For the observational grassland communities, the CTI and CPI changes are consist
 
 ```{r plot-site-climate, fig.width=12, fig.height=12, fig.cap="Climate change in observational sites. Mean annual temperature and precipitation are extracted from CHELSA. Trends are summarized by regression lines, solid p < 0.05, dashed p > 0.05."}
 source("scripts/plot-site-climate.R")
-site_cc_gg
+site_clim_gg
 rm(list = ls())
 ```

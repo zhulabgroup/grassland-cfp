@@ -39,3 +39,15 @@ thin_ppt_gg <-
     strip.background = element_blank(),
     strip.text.x = element_blank()
   )
+
+thin_comp_gg <- thin_tmp_gg + thin_ppt_gg
+
+# save figure
+if (.fig_save) {
+  ggsave(
+    plot = thin_comp_gg,
+    filename = "figures/fig-supp-thin-comp.pdf",
+    width = 10,
+    height = 7
+  )
+}

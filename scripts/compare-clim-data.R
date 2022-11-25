@@ -109,3 +109,15 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
     strip.background = element_blank(),
     strip.text.x = element_blank()
   )
+
+clim_comp_gg <- chelsa_prism_gg / chelsa_terraclim_gg
+
+# save figure file
+if (.fig_save) {
+  ggsave(
+    plot = clim_comp_gg,
+    filename = "figures/fig-supp-clim-comp.pdf",
+    width = 10,
+    height = 10
+  )
+}

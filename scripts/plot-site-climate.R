@@ -83,7 +83,7 @@ plot_cc <- function(data, site_abbr,
   }
 }
 
-site_cc_gg <-
+site_clim_gg <-
   plot_cc(clim_tbl, "angelo", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
   plot_cc(clim_tbl, "carrizo") +
   plot_cc(clim_tbl, "elkhorn") +
@@ -97,3 +97,13 @@ site_cc_gg <-
   plot_cc(clim_tbl, "ucsc", yr_axis = TRUE) +
   plot_cc(clim_tbl, "vascocaves", yr_axis = TRUE) +
   plot_layout(ncol = 4, nrow = 3)
+
+# save figure
+if (.fig_save) {
+  ggsave(
+    plot = site_map_gg,
+    filename = "figures/fig-supp-site-map.pdf",
+    width = 12,
+    height = 12
+  )
+}
