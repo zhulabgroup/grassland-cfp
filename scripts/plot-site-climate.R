@@ -47,7 +47,7 @@ plot_cc <- function(data, site_abbr,
 
   # plot
   out_gg <- ggplot(site_tbl, aes(year, clim_val)) +
-    geom_point(color = gray(.5, .5), shape = 20) +
+    geom_point(color = "gray", shape = 20) +
     geom_smooth(
       aes(linetype = ifelse(p_val < 0.05, "sig", "ns")),
       method = "lm", formula = y ~ x, se = FALSE,
