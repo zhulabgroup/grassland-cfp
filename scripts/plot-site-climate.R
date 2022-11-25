@@ -25,9 +25,11 @@ site_vec <- c(
 
 # define plotting function
 plot_cc <- function(data, site_abbr,
-                    tmp_lab = "", ppt_lab = "", yr_lab = NULL) {
+                    tmp_lab = "", ppt_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
   site_lab <- site_vec[site_abbr]
+  site_lab <- str_c(LETTERS[which(site_vec == site_lab)], site_lab, sep = ". ")
+
   site_tbl <- data %>%
     filter(abbr == site_abbr) %>%
     select(abbr, year, tmp, ppt) %>%
@@ -43,8 +45,9 @@ plot_cc <- function(data, site_abbr,
     ) %>%
     unnest(cols = data)
 
-  ggplot(site_tbl, aes(year, clim_val)) +
-    geom_point(alpha = .25) +
+  # plot
+  out_gg <- ggplot(site_tbl, aes(year, clim_val)) +
+    geom_point(color = gray(.5, .5), shape = 20) +
     geom_smooth(
       aes(linetype = ifelse(p_val < 0.05, "sig", "ns")),
       method = "lm", formula = y ~ x, se = FALSE,
@@ -60,6 +63,7 @@ plot_cc <- function(data, site_abbr,
       strip.position = "left",
       labeller = labeller(clim_var = c(tmp = tmp_lab, ppt = ppt_lab))
     ) +
+    expand_limits(x = c(min(data$year) - 1, max(data$year + 1))) +
     labs(
       title = site_lab,
       x = yr_lab, y = NULL
@@ -70,6 +74,13 @@ plot_cc <- function(data, site_abbr,
       strip.placement = "outside",
       plot.title = element_text(size = 11)
     )
+
+  # remove yr axis text
+  if (yr_axis) {
+    return(out_gg)
+  } else {
+    return(out_gg + theme(axis.text.x = element_blank()))
+  }
 }
 
 site_cc_gg <-
@@ -81,13 +92,8 @@ site_cc_gg <-
   plot_cc(clim_tbl, "mclserp") +
   plot_cc(clim_tbl, "morganterritory") +
   plot_cc(clim_tbl, "pleasantonridge") +
-  plot_cc(clim_tbl, "sunol", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
-  plot_cc(clim_tbl, "swanton") +
-  plot_cc(clim_tbl, "ucsc") +
-  plot_cc(clim_tbl, "vascocaves") +
-  plot_annotation(tag_levels = "A") +
-  plot_layout(design = "
-  ABCD
-  EFGH
-  IJKL
-  ")
+  plot_cc(clim_tbl, "sunol", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "swanton", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "ucsc", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "vascocaves", yr_axis = TRUE) +
+  plot_layout(ncol = 4, nrow = 3)
