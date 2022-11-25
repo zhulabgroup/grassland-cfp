@@ -37,7 +37,8 @@ grass_df <- raster::as.data.frame(grass_ras, xy = T) %>%
 
 # make map
 set.seed(618)
-site_gg <- ggplot() +
+site_gg <-
+  ggplot() +
   geom_sf(
     data = rnaturalearth::ne_states(
       country = c("Mexico", "United States of America"),
@@ -69,7 +70,7 @@ site_gg <- ggplot() +
     fill = NA,
     min.segment.length = 0,
     max.overlaps = Inf,
-    label.padding = unit(.1, "lines"),
+    label.padding = unit(.25, "lines"),
     label.size = NA
   ) +
   labs(x = "Longitude", y = "Latitude") +
