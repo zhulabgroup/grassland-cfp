@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 # link paths
 if (!dir.exists("data")) { # create symlink; final release needs to copy relevant files
-  system("ln -s /data/ZHULAB/grassland data")
+  system("ln -s ~/.turbo/grassland data")
 }
 
 # data path tags are
