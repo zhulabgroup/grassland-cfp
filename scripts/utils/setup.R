@@ -45,6 +45,6 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-11-01.rds",
   occ_inat = "data/occurrence/inat/inat-cfp-2022-11-01.rds",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
-  sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
+  sum_niche_fig = "data/output/master/species-climate-niche-2022-11-01.pdf",
   sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds"
 )
