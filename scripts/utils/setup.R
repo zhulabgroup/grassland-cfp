@@ -2,7 +2,8 @@
 if (!require("pacman")) {
   install.packages("pacman")
 }
-pacman::p_install(rnaturalearth)
+pacman::p_load(bookdown, GGally, ggpubr, ggtext, ggthemes, googledrive, markdown, raster, rmarkdown, rnaturalearth, tidyverse, viridis, sf, patchwork)
+pacman::p_unload("all")
 pacman::p_load(tidyverse, sf, patchwork)
 
 # set parameters
