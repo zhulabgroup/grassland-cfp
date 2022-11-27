@@ -106,7 +106,7 @@ A collection of figures (one page per species) is provided in the supplement.
 
 ```{r, eval=FALSE}
 # runtime ~= 4 min
-pdf("figures/species-climate-niche.pdf", width = 8, height = 8 * .618)
+pdf(.path$out_fig_niche, width = 8, height = 8 * .618)
 print(niche_gg)
 dev.off()
 ```

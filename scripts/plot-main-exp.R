@@ -72,7 +72,7 @@ exp_gg <- ggplot(jrgce_tbl) +
 if (.fig_save) {
   ggsave(
     plot = exp_gg,
-    filename = "figures/fig-main-exp.pdf",
+    filename = str_c(.path$out_fig, "fig-main-exp.pdf"),
     width = 10,
     height = 6.18
   )

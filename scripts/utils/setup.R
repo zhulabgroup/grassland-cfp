@@ -26,6 +26,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 # - `com`: grassland community data
 # - `geo`: geography data, including GIS and climate
 # - `occ`: occurrence data
+# - `out`: output folder
 # - `sum`: summary data, e.g., niche estimates
 .path <- list( # hidden variable won't be removed
   cli_chelsa = "data/climate/chelsa/2022-11-09/",
@@ -46,6 +47,8 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   occ_cch = "data/occurrence/cch/cch-cfp-2022-11-08.rds",
   occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-11-01.rds",
   occ_inat = "data/occurrence/inat/inat-cfp-2022-11-01.rds",
+  out_fig = "data/output/manuscript/",
+  out_fig_niche = "data/output/manuscript/species-climate-niche.pdf",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
   sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
   sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds"

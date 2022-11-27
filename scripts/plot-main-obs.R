@@ -113,7 +113,7 @@ obs_gg <-
 if (.fig_save) {
   ggsave(
     plot = obs_gg,
-    filename = "figures/fig-main-obs.pdf",
+    filename = str_c(.path$out_fig, "fig-main-obs.pdf"),
     width = 12,
     height = 12
   )

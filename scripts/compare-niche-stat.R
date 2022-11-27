@@ -36,13 +36,13 @@ niche_ppt_gg <-
 if (.fig_save) {
   ggsave(
     plot = niche_tmp_gg,
-    filename = "figures/fig-supp-niche-tmp.pdf",
+    filename = str_c(.path$out_fig, "fig-supp-niche-tmp.pdf"),
     width = 7,
     height = 7
   )
   ggsave(
     plot = niche_ppt_gg,
-    filename = "figures/fig-supp-niche-ppt.pdf",
+    filename = str_c(.path$out_fig, "fig-supp-niche-ppt.pdf"),
     width = 7,
     height = 7
   )

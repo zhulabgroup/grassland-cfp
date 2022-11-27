@@ -116,7 +116,7 @@ clim_comp_gg <- chelsa_prism_gg / chelsa_terraclim_gg
 if (.fig_save) {
   ggsave(
     plot = clim_comp_gg,
-    filename = "figures/fig-supp-clim-comp.pdf",
+    filename = str_c(.path$out_fig, "fig-supp-clim-comp.pdf"),
     width = 10,
     height = 10
   )

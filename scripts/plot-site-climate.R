@@ -102,7 +102,7 @@ site_clim_gg <-
 if (.fig_save) {
   ggsave(
     plot = site_map_gg,
-    filename = "figures/fig-supp-site-map.pdf",
+    filename = str_c(.path$out_fig, "fig-supp-site-map.pdf"),
     width = 12,
     height = 12
   )
