@@ -38,16 +38,33 @@ occ_geog_gg <-
   ) +
   geom_sf(
     data = gbif_chelsa_sf,
-    aes(color = species_type, shape = species_type, alpha = species_type)
+    color = gray(0.5),
+    shape = 20,
+    alpha = 0.01
   ) +
-  scale_color_manual(values = c(cool = "blue", other = gray(.9), warm = "red")) +
-  scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
-  scale_alpha_manual(values = c(cool = .1, other = .002, warm = .1)) + # more transparent
+  geom_sf(
+    data = gbif_chelsa_sf %>% 
+      filter(species_type == "cool") %>% 
+      st_buffer(1e4) %>% # buffer to better show overlapping points
+      st_union(),
+    fill = "blue",
+    color = NA,
+    alpha = 0.4
+  ) +
+  geom_sf(
+    data = gbif_chelsa_sf %>% 
+      filter(species_type == "warm") %>% 
+      st_buffer(1e4) %>% # buffer to better show overlapping points 
+      st_union(),
+    fill = "red",
+    color = NA,
+    alpha = 0.4
+  ) +
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
   labs(x = "Longitude", y = "Latitude") +
-  guides(color = "none", shape = "none", alpha = "none")
+  guides(fill = "none", color = "none", shape = "none", alpha = "none")
 
 occ_clim_gg <-
   ggplot(
@@ -61,9 +78,9 @@ occ_clim_gg <-
   geom_point(
     aes(color = species_type, shape = species_type, alpha = species_type)
   ) +
-  scale_color_manual(values = c(cool = "blue", other = gray(.9), warm = "red")) +
+  scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
-  scale_alpha_manual(values = c(cool = .6, other = .005, warm = .6)) +
+  scale_alpha_manual(values = c(cool = .6, other = .01, warm = .6)) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(color = "none", shape = "none", alpha = "none")
 
@@ -111,7 +128,7 @@ niche_gg <- occ_geog_gg + occ_clim_gg + clim_niche_gg +
 if (.fig_save) {
   ggsave(
     plot = niche_gg,
-    filename = str_c(.path$out_fig, "fig-main-niche.pdf"),
+    filename = str_c(.path$out_fig, "fig-main-niche.png"),
     width = 7.5,
     height = 7.5 * 1.618
   )
