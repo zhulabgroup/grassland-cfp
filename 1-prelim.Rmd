@@ -23,7 +23,7 @@ source("scripts/utils/setup.R")
 Let's get community climate indexes: community temperature index (CTI) and community precipitation index (CPI) estimated from [GBIF](https://www.gbif.org/) occurrence data by Josie. Modified from Josie's code `Com_MajorAnalyses.Rmd` section `# Changes in wCTI over time`. Then plot CTI and CPI for all species.
 
 ```{r josie-niche-plot, fig.cap="Species climate niches estimated from GBIF by Josie"}
-gbif_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+gbif_dat <- read_csv("data/community/raw/JosieGitHub/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   select(-`...1`) %>%
   filter(
     species.name != "Linanthus jepsonii",
@@ -417,7 +417,7 @@ The objectives are
 Get plot-level and site-level summaries.
 
 ```{r, fig.cap="Replicate Josie's Figure CTI"}
-josie_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
+josie_dat <- read_csv("data/community/raw/JosieGitHub/CAGrasslandCommunityChange-master/Analysis/CTI Data/AllSite_CTI_08_2020.csv") %>%
   select(-`...1`) %>%
   filter(
     species.name != "Linanthus jepsonii",
@@ -465,7 +465,7 @@ Note that the goal was to replicate Josie's manuscript Figure CTI. The data look
 Then, get site climate data. Modified from Josie's code `Com_MajorAnalyses.Rmd` subsection `## CTI vs actual temp`.
 
 ```{r, fig.cap="Replicate Josie's Figure weather"}
-clim_dat <- read_csv("data/archives/CAGrasslandCommunityChange-master/Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
+clim_dat <- read_csv("data/community/raw/JosieGitHub/CAGrasslandCommunityChange-master/Analysis/ClimData/PRISM_wtryr_alldata.csv") %>%
   select(-`...1`)
 
 clim_site_sum <- josie_dat %>%
