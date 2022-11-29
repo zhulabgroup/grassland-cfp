@@ -129,3 +129,20 @@ rm(list = ls())
 ```
 
 Note that subsetting climate data to the observational years leads to messy patterns. It doesn't make sense because the time series is too short.
+
+## Site CTI/CPI ~ climate (temp/precip)
+
+Explore site CTI/CPI values with site temperature/precipitation values.
+
+```{r}
+source("scripts/correlate-cwm-clim.R")
+```
+
+```{r plot-cti-tmp, fig.cap="CTI and temperature correlation among observational sites, each point is a year."}
+cti_gg
+```
+
+```{r plot-cpi-ppt, fig.cap="CPI and precipitation correlation among observational sites, each point is a year."}
+cpi_gg
+rm(list = ls())
+```
