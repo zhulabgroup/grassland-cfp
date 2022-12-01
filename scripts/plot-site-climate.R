@@ -7,6 +7,11 @@ clim_tbl <- read_rds(.path$cli_chelsa_annual) %>%
     "swanton", "ucsc", "vascocaves"
   ))
 
+# get observational data year range
+obs_tbl <- read_rds(.path$com_obs) %>%
+  group_by(site) %>%
+  summarize(yr_min = min(year), yr_max = max(year))
+
 # setup site labels
 site_vec <- c(
   angelo = "Angelo Coast",
@@ -46,10 +51,20 @@ plot_cc <- function(data, site_abbr,
     unnest(cols = data)
 
   # plot
-  out_gg <- ggplot(site_tbl, aes(year, clim_val)) +
-    geom_point(color = "gray", shape = 20) +
+  out_gg <-
+    ggplot(site_tbl) +
+    geom_rect( # highlight observational years
+      data = obs_tbl %>% filter(site == site_abbr),
+      aes(xmin = yr_min, xmax = yr_max),
+      ymin = -Inf, ymax = Inf,
+      fill = "orange", alpha = 0.25
+    ) +
+    geom_point(
+      aes(x = year, y = clim_val),
+      color = "gray", shape = 20
+    ) +
     geom_smooth(
-      aes(linetype = ifelse(p_val < 0.05, "sig", "ns")),
+      aes(x = year, y = clim_val, linetype = ifelse(p_val < 0.05, "sig", "ns")),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
