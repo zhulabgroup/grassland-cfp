@@ -76,3 +76,37 @@ exp_tbl %>%
   ) %>%
   mutate(across(Ambient:Diff, signif, 4)) %>%
   knitr::kable()
+
+# obs data
+obs_tbl <- read_rds(.path$com_obs) %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund)
+  )
+
+obs_tbl %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate(
+    cti_lm = map(
+      data,
+      ~ lm(tmp_com_mean ~ year, data = .) %>%
+        broom::tidy() %>%
+        filter(term == "year") %>%
+        select(cti_estimate = estimate, cti_std_err = std.error, cti_p_val = p.value) %>%
+        # mutate(across(everything(), signif, 4)) %>%
+        mutate(cti_sig = gtools::stars.pval(cti_p_val))
+    ),
+    cpi_lm = map(
+      data,
+      ~ lm(ppt_com_mean ~ year, data = .) %>%
+        broom::tidy() %>%
+        filter(term == "year") %>%
+        select(cpi_estimate = estimate, cpi_std_err = std.error, cpi_p_val = p.value) %>%
+        # mutate(across(everything(), signif, 4)) %>%
+        mutate(cpi_sig = gtools::stars.pval(cpi_p_val))
+    )
+  ) %>%
+  unnest(cols = c(cti_lm, cpi_lm))
