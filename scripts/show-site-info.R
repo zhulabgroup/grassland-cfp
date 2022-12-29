@@ -23,9 +23,6 @@ cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
 # read grassland raster
 sds <- terra::sds(paste0(.path$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
 lc_ras <- raster::raster(sds[1])
-raster::extent(lc_ras) <- c(-180, 180, -90, 90)
-raster::projection(lc_ras) <- sp::CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
-lc_ras <- raster::flip(lc_ras)
 lc_ras <- raster::crop(lc_ras, raster::extent(cfp_sf))
 lc_ras <- raster::mask(lc_ras, cfp_sf)
 
