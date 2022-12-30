@@ -10,14 +10,14 @@ plot_cfp_cc<-function(param) {
     highcol<-"red"
     lowcol<-"blue"
   }
-  if(param == "pr") {
-    title <- "Trend in total precipitation"
+  if(param == "vpd") {
+    title <- "Trend in maximum vapor pressure deficit"
     unit <- expression("Pa")
     highcol<-"red"
     lowcol<-"blue"
   }
   if(param == "pr") {
-    title <- "Trend in maximum vapor pressure deficit"
+    title <- "Trend in total precipitation"
     unit <- expression("kg m"^"-2"~"year"^"-1"~"/year")
     highcol<-"blue"
     lowcol<-"red"
