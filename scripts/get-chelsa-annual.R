@@ -16,9 +16,6 @@ cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
   )
 
 # annual metric
-cl <- makeCluster(length(1980:2019))
-registerDoSNOW(cl)
-  
 for (param in param_list) {
   annual_list<-vector(mode="list")
   for (year in 1980:2019)  {

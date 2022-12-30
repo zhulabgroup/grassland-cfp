@@ -41,11 +41,7 @@ A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait value
 Show available sampling year for plot by site for experimental data.
 
 ```{r data-avail}
-read_rds(.path$com_exp) %>%
-  distinct(site, plot, year) %>%
-  ggplot(aes(year, plot)) +
-  geom_point() +
-  facet_wrap(~site, scales = "free")
+source("scripts/plot-data-availability.R")
 ```
 
 Calculate CWM using niche estimates for experimental and observational data.
