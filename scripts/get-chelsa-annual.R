@@ -42,12 +42,12 @@ for (param in param_list) {
     print(year)
            }
   annual_allyears<-raster::stack(annual_list)
-  raster::writeRaster(annual_allyears,paste0(.path$cli_chelsa_annual, param, ".nc"), format="CDF")
+  raster::writeRaster(annual_allyears,paste0(.path$cli_chelsa_cfp_annual, param, ".nc"), format="CDF")
   
   pacman::p_load(raster)
   trend <- VoCC::tempTrend(annual_allyears, th = 10)
   pacman::p_unload(raster)
-  raster::writeRaster(trend,paste0(.path$cli_chelsa_annual, param, "_trend.nc"), format="CDF")
+  raster::writeRaster(trend,paste0(.path$cli_chelsa_cfp_annual, param, "_trend.nc"), format="CDF")
   
 }
 
@@ -70,7 +70,7 @@ for (param in param_list) {
     monthly_dat <- raster::extract(sta, sites)
 
     if (param == "tas") {
-      monthly_dat_tr <- monthly_dat / 10 - 273
+      monthly_dat_tr <- monthly_dat / 10 - 273.15
       val_year <- data.frame(id = 1:nrow(sites), year = year, value = monthly_dat_tr %>% rowMeans())
     }
     if (param == "pr") {
