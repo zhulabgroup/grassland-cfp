@@ -29,8 +29,17 @@ lc_ras <- raster::mask(lc_ras, cfp_sf)
 grass_ras <- lc_ras
 grass_ras[grass_ras != 10] <- NA # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
 grass_ras[grass_ras == 10] <- 1
-grass_df <- raster::as.data.frame(grass_ras, xy = T) %>%
-  drop_na()
+grass_df <- raster::as.data.frame(grass_ras, xy = T) 
+
+# estimate grassland proportion
+lc_ras %>% 
+  raster::as.data.frame(xy = T) %>%
+  drop_na() %>% 
+  group_by(Majority_Land_Cover_Type_1) %>% 
+  summarise(count=n()) %>% 
+  ungroup() %>% 
+  mutate(proportion=count/sum(count)) %>% 
+  arrange(desc(proportion))
 
 # make map
 set.seed(618)
@@ -49,8 +58,8 @@ site_map_gg <-
     color = alpha("black", .3),
     fill = alpha("white", .1)
   ) +
-  geom_raster(
-    data = grass_df,
+  geom_tile(
+    data = grass_df %>% drop_na(),
     aes(x = x, y = y),
     fill = "yellow green"
   ) +
