@@ -2,7 +2,10 @@
 if (!require("pacman")) {
   install.packages("pacman")
 }
-pacman::p_load(tidyverse, sf, patchwork)
+if (!require("VoCC")) {
+  devtools::install_github("JorGarMol/VoCC", dependencies = TRUE, build_vignettes = FALSE)
+}
+pacman::p_load(tidyverse, sf, patchwork, rgdal)
 
 # set parameters
 knitr::opts_chunk$set(
@@ -29,6 +32,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   cli_chelsa = "data/climate/chelsa/2022-11-09/",
   cli_chelsa_annual = "data/climate/chelsa/chelsa-annual-2022-11-10.rds",
   cli_chelsa_monthly = "data/climate/chelsa/monthly/",
+  cli_chelsa_cfp_annual = "data/climate/chelsa/cfp_annual/",
   cli_prism = "data/climate/prism/2022-10-03/",
   cli_terraclimate = "data/climate/terraclimate/2022-10-03/",
   com_exp = "data/community/all-experimental-data.rds",
