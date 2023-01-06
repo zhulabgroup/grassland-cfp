@@ -127,7 +127,7 @@ obs_tbl %>%
   summarize(year_max = max(year), year_min = min(year)) %>%
   mutate(year_rng = year_max - year_min + 1)
 
-obs_tbl %>%
+obs_sum_tbl <- obs_tbl %>%
   group_by(site) %>%
   nest() %>%
   mutate(
@@ -150,4 +150,14 @@ obs_tbl %>%
         mutate(cpi_sig = gtools::stars.pval(cpi_p_val))
     )
   ) %>%
-  unnest(cols = c(cti_lm, cpi_lm))
+  unnest(cols = c(cti_lm, cpi_lm)) %>%
+  select(-data) %>%
+  ungroup()
+
+obs_sum_tbl %>%
+  filter(cti_sig != " ") %>%
+  summarize(cti_mean = mean(cti_estimate))
+
+obs_sum_tbl %>%
+  filter(cpi_sig != " ") %>%
+  summarize(cpi_mean = mean(cpi_estimate))
