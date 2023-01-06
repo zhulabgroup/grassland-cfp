@@ -16,8 +16,8 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
   select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
   pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
   mutate(com_idx_name = factor(com_idx_name,
-                               levels = c("tmp_com_mean", "ppt_com_mean"),
-                               labels = c("CTI", "CPI")
+    levels = c("tmp_com_mean", "ppt_com_mean"),
+    labels = c("CTI", "CPI")
   ))
 
 # warming phrases: +80 W m–2 (years 2‒5), to +100 W m–2 (years 6‒12), to +250 W m–2 (years 13‒17)

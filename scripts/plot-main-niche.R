@@ -43,8 +43,8 @@ occ_geog_gg <-
     alpha = 0.01
   ) +
   geom_sf(
-    data = gbif_chelsa_sf %>% 
-      filter(species_type == "cool") %>% 
+    data = gbif_chelsa_sf %>%
+      filter(species_type == "cool") %>%
       st_buffer(1e4) %>% # buffer to better show overlapping points
       st_union(),
     fill = "blue",
@@ -52,9 +52,9 @@ occ_geog_gg <-
     alpha = 0.4
   ) +
   geom_sf(
-    data = gbif_chelsa_sf %>% 
-      filter(species_type == "warm") %>% 
-      st_buffer(1e4) %>% # buffer to better show overlapping points 
+    data = gbif_chelsa_sf %>%
+      filter(species_type == "warm") %>%
+      st_buffer(1e4) %>% # buffer to better show overlapping points
       st_union(),
     fill = "red",
     color = NA,

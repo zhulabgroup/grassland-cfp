@@ -8,8 +8,8 @@ chelsa_gbif_tbl <- clim_gbif_tbl %>%
     chelsa_tmp, chelsa_ppt
   ) %>%
   pivot_longer(chelsa_tmp:chelsa_ppt,
-               names_to = "variable",
-               values_to = "CHELSA"
+    names_to = "variable",
+    values_to = "CHELSA"
   ) %>%
   mutate(variable = str_sub(variable, start = -3L, end = -1L))
 
@@ -19,8 +19,8 @@ prism_gbif_tbl <- clim_gbif_tbl %>%
     prism_tmp, prism_ppt
   ) %>%
   pivot_longer(prism_tmp:prism_ppt,
-               names_to = "variable",
-               values_to = "PRISM"
+    names_to = "variable",
+    values_to = "PRISM"
   ) %>%
   mutate(variable = str_sub(variable, start = -3L, end = -1L))
 
@@ -30,8 +30,8 @@ terraclim_gbif_tbl <- clim_gbif_tbl %>%
     terraclim_tmp, terraclim_ppt
   ) %>%
   pivot_longer(terraclim_tmp:terraclim_ppt,
-               names_to = "variable",
-               values_to = "TerraClim"
+    names_to = "variable",
+    values_to = "TerraClim"
   ) %>%
   mutate(variable = str_sub(variable, start = -3L, end = -1L))
 
@@ -56,15 +56,16 @@ chelsa_prism_gg <- ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
     color = "red"
   ) +
   geom_abline(slope = 1, intercept = 0, color = "red") +
-  facet_wrap(. ~ factor(
-    variable,
-    levels = c("tmp", "ppt"),
-    labels = c(
-      "Mean annual temperature (°C)",
-      "Mean annual precipitation (mm)"
-    )
-  ),
-  scales = "free"
+  facet_wrap(
+    . ~ factor(
+      variable,
+      levels = c("tmp", "ppt"),
+      labels = c(
+        "Mean annual temperature (°C)",
+        "Mean annual precipitation (mm)"
+      )
+    ),
+    scales = "free"
   ) +
   labs(
     x = "",
@@ -88,15 +89,16 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
     color = "red"
   ) +
   geom_abline(slope = 1, intercept = 0, color = "red") +
-  facet_wrap(. ~ factor(
-    variable,
-    levels = c("tmp", "ppt"),
-    labels = c(
-      "Mean annual temperature (°C)",
-      "Mean annual precipitation (mm)"
-    )
-  ),
-  scales = "free"
+  facet_wrap(
+    . ~ factor(
+      variable,
+      levels = c("tmp", "ppt"),
+      labels = c(
+        "Mean annual temperature (°C)",
+        "Mean annual precipitation (mm)"
+      )
+    ),
+    scales = "free"
   ) +
   labs(
     x = "CHELSA",
