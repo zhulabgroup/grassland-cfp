@@ -3,6 +3,22 @@
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
 
+niche_sum_tbl <- niche_tbl %>%
+  filter(!is.na(occ_n)) %>%
+  mutate(tmp_se = tmp_occ_sd / sqrt(occ_n), ppt_se = ppt_occ_sd / sqrt(occ_n)) %>%
+  select(species, n = occ_n, tmp_median = tmp_occ_median, tmp_se, ppt_median = ppt_occ_median, ppt_se)
+
+niche_sum_tbl %>%
+  filter(species %in% c("Danthonia californica", "Stipa pulchra"))
+
+niche_sum_tbl %>%
+  summarize(
+    tmp_median_min = min(tmp_median), tmp_median_max = max(tmp_median),
+    ppt_median_min = min(ppt_median), ppt_median_max = max(ppt_median)
+  )
+
+cor.test(~ tmp_median + ppt_median, data = niche_sum_tbl)
+
 niche_tbl %>%
   filter(!is.na(occ_n)) %>%
   mutate(
