@@ -61,13 +61,13 @@ exp_cti_tbl <- exp_tbl %>%
     ),
     by = "year"
   ) %>%
-  mutate(Phase = case_when(
+  mutate(phase = case_when(
     year <= 2002 ~ "I",
     year > 2002 & year <= 2009 ~ "II",
     year > 2009 ~ "III"
   )) %>%
   select(
-    Year = year, Phase,
+    Phase = phase, Year = year,
     Ambient = `_`, Warming = `T`, Diff = diff,
     p = p.format, Sig = p.signif
   )
@@ -88,13 +88,13 @@ exp_cpi_tbl <- exp_tbl %>%
     ),
     by = "year"
   ) %>%
-  mutate(Phase = case_when(
+  mutate(phase = case_when(
     year <= 2002 ~ "I",
     year > 2002 & year <= 2009 ~ "II",
     year > 2009 ~ "III"
   )) %>%
   select(
-    Year = year, Phase,
+    Phase = phase, Year = year,
     Ambient = `_`, Warming = `T`, Diff = diff,
     p = p.format, Sig = p.signif
   )
@@ -104,6 +104,14 @@ exp_cti_tbl %>%
 
 exp_cpi_tbl %>%
   filter(Warming < Ambient)
+
+exp_cti_tbl %>%
+  mutate(across(Ambient:Diff, signif, 3)) %>%
+  knitr::kable()
+
+exp_cpi_tbl %>%
+  mutate(across(Ambient:Diff, signif, 3)) %>%
+  knitr::kable()
 
 # obs data
 obs_tbl <- read_rds(.path$com_obs) %>%
