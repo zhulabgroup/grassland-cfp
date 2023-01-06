@@ -43,3 +43,13 @@ data_avail_gg <- ggplot(data_avail) +
   xlab("") +
   ylab("") +
   scale_y_discrete(limits = rev)
+
+# save figure
+if (.fig_save) {
+  ggsave(
+    plot = data_avail_gg,
+    filename = str_c(.path$out_fig, "fig-supp-data-avail.pdf"),
+    width = 10,
+    height = 10 * .618
+  )
+}

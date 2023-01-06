@@ -141,3 +141,14 @@ source("scripts/plot-site-climate.R")
 site_clim_gg
 rm(list = ls())
 ```
+
+# Community data availability
+
+The following figure shows the availability of experimental and observational grassland community data.
+
+```{r plot-data-avail, fig.width=10, fig.height=10*.618}
+source("scripts/plot-data-availability.R")
+data_avail_gg
+rm(list = ls())
+```
+
