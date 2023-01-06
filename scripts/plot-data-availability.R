@@ -1,5 +1,5 @@
 site_vec <- c(
-  jrgce = "Jasper Ridge Global Change Experiment",
+  jrgce = "Jasper Ridge\nGlobal Change Experiment",
   angelo = "Angelo Coast",
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
@@ -32,7 +32,7 @@ data_avail <- bind_rows(
   arrange(count) %>%
   mutate(sitename = factor(sitename, levels = site_vec))
 
-ggplot(data_avail) +
+data_avail_gg <- ggplot(data_avail) +
   geom_segment(
     data = data_avail %>%
       group_by(sitename) %>%
@@ -40,8 +40,6 @@ ggplot(data_avail) +
     aes(x = min, xend = max, y = sitename, yend = sitename), linewidth = 3, col = "dark green", alpha = 0.4
   ) +
   geom_point(data = data_avail, aes(x = year, y = sitename), pch = 19, cex = 2) +
-  theme_classic() +
-  # scale_size("sample size",range=c(2,4), breaks=c(10, 50, 100))+
   xlab("") +
   ylab("") +
   scale_y_discrete(limits = rev)
