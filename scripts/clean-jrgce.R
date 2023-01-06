@@ -35,9 +35,10 @@ trt_tbl_raw <- .path$com_raw %>%
 trt_tbl <- trt_tbl_raw %>%
   pull(id) %>%
   expand_grid(year = 1998:2014, plot = .) %>% # full year-treatment tibble
-  full_join(trt_tbl_raw %>%
-    select(plot = id, starts_with("Heat_"), Precip, CO2, Nitrogen),
-  by = "plot"
+  full_join(
+    trt_tbl_raw %>%
+      select(plot = id, starts_with("Heat_"), Precip, CO2, Nitrogen),
+    by = "plot"
   ) %>%
   mutate( # recode treatment
     tmp = case_when(

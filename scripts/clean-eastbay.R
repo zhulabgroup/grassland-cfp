@@ -8,7 +8,7 @@ com_tbl <- .path$com_raw %>%
   group_by(site, year, plot) %>%
   mutate(tot_hits = sum(hits)) %>%
   group_by(site, year, plot, species_code) %>%
-  summarize(abund = hits / tot_hits) 
+  summarize(abund = hits / tot_hits)
 
 # species data
 spp_tbl <- .path$com_raw %>%

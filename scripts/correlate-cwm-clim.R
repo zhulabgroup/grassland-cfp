@@ -19,7 +19,7 @@ cwm_clim_tbl <- obs_tbl %>%
   inner_join(clim_tbl, by = c("site" = "abbr", "year"))
 
 # cti ~ tmp
-cti_gg <- 
+cti_gg <-
   ggplot(cwm_clim_tbl, aes(tmp, cti, group = name, color = name)) +
   geom_point() +
   stat_ellipse() +
@@ -30,7 +30,7 @@ cti_gg <-
   )
 
 # cpi ~ ppt
-cpi_gg <- 
+cpi_gg <-
   ggplot(cwm_clim_tbl, aes(ppt, cpi, group = name, color = name)) +
   geom_point() +
   stat_ellipse() +

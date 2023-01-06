@@ -5,7 +5,7 @@ gbif_sf_wgs84 <- read_rds(.path$occ_gbif) %>%
     key = as.character(key)
   ) %>%
   dplyr::select(key, species, longitude, latitude) %>%
-  distinct() %>% 
+  distinct() %>%
   st_as_sf(
     coords = c("longitude", "latitude"),
     crs = "+proj=longlat +datum=WGS84 +no_defs"

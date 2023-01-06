@@ -5,7 +5,7 @@
 param_list <- c("tas", "pr", "vpd")
 for (param in param_list) {
   dir.create(paste0(.path$cli_chelsa_monthly, param, "/raw/"))
-  system(paste0("cat ",.path$cli_chelsa_monthly, param,"/paths.txt | xargs -n 1 -P 40 wget --no-verbose --no-clobber --no-host-directories --no-directories --continue --directory-prefix=",.path$cli_chelsa_monthly, param,"/raw"))
+  system(paste0("cat ", .path$cli_chelsa_monthly, param, "/paths.txt | xargs -n 1 -P 40 wget --no-verbose --no-clobber --no-host-directories --no-directories --continue --directory-prefix=", .path$cli_chelsa_monthly, param, "/raw"))
 }
 
 # read cfp data
@@ -17,35 +17,34 @@ cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
 
 # annual metric
 for (param in param_list) {
-  annual_list<-vector(mode="list")
-  for (year in 1980:2019)  {
+  annual_list <- vector(mode = "list")
+  for (year in 1980:2019) {
     files <- list.files(paste0(.path$cli_chelsa_monthly, param, "/raw/"), pattern = year %>% as.character(), full.names = T)
     sta <- raster::stack(files)
     sta <- raster::crop(sta, raster::extent(cfp_sf))
     sta <- raster::mask(sta, cfp_sf)
-    
+
     if (param == "tas") {
-      sta<-sta/10-273.15
+      sta <- sta / 10 - 273.15
       annual <- raster::calc(sta, fun = mean)
     }
     if (param == "pr") {
-      sta<-sta/100
+      sta <- sta / 100
       annual <- raster::calc(sta, fun = sum)
     }
     if (param == "vpd") {
       annual <- raster::calc(sta, fun = max)
     }
-    annual_list[[year %>% as.character()]]<-annual
+    annual_list[[year %>% as.character()]] <- annual
     print(year)
-           }
-  annual_allyears<-raster::stack(annual_list)
-  raster::writeRaster(annual_allyears,paste0(.path$cli_chelsa_cfp_annual, param, ".nc"), format="CDF")
-  
+  }
+  annual_allyears <- raster::stack(annual_list)
+  raster::writeRaster(annual_allyears, paste0(.path$cli_chelsa_cfp_annual, param, ".nc"), format = "CDF")
+
   pacman::p_load(raster)
   trend <- VoCC::tempTrend(annual_allyears, th = 10)
   pacman::p_unload(raster)
-  raster::writeRaster(trend,paste0(.path$cli_chelsa_cfp_annual, param, "_trend.nc"), format="CDF")
-  
+  raster::writeRaster(trend, paste0(.path$cli_chelsa_cfp_annual, param, "_trend.nc"), format = "CDF")
 }
 
 
