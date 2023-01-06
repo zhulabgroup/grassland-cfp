@@ -46,7 +46,7 @@ exp_tbl <- read_rds(.path$com_exp) %>%
   select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean)
 
 # report CTI
-exp_tbl %>%
+exp_cti_tbl <- exp_tbl %>%
   group_by(year, treat_T) %>%
   summarize(cwm = mean(tmp_com_mean)) %>%
   ungroup() %>%
@@ -65,12 +65,10 @@ exp_tbl %>%
     Year = year,
     Ambient = `_`, Warming = `T`, Diff = diff,
     p = p.format, Sig = p.signif
-  ) %>%
-  mutate(across(Ambient:Diff, signif, 4)) %>%
-  knitr::kable()
+  )
 
 # report CPI
-exp_tbl %>%
+exp_cpi_tbl <- exp_tbl %>%
   group_by(year, treat_T) %>%
   summarize(cwm = mean(ppt_com_mean)) %>%
   ungroup() %>%
@@ -89,9 +87,13 @@ exp_tbl %>%
     Year = year,
     Ambient = `_`, Warming = `T`, Diff = diff,
     p = p.format, Sig = p.signif
-  ) %>%
-  mutate(across(Ambient:Diff, signif, 4)) %>%
-  knitr::kable()
+  )
+
+exp_cti_tbl %>%
+  filter(Warming > Ambient)
+
+exp_cpi_tbl %>%
+  filter(Warming < Ambient)
 
 # obs data
 obs_tbl <- read_rds(.path$com_obs) %>%
