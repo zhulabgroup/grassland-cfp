@@ -11,8 +11,8 @@ niche_tbl %>%
   ) %>%
   select(
     Species = species, n = occ_n,
-    `T median (°C)` = tmp_occ_mean, `T std dev (°C)` = tmp_occ_sd,
-    `P median (mm)` = ppt_occ_mean, `P std dev (mm)` = ppt_occ_sd,
+    `T median (°C)` = tmp_occ_median, `T std dev (°C)` = tmp_occ_sd,
+    `P median (mm)` = ppt_occ_median, `P std dev (mm)` = ppt_occ_sd,
   ) %>%
   knitr::kable(caption = "Species climate niche summary")
 
