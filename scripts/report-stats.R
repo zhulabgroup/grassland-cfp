@@ -161,3 +161,11 @@ obs_sum_tbl %>%
 obs_sum_tbl %>%
   filter(cpi_sig != " ") %>%
   summarize(cpi_mean = mean(cpi_estimate))
+
+obs_sum_tbl %>%
+  filter(cti_sig != " ") %>%
+  arrange(cti_estimate)
+
+obs_sum_tbl %>%
+  filter(cpi_sig != " ") %>%
+  arrange(cpi_estimate)
