@@ -61,8 +61,13 @@ exp_cti_tbl <- exp_tbl %>%
     ),
     by = "year"
   ) %>%
+  mutate(Phase = case_when(
+    year <= 2002 ~ "I",
+    year > 2002 & year <= 2009 ~ "II",
+    year > 2009 ~ "III"
+  )) %>%
   select(
-    Year = year,
+    Year = year, Phase,
     Ambient = `_`, Warming = `T`, Diff = diff,
     p = p.format, Sig = p.signif
   )
@@ -83,8 +88,13 @@ exp_cpi_tbl <- exp_tbl %>%
     ),
     by = "year"
   ) %>%
+  mutate(Phase = case_when(
+    year <= 2002 ~ "I",
+    year > 2002 & year <= 2009 ~ "II",
+    year > 2009 ~ "III"
+  )) %>%
   select(
-    Year = year,
+    Year = year, Phase,
     Ambient = `_`, Warming = `T`, Diff = diff,
     p = p.format, Sig = p.signif
   )
