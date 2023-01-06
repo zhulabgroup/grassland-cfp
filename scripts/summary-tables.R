@@ -88,6 +88,11 @@ obs_tbl <- read_rds(.path$com_obs) %>%
 
 obs_tbl %>%
   group_by(site) %>%
+  summarize(year_max = max(year), year_min = min(year)) %>%
+  mutate(year_rng = year_max - year_min + 1)
+
+obs_tbl %>%
+  group_by(site) %>%
   nest() %>%
   mutate(
     cti_lm = map(
