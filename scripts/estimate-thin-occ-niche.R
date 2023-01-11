@@ -2,7 +2,7 @@
 # spThin package
 # run time = 8 min
 
-# source("scripts/utils/setup.R")
+# source("scripts/_setup.R")
 
 thin_occ <- function(full_tbl) {
   # define function to use spThin to sample and return data frame
