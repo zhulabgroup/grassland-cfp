@@ -35,7 +35,7 @@ plot_cfp_cc <- function(param) {
 
   if (param == "tas") {
     title <- "Trend in mean temperature"
-    unit <- expression("°C year"^-1)
+    unit <- expression("°C yr"^-1)
     highcol <- "red"
     lowcol <- "blue"
     midcol <- "yellow"
@@ -49,7 +49,7 @@ plot_cfp_cc <- function(param) {
   }
   if (param == "pr") {
     title <- "Trend in total precipitation"
-    unit <- expression("mm year"^-1)
+    unit <- expression("mm yr"^-1)
     highcol <- "#00cfa9"
     lowcol <- "#e9a000"
     midcol <- "white" # "#f1db95"
