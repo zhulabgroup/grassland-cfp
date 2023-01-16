@@ -28,34 +28,37 @@ warm_tbl <- tribble(
 )
 
 # plot
-ggplot(jrgce_tbl %>% 
-         mutate(phase = case_when(year<=2002~"Phase I",
-                                  year>=2010~"Phase III",
-                                  TRUE ~ "Phase II")) %>% 
-         group_by(site, phase,year, treat_T,com_idx_name) %>% 
-         summarise(m=median(com_idx_value),
-                   se=sd(com_idx_value)/sqrt(n())) %>% 
-         ungroup() %>% 
-         mutate(group_metric=paste0(com_idx_name, treat_T)) %>% 
-         select(-com_idx_name, -treat_T) %>% 
-         pivot_wider(id_cols = c("site", "phase", "year"), 
-                     names_from = group_metric, 
-                     values_from = c("m", "se"))) +
-  geom_point(aes(x=m_CTI_, y=m_CPI_,
-                   # group=phase, col=phase
+df_exp_sum<-jrgce_tbl %>% 
+  mutate(phase = case_when(year<=2002~"Phase I",
+                           year>=2010~"Phase III",
+                           TRUE ~ "Phase II")) %>% 
+  group_by(site, phase,year, treat_T,com_idx_name) %>% 
+  summarise(m=median(com_idx_value),
+            se=sd(com_idx_value)/sqrt(n())) %>% 
+  ungroup() %>% 
+  pivot_wider(id_cols = c("site", "phase", "year", "treat_T"), 
+              names_from = com_idx_name, 
+              values_from = c("m", "se"))
+
+df_exp_shift<-jrgce_tbl %>% 
+  mutate(phase = case_when(year<=2002~"Phase I",
+                           year>=2010~"Phase III",
+                           TRUE ~ "Phase II")) %>% 
+  group_by(site, phase,year, treat_T,com_idx_name) %>% 
+  summarise(m=median(com_idx_value)) %>% 
+  ungroup() %>% 
+  mutate(group_metric=paste0(com_idx_name, treat_T)) %>% 
+  select(-com_idx_name, -treat_T) %>% 
+  pivot_wider(id_cols = c("site", "phase", "year"), 
+              names_from = group_metric, 
+              values_from = m)
+
+ggplot() +
+  geom_point(data=df_exp_sum,
+             aes(x=m_CTI, y=m_CPI,
                  ))+
-  # geom_errorbar(aes(x=m_CTI_,ymin=m_CPI_-se_CPI_, ymax=m_CPI_+se_CPI_,
-  #                    group=phase, col=phase), alpha=0.5)+
-  # geom_errorbarh(aes(y=m_CPI_,xmin=m_CTI_-se_CTI_, xmax=m_CTI_+se_CTI_,
-  #                group=phase, col=phase), alpha=0.5)+
-  geom_point(aes(x=m_CTIT, y=m_CPIT,
-                 # group=phase, col=phase
-                 ))+
-  # geom_errorbar(aes(x=m_CTIT,ymin=m_CPIT-se_CPIT, ymax=m_CPIT+se_CPIT,
-  #                   group=phase, col=phase), alpha=0.5)+
-  # geom_errorbarh(aes(y=m_CPIT,xmin=m_CTIT-se_CTIT, xmax=m_CTIT+se_CTIT,
-  #                    group=phase, col=phase), alpha=0.5)+
-  geom_segment(aes(x=m_CTI_, xend=m_CTIT, y=m_CPI_,yend=m_CPIT,
+  geom_segment(data=df_exp_shift,
+               aes(x=CTI_, xend=CTIT, y=CPI_,yend=CPIT,
                    group=phase, col=phase),
                arrow = arrow(length = unit(0.2,"cm")),
                linewidth=1)+
@@ -107,34 +110,35 @@ obs_idx_tbl <- obs_tbl %>%
 
 
 
+df_obs_sum<-obs_idx_tbl %>% 
+  group_by(site, year, com_idx_name) %>% 
+  summarise(m=median(com_idx_value),
+            se=sd(com_idx_value)/sqrt(n())) %>% 
+  ungroup() %>% 
+  pivot_wider(id_cols = c("site", "year"), 
+              names_from = com_idx_name, 
+              values_from = c("m", "se"))
+df_obs_shift<-obs_idx_tbl %>% 
+  group_by(site,com_idx_name) %>% 
+  do(broom::augment( lm(com_idx_value ~ year, data = .))) %>% 
+  select(site, com_idx_name, year, fitted=.fitted) %>% 
+  filter(year==min(year)|year==max(year)) %>% 
+  mutate(year=case_when(year==min(year)~"start",
+                        year==max(year)~"end")) %>% 
+  ungroup() %>% 
+  distinct() %>% 
+  pivot_wider(id_cols = c("site", "year"), 
+              names_from = com_idx_name, 
+              values_from = fitted) %>% 
+  pivot_wider(id_cols = site, 
+              names_from = year, 
+              values_from = c("CTI", "CPI"))
 
 ggplot()+
-  geom_point(data=obs_idx_tbl %>% 
-               group_by(site, year, com_idx_name) %>% 
-               summarise(m=median(com_idx_value),
-                         se=sd(com_idx_value)/sqrt(n())) %>% 
-               ungroup() %>% 
-               pivot_wider(id_cols = c("site", "year"), 
-                           names_from = com_idx_name, 
-                           values_from = c("m", "se")),
+  geom_point(data=df_obs_sum,
              aes(x=m_CTI, y=m_CPI,col=year),
              alpha=0.75)+
-  geom_segment(data=obs_idx_tbl %>% 
-               group_by(site,com_idx_name) %>% 
-               do(broom::augment( lm(com_idx_value ~ year, data = .))) %>% 
-               select(site, com_idx_name, year, fitted=.fitted) %>% 
-               filter(year==min(year)|year==max(year)) %>% 
-               mutate(year=case_when(year==min(year)~"start",
-                                     year==max(year)~"end")) %>% 
-               ungroup() %>% 
-               distinct() %>% 
-               pivot_wider(id_cols = c("site", "year"), 
-                           names_from = com_idx_name, 
-                           values_from = fitted) %>% 
-                 pivot_wider(id_cols = site, 
-                             names_from = year, 
-                             values_from = c("CTI", "CPI")),
-             aes(x=CTI_start, xend=CTI_end, y=CPI_start, yend=CPI_end),
+  geom_segment(data=df_obs_shift,
              arrow = arrow(length = unit(0.2,"cm")),
              linewidth=1
              )+
@@ -142,3 +146,23 @@ ggplot()+
   facet_wrap(.~site, labeller=site_vec %>% as_labeller())+
   xlab("Community Temperature Index (CTI, °C)")+
   ylab("Community Precipitation Index (CPI, mm)")
+
+
+df_all_shift<-bind_rows(df_exp_shift %>% 
+            filter(phase=="Phase III") %>% 
+            mutate(site=paste(site, year, sep="_"))%>% 
+            select(site,CTI0=CTI_, CTI1=CTIT, CPI0=CPI_, CPI1=CPIT) %>% 
+            mutate(group="experiment"),
+          df_obs_shift %>% 
+            select(site, CTI0=CTI_start, CTI1=CTI_end, CPI0=CPI_start, CPI1=CPI_end) %>% 
+            mutate(group="observation")
+            )
+ggplot(df_all_shift)+
+  geom_segment(aes(x=CTI0, xend=CTI1, y=CPI0, yend=CPI1,
+                   group=site, col=group),
+               arrow = arrow(length = unit(0.2,"cm")),
+               linewidth=1, 
+               alpha=0.8)+
+  xlab("Community Temperature Index (CTI, °C)")+
+  ylab("Community Precipitation Index (CPI, mm)")
+
