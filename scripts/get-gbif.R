@@ -63,3 +63,7 @@ gbif_cfp_tbl %>%
   ) %>%
   distinct() %>% # remove duplicated data entries
   write_rds(.path$occ_gbif)
+
+gbif_cfp_tbl<-read_rds(.path$occ_gbif) 
+gbif_cfp_tbl %>% nrow()
+gbif_cfp_tbl %>% distinct(consolidatedName) %>% nrow()
