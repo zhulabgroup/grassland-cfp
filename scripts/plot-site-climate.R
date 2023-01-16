@@ -33,21 +33,31 @@ site_tbl <- clim_tbl %>%
   select(abbr, year, tmp, ppt) %>%
   pivot_longer(tmp:ppt, names_to = "clim_var", values_to = "clim_val") %>%
   mutate(clim_var = factor(clim_var,
-                           levels = c("tmp", "ppt")
+    levels = c("tmp", "ppt")
   )) %>%
-  group_by(abbr,clim_var) %>%
+  group_by(abbr, clim_var) %>%
   nest() %>%
   mutate(
     map(data, ~ lm(clim_val ~ year, data = .)) %>%
-      map_df(~ broom::tidy(.) %>%filter(term=="year") %>%  select(estimate,std.error, p.value) ) #,
+      map_df(~ broom::tidy(.) %>%
+        filter(term == "year") %>%
+        select(estimate, std.error, p.value)) # ,
   ) %>%
-  select(-data) %>% 
+  select(-data) %>%
   ungroup()
 
-site_tbl %>% filter(clim_var=="tmp") %>% arrange(estimate)
-site_tbl %>% filter(clim_var=="tmp") %>% summarise(n=sum(p.value<0.05))
-site_tbl %>% filter(clim_var=="ppt") %>% arrange(estimate)
-site_tbl %>% filter(clim_var=="ppt") %>% summarise(n=sum(p.value<0.05))
+site_tbl %>%
+  filter(clim_var == "tmp") %>%
+  arrange(estimate)
+site_tbl %>%
+  filter(clim_var == "tmp") %>%
+  summarise(n = sum(p.value < 0.05))
+site_tbl %>%
+  filter(clim_var == "ppt") %>%
+  arrange(estimate)
+site_tbl %>%
+  filter(clim_var == "ppt") %>%
+  summarise(n = sum(p.value < 0.05))
 
 # define plotting function
 plot_cc <- function(data, site_abbr,
