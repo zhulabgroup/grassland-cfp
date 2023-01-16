@@ -14,9 +14,10 @@ site_vec <- c(
   vascocaves = "Vasco Caves"
 )
 
-read_rds(.path$com_obs) %>%
-  distinct(year) %>%
-  nrow()
+data_avail_tbl<-read_rds(.path$com_obs) %>%
+  group_by(site) %>% 
+  summarise(nyear=unique(year) %>% length()) %>% 
+  arrange(nyear)
 
 data_avail <- bind_rows(
   read_rds(.path$com_exp) %>%
