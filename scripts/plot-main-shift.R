@@ -1,3 +1,5 @@
+
+### experiment plot
 # niche data
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
@@ -19,7 +21,7 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
     labels = c("CTI", "CPI")
   ))
 
-# warming phrases: +80 W m?2 (years 2?5), to +100 W m?2 (years 6?12), to +250 W m?2 (years 13?17)
+# warming phrases: +80 W m2 (years 25), to +100 W m2 (years 612), to +250 W m2 (years 1317)
 warm_tbl <- tribble(
   ~tag, ~name, ~start, ~end,
   1, "Phase I", -Inf, 2002,
@@ -27,7 +29,7 @@ warm_tbl <- tribble(
   3, "Phase III", 2010, Inf # end in 2014, but set to Inf to fill space
 )
 
-# plot
+# plot in niche space
 df_exp_sum <- jrgce_tbl %>%
   mutate(phase = case_when(
     year <= 2002 ~ "Phase I",
@@ -46,6 +48,23 @@ df_exp_sum <- jrgce_tbl %>%
     values_from = c("m", "se")
   )
 
+df_exp_test <- jrgce_tbl %>%
+  group_by(site, year, com_idx_name) %>%
+  nest() %>%
+  mutate(p = map_dbl(data, ~ wilcox.test(com_idx_value ~ treat_T, data = .)$p.value)) %>% # get p value for wilcoxon test
+  select(-data) %>%
+  pivot_wider(
+    id_cols = c("site", "year"),
+    names_from = com_idx_name,
+    values_from = p
+  ) %>%
+  mutate(sig = case_when(
+    CTI < 0.05 & CPI < 0.05 ~ "sig2",
+    CTI >= 0.05 & CPI >= 0.05 ~ "ns",
+    TRUE ~ "sig1"
+  )) %>%
+  select(-CTI, -CPI)
+
 df_exp_shift <- jrgce_tbl %>%
   mutate(phase = case_when(
     year <= 2002 ~ "Phase I",
@@ -61,30 +80,49 @@ df_exp_shift <- jrgce_tbl %>%
     id_cols = c("site", "phase", "year"),
     names_from = group_metric,
     values_from = m
-  )
+  ) %>%
+  left_join(df_exp_test, by = c("site", "year"))
 
-ggplot() +
-  geom_point(
-    data = df_exp_sum,
-    aes(x = m_CTI, y = m_CPI, )
+p_exp <- ggplot() +
+  geom_rect( # warming phrases
+    data = warm_tbl %>% rename(phase = name),
+    aes(fill = tag),
+    xmin = -Inf, xmax = Inf,
+    ymin = -Inf, ymax = Inf,
+    alpha = 0.5
   ) +
+  scale_fill_gradient(low = "antiquewhite", high = "orange") +
+  geom_point(
+    data = df_exp_sum %>%
+      mutate(treat_T = treat_T %>% as.factor() %>% as.integer()),
+    aes(x = m_CTI, y = m_CPI, col = treat_T)
+  ) +
+  scale_color_gradient(low = "black", high = "red") +
   geom_segment(
     data = df_exp_shift,
     aes(
       x = CTI_, xend = CTIT, y = CPI_, yend = CPIT,
-      group = phase, col = phase
+      group = phase,
+      alpha = sig
     ),
     arrow = arrow(length = unit(0.2, "cm")),
-    linewidth = 1
+    linewidth = 0.8
   ) +
+  scale_linetype_manual(values = c("sig2" = "solid", "sig1" = "dashed", "ns" = "dashed")) +
+  scale_alpha_manual(values = c("sig2" = 1, "sig1" = 0.25, "ns" = 0.25)) +
   facet_wrap(. ~ phase, nrow = 1) +
   xlab("Community Temperature Index (CTI, °C)") +
-  ylab("Community Precipitation Index (CPI, mm)") +
-  guides(col = "none")
+  ylab("Community Precipitation Index\n(CPI, mm)") +
+  guides(
+    col = "none",
+    fill = "none",
+    alpha = "none"
+  ) +
+  theme(strip.text.x = element_text(hjust = 0))
 
 
 
-#########
+### observation plot
 
 # import niche and observational data, calculate CTI and CPI
 niche_tbl <- read_rds(.path$sum_niche) %>%
@@ -124,7 +162,7 @@ obs_idx_tbl <- obs_tbl %>%
   ))
 
 
-
+# plot in niche space
 df_obs_sum <- obs_idx_tbl %>%
   group_by(site, year, com_idx_name) %>%
   summarise(
@@ -137,6 +175,31 @@ df_obs_sum <- obs_idx_tbl %>%
     names_from = com_idx_name,
     values_from = c("m", "se")
   )
+
+df_obs_test <- obs_idx_tbl %>%
+  group_by(site, com_idx_name) %>%
+  nest() %>%
+  mutate(
+    map(data, ~ lm(com_idx_value ~ year, data = .)) %>%
+      map_df(~ broom::tidy(.) %>%
+        filter(term == "year") %>%
+        select(p.value)) # ,
+  ) %>%
+  select(-data) %>%
+  ungroup() %>%
+  rename(p = p.value) %>%
+  pivot_wider(
+    id_cols = site,
+    names_from = com_idx_name,
+    values_from = p
+  ) %>%
+  mutate(sig = case_when(
+    CTI < 0.05 & CPI < 0.05 ~ "sig2",
+    CTI >= 0.05 & CPI >= 0.05 ~ "ns",
+    TRUE ~ "sig1"
+  )) %>%
+  select(-CTI, -CPI)
+
 df_obs_shift <- obs_idx_tbl %>%
   group_by(site, com_idx_name) %>%
   do(broom::augment(lm(com_idx_value ~ year, data = .))) %>%
@@ -157,44 +220,163 @@ df_obs_shift <- obs_idx_tbl %>%
     id_cols = site,
     names_from = year,
     values_from = c("CTI", "CPI")
-  )
+  ) %>%
+  left_join(df_obs_test, by = "site")
 
-ggplot() +
+p_obs <- ggplot() +
   geom_point(
     data = df_obs_sum,
     aes(x = m_CTI, y = m_CPI, col = year),
-    alpha = 0.75
+    alpha = 0.6
   ) +
   geom_segment(
     data = df_obs_shift,
+    aes(
+      x = CTI_start, xend = CTI_end, y = CPI_start, yend = CPI_end,
+      alpha = sig
+    ),
     arrow = arrow(length = unit(0.2, "cm")),
-    linewidth = 1
+    linewidth = 0.8
   ) +
-  scale_color_viridis_c() +
+  scale_linetype_manual(values = c("sig2" = "solid", "sig1" = "dashed", "ns" = "dashed")) +
+  scale_alpha_manual(values = c("sig2" = 1, "sig1" = 0.5, "ns" = 0.5)) +
+  scale_color_viridis_c(option = "magma", trans = "reverse", direction = -1) +
   facet_wrap(. ~ site, labeller = site_vec %>% as_labeller()) +
   xlab("Community Temperature Index (CTI, °C)") +
-  ylab("Community Precipitation Index (CPI, mm)")
+  ylab("Community Precipitation Index (CPI, mm)") +
+  guides(
+    alpha = "none",
+    col = "none"
+  ) +
+  theme(strip.text.x = element_text(hjust = 0))
 
-
+### compare exp and obs
 df_all_shift <- bind_rows(
-  df_exp_shift %>%
-    filter(phase == "Phase III") %>%
-    mutate(site = paste(site, year, sep = "_")) %>%
-    select(site, CTI0 = CTI_, CTI1 = CTIT, CPI0 = CPI_, CPI1 = CPIT) %>%
-    mutate(group = "experiment"),
   df_obs_shift %>%
-    select(site, CTI0 = CTI_start, CTI1 = CTI_end, CPI0 = CPI_start, CPI1 = CPI_end) %>%
-    mutate(group = "observation")
+    select(site, CTI0 = CTI_start, CTI1 = CTI_end, CPI0 = CPI_start, CPI1 = CPI_end, sig) %>%
+    mutate(group = "observation"),
+  df_exp_shift %>%
+    # filter(phase == "Phase III") %>%
+    mutate(site = paste(site, year, sep = "_")) %>%
+    select(site, CTI0 = CTI_, CTI1 = CTIT, CPI0 = CPI_, CPI1 = CPIT, sig) %>%
+    mutate(group = "experiment")
 )
-ggplot(df_all_shift) +
+
+p_compare <- ggplot(df_all_shift) +
   geom_segment(
     aes(
       x = CTI0, xend = CTI1, y = CPI0, yend = CPI1,
-      group = site, col = group
+      group = site, col = group,
+      alpha = sig
     ),
     arrow = arrow(length = unit(0.2, "cm")),
-    linewidth = 1,
-    alpha = 0.8
+    linewidth = 1
   ) +
+  scale_alpha_manual(values = c("sig2" = 1, "sig1" = 0.25, "ns" = 0.25)) +
+  guides(alpha = "none") +
   xlab("Community Temperature Index (CTI, °C)") +
-  ylab("Community Precipitation Index (CPI, mm)")
+  ylab("Community Precipitation Index (CPI, mm)") +
+  theme(
+    legend.position = c(.2, .2),
+    legend.title = element_text(size = rel(0.8)),
+    legend.text = element_text(size = rel(0.8))
+  )
+
+### plot all sites in niche space
+# import data
+niche_tbl <- read_rds(.path$sum_niche) %>%
+  filter(occ_n > 100) # no dummy species
+
+gbif_chelsa_sf <- read_rds(.path$geo_clim) %>%
+  select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  filter(species %in% niche_tbl$species) %>%
+  st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
+
+df_exp_all_sum <- jrgce_tbl %>%
+  mutate(phase = case_when(
+    year <= 2002 ~ "Phase I",
+    year >= 2010 ~ "Phase III",
+    TRUE ~ "Phase II"
+  )) %>%
+  group_by(site, phase, com_idx_name) %>%
+  summarise(
+    m = median(com_idx_value),
+    se = sd(com_idx_value) / sqrt(n())
+  ) %>%
+  ungroup() %>%
+  pivot_wider(
+    id_cols = c("site", "phase"),
+    names_from = com_idx_name,
+    values_from = c("m", "se")
+  ) %>%
+  select(-phase)
+
+df_obs_all_sum <- obs_idx_tbl %>%
+  group_by(site, com_idx_name) %>%
+  summarise(
+    m = median(com_idx_value),
+    se = sd(com_idx_value) / sqrt(n())
+  ) %>%
+  ungroup() %>%
+  pivot_wider(
+    id_cols = site,
+    names_from = com_idx_name,
+    values_from = c("m", "se")
+  )
+
+df_all_sum <- bind_rows(
+  df_obs_all_sum %>% mutate(group = "observation"),
+  df_exp_all_sum %>% mutate(group = "experiment")
+)
+
+p_niche <- ggplot() +
+  geom_point(
+    data = niche_tbl,
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median # ,
+      # xmin = tmp_occ_median - tmp_occ_sd / sqrt(occ_n),
+      # xmax = tmp_occ_median + tmp_occ_sd / sqrt(occ_n),
+      # ymin = ppt_occ_median - ppt_occ_sd / sqrt(occ_n),
+      # ymax = ppt_occ_median + ppt_occ_sd / sqrt(occ_n)
+    ),
+    col = gray(.75),
+    alpha = 0.5
+  ) +
+  geom_point(
+    data = df_all_sum,
+    aes(x = m_CTI, y = m_CPI, col = group),
+    size = 2.5, alpha = 0.75
+  ) +
+  # geom_errorbarh(data=df_all_sum,
+  #               aes(y=m_CPI,xmin=m_CTI-se_CTI, xmax=m_CTI+se_CTI, col=group)) +
+  # geom_errorbar(data=df_all_sum,
+  #                aes(x=m_CTI,ymin=m_CPI-se_CPI, ymax=m_CPI+se_CPI, col=group)) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  theme(
+    legend.position = c(.2, .2),
+    legend.title = element_text(size = rel(0.8)),
+    legend.text = element_text(size = rel(0.8))
+  )
+
+### combine panels
+shift_gg <- p_niche + p_exp + p_obs + p_compare +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  AADD
+  AADD
+  BBBB
+  CCCC
+  CCCC
+  CCCC
+  ")
+
+# save figure file
+if (.fig_save) {
+  ggsave(
+    plot = shift_gg,
+    filename = str_c(.path$out_fig, "fig-main-shift.png"),
+    width = 9,
+    height = 14
+  )
+}
