@@ -28,6 +28,27 @@ site_vec <- c(
   vascocaves = "Vasco Caves"
 )
 
+# summary statistics
+site_tbl <- clim_tbl %>%
+  select(abbr, year, tmp, ppt) %>%
+  pivot_longer(tmp:ppt, names_to = "clim_var", values_to = "clim_val") %>%
+  mutate(clim_var = factor(clim_var,
+                           levels = c("tmp", "ppt")
+  )) %>%
+  group_by(abbr,clim_var) %>%
+  nest() %>%
+  mutate(
+    map(data, ~ lm(clim_val ~ year, data = .)) %>%
+      map_df(~ broom::tidy(.) %>%filter(term=="year") %>%  select(estimate,std.error, p.value) ) #,
+  ) %>%
+  select(-data) %>% 
+  ungroup()
+
+site_tbl %>% filter(clim_var=="tmp") %>% arrange(estimate)
+site_tbl %>% filter(clim_var=="tmp") %>% summarise(n=sum(p.value<0.05))
+site_tbl %>% filter(clim_var=="ppt") %>% arrange(estimate)
+site_tbl %>% filter(clim_var=="ppt") %>% summarise(n=sum(p.value<0.05))
+
 # define plotting function
 plot_cc <- function(data, site_abbr,
                     tmp_lab = "", ppt_lab = "", yr_lab = NULL, yr_axis = FALSE) {
@@ -116,7 +137,7 @@ site_clim_gg <-
 # save figure
 if (.fig_save) {
   ggsave(
-    plot = site_map_gg,
+    plot = site_clim_gg,
     filename = str_c(.path$out_fig, "fig-supp-site-map.pdf"),
     width = 12,
     height = 12
