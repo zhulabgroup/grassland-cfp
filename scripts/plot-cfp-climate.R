@@ -113,7 +113,7 @@ cfp_clim_gg <-
 if (.fig_save) {
   ggsave(
     plot = cfp_clim_gg,
-    filename = str_c(.path$out_fig, "fig-cfp-climate.png"),
+    filename = str_c(.path$out_fig, "fig-supp-cfp-climate.pdf"),
     width = 12,
     height = 8
   )
