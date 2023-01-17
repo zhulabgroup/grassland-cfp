@@ -171,13 +171,13 @@ obs_sum_tbl %>%
   arrange(cpi_estimate)
 
 obs_sum_tbl %>%
-  select(Site=site, Estimate=cti_estimate, `Standard error`=cti_std_err, `p-value`=cti_p_val, Significance=cti_sig) %>% 
-  mutate(Significance=ifelse(Significance!= " ", Significance, "ns")) %>% 
+  select(Site = site, Estimate = cti_estimate, `Standard error` = cti_std_err, `p-value` = cti_p_val, Significance = cti_sig) %>%
+  mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
   mutate(across(Estimate:`p-value`, signif, 3)) %>%
   knitr::kable()
 
 obs_sum_tbl %>%
-  select(Site=site, Estimate=cpi_estimate, `Standard error`=cpi_std_err, `p-value`=cpi_p_val, Significance=cpi_sig) %>% 
-  mutate(Significance=ifelse(Significance!= " ", Significance, "ns")) %>% 
+  select(Site = site, Estimate = cpi_estimate, `Standard error` = cpi_std_err, `p-value` = cpi_p_val, Significance = cpi_sig) %>%
+  mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
   mutate(across(Estimate:`p-value`, signif, 3)) %>%
   knitr::kable()
