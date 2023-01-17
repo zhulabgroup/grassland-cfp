@@ -46,6 +46,7 @@ site_tbl <- clim_tbl %>%
   select(-data) %>%
   ungroup()
 
+# summary statistics
 site_tbl %>%
   filter(clim_var == "tmp") %>%
   arrange(estimate)

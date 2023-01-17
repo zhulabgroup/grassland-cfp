@@ -28,37 +28,61 @@ plot_cfp_cc <- function(param) {
     raster::as.data.frame(xy = T) %>%
     cbind(sig_ras %>% raster::as.data.frame(xy = F)) %>%
     select(lon = x, lat = y, trend = X1, p = X3) %>%
-    # mutate(param = param) %>%
-    mutate(`significant trend` = case_when(p < 0.05 ~ trend)) %>%
-    select(-p) %>%
-    gather(key = "group", value = "value", -lon, -lat)
+    mutate(rank = rank(trend, na.last = "keep")) %>%
+    mutate(
+      trend_sig = case_when(p < 0.05 ~ trend),
+      rank_sig = case_when(p < 0.05 ~ rank)
+    ) %>%
+    arrange(trend)
+
+  find_rank <- function(df, value) {
+    rank <- rep(NA, length(value))
+    for (i in 1:length(value)) {
+      rank[i] <- which(df$trend >= value[i]) %>% min()
+    }
+    return(rank)
+  }
 
   if (param == "tas") {
     title <- "Trend in mean temperature"
     unit <- expression("°C yr"^-1)
-    highcol <- "red"
-    lowcol <- "blue"
-    midcol <- "yellow"
+    colors <- c("blue", "white", "yellow", "red")
+    colorbreaks <- c(min(trend_df$trend, na.rm = T), 0, 0.01, max(trend_df$trend, na.rm = T))
+    values <- find_rank(trend_df, colorbreaks)
+    values <- (values - min(values)) / (max(values) - min(values))
+    labels <- c(0, 0.02, 0.04)
+    breaks <- find_rank(trend_df, labels)
   }
-  if (param == "vpd") {
-    title <- "Trend in maximum vapor pressure deficit"
-    unit <- expression("Pa"^-1)
-    highcol <- "red"
-    lowcol <- "blue"
-    midcol <- "white"
-  }
+  # if (param == "vpd") {
+  #   title <- "Trend in maximum vapor pressure deficit"
+  #   unit <- expression("Pa yr"^-1)
+  # }
   if (param == "pr") {
     title <- "Trend in total precipitation"
     unit <- expression("mm yr"^-1)
-    highcol <- "#00cfa9"
-    lowcol <- "#e9a000"
-    midcol <- "white" # "#f1db95"
+    colors <- c("#b18b38", "#f1db95", "#FFFFFF", "#8FD8CB", "#1eb196")
+    colorbreaks <- c(min(trend_df$trend, na.rm = T), -5, 0, 1, max(trend_df$trend, na.rm = T))
+    values <- find_rank(trend_df, colorbreaks)
+    values <- (values - min(values)) / (max(values) - min(values))
+    labels <- c(-10, -5, -2, 0)
+    breaks <- find_rank(trend_df, labels)
   }
 
-  p <- ggplot(trend_df) +
-    geom_tile(aes(x = lon, y = lat, fill = value), alpha = 1) +
-    facet_wrap(. ~ group, ncol = 1) +
-    scale_fill_gradient2(low = lowcol, mid = midcol, high = highcol, midpoint = 0, na.value = NA) +
+  p <- ggplot() +
+    geom_tile(data = trend_df, aes(x = lon, y = lat, fill = rank), alpha = 1) +
+    geom_contour(
+      data = trend_df %>% mutate(p = ifelse(is.na(p), 999, p)),
+      aes(x = lon, y = lat, z = p),
+      color = "black", size = 0.25,
+      breaks = c(0.05)
+    ) +
+    scale_fill_gradientn(
+      colours = colors,
+      values = values,
+      na.value = NA,
+      breaks = breaks,
+      labels = labels
+    ) +
     geom_sf(
       data = rnaturalearth::ne_states(
         country = c("Mexico", "United States of America"),
@@ -90,7 +114,7 @@ if (.fig_save) {
   ggsave(
     plot = cfp_clim_gg,
     filename = str_c(.path$out_fig, "fig-cfp-climate.png"),
-    width = 6,
-    height = 9
+    width = 12,
+    height = 8
   )
 }
