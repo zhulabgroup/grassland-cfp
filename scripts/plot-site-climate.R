@@ -50,12 +50,25 @@ site_tbl <- clim_tbl %>%
 site_tbl %>%
   filter(clim_var == "tmp") %>%
   arrange(estimate)
+
+site_tbl %>%
+  filter(clim_var == "tmp") %>%
+  pull(estimate) %>% 
+  mean()
+
 site_tbl %>%
   filter(clim_var == "tmp") %>%
   summarise(n = sum(p.value < 0.05))
+
 site_tbl %>%
   filter(clim_var == "ppt") %>%
   arrange(estimate)
+
+site_tbl %>%
+  filter(clim_var == "ppt") %>%
+  pull(estimate) %>% 
+  mean()
+
 site_tbl %>%
   filter(clim_var == "ppt") %>%
   summarise(n = sum(p.value < 0.05))
