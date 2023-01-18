@@ -272,9 +272,19 @@ df_all_shift <- bind_rows(
     mutate(group = "experiment")
 )
 
-df_all_shift_slope <- df_all_shift %>%
+df_all_shift %>%
   filter(significance == "sig") %>%
   mutate(slope = (CPI1 - CPI0) / (CTI1 - CTI0)) %>%
+  group_by(group) %>%
+  summarise(
+    mean = mean(slope),
+    se = sd(slope) / sqrt(n())
+  ) %>%
+  ungroup()
+
+df_all_shift %>%
+  filter(significance == "sig") %>%
+  mutate(slope = (CTI1 - CTI0) / (CPI1 - CPI0)) %>%
   group_by(group) %>%
   summarise(
     mean = mean(slope),
@@ -287,7 +297,7 @@ p_compare <- ggplot(df_all_shift) +
     aes(
       x = CTI0, xend = CTI1, y = CPI0, yend = CPI1,
       group = site, col = group,
-      alpha = sig
+      alpha = significance
     ),
     arrow = arrow(length = unit(0.2, "cm")),
     linewidth = 1
