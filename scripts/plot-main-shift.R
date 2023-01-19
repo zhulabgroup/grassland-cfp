@@ -1,4 +1,3 @@
-
 ### experiment plot
 # niche data
 niche_tbl <- read_rds(.path$sum_niche) %>%
@@ -329,6 +328,8 @@ p_compare <- ggplot(df_all_shift) +
       y = layer_scales(p_exp)$y$range$range[2] + 0.05
     ),
     label = "C",
+    hjust = 0,
+    vjust = 0,
     color = "orange"
   )
 
@@ -426,6 +427,8 @@ p_niche <- ggplot() +
       y = layer_scales(p_compare)$y$range$range[2] + 0.05
     ),
     label = "B",
+    hjust = 0,
+    vjust = 0,
     color = "black"
   )
 
