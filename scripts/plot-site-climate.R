@@ -7,10 +7,31 @@ clim_tbl <- read_rds(.path$cli_chelsa_annual) %>%
     "swanton", "ucsc", "vascocaves"
   ))
 
+# get observational sites geographical and climatic space
+read_rds(.path$com_obs) %>%
+  distinct(site, year) %>%
+  left_join(
+    read_rds(.path$geo_site) %>%
+      extract(geometry, c("lat", "lon"), "\\((.*), (.*)\\)", convert = TRUE) %>%
+      select(abbr, lat, lon),
+    by = c("site" = "abbr")
+  ) %>%
+  left_join(clim_tbl, by = c("site" = "abbr", "year")) %>%
+  summarise(
+    n = n(),
+    lat_range = max(lat, na.rm = T) - min(lat, na.rm = T),
+    lon_range = max(lon, na.rm = T) - min(lon, na.rm = T),
+    tmp_range = max(tmp, na.rm = T) - min(tmp, na.rm = T),
+    ppt_range = max(ppt, na.rm = T) - min(ppt, na.rm = T)
+  )
+
 # get observational data year range
 obs_tbl <- read_rds(.path$com_obs) %>%
   group_by(site) %>%
-  summarize(yr_min = min(year), yr_max = max(year))
+  summarize(
+    yr_min = min(year),
+    yr_max = max(year)
+  )
 
 # setup site labels
 site_vec <- c(
@@ -44,34 +65,40 @@ site_tbl <- clim_tbl %>%
         select(estimate, std.error, p.value)) # ,
   ) %>%
   select(-data) %>%
-  ungroup()
+  ungroup() %>%
+  mutate(sig = gtools::stars.pval(p.value)) %>%
+  mutate(sig = ifelse(sig != " ", sig, "ns"))
 
 # summary statistics
 site_tbl %>%
   filter(clim_var == "tmp") %>%
-  arrange(estimate)
+  # arrange(estimate) %>%
+  mutate(across(estimate:`std.error`, signif, 3)) %>%
+  knitr::kable()
 
 site_tbl %>%
   filter(clim_var == "tmp") %>%
-  pull(estimate) %>% 
+  pull(estimate) %>%
   mean()
 
 site_tbl %>%
   filter(clim_var == "tmp") %>%
-  summarise(n = sum(p.value < 0.05))
+  summarise(n = sum(p.value <= 0.05))
 
 site_tbl %>%
   filter(clim_var == "ppt") %>%
-  arrange(estimate)
+  # arrange(estimate) %>%
+  mutate(across(estimate:`std.error`, signif, 3)) %>%
+  knitr::kable()
 
 site_tbl %>%
   filter(clim_var == "ppt") %>%
-  pull(estimate) %>% 
+  pull(estimate) %>%
   mean()
 
 site_tbl %>%
   filter(clim_var == "ppt") %>%
-  summarise(n = sum(p.value < 0.05))
+  summarise(n = sum(p.value <= 0.05))
 
 # define plotting function
 plot_cc <- function(data, site_abbr,
@@ -109,7 +136,7 @@ plot_cc <- function(data, site_abbr,
       color = "gray", shape = 20
     ) +
     geom_smooth(
-      aes(x = year, y = clim_val, linetype = ifelse(p_val < 0.05, "sig", "ns")),
+      aes(x = year, y = clim_val, linetype = ifelse(p_val <= 0.05, "sig", "ns")),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +

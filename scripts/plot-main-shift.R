@@ -68,8 +68,8 @@ df_exp_test <- jrgce_tbl %>%
     values_from = p
   ) %>%
   mutate(significance = case_when(
-    CTI < 0.05 & CPI < 0.05 ~ "sig",
-    # CTI >= 0.05 & CPI >= 0.05 ~ "?",
+    CTI <= 0.05 & CPI <= 0.05 ~ "sig",
+    # CTI > 0.05 & CPI > 0.05 ~ "?",
     TRUE ~ "ns"
   )) %>%
   select(-CTI, -CPI)
@@ -203,8 +203,8 @@ df_obs_test <- obs_idx_tbl %>%
     values_from = p
   ) %>%
   mutate(significance = case_when(
-    CTI < 0.05 & CPI < 0.05 ~ "sig",
-    # CTI >= 0.05 & CPI >= 0.05 ~ "?",
+    CTI <= 0.05 & CPI <= 0.05 ~ "sig",
+    # CTI > 0.05 & CPI > 0.05 ~ "?",
     TRUE ~ "ns"
   )) %>%
   select(-CTI, -CPI)
