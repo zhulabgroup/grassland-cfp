@@ -62,7 +62,7 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL, 
   out_gg <- ggplot(site_tbl, aes(year, com_idx_value)) +
     geom_boxplot(aes(group = year), color = "gray", outlier.shape = 20) +
     geom_smooth( # add lm trend line when significant
-      data = . %>% filter(p_val < 0.05),
+      data = . %>% filter(p_val <= 0.05),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +

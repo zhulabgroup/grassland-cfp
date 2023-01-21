@@ -13,8 +13,8 @@ sum_cfp_cc_func <- function(param) {
       se = sd(trend, na.rm = T) / sqrt(n()),
       lower = quantile(trend, 0.025, na.rm = T),
       upper = quantile(trend, 0.975, na.rm = T),
-      sig_pos_percentage = sum(p < 0.05 & trend > 0) / n(),
-      sig_neg_percentage = sum(p < 0.05 & trend < 0) / n()
+      sig_pos_percentage = sum(p <= 0.05 & trend > 0) / n(),
+      sig_neg_percentage = sum(p <= 0.05 & trend < 0) / n()
     ) %>%
     mutate(param = param)
 }
@@ -30,8 +30,8 @@ plot_cfp_cc <- function(param) {
     select(lon = x, lat = y, trend = X1, p = X3) %>%
     mutate(rank = rank(trend, na.last = "keep")) %>%
     mutate(
-      trend_sig = case_when(p < 0.05 ~ trend),
-      rank_sig = case_when(p < 0.05 ~ rank)
+      trend_sig = case_when(p <= 0.05 ~ trend),
+      rank_sig = case_when(p <= 0.05 ~ rank)
     ) %>%
     arrange(trend)
 
