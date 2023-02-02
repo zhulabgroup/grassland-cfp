@@ -125,10 +125,16 @@ VPD increases.
 
 ```{r plot-site-vpd, fig.cap="VPD change at observational sites"}
 vpd_gg
-rm(list = ls())
 ```
 
 Note that subsetting climate data to the observational years leads to messy patterns. It doesn't make sense because the time series is too short.
+
+Precipitation and VPD don't have a close correlation. 
+
+```{r plot-site-ppt-vpd, fig.cap="Precipitation-VPD relation at observational site-year"}
+ppt_vpd_gg
+rm(list = ls())
+```
 
 ## Site CTI/CPI ~ climate (temp/precip)
 

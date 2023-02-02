@@ -1,5 +1,5 @@
 # explore annual site climate change patterns
-plot_clim <- function(data, mapping, xlab = "Year", ylab) {
+plot_clim <- function(data, mapping, xlab = "Year", ylab, scales = "free_y") {
   # define function to plot climate change ~ year | site
   ggplot(data, mapping) +
     geom_point() +
@@ -11,7 +11,7 @@ plot_clim <- function(data, mapping, xlab = "Year", ylab) {
       p.accuracy = 0.05,
       color = "red"
     ) +
-    facet_wrap(~name, scales = "free_y") +
+    facet_wrap(~name, scales = scales) +
     labs(x = xlab, y = ylab)
 }
 
@@ -25,3 +25,5 @@ clim_tbl <- read_rds(.path$cli_chelsa_annual) %>%
 tmp_gg <- plot_clim(clim_tbl, aes(x = year, y = tmp), ylab = "Mean annual temperature (°C)")
 ppt_gg <- plot_clim(clim_tbl, aes(x = year, y = ppt), ylab = "Mean annual precipitation (mm)")
 vpd_gg <- plot_clim(clim_tbl, aes(x = year, y = tmp), ylab = "Mean VPDmax (hPa)")
+
+ppt_vpd_gg <- plot_clim(clim_tbl, aes(x = ppt, y = vpd), xlab = "Mean annual precipitation (mm)", ylab = "Mean VPDmax (hPa)", scales = "free")
