@@ -123,6 +123,28 @@ jrgce_avgt_tbl <- .path$com_raw %>%
   rename_with(tolower) %>%
   mutate(tmp_diff = t_elev - amb)
 
+jrgce_tmp_gg <- jrgce_avgt_tbl %>%
+  select(year = harvest_year, variable, value = amb) %>%
+  bind_rows(
+    exp_cti_tbl %>%
+      mutate(variable = "CTI_AMB") %>%
+      select(year = Year, variable, value = Ambient)
+  ) %>%
+  ggpubr::ggscatter(
+    x = "year", y = "value",
+    add = "reg.line", add.params = list(color = "red", linetype = "dashed")
+  ) +
+  facet_wrap(~variable,
+    ncol = 1, scales = "free_y",
+    labeller = c(
+      CTI_AMB = "Community Temperature Index (CTI)",
+      AVGT308_126 = "Ambient growing season temperature"
+    ) %>%
+      as_labeller()
+  ) +
+  ggpubr::stat_cor() +
+  labs(x = "Year", y = "°C")
+
 # obs data
 obs_tbl <- read_rds(.path$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
