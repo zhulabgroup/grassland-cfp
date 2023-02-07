@@ -92,7 +92,8 @@ site_map_gg <-
   labs(x = "Longitude", y = "Latitude") +
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
-  scale_y_continuous(breaks = c(30, 35, 40))
+  scale_y_continuous(breaks = c(30, 35, 40)) +
+  guides(alpha = "none")
 
 # save figure
 if (.fig_save) {
