@@ -29,9 +29,9 @@ warm_tbl <- tribble(
 )
 
 warm_vec <- c(
-  `Phase I` = "Phase~I:~+80~W~m^-2",
-  `Phase II` = "Phase~II:~+100~W~m^-2",
-  `Phase III` = "Phase~III:~+250~W~m^-2"
+  `Phase I` = "Phase~I:~+80~W~m^-2%~~%+1~degree*C",
+  `Phase II` = "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C",
+  `Phase III` = "Phase~III:~+250~W~m^-2%~~%+2~degree*C"
 )
 
 # plot in niche space
