@@ -20,26 +20,36 @@ cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
     Type == "hotspot area"
   )
 
-# read grassland raster
-sds <- terra::sds(paste0(.path$geo_grass, "MCD12C1.A2020001.006.2021362215328.hdf"))
-lc_ras <- raster::raster(sds[1])
-lc_ras <- raster::crop(lc_ras, raster::extent(cfp_sf))
-lc_ras <- raster::mask(lc_ras, cfp_sf)
+# use terra (not raster) to process grassland percent cover
+if (FALSE) {
+  grass_ras <- .path$geo_grass %>%
+    str_c("MCD12C1.A2020001.006.2021362215328.hdf") %>%
+    terra::rast() %>%
+    terra::crop(terra::ext(cfp_sf)) %>%
+    terra::mask(cfp_sf) %>%
+    terra::subset("Land_Cover_Type_1_Percent_10") # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
 
-grass_ras <- lc_ras
-grass_ras[grass_ras != 10] <- NA # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
-grass_ras[grass_ras == 10] <- 1
-grass_df <- raster::as.data.frame(grass_ras, xy = T)
+  terra::plot(grass_ras)
 
-# estimate grassland proportion
-lc_ras %>%
-  raster::as.data.frame(xy = T) %>%
-  drop_na() %>%
-  group_by(Majority_Land_Cover_Type_1) %>%
-  summarise(count = n()) %>%
-  ungroup() %>%
-  mutate(proportion = count / sum(count)) %>%
-  arrange(desc(proportion))
+  terra::writeRaster(grass_ras, str_c(.path$geo_grass, "cfp-grassland-percent-cover.tif"))
+}
+
+grass_tbl <- .path$geo_grass %>%
+  str_c("cfp-grassland-percent-cover.tif") %>%
+  terra::rast() %>%
+  terra::as.data.frame(xy = T) %>%
+  as_tibble() %>%
+  select(x, y, percent = Land_Cover_Type_1_Percent_10)
+
+# # estimate grassland proportion
+# lc_ras %>%
+#   raster::as.data.frame(xy = T) %>%
+#   drop_na() %>%
+#   group_by(Majority_Land_Cover_Type_1) %>%
+#   summarise(count = n()) %>%
+#   ungroup() %>%
+#   mutate(proportion = count / sum(count)) %>%
+#   arrange(desc(proportion))
 
 # make map
 set.seed(618)
@@ -59,8 +69,8 @@ site_map_gg <-
     fill = alpha("white", .1)
   ) +
   geom_tile(
-    data = grass_df %>% drop_na(),
-    aes(x = x, y = y),
+    data = grass_tbl,
+    aes(x, y, alpha = percent),
     fill = "yellow green"
   ) +
   geom_sf(data = site_sf, color = "red") +
@@ -88,7 +98,7 @@ site_map_gg <-
 if (.fig_save) {
   ggsave(
     plot = site_map_gg,
-    filename = str_c(.path$out_fig, "fig-supp-site-map.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-site-map2.pdf"),
     width = 7,
     height = 10
   )
