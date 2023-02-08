@@ -22,10 +22,10 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
 
 # warming phrases
 warm_tbl <- tribble(
-  ~tag, ~name, ~start, ~end, ~mid,
-  1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, mean(c(1998.5, 2002.5)),
-  2, "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C", 2003, 2009, mean(c(2002.5, 2009.5)),
-  3, "Phase~III:~+250~W~m^-2%~~%+2~degree*C", 2010, Inf, mean(c(2009.5, 2014.5)) # end in 2014, but set to Inf to fill space
+  ~tag, ~name, ~start, ~end, ~startyear,
+  1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, 1999,
+  2, "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C", 2003, 2009, 2003,
+  3, "Phase~III:~+250~W~m^-2%~~%+2~degree*C", 2010, Inf, 2010 # end in 2014, but set to Inf to fill space
 )
 
 exp_gg <-
@@ -55,6 +55,7 @@ exp_gg <-
     ))
   ) +
   scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+  scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
   labs(
     x = NULL, # "Year",
     y = NULL,
@@ -70,10 +71,11 @@ exp_gg <-
       ),
     aes(
       label = name,
-      x = mid, # y = cti_max
+      x = startyear - 0.25, # y = cti_max
     ),
     y = 17, # manually label phase text
-    parse = TRUE
+    parse = TRUE,
+    hjust = 0,
   ) +
   coord_cartesian(clip = "off") +
   theme(
