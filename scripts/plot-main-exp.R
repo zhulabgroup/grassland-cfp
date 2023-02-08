@@ -26,28 +26,12 @@ warm_tbl <- tribble(
   1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, mean(c(1998.5, 2002.5)),
   2, "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C", 2003, 2009, mean(c(2002.5, 2009.5)),
   3, "Phase~III:~+250~W~m^-2%~~%+2~degree*C", 2010, Inf, mean(c(2009.5, 2014.5)) # end in 2014, but set to Inf to fill space
-) %>%
-  mutate(
-    cti_max = jrgce_tbl %>%
-      filter(com_idx_name == "CTI") %>%
-      ungroup() %>%
-      summarize(max = max(com_idx_value)) %>%
-      pull(max),
-    cti_min = jrgce_tbl %>%
-      filter(com_idx_name == "CTI") %>%
-      ungroup() %>%
-      summarize(min = min(com_idx_value)) %>%
-      pull(min),
-    com_idx_name = factor("tmp_com_mean",
-      levels = c("tmp_com_mean", "ppt_com_mean"),
-      labels = c("CTI", "CPI")
-    )
-  )
+)
 
 exp_gg <-
   ggplot(jrgce_tbl) +
   geom_rect( # warming phrases
-    data = warm_tbl %>% select(-com_idx_name),
+    data = warm_tbl,
     aes(xmin = start - .5, xmax = end + .5, fill = tag),
     ymin = -Inf, ymax = Inf, alpha = 0.5
   ) +
@@ -76,27 +60,34 @@ exp_gg <-
     y = NULL,
     color = "Warming treatment",
   ) +
+  geom_text(
+    data = warm_tbl %>%
+      mutate(
+        com_idx_name = factor("tmp_com_mean",
+          levels = c("tmp_com_mean", "ppt_com_mean"),
+          labels = c("CTI", "CPI")
+        )
+      ),
+    aes(
+      label = name,
+      x = mid, # y = cti_max
+    ),
+    y = 17, # manually label phase text
+    parse = TRUE
+  ) +
+  coord_cartesian(clip = "off") +
   theme(
     strip.background = element_blank(),
     strip.placement = "outside",
     legend.position = "none",
-    plot.subtitle = ggtext::element_markdown()
-  ) +
-  geom_text(
-    data = warm_tbl,
-    aes(
-      label = name,
-      x = mid, y = cti_max
-    ),
-    nudge_y = .5,
-    parse = TRUE
+    plot.margin = unit(c(2, 1, 1, 1), "lines") # expand margin to include warming labels
   )
 
 # save figure file
 if (.fig_save) {
   ggsave(
     plot = exp_gg,
-    filename = str_c(.path$out_fig, "fig-main-exp-max.png"),
+    filename = str_c(.path$out_fig, "fig-main-exp2.png"),
     width = 10,
     height = 6.18
   )
