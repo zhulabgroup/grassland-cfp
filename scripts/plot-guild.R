@@ -135,7 +135,7 @@ exp_guild_gg <-
 if (.fig_save) {
   ggsave(
     plot = exp_guild_gg,
-    filename = str_c(.path$out_fig, "fig-supp-exp-guild.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-guild-exp.pdf"),
     width = 11,
     height = 11 * 1.5
   )
@@ -258,7 +258,7 @@ obs_guild_gg <-
 if (.fig_save) {
   ggsave(
     plot = obs_guild_gg,
-    filename = str_c(.path$out_fig, "fig-supp-obs-guild.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-guild-obs.pdf"),
     width = 11,
     height = 11 * 1.5
   )
