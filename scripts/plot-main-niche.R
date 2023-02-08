@@ -117,20 +117,20 @@ clim_niche_gg <-
 niche_gg <- occ_geog_gg + occ_clim_gg + clim_niche_gg +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
-  ABB
-  ABB
-  CCC
-  CCC
-  CCC
+  AABB
+  AABB
+  CCCC
+  CCCC
+  CCCC
   ")
 
 # save figure file
 if (.fig_save) {
   ggsave(
     plot = niche_gg,
-    filename = str_c(.path$out_fig, "fig-main-niche.png"),
-    width = 7.5,
-    height = 7.5 * 1.618
+    filename = str_c(.path$out_fig, "fig-main-niche2.png"),
+    width = 10,
+    height = 10 * 1.618
   )
 }
 

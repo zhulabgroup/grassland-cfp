@@ -211,6 +211,6 @@ if (.fig_save) {
     plot = obs_gg,
     filename = str_c(.path$out_fig, "fig-main-obs-comb.png"),
     width = 12,
-    height = 12*1.5
+    height = 12 * 1.5
   )
 }
