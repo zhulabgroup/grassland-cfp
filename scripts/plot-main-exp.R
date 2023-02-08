@@ -55,7 +55,7 @@ exp_gg <-
     ))
   ) +
   scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
-  scale_x_continuous(expand = expansion(mult = 0, add=c(0.125, 0.125))) +
+  scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
   labs(
     x = NULL, # "Year",
     y = NULL,
@@ -71,11 +71,11 @@ exp_gg <-
       ),
     aes(
       label = name,
-      x = startyear-0.25, # y = cti_max
+      x = startyear - 0.25, # y = cti_max
     ),
     y = 17, # manually label phase text
     parse = TRUE,
-    hjust=0,
+    hjust = 0,
   ) +
   coord_cartesian(clip = "off") +
   theme(
