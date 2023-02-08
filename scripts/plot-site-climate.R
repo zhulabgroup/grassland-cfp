@@ -42,7 +42,7 @@ site_vec <- c(
   angelo = "Angelo Coast",
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
-  jasper = "Jasper Ridge",
+  jasper = "Jasper Ridge Serpentine",
   mclann = "McLaughlin Annual",
   mclserp = "McLaughlin Serpentine",
   morganterritory = "Morgan Territory",
@@ -199,8 +199,8 @@ site_clim_gg <-
 if (.fig_save) {
   ggsave(
     plot = site_clim_gg,
-    filename = str_c(.path$out_fig, "fig-supp-site-map2.pdf"),
-    width = 12,
-    height = 12 * 1.5
+    filename = str_c(.path$out_fig, "fig-supp-site-map2.png"),
+    width = 11,
+    height = 11 * 1.5
   )
 }
