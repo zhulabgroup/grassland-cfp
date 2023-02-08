@@ -1,4 +1,8 @@
 # plot climate change at obs sites
+
+# make a map for observational sites and grassland percent cover
+source("scripts/plot-site-map.R")
+
 # get site climate data
 clim_tbl <- read_rds(.path$cli_chelsa_annual) %>%
   filter(abbr %in% c(
@@ -171,9 +175,10 @@ plot_cc <- function(data, site_abbr,
 }
 
 site_clim_gg <-
+  site_map_gg +
   plot_cc(clim_tbl, "angelo", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
   plot_cc(clim_tbl, "carrizo") +
-  plot_cc(clim_tbl, "elkhorn") +
+  plot_cc(clim_tbl, "elkhorn", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
   plot_cc(clim_tbl, "jasper") +
   plot_cc(clim_tbl, "mclann", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
   plot_cc(clim_tbl, "mclserp") +
@@ -183,14 +188,19 @@ site_clim_gg <-
   plot_cc(clim_tbl, "swanton", yr_axis = TRUE) +
   plot_cc(clim_tbl, "ucsc", yr_axis = TRUE) +
   plot_cc(clim_tbl, "vascocaves", yr_axis = TRUE) +
-  plot_layout(ncol = 4, nrow = 3)
+  plot_layout(design = "
+  AABC
+  AADE
+  FGHI
+  JKLM
+")
 
 # save figure
 if (.fig_save) {
   ggsave(
     plot = site_clim_gg,
-    filename = str_c(.path$out_fig, "fig-supp-site-map.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-site-map2.pdf"),
     width = 12,
-    height = 12
+    height = 12 * 1.5
   )
 }
