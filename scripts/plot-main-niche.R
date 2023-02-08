@@ -86,24 +86,15 @@ occ_clim_gg <-
 
 clim_niche_gg <-
   ggplot(
-    data = niche_tbl,
     mapping = aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
-      xmin = tmp_occ_median - tmp_occ_sd / sqrt(occ_n),
-      xmax = tmp_occ_median + tmp_occ_sd / sqrt(occ_n),
-      ymin = ppt_occ_median - ppt_occ_sd / sqrt(occ_n),
-      ymax = ppt_occ_median + ppt_occ_sd / sqrt(occ_n),
       label = species,
       color = species_type
     )
   ) +
-  geom_point() +
-  geom_errorbar() +
-  geom_errorbarh() +
-  scale_color_manual(values = c(cool = "blue", other = gray(.75), warm = "red")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
-  guides(color = "none") +
+  geom_point(data = niche_tbl %>% filter(species_type == "other")) +
+  geom_point(data = niche_tbl %>% filter(species_type %in% c("cool", "warm"))) +
   geom_label(
     data = niche_tbl %>% filter(species_type %in% c("cool", "warm")),
     fill = NA,
@@ -111,7 +102,10 @@ clim_niche_gg <-
     label.padding = unit(.5, "lines"),
     label.size = 0,
     vjust = "outward", hjust = "outward"
-  )
+  ) +
+  scale_color_manual(values = c(cool = "blue", other = gray(.75), warm = "red")) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  guides(color = "none")
 
 # combine panels
 niche_gg <- occ_geog_gg + occ_clim_gg + clim_niche_gg +
@@ -129,8 +123,8 @@ if (.fig_save) {
   ggsave(
     plot = niche_gg,
     filename = str_c(.path$out_fig, "fig-main-niche2.png"),
-    width = 10,
-    height = 10 * 1.618
+    width = 8,
+    height = 8 * 1.618
   )
 }
 
