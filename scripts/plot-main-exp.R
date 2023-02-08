@@ -20,17 +20,34 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
     labels = c("CTI", "CPI")
   ))
 
-# warming phrases: +80 W m–2 (years 2‒5), to +100 W m–2 (years 6‒12), to +250 W m–2 (years 13‒17)
+# warming phrases
 warm_tbl <- tribble(
-  ~tag, ~name, ~start, ~end,
-  1, "Phase I", -Inf, 2002,
-  2, "Phase II", 2003, 2009,
-  3, "Phase III", 2010, Inf # end in 2014, but set to Inf to fill space
-)
+  ~tag, ~name, ~start, ~end, ~mid,
+  1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, mean(c(1998.5, 2002.5)),
+  2, "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C", 2003, 2009, mean(c(2002.5, 2009.5)),
+  3, "Phase~III:~+250~W~m^-2%~~%+2~degree*C", 2010, Inf, mean(c(2009.5, 2014.5)) # end in 2014, but set to Inf to fill space
+) %>%
+  mutate(
+    cti_max = jrgce_tbl %>%
+      filter(com_idx_name == "CTI") %>%
+      ungroup() %>%
+      summarize(max = max(com_idx_value)) %>%
+      pull(max),
+    cti_min = jrgce_tbl %>%
+      filter(com_idx_name == "CTI") %>%
+      ungroup() %>%
+      summarize(min = min(com_idx_value)) %>%
+      pull(min),
+    com_idx_name = factor("tmp_com_mean",
+      levels = c("tmp_com_mean", "ppt_com_mean"),
+      labels = c("CTI", "CPI")
+    )
+  )
 
-exp_gg <- ggplot(jrgce_tbl) +
+exp_gg <-
+  ggplot(jrgce_tbl) +
   geom_rect( # warming phrases
-    data = warm_tbl,
+    data = warm_tbl %>% select(-com_idx_name),
     aes(xmin = start - .5, xmax = end + .5, fill = tag),
     ymin = -Inf, ymax = Inf, alpha = 0.5
   ) +
@@ -58,21 +75,28 @@ exp_gg <- ggplot(jrgce_tbl) +
     x = NULL, # "Year",
     y = NULL,
     color = "Warming treatment",
-    title = "Jasper Ridge Global Change Experiment",
-    # subtitle = "<span style='color:black'>Ambient vs. </span><span style='color:red'>warming treatment</span>"
   ) +
   theme(
     strip.background = element_blank(),
     strip.placement = "outside",
     legend.position = "none",
     plot.subtitle = ggtext::element_markdown()
+  ) +
+  geom_text(
+    data = warm_tbl,
+    aes(
+      label = name,
+      x = mid, y = cti_max
+    ),
+    nudge_y = .5,
+    parse = TRUE
   )
 
 # save figure file
 if (.fig_save) {
   ggsave(
     plot = exp_gg,
-    filename = str_c(.path$out_fig, "fig-main-exp.pdf"),
+    filename = str_c(.path$out_fig, "fig-main-exp-max.png"),
     width = 10,
     height = 6.18
   )
