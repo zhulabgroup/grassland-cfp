@@ -327,7 +327,7 @@ p_compare <- ggplot(df_all_shift) +
       x = layer_scales(p_exp)$x$range$range[2] + 0.025,
       y = layer_scales(p_exp)$y$range$range[2] + 0.05
     ),
-    label = "C",
+    label = "D",
     hjust = 0,
     vjust = 0,
     color = "orange"
@@ -385,11 +385,7 @@ p_niche <- ggplot() +
     data = niche_tbl,
     aes(
       x = tmp_occ_median,
-      y = ppt_occ_median # ,
-      # xmin = tmp_occ_median - tmp_occ_sd / sqrt(occ_n),
-      # xmax = tmp_occ_median + tmp_occ_sd / sqrt(occ_n),
-      # ymin = ppt_occ_median - ppt_occ_sd / sqrt(occ_n),
-      # ymax = ppt_occ_median + ppt_occ_sd / sqrt(occ_n)
+      y = ppt_occ_median
     ),
     col = gray(.75),
     alpha = 0.5
@@ -400,10 +396,6 @@ p_niche <- ggplot() +
     size = 2.5, alpha = 0.75
   ) +
   scale_color_manual(values = c("experiment" = "#e28a2b", "observation" = "#384c6b")) +
-  # geom_errorbarh(data=df_all_sum,
-  #               aes(y=m_CPI,xmin=m_CTI-se_CTI, xmax=m_CTI+se_CTI, col=group)) +
-  # geom_errorbar(data=df_all_sum,
-  #                aes(x=m_CTI,ymin=m_CPI-se_CPI, ymax=m_CPI+se_CPI, col=group)) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   theme(
     legend.title = element_blank(),
@@ -433,14 +425,14 @@ p_niche <- ggplot() +
   )
 
 ### combine panels
-shift_gg <- p_niche + p_compare + p_exp + p_obs +
+shift_gg <- p_niche + p_compare + p_obs + p_exp +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
   AABB
   AABB
   CCCC
-  DDDD
-  DDDD
+  CCCC
+  CCCC
   DDDD
   ")
 
@@ -448,8 +440,8 @@ shift_gg <- p_niche + p_compare + p_exp + p_obs +
 if (.fig_save) {
   ggsave(
     plot = shift_gg,
-    filename = str_c(.path$out_fig, "fig-main-shift.pdf"),
+    filename = str_c(.path$out_fig, "fig-main-shift3.png"),
     width = 9,
-    height = 13
+    height = 9 * 1.618
   )
 }
