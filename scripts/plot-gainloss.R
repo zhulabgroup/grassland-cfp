@@ -1,3 +1,169 @@
+### experimental site
+niche_tbl <- read_rds(.path$sum_niche) %>%
+  filter(occ_n > 100 | is.na(occ_n)) %>% # species with many observations and dummy species
+  select(species, tmp_occ_median, ppt_occ_median)
+
+df_exp_allyears<-read_rds(.path$com_exp) %>%
+  filter(site == "jrgce") %>% 
+  filter(guild!="DUMMY") %>% 
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>% 
+  group_by(year,plot, treat_T, species) %>%
+  summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
+  ungroup() %>%
+  select(plot, species, abund) %>% 
+  select(species, abund) %>% 
+  group_by(species) %>% 
+  summarise(abund=sum(abund)) %>% 
+  ungroup() %>% 
+  mutate(dominance=abund/sum(abund)) %>% 
+  select(-abund)
+
+plot_treat<-read_rds(.path$com_exp) %>%
+  filter(site == "jrgce") %>% 
+  filter(year==1999) %>% 
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>% 
+  distinct(plot, treat_T)
+
+exp_gainloss_tbl_list <- vector(mode = "list")
+for (yearoi in 1998:2014) {
+  df_trend<-read_rds(.path$com_exp) %>%
+    filter(site == "jrgce") %>% 
+    filter(year==yearoi) %>% 
+    filter(guild!="DUMMY") %>% 
+    left_join(plot_treat, by="plot") %>% 
+    # mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>% 
+    group_by(plot, treat_T, species) %>%
+    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
+    ungroup() %>%
+    left_join(group_by(.,treat_T, plot) %>% 
+                summarise(total=sum(abund)) %>% 
+                ungroup(),
+              by=c("treat_T", "plot")) %>% 
+    mutate(rel_abun=abund/total) %>%
+    select(-abund, -total) %>% 
+    spread(key = "species", value = "rel_abun") %>%
+    mutate_if(is.numeric, ~ replace_na(., 0)) %>%
+    gather(key = "species", value = "rel_abun", -treat_T, -plot) %>%
+    spread(key="treat_T", value="rel_abun") %>%
+    mutate_if(is.numeric, ~ replace_na(., 0)) %>%
+    gather(key="treat_T", value="rel_abun", -plot, -species) %>% 
+    group_by(species) %>%
+    nest() %>%
+    mutate(
+      map(data, ~ wilcox.test(rel_abun ~ treat_T, data = ., conf.int =T)) %>%
+        map_df(~ broom::tidy(.) %>% 
+                 select(estimate, p.value)),
+    ) %>%
+    unnest(cols = data) %>%
+    distinct(species, estimate, p.value) %>%
+    mutate(change = case_when(
+      (estimate > 0 & p.value <= 0.05) ~ "gain",
+      (estimate < 0 & p.value <= 0.05) ~ "loss",
+      TRUE ~ "no clear change"
+    )) 
+  
+  df_dominance<-read_rds(.path$com_exp) %>%
+    filter(site == "jrgce") %>% 
+    filter(year==yearoi) %>%
+    filter(guild!="DUMMY") %>% 
+    left_join(plot_treat, by="plot") %>% 
+    # mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>% 
+    group_by(plot, treat_T, species) %>%
+    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
+    ungroup() %>%
+    select(plot, species, abund) %>% 
+    select(species, abund) %>% 
+    group_by(species) %>% 
+    summarise(abund=sum(abund)) %>% 
+    ungroup() %>% 
+    mutate(dominance=abund/sum(abund)) %>% 
+    select(-abund)
+  
+  df_complete <- read_rds(.path$com_exp) %>%
+    filter(site == "jrgce") %>% 
+    filter(year==yearoi) %>%
+    filter(guild!="DUMMY") %>% 
+    left_join(plot_treat, by="plot") %>% 
+    # mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>% 
+    group_by(treat_T, species) %>%
+    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
+    ungroup() %>%
+    spread(key = "species", value = "abund") %>%
+    mutate_if(is.numeric, ~ replace_na(., 0)) %>%
+    gather(key = "species", value = "abund", -treat_T) %>%
+    spread(key="treat_T", value="abund") %>% 
+    mutate(complete=case_when((`_`==0 & T!=0 )~"recruited",
+                              (T!=0 & `_`==0 )~"extirpated")) %>% 
+    select(species, complete)
+  
+  exp_gainloss_tbl_list[[yearoi %>% as.character()]] <- df_trend %>% 
+    left_join(df_dominance, by="species") %>% 
+    left_join(df_complete, by = "species") %>%
+    left_join(niche_tbl, by = "species") %>%
+    mutate(year = yearoi)
+}
+exp_gainloss_tbl <- bind_rows(exp_gainloss_tbl_list)
+
+exp_gainloss_gg <-
+  ggplot() +
+  geom_point(
+    data = niche_tbl,
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median
+    ), color = "gray", alpha = 0
+  ) +
+  geom_point(
+    data = exp_gainloss_tbl,
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      color = change,
+      size = dominance
+    ), alpha = 1,pch=21, fill=NA
+  ) +
+  ggrepel::geom_text_repel(
+    data = exp_gainloss_tbl %>% filter(change!="no clear change"),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      color = change,
+      label = paste0("italic('",species,"')")
+    ),
+    alpha = 1,
+    max.overlaps=100,
+    parse=T
+  ) +
+  geom_point(
+    data = exp_gainloss_tbl %>% filter(change=="gain"|change=="loss") %>% filter(!is.na(complete)),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      size = dominance ,
+      fill = complete,
+    ), alpha = 0.75,pch=21
+  ) +
+  scale_color_manual(values = c(gain = "dark green", `no clear change` = "gray", loss = "dark orange")) +
+  scale_fill_manual(values = c(recruited = "dark green",  extirpated = "dark orange")) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  guides(fill = "none") +
+  facet_wrap(. ~ year,
+             # labeller = site_vec %>% as_labeller(),
+             ncol = 3
+  )
+
+# save figure file
+if (.fig_save) {
+  ggsave(
+    plot = exp_gainloss_gg,
+    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
+    width = 12,
+    height = 18
+  )
+}
+
+
+### observational sites
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) %>% # species with many observations and dummy species
   select(species, tmp_occ_median, ppt_occ_median)
@@ -16,10 +182,6 @@ site_vec <- c(
   ucsc = "UC Santa Cruz",
   vascocaves = "Vasco Caves"
 )
-
-read_rds(.path$com_obs) %>%
-  filter(site == "morganterritory") %>%
-  slice(126, 127)
 
 obs_gainloss_tbl_list <- vector(mode = "list")
 for (siteoi in names(site_vec)) {
@@ -91,7 +253,7 @@ for (siteoi in names(site_vec)) {
 }
 obs_gainloss_tbl <- bind_rows(obs_gainloss_tbl_list)
 
-gainloss_gg <-
+obs_gainloss_gg <-
   ggplot() +
   geom_point(
     data = niche_tbl,
@@ -130,7 +292,7 @@ gainloss_gg <-
 # save figure file
 if (.fig_save) {
   ggsave(
-    plot = gainloss_gg,
+    plot = obs_gainloss_gg,
     filename = str_c(.path$out_fig, "fig-supp-gainloss-obs.png"),
     width = 12,
     height = 10
