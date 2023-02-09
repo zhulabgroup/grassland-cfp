@@ -3,21 +3,6 @@ niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) %>% # species with many observations and dummy species
   select(species, tmp_occ_median, ppt_occ_median)
 
-df_exp_allyears <- read_rds(.path$com_exp) %>%
-  filter(site == "jrgce") %>%
-  filter(guild != "DUMMY") %>%
-  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  group_by(year, plot, treat_T, species) %>%
-  summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-  ungroup() %>%
-  select(plot, species, abund) %>%
-  select(species, abund) %>%
-  group_by(species) %>%
-  summarise(abund = sum(abund)) %>%
-  ungroup() %>%
-  mutate(dominance = abund / sum(abund)) %>%
-  select(-abund)
-
 plot_treat <- read_rds(.path$com_exp) %>%
   filter(site == "jrgce") %>%
   filter(year == 1999) %>%
@@ -59,8 +44,8 @@ for (yearoi in 1998:2014) {
     unnest(cols = data) %>%
     distinct(species, estimate, p.value) %>%
     mutate(change = case_when(
-      (estimate > 0 & p.value <= 0.05) ~ "gain",
-      (estimate < 0 & p.value <= 0.05) ~ "loss",
+      (estimate < 0 & p.value <= 0.05) ~ "gain",
+      (estimate > 0 & p.value <= 0.05) ~ "loss",
       TRUE ~ "no clear change"
     ))
 
@@ -164,7 +149,6 @@ if (.fig_save) {
     height = 18
   )
 }
-
 
 ### observational sites
 niche_tbl <- read_rds(.path$sum_niche) %>%
