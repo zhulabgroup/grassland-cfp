@@ -14,6 +14,9 @@ final_exp_tbl <- tidy_exp_tbl %>%
     by = c("original_species", "original_guild")
   ) %>%
   filter(keep) %>%
+  group_by(site, year, plot, treat, corrected_species, corrected_guild, abund_type) %>%
+  summarize(abund = sum(abund)) %>% # combine abundances for same species with old and new names
+  ungroup() %>%
   select(
     site, year, plot, treat,
     species = corrected_species, guild = corrected_guild,
@@ -32,6 +35,9 @@ final_obs_tbl <- tidy_obs_tbl %>%
     by = c("original_species", "original_guild")
   ) %>%
   filter(keep) %>%
+  group_by(site, year, plot, corrected_species, corrected_guild, abund_type) %>%
+  summarize(abund = sum(abund)) %>% # combine abundances for same species with old and new names
+  ungroup() %>%
   select(
     site, year, plot,
     species = corrected_species, guild = corrected_guild,
