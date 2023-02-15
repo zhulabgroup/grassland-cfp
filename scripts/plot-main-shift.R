@@ -269,7 +269,8 @@ df_all_shift <- bind_rows(
     mutate(site = paste(site, year, sep = "_")) %>%
     select(site, CTI0 = CTI_, CTI1 = CTIT, CPI0 = CPI_, CPI1 = CPIT, significance) %>%
     mutate(group = "experiment")
-)
+) %>%
+  mutate(group = factor(group, levels = c("observation", "experiment")))
 
 df_all_shift %>%
   filter(significance == "sig") %>%
@@ -378,7 +379,8 @@ df_obs_all_sum <- obs_idx_tbl %>%
 df_all_sum <- bind_rows(
   df_obs_all_sum %>% mutate(group = "observation"),
   df_exp_all_sum %>% mutate(group = "experiment")
-)
+) %>%
+  mutate(group = factor(group, levels = c("observation", "experiment")))
 
 p_niche <- ggplot() +
   geom_point(
