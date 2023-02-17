@@ -46,4 +46,13 @@ exp_gg
 rm(list = ls())
 ```
 
-
+```{r shift-fig, fig.width=9, fig.height=9*1.618}
+#| fig.cap = "Grassland community shifts synthesized from both observations and experiments.
+#|  (A) Community compositions at 12 observational sites (blue) and an experimental site (orange) described by the median Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm), positioned in the ecological niche estimates for individual species (median, gray). The inset rectangle shows the extent of panel B.
+#|  (B) Communities shift in a consistent direction in the climate space in observations (blue) and experiment (orange). For the observational sites, arrows point from the start to the end of the sampling period; for the experiment site, arrows point from ambient to warming treatments. The CTI-CPI extent is identical in panel C, whereas an inset rectangle shows the extent of panel D.
+#|  (C) Communities shift significantly in eight out of 12 observational sites across the California Floristic Province. For sites with non-significant linear temporal trends in either CTI or CPI, arrows are set to be semi-transparent (*t*-test, *p* ≤ 0.05).
+#|  (D) Communities shift significantly, mainly in phase III warming of the Jasper Ridge Global Change Experiment. For years with non-significant differences between the ambient (black) and warming (red) treatments in either CTI or CPI, arrows are set to be semi-transparent (non-parametric two-sample Wilcoxon test, *p* ≤ 0.05)."
+source("scripts/plot-main-shift.R")
+shift_gg
+rm(list = ls())
+```
