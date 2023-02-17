@@ -11,7 +11,7 @@ jr_obs_tbl <-
       mutate(type = "obs", variable = "cti") %>%
       select(type, year, variable, value = cti),
     read_rds(.path$cli_chelsa_annual) %>%
-      filter(abbr == "jasper") %>%
+      filter(abbr == "jasper", year >= 1983, year <= 2015) %>%
       mutate(type = "obs", variable = "tmp") %>% # tmp = CHELSA annual tmp
       select(type, year, variable, value = tmp)
   )
@@ -22,6 +22,7 @@ jr_exp_tbl <-
       mutate(type = "exp_amb", variable = "cti") %>%
       select(type, year = Year, variable, value = Ambient),
     jrgce_avgt_tbl %>%
+      filter(harvest_year >= 1999, harvest_year <= 2014) %>% 
       mutate(type = "exp_amb", variable = "tmp") %>% # tmp = AVGT308_126
       select(type, year = harvest_year, variable, value = amb)
   )
@@ -65,7 +66,7 @@ jrcomp_gg <- jr_obs_gg + jr_exp_gg
 if (.fig_save) {
   ggsave(
     plot = jrcomp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-jrcomp.png"),
+    filename = str_c(.path$out_fig, "fig-supp-jrcomp2.png"),
     width = 10,
     height = 6.18
   )
