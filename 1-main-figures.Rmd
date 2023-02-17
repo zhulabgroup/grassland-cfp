@@ -18,11 +18,11 @@ output:
 source("scripts/_setup.R")
 ```
 
-```{r niche-fig, fig.width=7.5, fig.height=7.5*1.168}
+```{r niche-fig, fig.width=8, fig.height=8*1.618}
 #| fig.cap = "Grassland species occur along geographic and climatic gradients to estimate ecological niches.
 #|  (A) Occurrence of grassland species in California Floristic Province, retrieved from the GBIF data (gray points), highlighting two example species *Danthonia californica* in the north (blue points) and *Stipa pulchra* in the south (red points).
 #|  (B) Species occurrence in climate space of mean annual temperature (°C) and mean annual precipitation (mm), retrieved from the CHELSA data (gray), highlighting the same two example species *Danthonia californica* under cool and wet climates (blue) and *Stipa pulchra* under warm and dry climates (red).
-#|  (C) Ecological niche estimates from average temperature and precipitation for each species (median ± standard error, gray), highlighting the two species (blue and red)."
+#|  (C) Ecological niche estimates from average temperature and precipitation for each species (median, gray), highlighting the two species (blue and red)."
 source("scripts/plot-main-niche.R")
 niche_gg
 rm(list = ls())
