@@ -38,7 +38,9 @@ rm(list = ls())
 ```
 
 ```{r exp-fig, fig.width=10, fig.height=6.18}
-#| fig.cap="Grassland community shifts from long-term experiments. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (ambient plots in black, warming plots in red, background orange shades denote phase I heating +80 W m^–2^ in 1999-2002, phase II heating +100 W m^–2^ in 2003-2009, and phase III heating +250 W m^–2^ in 2010-2014, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap = "Grassland community shifts from long-term experiments.
+#|  Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm) species in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).
+#|  The orange background shades denote phase I heating +80 W m^–2^ leading to ~ +1 °C warming in 1999-2002, phase II heating +100 W m^–2^ leading to ~ +1.5 °C warming in 2003-2009, and phase III heating +250 W m^–2^ leading to ~ +2 °C warming in 2010-2014."
 source("scripts/plot-main-exp.R")
 exp_gg
 rm(list = ls())
