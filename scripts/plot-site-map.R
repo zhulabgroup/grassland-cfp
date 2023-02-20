@@ -32,16 +32,6 @@ grass_tbl <- .path$geo_grass %>%
   as_tibble() %>%
   select(x, y, percent = Land_Cover_Type_1_Percent_10)
 
-# # estimate grassland proportion
-# lc_ras %>%
-#   raster::as.data.frame(xy = T) %>%
-#   drop_na() %>%
-#   group_by(Majority_Land_Cover_Type_1) %>%
-#   summarise(count = n()) %>%
-#   ungroup() %>%
-#   mutate(proportion = count / sum(count)) %>%
-#   arrange(desc(proportion))
-
 # make map
 set.seed(618)
 site_map_gg <-
@@ -80,11 +70,12 @@ site_map_gg <-
     label.padding = unit(.25, "lines"),
     label.size = NA
   ) +
-  labs(x = "Longitude", y = "Latitude", alpha = "percent\ncover") +
+  labs(x = "Longitude", y = "Latitude", alpha = "Grassland\npercent\ncover") +
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
   theme(
     legend.position = c(0.2, 0.2),
     legend.title = element_text(size = 10)
-  )
+  ) +
+  guides(alpha = guide_legend(reverse = TRUE))
