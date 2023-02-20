@@ -18,137 +18,85 @@ output:
 source("scripts/_setup.R")
 ```
 
-# Occurrence data sources
-
-Multiple occurrence data are available in the California Floristic Province (CFP). We downloaded and compared four species occurrence datasets: Botanical Information and Ecology Network (BIEN), Consortium of California Herbaria (CCH), Global Biodiversity Information Facility (GBIF), and iNaturalist (iNat). The comparison shows that GBIF is the most comprehensive in terms of the record number and species number.
-
-```{r occ-data-tab}
-source("scripts/compare-occ-data.R")
-knitr::kable(occ_samp_tbl, caption = "Comparison of occurrence datasets.")
-```
-
-```{r occ-data-fig, fig.width=10, fig.cap="Occurrence data comparison from multiple sources (BIEN: Botanical Information and Ecology Network, CCH: Consortium of California Herbaria, GBIF: Global Biodiversity Information Facility, iNat: iNaturalist) in CFP. Randomly showing 10% of data points to avoid overplotting."}
-occ_comp_gg
+```{r cfp-climate-fig, fig.width=12, fig.height=8, eval=FALSE}
+#| fig.cap = "Climate change in the California Floristic Province (CFP).
+#|  Linear regressions describe trends in (A) mean annual temperature (°C yr^−1^) and (B) total annual precipitation (mm yr^−1^) over the years, from 1980 to 2019, in 30 arc sec (~1 km) resolution, estimated from the CHELSA time series data.
+#|  Contour lines surround pixels with statistically significant trends (*t*-test, *p* ≤ 0.05)."
+source("scripts/plot-cfp-climate.R")
+cfp_clim_gg
 rm(list = ls())
 ```
 
-# Climate data sources
-
-Multiple climate data are available in the CFP. We downloaded and compared CHELSA, PRISM, and TerraClimate datasets extracted at GBIF occurrence locations. The comparison suggests that different climate datasets are highly correlated with each other.
-
-```{r clim-data-fig, fig.width=10, fig.height=10, fig.cap="Climate data comparison from multiple sources (CHELSA, PRISM, and TerraClimate) in the CFP. Each point corresponds to a GBIF occurrence location. Brighter colors of hexagons indicate a greater number of data points. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
-source("scripts/compare-clim-data.R")
-clim_comp_gg
-rm(list = ls())
-```
-
-# Bioclimatic variables
-
-```{r compare-bioclim}
-source("scripts/compare-bioclim.R")
-```
-
-Species climate niche can be quantified by variables other than mean annual temperature and precipitation. We downloaded relevant bioclimatic variables defined by [WorldClim](https://www.worldclim.org/data/bioclim.html) and extracted to all the occurrence locations in the CFP. 
-
-Here we show that annual mean temperature (BIO1) used in this study is highly correlated with seasonal temperatures, i.e., mean temperature of wettest quarter (BIO8, *r* = `r round(tmp_cor["bio1", "bio8"], 3)`), mean temperature of driest quarter (BIO9, *r* = `r round(tmp_cor["bio1", "bio9"], 3)`), mean temperature of warmest quarter (BIO10, *r* = `r round(tmp_cor["bio1", "bio10"], 3)`), and mean temperature of coldest quarter (BIO11, *r* = `r round(tmp_cor["bio1", "bio11"], 3)`).
-
-We also show that annual precipitation (BIO12) used in this study is highly correlated with winter precipitations, i.e., precipitation of wettest month (BIO13, *r* = `r round(ppt_cor["bio12", "bio13"], 3)`), precipitation of wettest quarter (BIO16, *r* = `r round(ppt_cor["bio12", "bio16"], 3)`), and precipitation of coldest quarter (BIO19, *r* = `r round(ppt_cor["bio12", "bio19"], 3)`).
-
-Because we are interested in the change of community-weighted mean climate, the high correlations above suggest that our results are robust to the bioclimatic variables chosen. 
-
-# Climate niche summary statistics
-
-Multiple statistics (mean, median, lower 5%, upper 95%) can summarize species' climate niche. Ecologically, they represent niches differently, e.g., average vs. extreme. Numerically, however, they are all significantly, and in many cases, highly, correlated. Because our interest is in comparing CTI/CPI differences (between treatments or over years), not the absolute CTI/CPI values, our results do not depend on which statistics are chosen among the correlated collection.
-
-In the main text, we used the median because it is robust to outliers and most truthfully represents the niche centroids.
-
-```{r tmp-niche-fig, fig.width=7, fig.height=7, fig.cap="Species temperature niche statistics. Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with t-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."}
-source("scripts/compare-niche-stat.R")
-niche_tmp_gg
-```
-
-```{r ppt-niche-fig, fig.width=7, fig.height=7, fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."}
-niche_ppt_gg
-rm(list = ls())
-```
-
-# Spatial thinning occurrence-climate records
-
-Acquiring occurrence records from biodiversity database such as GBIF is subject to sampling bias (cite). The collected records tend to bias toward accessibility, where locations proximate to roads and population centers are better sampled. To address this potential bias, we used a spatial thinning algorithm to resample the data by thinning occurrences separated by certain distances (Aiello-Lammens et al., 2015). We thinned the datasets by separating the closest records with 10 km distance.
-
-The full and thinned data yield highly correlated climate niche statistics.
-
-```{r thin-fig, fig.width=10, fig.cap="Species climate niche estimates from full and thinned datasets. Each point corresponds to median temperature or precipitation for a species. Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient R and p-value) are reported on the top left."}
-source("scripts/compare-sp-thin.R")
-thin_comp_gg
-rm(list = ls())
-```
-
-# Individual species climate niches
-
-We present individual species distributions in geographical space (occurrence) and climate space (niche). The niche centroids (red cross on the right panel) are then assigned as species climate niche estimates, which becomes Fig 1.
-
-```{r}
-source("scripts/plot-ind-spp.R")
-```
-
-Show two example species.
-
-```{r cool-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Danthonia californica* distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (*n*) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution."}
-niche_gg["Danthonia californica"]
-```
-
-```{r warm-sp-fig, fig.width=8, fig.height=8*.618, fig.cap="Example species *Stipa pulchra* distributions in geographical space and climate space. Symbols follow the last figure."}
-niche_gg["Stipa pulchra"]
-```
-
-A collection of figures (one page per species) is provided in the supplement.
-
-```{r, eval=FALSE}
-# runtime ~= 4 min
-pdf(.path$out_fig_niche, width = 8, height = 8 * .618)
-print(niche_gg)
-dev.off()
-```
-
-```{r}
-rm(list = ls())
-```
-
-# Site info
-
-We present experimental and observational site information in table and map format. The map also shows grassland coverage (green) downloaded from the [land cover type data](https://lpdaac.usgs.gov/products/mcd12c1v006/).
-
-```{r site-tab, tab.cap="Observational site information"}
-source("scripts/show-site-info.R")
-site_tbl %>%
-  flextable::flextable() %>%
-  flextable::autofit() %>%
-  flextable::fit_to_width(7.5)
-```
-
-```{r site-fig, fig.height=10, fig.cap="Map of experimental and observational study sites with grassland cover (green), from MODIS/Terra+Aqua Land Cover Type. (A) Angelo Coast, (B) Carrizo Plain, (C) Elkhorn Slough, (D) Jasper Ridge, (E/F) McLaughlin Annual/Serpentine, (G) Morgan Territory, (H) Pleasanton Ridge, (I) Sunol, (J) Swanton Ranch, (K) UC Santa Cruz, (L) Vasco Caves."}
-site_map_gg
-rm(list = ls())
-```
-
-# Site climate change
-
-For the observational grassland communities, the CTI and CPI changes are consistent with the climate changes in those sites. We extracted historical climate data from CHELSA and show consistent temperature increases and precipitation decreases from 1980 to 2019.
-
-```{r plot-site-climate, fig.width=12, fig.height=12, fig.cap="Climate change in observational sites from 1980 to 2019, highlighting sampling year ranges. Mean annual temperature and precipitation are extracted from CHELSA. Trends are summarized by regression lines, solid p < 0.05, dashed p > 0.05."}
-source("scripts/plot-site-climate.R")
-site_clim_gg
-rm(list = ls())
-```
-
-# Community data availability
-
-The following figure shows the availability of experimental and observational grassland community data.
-
-```{r plot-data-avail, fig.width=10, fig.height=10*.618}
+```{r data-avail-fig, fig.width=10, fig.height=10*.618}
+#| fig.cap = "Data availability of the warming experiment and 12 observational sites.
+#|  The green lines indicate the start and the end of sampling; black dots show in which years sampling was conducted."
 source("scripts/plot-data-avail.R")
 data_avail_gg
 rm(list = ls())
 ```
 
+```{r obs-site-climate-fig, fig.width=11, fig.height=11*1.5}
+#| fig.cap = "Climate change in observational sites. Mean annual temperature (°C) and total annual precipitation (mm) are extracted from the CHELSA monthly time series from 1980 to 2019, highlighting the sampling periods in the observational periods.
+#|  Trends are summarized by regression lines, solid *p* ≤ 0.05, dashed *p* > 0.05 (*t*-test).
+#|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
+source("scripts/plot-site-climate.R")
+site_clim_gg
+rm(list = ls())
+```
+
+```{r occ-data-fig, fig.width=10, fig.height=7, eval=FALSE}
+#| fig.cap = "Occurrence data comparison from multiple sources in CFP.
+#|  BIEN: Botanical Information and Ecology Network, CCH: Consortium of California Herbaria, GBIF: Global Biodiversity Information Facility, iNat: iNaturalist.
+#|  Randomly showing 10% of data points to avoid overplotting."
+source("scripts/compare-occ-data.R")
+occ_comp_gg
+rm(list = ls())
+```
+
+```{r clim-data-fig, fig.width=10, fig.height=10}
+#| fig.cap = "Climate data comparison from multiple sources in the CFP: CHELSA, PRISM, and TerraClimate.
+#|  Each point corresponds to a GBIF occurrence location.
+#|  Brighter colors of hexagons indicate a greater number of data points.
+#|  Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient *R* and *p*-value) are reported on the top left."
+source("scripts/compare-clim-data.R")
+clim_comp_gg
+rm(list = ls())
+```
+
+```{r tmp-niche-fig, fig.width=7, fig.height=7}
+#| fig.cap = "Species temperature niche statistics.
+#|  Distributions across species are shown by diagonal histograms, and pairwise correlations are visualized by lower-diagonal scatter plots and quantified by upper-diagonal correlation coefficients with *t*-tests (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+source("scripts/compare-niche-stat.R")
+niche_tmp_gg
+```
+
+```{r ppt-niche-fig, fig.width=7, fig.height=7}
+#| fig.cap="Species precipitation niche statistics. Symbols follow the previous figure."
+niche_ppt_gg
+rm(list = ls())
+```
+
+```{r thin-fig, fig.width=10, fig.height=7}
+#| fig.cap = "Species climate niche estimates from full and thinned datasets.
+#|  Each point corresponds to the median temperature or precipitation for a species.
+#|  Solid is the 1:1 line, and dashed is the regression line, where statistics (correlation coefficient *R* and *p*-value) are reported on the top left."
+source("scripts/compare-sp-thin.R")
+thin_comp_gg
+rm(list = ls())
+```
+
+```{r cool-sp-fig, fig.width=8, fig.height=8*.618}
+#| fig.cap = "Example species *Danthonia californica* distributions in geographical space and climate space.
+#|  The left shows GBIF occurrence records in the CFP.
+#|  The right panel shows the number of GBIF records (*n*) and their distribution in reference to mean annual temperature and precipitation from CHELSA data.
+#|  The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution."
+source("scripts/plot-ind-spp.R")
+niche_gg["Danthonia californica"]
+```
+
+```{r warm-sp-fig, fig.width=8, fig.height=8*.618}
+#| fig.cap = "Example species *Stipa pulchra* distributions in geographical space and climate space.
+#|  Symbols follow the last figure."
+niche_gg["Stipa pulchra"]
+dev.off()
+```
