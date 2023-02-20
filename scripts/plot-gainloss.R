@@ -27,17 +27,17 @@ for (yearoi in 1998:2014) {
       by = c("treat_T", "plot")
     ) %>%
     mutate(rel_abun = abund / total) %>%
-    select(-abund, -total) %>%
-    spread(key = "species", value = "rel_abun") %>%
+    select(plot, treat_T, species, abund) %>%
+    spread(key = "species", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
-    gather(key = "species", value = "rel_abun", -treat_T, -plot) %>%
-    spread(key = "treat_T", value = "rel_abun") %>%
+    gather(key = "species", value = "abund", -treat_T, -plot) %>%
+    spread(key = "treat_T", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
-    gather(key = "treat_T", value = "rel_abun", -plot, -species) %>%
+    gather(key = "treat_T", value = "abund", -plot, -species) %>%
     group_by(species) %>%
     nest() %>%
     mutate(
-      map(data, ~ wilcox.test(rel_abun ~ treat_T, data = ., conf.int = T)) %>%
+      map(data, ~ wilcox.test(abund ~ treat_T, data = ., conf.int = T)) %>%
         map_df(~ broom::tidy(.) %>%
           select(estimate, p.value)),
     ) %>%
@@ -90,11 +90,53 @@ for (yearoi in 1998:2014) {
     left_join(df_complete, by = "species") %>%
     left_join(niche_tbl, by = "species") %>%
     mutate(year = yearoi)
+  
+  print (yearoi)
 }
-exp_gainloss_tbl <- bind_rows(exp_gainloss_tbl_list)
+exp_gainloss_tbl <- bind_rows(exp_gainloss_tbl_list) %>% 
+  mutate(phase=case_when(year <= 2002~ "Phase I",
+                         year >= 2010 ~ "Phase III",
+                         TRUE ~ "Phase II")) %>% 
+  mutate(phaseyear = paste0 (phase, ": ", year))
 
-exp_gainloss_gg <-
+exp_gainloss_main_gg <-
   ggplot() +
+  geom_point(
+    data = niche_tbl,
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median
+    ), color = "gray", alpha = 0
+  ) +
+  geom_point(
+    data = exp_gainloss_tbl %>% filter (year >= 2010),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      color = change,
+      size = dominance
+    ), alpha = 1, pch = 21, fill = NA
+  ) +
+  geom_point(
+    data = exp_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)) %>% filter (year >= 2010),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      size = dominance,
+      fill = complete,
+    ), alpha = 0.75, pch = 21
+  ) +
+  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
+  scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  guides(fill = "none",
+         size = "none",
+         color = "none") +
+  facet_wrap(. ~ phaseyear,
+    nrow = 1
+  )
+
+exp_gainloss_supp_gg <- ggplot() +
   geom_point(
     data = niche_tbl,
     aes(
@@ -111,6 +153,22 @@ exp_gainloss_gg <-
       size = dominance
     ), alpha = 1, pch = 21, fill = NA
   ) +
+  geom_point(
+    data = exp_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      size = dominance,
+      fill = complete,
+    ), alpha = 0.75, pch = 21
+  ) +
+  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
+  scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
+  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  guides(fill = "none") +
+  facet_wrap(. ~ phaseyear,
+             ncol = 3
+  ) +
   ggrepel::geom_text_repel(
     data = exp_gainloss_tbl %>% filter(change != "no clear change"),
     aes(
@@ -122,29 +180,13 @@ exp_gainloss_gg <-
     alpha = 1,
     max.overlaps = 100,
     parse = T
-  ) +
-  geom_point(
-    data = exp_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)),
-    aes(
-      x = tmp_occ_median,
-      y = ppt_occ_median,
-      size = dominance,
-      fill = complete,
-    ), alpha = 0.75, pch = 21
-  ) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "gray", loss = "dark orange")) +
-  scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
-  guides(fill = "none") +
-  facet_wrap(. ~ year,
-    ncol = 3
   )
-
+  
 # save figure file
 if (.fig_save) {
   ggsave(
-    plot = exp_gainloss_gg,
-    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
+    plot = exp_gainloss_supp_gg,
+    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.pdf"),
     width = 12,
     height = 18
   )
@@ -185,14 +227,14 @@ for (siteoi in names(site_vec)) {
       by = c("year", "plot")
     ) %>%
     mutate(rel_abun = abund / total) %>%
-    select(-abund, -total) %>%
-    spread(key = "species", value = "rel_abun") %>%
+    select(year, plot, species, abund) %>%
+    spread(key = "species", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
-    gather(key = "species", value = "rel_abun", -year, -plot) %>%
+    gather(key = "species", value = "abund", -year, -plot) %>%
     group_by(species) %>%
     nest() %>%
     mutate(
-      map(data, ~ lm(rel_abun ~ year, data = .)) %>%
+      map(data, ~ lm(abund ~ year, data = .)) %>%
         map_df(~ broom::tidy(.) %>%
           filter(term == "year") %>%
           select(estimate, p.value)),
@@ -243,10 +285,12 @@ for (siteoi in names(site_vec)) {
     left_join(df_complete, by = "species") %>%
     left_join(niche_tbl, by = "species") %>%
     mutate(site = siteoi)
+  
+  print(siteoi)
 }
 obs_gainloss_tbl <- bind_rows(obs_gainloss_tbl_list)
 
-obs_gainloss_gg <-
+obs_gainloss_main_gg <-
   ggplot() +
   geom_point(
     data = niche_tbl,
@@ -273,7 +317,7 @@ obs_gainloss_gg <-
       fill = complete,
     ), alpha = 0.75, pch = 21
   ) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "gray", loss = "dark orange")) +
+  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
   scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(fill = "none") +
@@ -282,12 +326,48 @@ obs_gainloss_gg <-
     nrow = 3
   )
 
+obs_gainloss_supp_gg <- obs_gainloss_main_gg+
+  ggrepel::geom_text_repel(
+    data = obs_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      color = change,
+      label = paste0("italic('", species, "')")
+    ),
+    alpha = 1,
+    cex=3,
+    max.overlaps = 100,
+    parse = T
+  )
+
 # save figure file
 if (.fig_save) {
   ggsave(
-    plot = obs_gainloss_gg,
+    plot = obs_gainloss_supp_gg,
     filename = str_c(.path$out_fig, "fig-supp-gainloss-obs.png"),
     width = 12,
     height = 10
   )
 }
+
+gainloss_main_gg <-
+  exp_gainloss_main_gg +
+  obs_gainloss_main_gg+
+  plot_layout(design = "
+  A
+  B
+  B
+  B
+") +
+  plot_annotation(tag_levels = "A")
+  
+  # save figure file
+  if (.fig_save) {
+    ggsave(
+      plot = gainloss_main_gg,
+      filename = str_c(.path$out_fig, "fig-main-gainloss.png"),
+      width = 12,
+      height = 12
+    )
+  }
