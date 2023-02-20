@@ -19,9 +19,9 @@ if (FALSE) {
     terra::crop(terra::ext(cfp_sf)) %>%
     terra::mask(cfp_sf) %>%
     terra::subset("Land_Cover_Type_1_Percent_10") # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
-  
+
   terra::plot(grass_ras)
-  
+
   terra::writeRaster(grass_ras, str_c(.path$geo_grass, "cfp-grassland-percent-cover.tif"))
 }
 
@@ -84,5 +84,7 @@ site_map_gg <-
   coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
   scale_x_continuous(breaks = c(-125, -120, -115)) +
   scale_y_continuous(breaks = c(30, 35, 40)) +
-  theme(legend.position = c(0.2, 0.2),
-        legend.title = element_text(size = 10))
+  theme(
+    legend.position = c(0.2, 0.2),
+    legend.title = element_text(size = 10)
+  )

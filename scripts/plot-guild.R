@@ -1,39 +1,47 @@
 ### plot guild in niche space
-guild_niche_tbl <- read_rds(.path$sum_niche) %>% 
+guild_niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) %>% # species with many observations and dummy species
-  select(species,tmp_occ_median,  ppt_occ_median) %>% 
-  left_join(bind_rows(read_rds(.path$com_exp) %>% 
-              select(species, guild),
-            read_rds(.path$com_obs) %>% 
-              select(species, guild)) %>% 
-              distinct(species, guild),
-            by="species") %>% 
-  filter(!is.na(guild)) %>%  # why is there NA?
-  mutate(native=str_sub(guild, 1, 1),
-         annual=str_sub(guild, 2, 2),
-         grass=str_sub(guild, 3, 3)) %>% 
-  select(-guild) %>% 
-  gather(key="group", value="guild", -species, -tmp_occ_median, -ppt_occ_median) %>% 
+  select(species, tmp_occ_median, ppt_occ_median) %>%
+  left_join(
+    bind_rows(
+      read_rds(.path$com_exp) %>%
+        select(species, guild),
+      read_rds(.path$com_obs) %>%
+        select(species, guild)
+    ) %>%
+      distinct(species, guild),
+    by = "species"
+  ) %>%
+  filter(!is.na(guild)) %>% # why is there NA?
+  mutate(
+    native = str_sub(guild, 1, 1),
+    annual = str_sub(guild, 2, 2),
+    grass = str_sub(guild, 3, 3)
+  ) %>%
+  select(-guild) %>%
+  gather(key = "group", value = "guild", -species, -tmp_occ_median, -ppt_occ_median) %>%
   mutate(group = factor(group,
-                        levels = c("native", "annual", "grass"),
-                        labels = c("Origin", "Life history", "Functional group")
-  )) %>% 
+    levels = c("native", "annual", "grass"),
+    labels = c("Origin", "Life history", "Functional group")
+  )) %>%
   mutate(guild = factor(guild,
-                        levels = c("N", "E", "A", "P", "G", "F"),
-                        labels  = c("Native", "Exotic", "Annual", "Perennial", "Grass", "Forb")
-  )) 
+    levels = c("N", "E", "A", "P", "G", "F"),
+    labels = c("Native", "Exotic", "Annual", "Perennial", "Grass", "Forb")
+  ))
 
 guild_niche_gg <-
-  ggplot( ) +
-  geom_point(data = guild_niche_tbl%>% filter(!is.na(guild)),
-             aes(
-               x = tmp_occ_median,
-               y = ppt_occ_median,
-               color = guild
-             )) +
-  scale_color_brewer(palette = "Dark2")+
+  ggplot() +
+  geom_point(
+    data = guild_niche_tbl %>% filter(!is.na(guild)),
+    aes(
+      x = tmp_occ_median,
+      y = ppt_occ_median,
+      color = guild
+    )
+  ) +
+  scale_color_brewer(palette = "Dark2") +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
-  facet_wrap(.~group, nrow=1)
+  facet_wrap(. ~ group, nrow = 1)
 
 # save figure
 if (.fig_save) {
@@ -46,24 +54,26 @@ if (.fig_save) {
 }
 ### changes at experimental site
 # summarize percentage of natives, annuals, and grasses
-exp_guild_tbl<-read_rds(.path$com_exp) %>%
+exp_guild_tbl <- read_rds(.path$com_exp) %>%
   filter(site == "jrgce", year >= 1999) %>%
-  filter(guild!="DUMMY") %>% 
-  mutate(native=str_sub(guild, 1, 1),
-         annual=str_sub(guild, 2, 2),
-         grass=str_sub(guild, 3, 3)) %>% 
-  select(-guild) %>% 
+  filter(guild != "DUMMY") %>%
+  mutate(
+    native = str_sub(guild, 1, 1),
+    annual = str_sub(guild, 2, 2),
+    grass = str_sub(guild, 3, 3)
+  ) %>%
+  select(-guild) %>%
   group_by(site, year, plot, treat) %>%
   summarize(
-    native_perc = sum(abund * (native=="N")) / sum(abund),
-    annual_perc = sum(abund * (annual=="A")) / sum(abund),
-    grass_perc = sum(abund * (grass=="G")) / sum(abund)
+    native_perc = sum(abund * (native == "N")) / sum(abund),
+    annual_perc = sum(abund * (annual == "A")) / sum(abund),
+    grass_perc = sum(abund * (grass == "G")) / sum(abund)
   ) %>%
   mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  select(site, year, plot, treat_T, native_perc, annual_perc,grass_perc) %>%
+  select(site, year, plot, treat_T, native_perc, annual_perc, grass_perc) %>%
   pivot_longer(cols = native_perc:grass_perc, names_to = "group", values_to = "value") %>%
   mutate(group = factor(group,
-                               levels = c("native_perc", "annual_perc", "grass_perc")
+    levels = c("native_perc", "annual_perc", "grass_perc")
   ))
 
 # warming phrases
@@ -101,7 +111,7 @@ exp_guild_gg <-
       grass_perc = "% grasses"
     ))
   ) +
-  scale_y_continuous(limits=c(0,1),expand = expansion(mult = .15)) + # expand padding to show significance tests
+  scale_y_continuous(limits = c(0, 1), expand = expansion(mult = .15)) + # expand padding to show significance tests
   scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
   labs(
     x = NULL, # "Year",
@@ -112,7 +122,7 @@ exp_guild_gg <-
     data = warm_tbl %>%
       mutate(
         group = factor("native_perc",
-                       levels = c("native_perc", "annual_perc", "grass_perc")
+          levels = c("native_perc", "annual_perc", "grass_perc")
         )
       ),
     aes(
@@ -143,17 +153,19 @@ if (.fig_save) {
 
 ### changes at observational sites
 # summarize percentage of natives, annuals, and grasses
-obs_guild_tbl<-read_rds(.path$com_obs) %>%
-  mutate(native=str_sub(guild, 1, 1),
-         annual=str_sub(guild, 2, 2),
-         grass=str_sub(guild, 3, 3)) %>% 
-  select(-guild) %>% 
-  group_by(abbr=site, year, plot) %>% 
+obs_guild_tbl <- read_rds(.path$com_obs) %>%
+  mutate(
+    native = str_sub(guild, 1, 1),
+    annual = str_sub(guild, 2, 2),
+    grass = str_sub(guild, 3, 3)
+  ) %>%
+  select(-guild) %>%
+  group_by(abbr = site, year, plot) %>%
   summarise(
-    native_perc = sum(abund * (native=="N")) / sum(abund),
-    annual_perc = sum(abund * (annual=="A")) / sum(abund),
-    grass_perc = sum(abund * (grass=="G")) / sum(abund)
-  ) %>% 
+    native_perc = sum(abund * (native == "N")) / sum(abund),
+    annual_perc = sum(abund * (annual == "A")) / sum(abund),
+    grass_perc = sum(abund * (grass == "G")) / sum(abund)
+  ) %>%
   ungroup()
 
 # setup site labels
@@ -174,17 +186,17 @@ site_vec <- c(
 
 # define plotting function
 plot_guild <- function(data, site_abbr,
-                    native_lab = "", annual_lab = "", grass_lab="", yr_lab = NULL, yr_axis = FALSE) {
+                       native_lab = "", annual_lab = "", grass_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
   site_lab <- site_vec[site_abbr]
   site_lab <- str_c(LETTERS[which(site_vec == site_lab)], site_lab, sep = ". ")
-  
+
   site_tbl <- data %>%
     filter(abbr == site_abbr) %>%
-    select(abbr, year,plot, native_perc, annual_perc, grass_perc) %>%
+    select(abbr, year, plot, native_perc, annual_perc, grass_perc) %>%
     pivot_longer(native_perc:grass_perc, names_to = "group", values_to = "value") %>%
     mutate(group = factor(group,
-                             levels = c("native_perc", "annual_perc", "grass_perc")
+      levels = c("native_perc", "annual_perc", "grass_perc")
     )) %>%
     group_by(group) %>%
     nest() %>%
@@ -193,12 +205,12 @@ plot_guild <- function(data, site_abbr,
         map_dbl(~ broom::glance(.) %>% pull(p.value))
     ) %>%
     unnest(cols = data)
-  
+
   # plot
   out_gg <-
     ggplot(site_tbl) +
     geom_boxplot(
-      aes(x = year, y = value, group=year),
+      aes(x = year, y = value, group = year),
       color = "gray", outlier.shape = 20
     ) +
     geom_smooth(
@@ -208,12 +220,12 @@ plot_guild <- function(data, site_abbr,
     ) +
     scale_linetype_manual(values = c("sig" = "solid", "ns" = "dashed")) +
     facet_wrap(~group,
-               ncol = 1, scales = "free_y",
-               strip.position = "left",
-               labeller = labeller(group = c(native_perc = native_lab, annual_perc = annual_lab, grass_perc=grass_lab))
+      ncol = 1, scales = "free_y",
+      strip.position = "left",
+      labeller = labeller(group = c(native_perc = native_lab, annual_perc = annual_lab, grass_perc = grass_lab))
     ) +
     expand_limits(x = c(min(data$year) - 1, max(data$year + 1))) +
-    ylim(0,1)+
+    ylim(0, 1) +
     labs(
       title = site_lab,
       x = yr_lab, y = NULL
@@ -224,7 +236,7 @@ plot_guild <- function(data, site_abbr,
       strip.placement = "outside",
       plot.title = element_text(size = 11)
     )
-  
+
   # remove yr axis text
   if (yr_axis) {
     return(out_gg)
@@ -237,9 +249,9 @@ obs_guild_gg <-
   site_map_gg +
   plot_guild(obs_guild_tbl, "angelo", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
   plot_guild(obs_guild_tbl, "carrizo") +
-  plot_guild(obs_guild_tbl, "elkhorn",native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
+  plot_guild(obs_guild_tbl, "elkhorn", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
   plot_guild(obs_guild_tbl, "jasper") +
-  plot_guild(obs_guild_tbl, "mclann", native_lab = "% natives",annual_lab = "% annuals", grass_lab = "% grasses") +
+  plot_guild(obs_guild_tbl, "mclann", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
   plot_guild(obs_guild_tbl, "mclserp") +
   plot_guild(obs_guild_tbl, "morganterritory") +
   plot_guild(obs_guild_tbl, "pleasantonridge") +

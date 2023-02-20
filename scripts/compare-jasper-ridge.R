@@ -22,7 +22,7 @@ jr_exp_tbl <-
       mutate(type = "exp_amb", variable = "cti") %>%
       select(type, year = Year, variable, value = Ambient),
     jrgce_avgt_tbl %>%
-      filter(harvest_year >= 1999, harvest_year <= 2014) %>% 
+      filter(harvest_year >= 1999, harvest_year <= 2014) %>%
       mutate(type = "exp_amb", variable = "tmp") %>% # tmp = AVGT308_126
       select(type, year = harvest_year, variable, value = amb)
   )
