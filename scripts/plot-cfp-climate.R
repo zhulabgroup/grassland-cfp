@@ -1,11 +1,14 @@
 # report stats
 sum_cfp_cc_func <- function(param) {
-  trend_ras <- raster::stack(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))[[1]] # slope
-  sig_ras <- raster::stack(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))[[3]] # p value
+  ras <- terra::rast(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))
+  trend_ras <- ras[[1]]
+  names(trend_ras) <- "trend"
+  sig_ras <- ras[[3]]
+  names(sig_ras) <- "p"
   trend_df <- trend_ras %>%
-    raster::as.data.frame(xy = T) %>%
-    cbind(sig_ras %>% raster::as.data.frame(xy = F)) %>%
-    select(lon = x, lat = y, trend = X1, p = X3) %>%
+    terra::as.data.frame(xy = T) %>%
+    cbind(sig_ras %>% terra::as.data.frame(xy = F)) %>%
+    select(lon = x, lat = y, trend, p) %>%
     drop_na(trend) %>%
     summarise(
       mean = mean(trend, na.rm = T),
@@ -22,12 +25,15 @@ sum_cfp_cc <- bind_rows(sum_cfp_cc_func("tas"), sum_cfp_cc_func("pr"))
 
 # plot
 plot_cfp_cc <- function(param) {
-  trend_ras <- raster::stack(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))[[1]] # slope
-  sig_ras <- raster::stack(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))[[3]] # p value
+  ras <- terra::rast(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))
+  trend_ras <- ras[[1]]
+  names(trend_ras) <- "trend"
+  sig_ras <- ras[[3]]
+  names(sig_ras) <- "p"
   trend_df <- trend_ras %>%
-    raster::as.data.frame(xy = T) %>%
-    cbind(sig_ras %>% raster::as.data.frame(xy = F)) %>%
-    select(lon = x, lat = y, trend = X1, p = X3) %>%
+    terra::as.data.frame(xy = T) %>%
+    cbind(sig_ras %>% terra::as.data.frame(xy = F)) %>%
+    select(lon = x, lat = y, trend, p) %>%
     mutate(rank = rank(trend, na.last = "keep")) %>%
     mutate(
       trend_sig = case_when(p <= 0.05 ~ trend),
@@ -73,7 +79,7 @@ plot_cfp_cc <- function(param) {
     geom_contour(
       data = trend_df %>% mutate(p = ifelse(is.na(p), 999, p)),
       aes(x = lon, y = lat, z = p),
-      color = "black", size = 0.25,
+      color = "black", linewidth = 0.25,
       breaks = c(0.05)
     ) +
     scale_fill_gradientn(
