@@ -113,7 +113,7 @@ exp_cpi_tab <- exp_cpi_tbl %>%
 
 # get JRGCE temperature treatments in deg C
 jrgce_avgt_tbl <- .path$com_raw %>%
-  str_c("JRGCE/Environment mid H1 H2-1_V2.CSV") %>%
+  str_c("JRGCE/Environment mid H1 H2-1_V2.csv") %>%
   read_csv(col_types = "icfcd") %>%
   rename_with(tolower) %>%
   filter(variable == "AVGT308_126") %>%
