@@ -30,7 +30,7 @@ rm(list = ls())
 
 ```{r obs-fig, fig.width=11, fig.height=11*1.5}
 #| fig.cap = "Grassland community shifts from long-term observations.
-#|  Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05). 
+#|  Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
 #|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
 source("scripts/plot-main-obs.R")
 obs_gg

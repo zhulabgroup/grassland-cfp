@@ -84,7 +84,7 @@ rm(list = ls())
 ```
 
 ```{r cwd-obs, fig.width=11, fig.height=11*1.5}
-#| fig.cap="Comparison of grassland community shifts from long-term observations evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI and increasing CDI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05). 
+#| fig.cap="Comparison of grassland community shifts from long-term observations evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI and increasing CDI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
 #|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
 source("scripts/plot-cwd-obs.R")
 cwd_obs_gg
@@ -166,7 +166,7 @@ guild_niche_gg
 
 ```{r guild-obs, fig.width=11, fig.height=6.18*1.5}
 #| fig.cap = "Grassland community shifts characterized by guilds from long-term observations.
-#| Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05). 
+#| Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
 #|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
 obs_guild_gg
 ```
@@ -178,4 +178,3 @@ obs_guild_gg
 exp_guild_gg
 rm(list = ls())
 ```
-
