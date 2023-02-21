@@ -2,7 +2,7 @@
 if (!require("pacman")) {
   install.packages("pacman")
 }
-pacman::p_load(bookdown, flextable, GGally, ggpubr, ggtext, ggthemes, googledrive, markdown, raster, rmarkdown, rnaturalearth, terra, tidyverse, viridis, sf, patchwork)
+pacman::p_load(bookdown, flextable, GGally, ggpubr, ggtext, ggthemes, gtools, markdown, raster, rmarkdown, rnaturalearth, terra, tidyverse, viridis, sf, patchwork)
 pacman::p_load_gh("ropenscilabs/rnaturalearthhires")
 pacman::p_unload("all")
 pacman::p_load(tidyverse, sf, patchwork, rgdal)
