@@ -52,7 +52,8 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   out_fig_niche = "data/output/manuscript/species-climate-niche.pdf",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
   sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
-  sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds"
+  sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds",
+  sum_gainloss = "data/community/gainloss/"
 )
 
 # save figures?
