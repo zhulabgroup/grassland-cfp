@@ -68,7 +68,7 @@ rm(list = ls())
 
 # Species occurrence and climate niche estimation
 
-```{r occ-data-fig, fig.width=10, fig.height=7, eval=FALSE}
+```{r occ-data-fig, fig.width=10, fig.height=7, eval=TRUE}
 #| fig.cap = "Occurrence data comparison from multiple sources in CFP.
 #|  BIEN: Botanical Information and Ecology Network, CCH: Consortium of California Herbaria, GBIF: Global Biodiversity Information Facility, iNat: iNaturalist.
 #|  Randomly showing 10% of data points to avoid overplotting."
@@ -76,7 +76,7 @@ source("scripts/compare-occ-data.R")
 occ_comp_gg
 ```
 
-```{r occ-data-tab, eval=FALSE}
+```{r occ-data-tab, eval=TRUE}
 occ_samp_tbl %>%
   knitr::kable(caption = "Comparison of occurrence data from multiple sources in the CFP. BIEN: Botanical Information and Ecology Network, CCH: Consortium of California Herbaria, GBIF: Global Biodiversity Information Facility, iNat: iNaturalist.")
 rm(list = ls())
@@ -250,4 +250,10 @@ mclexp_gg
 #| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz IDE (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
 scide_gg
 rm(list = ls())
+```
+
+Computing environment
+
+```{r}
+sessionInfo()
 ```

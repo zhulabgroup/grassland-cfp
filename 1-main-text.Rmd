@@ -65,3 +65,9 @@ source("scripts/plot-gainloss.R")
 gainloss_main_gg
 rm(list = ls())
 ```
+
+Computing environment
+
+```{r}
+sessionInfo()
+```
