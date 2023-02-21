@@ -7,7 +7,7 @@ cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
 
 # read GBIF-CHELSA data
 gbif_chelsa_sf <- read_rds(.path$geo_clim) %>%
-  dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt, vpd = chelsa_vpd) %>%
+  dplyr::select(geometry, key, species, tmp = chelsa_tmp, ppt = chelsa_ppt) %>%
   st_as_sf(crs = "+proj=longlat +datum=WGS84 +no_defs")
 
 # check species lists
@@ -20,10 +20,7 @@ tmp_rng <- range(gbif_chelsa_sf$tmp)
 ppt_rng <- range(gbif_chelsa_sf$ppt)
 n_occ_tot <- nrow(gbif_chelsa_sf)
 
-# multi-page plot
-niche_gg <- vector(mode = "list")
-for (i in seq_along(sp_gbif_vec)) {
-  sp <- sp_gbif_vec[i]
+plot_sp_niche <- function(sp = "Danthonia californica") {
   occ_sp_sf <- filter(gbif_chelsa_sf, species == sp)
   occ_sp_stat <- occ_sp_sf %>%
     as_tibble() %>%
@@ -73,7 +70,5 @@ for (i in seq_along(sp_gbif_vec)) {
       title = bquote(italic("n") ~ "=" ~ .(format(occ_sp_stat$occ_n, big.mark = ",", trim = TRUE)))
     )
 
-  # print(sp)
-  niche_gg[[i]] <- occ_geog + occ_clim # no need to print(); will slow down
+  occ_geog + occ_clim
 }
-names(niche_gg) <- sp_gbif_vec

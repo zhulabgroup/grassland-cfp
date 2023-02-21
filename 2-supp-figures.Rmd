@@ -119,13 +119,13 @@ rm(list = ls())
 #|  The right panel shows the number of GBIF records (*n*) and their distribution in reference to mean annual temperature and precipitation from CHELSA data.
 #|  The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution."
 source("scripts/plot-ind-spp.R")
-niche_gg["Danthonia californica"]
+plot_sp_niche("Danthonia californica")
 ```
 
 ```{r warm-sp, fig.width=8, fig.height=8*.618}
 #| fig.cap = "Example species *Stipa pulchra* distributions in geographical space and climate space.
 #|  Symbols follow the last figure."
-niche_gg["Stipa pulchra"]
+plot_sp_niche("Stipa pulchra")
 dev.off()
 ```
 
