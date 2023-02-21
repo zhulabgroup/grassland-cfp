@@ -1,5 +1,5 @@
 ---
-title: "Statistics report"
+title: "Reporting statistics"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console
