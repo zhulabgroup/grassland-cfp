@@ -1,0 +1,42 @@
+---
+title: "Statistics report"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+editor_options: 
+  chunk_output_type: console
+output:
+  bookdown::html_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+  bookdown::word_document2: 
+    fig_caption: true
+    number_sections: true
+    global_numbering: true
+---
+
+```{r setup, echo=FALSE, message=FALSE}
+source("scripts/_setup.R")
+```
+
+# Main text
+
+# Supplementary materials
+
+```{r compare-bioclim}
+source("scripts/compare-bioclim.R")
+```
+
+Species climate niche can be quantified by variables other than mean annual temperature and precipitation. We downloaded relevant bioclimatic variables defined by [WorldClim](https://www.worldclim.org/data/bioclim.html) and extracted to all the occurrence locations in the CFP. 
+
+Here we show that annual mean temperature (BIO1) used in this study is highly correlated with seasonal temperatures, i.e., mean temperature of wettest quarter (BIO8, *r* = `r round(tmp_cor["bio1", "bio8"], 3)`), mean temperature of driest quarter (BIO9, *r* = `r round(tmp_cor["bio1", "bio9"], 3)`), mean temperature of warmest quarter (BIO10, *r* = `r round(tmp_cor["bio1", "bio10"], 3)`), and mean temperature of coldest quarter (BIO11, *r* = `r round(tmp_cor["bio1", "bio11"], 3)`).
+
+We also show that annual precipitation (BIO12) used in this study is highly correlated with winter precipitations, i.e., precipitation of wettest month (BIO13, *r* = `r round(ppt_cor["bio12", "bio13"], 3)`), precipitation of wettest quarter (BIO16, *r* = `r round(ppt_cor["bio12", "bio16"], 3)`), and precipitation of coldest quarter (BIO19, *r* = `r round(ppt_cor["bio12", "bio19"], 3)`).
+
+Because we are interested in the change of community-weighted mean climate, the high correlations above suggest that our results are robust to the bioclimatic variables chosen. 
+
+# Computing environment
+
+```{r}
+sessionInfo()
+```
+
