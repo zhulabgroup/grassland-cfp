@@ -19,39 +19,74 @@ guild_niche_tbl <- read_rds(.path$sum_niche) %>%
     grass = str_sub(guild, 3, 3)
   ) %>%
   select(-guild) %>%
+  mutate(native = factor(native,
+    levels = c("N", "E", "D"),
+    labels = c("Native", "Exotic", "DUMMY")
+  )) %>%
+  mutate(annual = factor(annual,
+    levels = c("P", "A", "U"),
+    labels = c("Perennial", "Annual", "DUMMY")
+  )) %>%
+  mutate(grass = factor(grass,
+    levels = c("F", "S", "G", "R", "T", "U", "M"),
+    labels = c("Forb", "Shrub", "Grass", "Rush", "Tree", "Unknown", "DUMMY")
+  )) %>%
   gather(key = "group", value = "guild", -species, -tmp_occ_median, -ppt_occ_median) %>%
   mutate(group = factor(group,
     levels = c("native", "annual", "grass"),
     labels = c("Origin", "Life history", "Functional group")
-  )) %>%
-  mutate(guild = factor(guild,
-    levels = c("N", "E", "A", "P", "G", "F"),
-    labels = c("Native", "Exotic", "Annual", "Perennial", "Grass", "Forb")
   ))
 
-guild_niche_gg <-
-  ggplot() +
-  geom_point(
-    data = guild_niche_tbl %>% filter(!is.na(guild)),
-    aes(
-      x = tmp_occ_median,
-      y = ppt_occ_median,
-      color = guild
+plot_guild_niche <- function(g, pal) {
+  p <- ggplot(data = guild_niche_tbl %>%
+    filter(guild != "DUMMY") %>%
+    filter(guild != "Unknown") %>%
+    filter(group == g)) +
+    geom_point(
+      aes(
+        x = tmp_occ_median,
+        y = ppt_occ_median,
+        color = guild
+      ),
+      alpha = 0.5
+    ) +
+    stat_ellipse(
+      aes(
+        x = tmp_occ_median,
+        y = ppt_occ_median,
+        color = guild
+      )
+    ) +
+    scale_color_brewer(palette = pal) +
+    labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+    theme(
+      legend.position = c(0.2, 0.2),
+      legend.title = element_blank()
     )
-  ) +
-  scale_color_brewer(palette = "Dark2") +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
-  facet_wrap(. ~ group, nrow = 1)
+
+  return(p)
+}
+
+
+guild_niche_gg <-
+  plot_guild_niche("Origin", "Set1") +
+  plot_guild_niche("Life history", "Set2") +
+  plot_guild_niche("Functional group", "Dark2") +
+  plot_annotation(tag_levels = "A") +
+  plot_layout(design = "
+  ABC
+  ")
 
 # save figure
 if (.fig_save) {
   ggsave(
     plot = guild_niche_gg,
-    filename = str_c(.path$out_fig, "fig-supp-guild-niche.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-guild-niche.png"),
     width = 12,
     height = 5
   )
 }
+
 ### changes at experimental site
 # summarize percentage of natives, annuals, and grasses
 exp_guild_tbl <- read_rds(.path$com_exp) %>%
@@ -147,11 +182,14 @@ if (.fig_save) {
     plot = exp_guild_gg,
     filename = str_c(.path$out_fig, "fig-supp-guild-exp.pdf"),
     width = 11,
-    height = 11 * 1.5
+    height = 6.18 * 1.5
   )
 }
 
 ### changes at observational sites
+# make a map for observational sites and grassland percent cover
+source("scripts/plot-site-map.R")
+
 # summarize percentage of natives, annuals, and grasses
 obs_guild_tbl <- read_rds(.path$com_obs) %>%
   mutate(
@@ -214,11 +252,11 @@ plot_guild <- function(data, site_abbr,
       color = "gray", outlier.shape = 20
     ) +
     geom_smooth(
-      aes(x = year, y = value, linetype = ifelse(p_val <= 0.05, "sig", "ns")),
+      data = . %>% filter(p_val <= 0.05),
+      aes(x = year, y = value),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    scale_linetype_manual(values = c("sig" = "solid", "ns" = "dashed")) +
     facet_wrap(~group,
       ncol = 1, scales = "free_y",
       strip.position = "left",

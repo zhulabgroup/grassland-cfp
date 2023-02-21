@@ -42,6 +42,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   geo_bioclim = "data/climate/all/bioclim-gbif-2022-11-09.rds",
   geo_cfp = "data/occurrence/hotspots/hotspots_2016_1.shp",
   geo_clim = "data/climate/all/climate-gbif-2022-11-01.rds",
+  geo_clim_cwd = "data/climate/all/climate-gbif-2023-02-08.rds",
   geo_grass = "data/occurrence/grassland/",
   geo_site = "data/community/site-info.rds",
   occ_bien = "data/occurrence/bien/bien-cfp-2022-11-08.rds",
@@ -51,8 +52,10 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   out_fig = "data/output/manuscript/",
   out_fig_niche = "data/output/manuscript/species-climate-niche.pdf",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
+  sum_niche_cwd = "data/occurrence/niche-estimates-cwd-2023-02-11.rds",
   sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
-  sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds"
+  sum_thin = "data/occurrence/niche-estimates-cfp-2022-11-01-thin.rds",
+  sum_gainloss = "data/community/gainloss/"
 )
 
 # save figures?
