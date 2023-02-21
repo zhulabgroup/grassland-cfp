@@ -1,5 +1,5 @@
 ---
-title: "Main figures"
+title: "Main text"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console

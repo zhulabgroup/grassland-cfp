@@ -1,5 +1,5 @@
 ---
-title: "Supplementary figures"
+title: "Supplementary materials"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 editor_options: 
   chunk_output_type: console
