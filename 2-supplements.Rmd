@@ -200,6 +200,25 @@ exp_guild_gg
 rm(list = ls())
 ```
 
+# Additional watering and drought experiments
+
+```{r exp-water-fig, fig.width=10, fig.height=6.18}
+#| fig.cap="In most years, watering treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+source("scripts/plot-exp-extra.R")
+exp_water_gg
+```
+
+```{r exp-mclexp-fig, fig.width=11, fig.height=8}
+#| fig.cap="In most years, watering and drought treatments did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the McLaughlin Water Experiment (ambient plots in black, watering plots in blue, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+mclexp_gg
+```
+
+```{r exp-scide-fig, fig.width=11, fig.height=8}
+#| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz IDE (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+scide_gg
+rm(list = ls())
+```
+
 # Additional drought metrics
 
 ```{r cwd-niche-fig, fig.width=12, fig.height=5}
@@ -227,25 +246,6 @@ cwd_exp_gg
 ```{r cwd-exp-water-fig, fig.width=10, fig.height=6.18 /2 *3}
 #| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Watering treatment did not lead to significant community compositional shift in most years measured by CTI (°C), CPI (mm), or CDI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
 cwd_exp_water_gg
-rm(list = ls())
-```
-
-# Additional watering and drought experiments
-
-```{r exp-water-fig, fig.width=10, fig.height=6.18}
-#| fig.cap="In most years, watering treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
-source("scripts/plot-exp-extra.R")
-exp_water_gg
-```
-
-```{r exp-mclexp-fig, fig.width=11, fig.height=8}
-#| fig.cap="In most years, watering and drought treatments did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the McLaughlin Water Experiment (ambient plots in black, watering plots in blue, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
-mclexp_gg
-```
-
-```{r exp-scide-fig, fig.width=11, fig.height=8}
-#| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz IDE (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
-scide_gg
 rm(list = ls())
 ```
 
