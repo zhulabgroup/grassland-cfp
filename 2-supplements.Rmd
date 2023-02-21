@@ -32,12 +32,9 @@ rm(list = ls())
 # Observational and experimental sites
 
 ```{r obs-site-tab}
-#| tab.cap="Information of 12 observational sites with corresponding labels to fig. X."
 source("scripts/show-site-info.R")
-site_tbl %>%
-  flextable::flextable() %>%
-  flextable::autofit() %>%
-  flextable::fit_to_width(7.5)
+site_tbl %>% 
+  knitr::kable(caption = "Information of 12 observational sites with corresponding labels to fig. X.")
 rm(list = ls())
 ```
 
