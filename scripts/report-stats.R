@@ -68,8 +68,8 @@ exp_cti_tbl <- exp_tbl %>%
   )) %>%
   select(
     Phase = phase, Year = year,
-    Ambient = `_`, Warming = `T`, Diff = diff,
-    p = p.format, Sig = p.signif
+    Ambient = `_`, Warming = `T`, Difference = diff,
+    `p-value` = p.format, Significance = p.signif
   )
 
 # report CPI
@@ -95,8 +95,8 @@ exp_cpi_tbl <- exp_tbl %>%
   )) %>%
   select(
     Phase = phase, Year = year,
-    Ambient = `_`, Warming = `T`, Diff = diff,
-    p = p.format, Sig = p.signif
+    Ambient = `_`, Warming = `T`, Difference = diff,
+    `p-value` = p.format, Significance = p.signif
   )
 
 exp_cti_tbl %>%
@@ -105,13 +105,11 @@ exp_cti_tbl %>%
 exp_cpi_tbl %>%
   filter(Warming < Ambient)
 
-exp_cti_tbl %>%
-  mutate(across(Ambient:Diff, signif, 3)) %>%
-  knitr::kable()
+exp_cti_tab <- exp_cti_tbl %>%
+  mutate(across(Ambient:Difference, signif, 3))
 
-exp_cpi_tbl %>%
-  mutate(across(Ambient:Diff, signif, 3)) %>%
-  knitr::kable()
+exp_cpi_tab <- exp_cpi_tbl %>%
+  mutate(across(Ambient:Difference, signif, 3))
 
 # get JRGCE temperature treatments in deg C
 jrgce_avgt_tbl <- .path$com_raw %>%
@@ -180,14 +178,12 @@ obs_sum_tbl %>%
   filter(cpi_sig != " ") %>%
   arrange(cpi_estimate)
 
-obs_sum_tbl %>%
+obs_cti_tab <- obs_sum_tbl %>%
   select(Site = site, Estimate = cti_estimate, `Standard error` = cti_std_err, `p-value` = cti_p_val, Significance = cti_sig) %>%
   mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
-  mutate(across(Estimate:`Standard error`, signif, 3)) %>%
-  knitr::kable()
+  mutate(across(Estimate:`Standard error`, signif, 3))
 
-obs_sum_tbl %>%
+obs_cpi_tab <- obs_sum_tbl %>%
   select(Site = site, Estimate = cpi_estimate, `Standard error` = cpi_std_err, `p-value` = cpi_p_val, Significance = cpi_sig) %>%
   mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
-  mutate(across(Estimate:`Standard error`, signif, 3)) %>%
-  knitr::kable()
+  mutate(across(Estimate:`Standard error`, signif, 3))
