@@ -21,7 +21,7 @@ source("scripts/_setup.R")
 # Individual species niches
 
 ```{r ind-sp-niche, eval=FALSE}
-source("scripts/plot-ind-spp.R")
+source("scripts/plot-ind-sp-niche.R")
 
 # multi-page plot
 niche_gg <- vector(mode = "list")
