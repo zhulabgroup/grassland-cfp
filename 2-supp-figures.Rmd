@@ -156,7 +156,7 @@ scide_gg
 rm(list = ls())
 ```
 
-# Individual species identities
+# Individual species changes
 
 ```{r gainloss-obs, fig.width=12, fig.height=10}
 #| fig.cap = "Gain and loss of species during grassland community shifts at observational sites. Ecological niches of species with a significant increase in abundance over time (green circle), with a significant decrease in abundance over time (yellow circle), newly recruited (not present at the site in the first five years, green-filled circle), completely lost (not present at the site in the last five years, yellow-filled circle), and all other species present at each observational site (gray) (*t*-test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community. Names of species newly recruited and completely lost were labeled."
@@ -170,7 +170,7 @@ exp_gainloss_supp_gg
 rm(list = ls())
 ```
 
-# Individual species guild identities
+# Species guild comparisons
 
 ```{r guild-niche, fig.width=12, fig.height=5}
 #| fig.cap = "Comparing the ecological niches of species of different guilds, in terms of (A) orrigin, (B) life history, and (C) functional group. Red Gaussian ellipsees show the 95% confidence interval of the ecological niche of each guild."
