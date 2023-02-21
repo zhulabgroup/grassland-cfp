@@ -336,9 +336,11 @@ obs_gainloss_main_gg <-
   scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
   scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
-  guides(fill = "none",
-         size = "none",
-         color = "none") +
+  guides(
+    fill = "none",
+    size = "none",
+    color = "none"
+  ) +
   facet_wrap(. ~ site,
     labeller = site_vec %>% as_labeller(),
     nrow = 3
