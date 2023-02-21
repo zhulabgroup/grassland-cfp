@@ -85,10 +85,13 @@ for (treatment in c("warm", "water")) {
   }
 }
 
-exp_lme_stat %>%
+lme_tbl <-
+  exp_lme_stat %>%
   mutate(sig = case_when(
     p <= 0.05 ~ "sig",
     TRUE ~ "ns"
   )) %>%
-  mutate(across(estimate, signif, 3)) %>%
-  knitr::kable()
+  mutate(
+    across(estimate, signif, 3),
+    across(p, round, 4)
+  )
