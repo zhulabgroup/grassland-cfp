@@ -18,7 +18,7 @@ output:
 source("scripts/_setup.R")
 ```
 
-```{r cfp-climate, fig.width=12, fig.height=8, eval=FALSE}
+```{r cfp-climate, fig.width=12, fig.height=8}
 #| fig.cap = "Climate change in the California Floristic Province (CFP).
 #|  Linear regressions describe trends in (A) mean annual temperature (°C yr^−1^) and (B) total annual precipitation (mm yr^−1^) over the years, from 1980 to 2019, in 30 arc sec (~1 km) resolution, estimated from the CHELSA time series data.
 #|  Contour lines surround pixels with statistically significant trends (*t*-test, *p* ≤ 0.05)."
