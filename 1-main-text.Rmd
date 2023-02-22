@@ -57,7 +57,7 @@ shift_gg
 rm(list = ls())
 ```
 
-```{r gainloss-fig, fig.width=12, fig.height=12}
+```{r gainloss-fig, fig.width=10, fig.height=10}
 #| fig.cap = "Gain and loss of species during grassland community shifts in observations and experiment.
 #|  (A) Ecological niches of species with a significant increase in abundance over time (green circle), with a significant decrease in abundance over time (yellow circle), newly recruited (not present at the site in the first five years, green-filled circle), completely lost (not present at the site in the last five years, yellow-filled circle), and all other species present at each observational site (gray) (*t*-test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community.
 #|  (B) Ecological niches of species with a significant increase in abundance under warming (green circle), with a significant decrease in abundance under warming (yellow circle), and all other species present in each year of Phase III of the Jasper Ridge Global Change Experiment (gray) (non-parametric two-sample Wilcoxon test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community."

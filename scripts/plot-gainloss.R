@@ -387,7 +387,7 @@ if (.fig_save) {
   ggsave(
     plot = gainloss_main_gg,
     filename = str_c(.path$out_fig, "fig-main-gainloss.png"),
-    width = 12,
-    height = 12
+    width = 10,
+    height = 10
   )
 }
