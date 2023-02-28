@@ -122,6 +122,22 @@ jrgce_avgt_tbl <- .path$com_raw %>%
   mutate(tmp_diff = t_elev - amb)
 
 # obs data
+# setup site labels
+site_vec <- c(
+  angelo = "Angelo Coast",
+  carrizo = "Carrizo Plain",
+  elkhorn = "Elkhorn Slough",
+  jasper = "Jasper Ridge Serpentine",
+  mclann = "McLaughlin Annual",
+  mclserp = "McLaughlin Serpentine",
+  morganterritory = "Morgan Territory",
+  pleasantonridge = "Pleasanton Ridge",
+  sunol = "Sunol",
+  swanton = "Swanton Ranch",
+  ucsc = "UC Santa Cruz",
+  vascocaves = "Vasco Caves"
+)
+
 obs_tbl <- read_rds(.path$com_obs) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot) %>%
@@ -179,11 +195,13 @@ obs_sum_tbl %>%
   arrange(cpi_estimate)
 
 obs_cti_tab <- obs_sum_tbl %>%
-  select(Site = site, Estimate = cti_estimate, `Standard error` = cti_std_err, `p-value` = cti_p_val, Significance = cti_sig) %>%
+  mutate(site_name = site_vec[site]) %>% 
+  select(Site = site_name, Estimate = cti_estimate, `Standard error` = cti_std_err, `p-value` = cti_p_val, Significance = cti_sig) %>%
   mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
   mutate(across(Estimate:`Standard error`, signif, 3))
 
 obs_cpi_tab <- obs_sum_tbl %>%
-  select(Site = site, Estimate = cpi_estimate, `Standard error` = cpi_std_err, `p-value` = cpi_p_val, Significance = cpi_sig) %>%
+  mutate(site_name = site_vec[site]) %>% 
+  select(Site = site_name, Estimate = cpi_estimate, `Standard error` = cpi_std_err, `p-value` = cpi_p_val, Significance = cpi_sig) %>%
   mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
   mutate(across(Estimate:`Standard error`, signif, 3))
