@@ -239,14 +239,14 @@ cwd_obs_gg
 rm(list = ls())
 ```
 
-```{r cwd-exp-warm-fig, fig.width=10, fig.height=6.18 /2 *3}
+```{r cwd-exp-warm-fig, fig.width=10, fig.height=6.18/2*3}
 #| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm and CDI, mm) species in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).
 #|  The orange background shades denote phase I heating +80 W m^–2^ leading to ~ +1 °C warming in 1999-2002, phase II heating +100 W m^–2^ leading to ~ +1.5 °C warming in 2003-2009, and phase III heating +250 W m^–2^ leading to ~ +2 °C warming in 2010-2014."
 source("scripts/plot-cwd-exp.R")
 cwd_exp_gg
 ```
 
-```{r cwd-exp-water-fig, fig.width=10, fig.height=6.18 /2 *3}
+```{r cwd-exp-water-fig, fig.width=10, fig.height=6.18/2*3}
 #| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Watering treatment did not lead to significant community compositional shift in most years measured by CTI (°C), CPI (mm), or CDI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
 cwd_exp_water_gg
 rm(list = ls())
