@@ -141,22 +141,22 @@ rm(list = ls())
 ```{r obs-cti-tab}
 source("scripts/report-stats.R")
 obs_cti_tab %>%
-  knitr::kable(caption = "Linear trends of the mean annual temperature (°C) at observational sites, reporting the linear trend estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+  knitr::kable(caption = "Trends of Community Temperature Index (CTI) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 ```
 
 ```{r obs-cpi-tab}
 obs_cpi_tab %>%
-  knitr::kable(caption = "Linear trends of the mean annual precipitation (mm) at observational sites, reporting the linear trend estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+  knitr::kable(caption = "Trends of Community Precipitation Index (CPI) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 ```
 
 ```{r exp-cti-tab}
 exp_cti_tab %>%
-  knitr::kable(caption = "Comparison of the community temperature index (CTI) in the Jasper Ridge Global Change Experiment (JRGCE), reporting average CTI in ambient plots and warming plots, their difference, *p*-value, and significance level from non-parametric two-sample Wilcoxon test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+  knitr::kable(caption = "Comparison of Community Temperature Index (CTI) in the Jasper Ridge Global Change Experiment, reporting average CTI in ambient plots and warming plots, their difference, *p*-value, and significance level from non-parametric two-sample Wilcoxon test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 ```
 
 ```{r exp-cpi-tab}
 exp_cpi_tab %>%
-  knitr::kable(caption = "Comparison of the community temperature index (CPI) in the Jasper Ridge Global Change Experiment (JRGCE), reporting average CTI in ambient plots and warming plots, their difference, *p*-value, and significance level from non-parametric two-sample Wilcoxon test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+  knitr::kable(caption = "Comparison of Community Precipitation Index (CPI) in the Jasper Ridge Global Change Experiment, reporting average CPI in ambient plots and warming plots, their difference, *p*-value, and significance level from non-parametric two-sample Wilcoxon test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 rm(list = ls())
 ```
 
