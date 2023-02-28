@@ -52,15 +52,17 @@ rm(list = ls())
 #|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
 source("scripts/plot-site-climate.R")
 site_clim_gg
-rm(list = ls())
 ```
 
 ```{r obs-tmp-tab}
-#| tab.cap = "Observational site climate change---temperature."
+obs_tmp_tbl %>% 
+  knitr::kable(caption = "Trends of mean annual temperature (°C) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 ```
 
 ```{r obs-ppt-tab}
-#| tab.cap = "Observational site climate change---precipitation"
+obs_ppt_tbl %>% 
+  knitr::kable(caption = "Trends of mean annual precipitation (mm) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+rm(list = ls())
 ```
 
 # Species occurrence and climate niche estimation

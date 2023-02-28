@@ -71,14 +71,19 @@ site_tbl <- clim_tbl %>%
   select(-data) %>%
   ungroup() %>%
   mutate(sig = gtools::stars.pval(p.value)) %>%
-  mutate(sig = ifelse(sig != " ", sig, "ns"))
+  mutate(sig = ifelse(sig != " ", sig, "ns")) %>%
+  mutate(name = site_vec[abbr])
 
 # summary statistics
-site_tbl %>%
+obs_tmp_tbl <- site_tbl %>%
   filter(clim_var == "tmp") %>%
-  # arrange(estimate) %>%
   mutate(across(estimate:`std.error`, signif, 3)) %>%
-  knitr::kable()
+  select(Site = name, Estimate = estimate, `Standard error` = std.error, `p-value` = p.value, Significance = sig)
+
+obs_ppt_tbl <- site_tbl %>%
+  filter(clim_var == "ppt") %>%
+  mutate(across(estimate:`std.error`, signif, 3)) %>%
+  select(Site = name, Estimate = estimate, `Standard error` = std.error, `p-value` = p.value, Significance = sig)
 
 site_tbl %>%
   filter(clim_var == "tmp") %>%
@@ -88,12 +93,6 @@ site_tbl %>%
 site_tbl %>%
   filter(clim_var == "tmp") %>%
   summarise(n = sum(p.value <= 0.05))
-
-site_tbl %>%
-  filter(clim_var == "ppt") %>%
-  # arrange(estimate) %>%
-  mutate(across(estimate:`std.error`, signif, 3)) %>%
-  knitr::kable()
 
 site_tbl %>%
   filter(clim_var == "ppt") %>%
