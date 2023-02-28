@@ -163,6 +163,7 @@ rm(list = ls())
 ```{r exp-lme-tab}
 source("scripts/test-exp-lme.R")
 knitr::kable(lme_tbl, caption = "LME")
+rm(list = ls())
 ```
 
 # Individual species and guild changes
