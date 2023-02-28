@@ -33,7 +33,7 @@ rm(list = ls())
 
 ```{r obs-site-tab}
 source("scripts/show-site-info.R")
-site_tbl %>% 
+site_tbl %>%
   knitr::kable(caption = "Information of 12 observational sites with corresponding labels to fig. X.")
 rm(list = ls())
 ```
@@ -55,12 +55,12 @@ site_clim_gg
 ```
 
 ```{r obs-tmp-tab}
-obs_tmp_tbl %>% 
+obs_tmp_tbl %>%
   knitr::kable(caption = "Trends of mean annual temperature (°C) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 ```
 
 ```{r obs-ppt-tab}
-obs_ppt_tbl %>% 
+obs_ppt_tbl %>%
   knitr::kable(caption = "Trends of mean annual precipitation (mm) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 rm(list = ls())
 ```
@@ -134,7 +134,7 @@ source("scripts/plot-all-sp-niche.R")
 rm(list = ls())
 ```
 
-```{r all-sp-niche-tab}
+```{r all-sp-niche-tab, eval=FALSE}
 # CSV file for species niche table
 source("scripts/print-sp-niche.R")
 rm(list = ls())
