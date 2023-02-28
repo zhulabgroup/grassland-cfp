@@ -136,6 +136,8 @@ rm(list = ls())
 
 ```{r all-sp-niche-tab}
 # CSV file for species niche table
+source("scripts/print-sp-niche.R")
+rm(list = ls())
 ```
 
 # Community compositional shift analysis
