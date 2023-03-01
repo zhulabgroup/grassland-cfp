@@ -10,10 +10,11 @@ pacman::p_load(tidyverse, sf, patchwork, rgdal)
 # set parameters
 theme_set(ggthemes::theme_few())
 knitr::opts_chunk$set(
-  echo = FALSE,
-  message = FALSE,
   eval = TRUE,
-  warning = FALSE
+  echo = FALSE,
+  dpi = 300,
+  warning = FALSE,
+  message = FALSE
 )
 
 # link paths
