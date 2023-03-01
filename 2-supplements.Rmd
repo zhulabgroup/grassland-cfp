@@ -185,7 +185,7 @@ rm(list = ls())
 ```
 
 ```{r guild-niche-fig, fig.width=12, fig.height=5}
-#| fig.cap = "Comparing the ecological niches of species of different guilds, in terms of (A) orrigin, (B) life history, and (C) functional group. Red Gaussian ellipsees show the 95% confidence interval of the ecological niche of each guild."
+#| fig.cap = "Comparing the ecological niches of species of different guilds in terms of (A) origin, (B) life history, and (C) functional group. Red Gaussian ellipses show the 95% confidence interval of the ecological niche of each guild."
 source("scripts/plot-guild.R")
 guild_niche_gg
 ```
