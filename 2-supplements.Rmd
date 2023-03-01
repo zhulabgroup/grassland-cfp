@@ -61,7 +61,7 @@ obs_tmp_tbl %>%
 
 ```{r obs-ppt-tab}
 obs_ppt_tbl %>%
-  knitr::kable(caption = "Trends of mean annual precipitation (mm) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+  knitr::kable(caption = "Trends of total annual precipitation (mm) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
 rm(list = ls())
 ```
 
@@ -192,7 +192,7 @@ guild_niche_gg
 
 ```{r guild-obs-fig, fig.width=11, fig.height=11*1.5}
 #| fig.cap = "Grassland community shifts characterized by guilds from long-term observations.
-#| Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
+#|  Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
 #|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
 obs_guild_gg
 ```
