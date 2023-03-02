@@ -129,3 +129,28 @@ if (.fig_save) {
     height = 11 * 1.5
   )
 }
+
+# for slides
+cwd_obs_landsc_gg <-
+  plot_cwm(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)") +
+  plot_cwm(obs_idx_tbl, "carrizo") +
+  plot_cwm(obs_idx_tbl, "elkhorn") +
+  plot_cwm(obs_idx_tbl, "jasper") +
+  plot_cwm(obs_idx_tbl, "mclann") +
+  plot_cwm(obs_idx_tbl, "mclserp") +
+  plot_cwm(obs_idx_tbl, "morganterritory", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "pleasantonridge", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "sunol", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "swanton", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "ucsc", yr_axis = TRUE) +
+  plot_cwm(obs_idx_tbl, "vascocaves", yr_axis = TRUE) +
+  plot_layout(nrow = 2)
+
+if (.fig_save) {
+  ggsave(
+    plot = cwd_obs_landsc_gg,
+    filename = str_c(.path$out_fig, "fig-slide-cwd-obs.png"),
+    width = 9.32 * 1.75,
+    height = 3.74 * 1.75
+  )
+}
