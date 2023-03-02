@@ -187,6 +187,7 @@ exp_gainloss_supp_gg <- ggplot() +
       color = change,
       label = paste0("italic('", species, "')")
     ),
+    size = 3.88 / 1.68,
     alpha = 1,
     max.overlaps = 100,
     parse = T
@@ -196,9 +197,9 @@ exp_gainloss_supp_gg <- ggplot() +
 if (.fig_save) {
   ggsave(
     plot = exp_gainloss_supp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.pdf"),
-    width = 12,
-    height = 18
+    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
+    width = 8,
+    height = 8 * 1.618
   )
 }
 
@@ -340,10 +341,18 @@ obs_gainloss_main_gg <-
     fill = "none",
     size = "none",
     color = "none"
-  ) +
+  )
+
+obs_gainloss_main_3row_gg <- obs_gainloss_main_gg +
   facet_wrap(. ~ site,
     labeller = site_vec %>% as_labeller(),
     nrow = 3
+  )
+
+obs_gainloss_main_2row_gg <- obs_gainloss_main_gg +
+  facet_wrap(. ~ site,
+    labeller = site_vec %>% as_labeller(),
+    nrow = 2
   )
 
 obs_gainloss_supp_gg <- obs_gainloss_main_gg +
@@ -355,24 +364,39 @@ obs_gainloss_supp_gg <- obs_gainloss_main_gg +
       color = change,
       label = paste0("italic('", species, "')")
     ),
+    size = 3.88 / 1.68,
     alpha = 1,
     cex = 3,
     max.overlaps = 100,
     parse = T
   )
 
+obs_gainloss_supp_3row_gg <-
+  obs_gainloss_supp_gg +
+  facet_wrap(. ~ site,
+    labeller = site_vec %>% as_labeller(),
+    nrow = 3
+  )
+
+obs_gainloss_supp_2row_gg <-
+  obs_gainloss_supp_gg +
+  facet_wrap(. ~ site,
+    labeller = site_vec %>% as_labeller(),
+    nrow = 2
+  )
+
 # save figure file
 if (.fig_save) {
   ggsave(
-    plot = obs_gainloss_supp_gg,
+    plot = obs_gainloss_supp_3row_gg,
     filename = str_c(.path$out_fig, "fig-supp-gainloss-obs.png"),
-    width = 12,
-    height = 10
+    width = 10,
+    height = 8
   )
 }
 
 gainloss_main_gg <-
-  obs_gainloss_main_gg +
+  obs_gainloss_main_3row_gg +
   exp_gainloss_main_gg +
   plot_layout(design = "
   A
@@ -389,5 +413,27 @@ if (.fig_save) {
     filename = str_c(.path$out_fig, "fig-main-gainloss.png"),
     width = 10,
     height = 10
+  )
+}
+
+# for slides
+if (.fig_save) {
+  ggsave(
+    plot = obs_gainloss_main_2row_gg,
+    filename = str_c(.path$out_fig, "fig-slide-gainloss-obs.png"),
+    width = 10,
+    height = 10 * .5
+  )
+  ggsave(
+    plot = obs_gainloss_supp_2row_gg,
+    filename = str_c(.path$out_fig, "fig-slide-gainloss-obs-name.png"),
+    width = 10,
+    height = 10 * .5
+  )
+  ggsave(
+    plot = exp_gainloss_main_gg,
+    filename = str_c(.path$out_fig, "fig-slide-gainloss-exp.png"),
+    width = 10,
+    height = 10 * .5 * .618
   )
 }

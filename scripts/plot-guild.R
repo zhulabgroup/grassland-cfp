@@ -141,9 +141,9 @@ exp_guild_gg <-
     ncol = 1, scales = "free_y",
     strip.position = "left",
     labeller = labeller(group = c(
-      native_perc = "% natives",
-      annual_perc = "% annuals",
-      grass_perc = "% grasses"
+      native_perc = "% Natives",
+      annual_perc = "% Annuals",
+      grass_perc = "% Grasses"
     ))
   ) +
   scale_y_continuous(limits = c(0, 1), expand = expansion(mult = .15)) + # expand padding to show significance tests
@@ -180,7 +180,7 @@ exp_guild_gg <-
 if (.fig_save) {
   ggsave(
     plot = exp_guild_gg,
-    filename = str_c(.path$out_fig, "fig-supp-guild-exp.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-guild-exp.png"),
     width = 11,
     height = 6.18 * 1.5
   )
@@ -285,15 +285,15 @@ plot_guild <- function(data, site_abbr,
 
 obs_guild_gg <-
   site_map_gg +
-  plot_guild(obs_guild_tbl, "angelo", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
+  plot_guild(obs_guild_tbl, "angelo", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses") +
   plot_guild(obs_guild_tbl, "carrizo") +
-  plot_guild(obs_guild_tbl, "elkhorn", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
+  plot_guild(obs_guild_tbl, "elkhorn", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses") +
   plot_guild(obs_guild_tbl, "jasper") +
-  plot_guild(obs_guild_tbl, "mclann", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses") +
+  plot_guild(obs_guild_tbl, "mclann", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses") +
   plot_guild(obs_guild_tbl, "mclserp") +
   plot_guild(obs_guild_tbl, "morganterritory") +
   plot_guild(obs_guild_tbl, "pleasantonridge") +
-  plot_guild(obs_guild_tbl, "sunol", native_lab = "% natives", annual_lab = "% annuals", grass_lab = "% grasses", yr_axis = TRUE) +
+  plot_guild(obs_guild_tbl, "sunol", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses", yr_axis = TRUE) +
   plot_guild(obs_guild_tbl, "swanton", yr_axis = TRUE) +
   plot_guild(obs_guild_tbl, "ucsc", yr_axis = TRUE) +
   plot_guild(obs_guild_tbl, "vascocaves", yr_axis = TRUE) +
@@ -308,8 +308,33 @@ obs_guild_gg <-
 if (.fig_save) {
   ggsave(
     plot = obs_guild_gg,
-    filename = str_c(.path$out_fig, "fig-supp-guild-obs.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-guild-obs.png"),
     width = 11,
     height = 11 * 1.5
+  )
+}
+
+# for slides
+obs_guild_landsc_gg <- 
+  plot_guild(obs_guild_tbl, "angelo", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses") +
+  plot_guild(obs_guild_tbl, "carrizo") +
+  plot_guild(obs_guild_tbl, "elkhorn") +
+  plot_guild(obs_guild_tbl, "jasper") +
+  plot_guild(obs_guild_tbl, "mclann") +
+  plot_guild(obs_guild_tbl, "mclserp") +
+  plot_guild(obs_guild_tbl, "morganterritory", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses", yr_axis = TRUE) +
+  plot_guild(obs_guild_tbl, "pleasantonridge", yr_axis = TRUE) +
+  plot_guild(obs_guild_tbl, "sunol", yr_axis = TRUE) +
+  plot_guild(obs_guild_tbl, "swanton", yr_axis = TRUE) +
+  plot_guild(obs_guild_tbl, "ucsc", yr_axis = TRUE) +
+  plot_guild(obs_guild_tbl, "vascocaves", yr_axis = TRUE) +
+  plot_layout(nrow = 2)
+
+if (.fig_save) {
+  ggsave(
+    plot = obs_guild_landsc_gg,
+    filename = str_c(.path$out_fig, "fig-slide-guild-obs.png"),
+    width = 9.32 * 1.75,
+    height = 3.74 * 1.75
   )
 }
