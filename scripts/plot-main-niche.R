@@ -140,3 +140,19 @@ n_occ_warm <- niche_tbl %>%
   filter(species_type == "warm") %>%
   pull(occ_n) %>%
   format(big.mark = ",")
+
+# for slides
+if (.fig_save) {
+  ggsave(
+    plot = (occ_geog_gg + occ_clim_gg),
+    filename = str_c(.path$out_fig, "fig-slide-occ.png"),
+    width = 8,
+    height = 8 * .618
+  )
+  ggsave(
+    plot = clim_niche_gg,
+    filename = str_c(.path$out_fig, "fig-slide-niche.png"),
+    width = 5.5,
+    height = 5.5
+  )
+}

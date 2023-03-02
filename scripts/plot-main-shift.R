@@ -1,4 +1,4 @@
-### experiment plot
+## experiment plots
 # niche data
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
@@ -130,9 +130,7 @@ p_exp <- ggplot() +
   theme(strip.text.x = element_text(hjust = 0)) +
   theme(legend.position = "bottom")
 
-
-### observation plot
-
+## observation plots
 # import niche and observational data, calculate CTI and CPI
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
@@ -169,7 +167,6 @@ obs_idx_tbl <- obs_tbl %>%
     levels = c("tmp_com_mean", "ppt_com_mean"),
     labels = c("CTI", "CPI")
   ))
-
 
 # plot in niche space
 df_obs_sum <- obs_idx_tbl %>%
@@ -252,14 +249,20 @@ p_obs <- ggplot() +
     option = "magma",
     # , trans = "reverse", direction = -1
   ) +
-  facet_wrap(. ~ site, labeller = site_vec %>% as_labeller()) +
+  # facet_wrap(. ~ site, labeller = site_vec %>% as_labeller()) +
   xlab("CTI (°C)") +
   ylab("CPI (mm)") +
   theme(strip.text.x = element_text(hjust = 0)) +
   theme(legend.position = "bottom") +
   guides(color = guide_colorbar(barwidth = 10))
 
-### compare exp and obs
+p_obs_3row <- p_obs +
+  facet_wrap(. ~ site, nrow = 3, labeller = site_vec %>% as_labeller())
+
+p_obs_2row <- p_obs +
+  facet_wrap(. ~ site, nrow = 2, labeller = site_vec %>% as_labeller())
+
+## compare exp and obs
 df_all_shift <- bind_rows(
   df_obs_shift %>%
     select(site, CTI0 = CTI_start, CTI1 = CTI_end, CPI0 = CPI_start, CPI1 = CPI_end, significance) %>%
@@ -334,7 +337,7 @@ p_compare <- ggplot(df_all_shift) +
     color = "orange"
   )
 
-### plot all sites in niche space
+## plot all sites in niche space
 # import data
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100) # no dummy species
@@ -426,8 +429,8 @@ p_niche <- ggplot() +
     color = "black"
   )
 
-### combine panels
-shift_gg <- p_niche + p_compare + p_obs + p_exp +
+## combine panels
+shift_gg <- p_niche + p_compare + p_obs_3row + p_exp +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
   AABB
@@ -445,5 +448,27 @@ if (.fig_save) {
     filename = str_c(.path$out_fig, "fig-main-shift3.png"),
     width = 9,
     height = 9 * 1.618
+  )
+}
+
+# for slides
+if (.fig_save) {
+  ggsave(
+    plot = (p_niche + p_compare + plot_annotation(tag_levels = "A")),
+    filename = str_c(.path$out_fig, "fig-slide-shift-compare.png"),
+    width = 8,
+    height = 8 * .5
+  )
+  ggsave(
+    plot = p_obs_2row + plot_annotation(tag_levels = list("C")),
+    filename = str_c(.path$out_fig, "fig-slide-shift-obs.png"),
+    width = 10,
+    height = 10 * .5
+  )
+  ggsave(
+    plot = p_exp + plot_annotation(tag_levels = list("D")),
+    filename = str_c(.path$out_fig, "fig-slide-shift-exp.png"),
+    width = 8,
+    height = 8 * .5
   )
 }

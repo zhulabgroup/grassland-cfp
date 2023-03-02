@@ -203,3 +203,37 @@ if (.fig_save) {
     height = 11 * 1.5
   )
 }
+
+# for slides
+if (.fig_save) {
+  ggsave(
+    plot = site_map_gg,
+    filename = str_c(.path$out_fig, "fig-slide-site-map.png"),
+    width = 11 / 3,
+    height = 11 * 1.5 / 3
+  )
+}
+
+site_clim_landsc_gg <-
+  plot_cc(clim_tbl, "angelo", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
+  plot_cc(clim_tbl, "carrizo") +
+  plot_cc(clim_tbl, "elkhorn") +
+  plot_cc(clim_tbl, "jasper") +
+  plot_cc(clim_tbl, "mclann") +
+  plot_cc(clim_tbl, "mclserp") +
+  plot_cc(clim_tbl, "morganterritory", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "pleasantonridge", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "sunol", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "swanton", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "ucsc", yr_axis = TRUE) +
+  plot_cc(clim_tbl, "vascocaves", yr_axis = TRUE) +
+  plot_layout(nrow = 2)
+
+if (.fig_save) {
+  ggsave(
+    plot = site_clim_landsc_gg,
+    filename = str_c(.path$out_fig, "fig-slide-site-climate.png"),
+    width = 9.32 * 1.75,
+    height = 3.74 * 1.75
+  )
+}
