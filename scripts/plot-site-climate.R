@@ -212,6 +212,12 @@ if (.fig_save) {
     width = 11 / 3,
     height = 11 * 1.5 / 3
   )
+  ggsave(
+    plot = grass_map_gg,
+    filename = str_c(.path$out_fig, "fig-slide-grass-map.png"),
+    width = 11 / 3,
+    height = 11 * 1.5 / 3
+  )
 }
 
 site_clim_landsc_gg <-

@@ -79,3 +79,33 @@ site_map_gg <-
     legend.title = element_text(size = 10)
   ) +
   guides(alpha = guide_legend(reverse = TRUE))
+
+grass_map_gg <-
+  ggplot() +
+  geom_sf(
+    data = rnaturalearth::ne_states(
+      country = c("Mexico", "United States of America"),
+      returnclass = "sf"
+    ),
+    fill = NA,
+    color = alpha("black", .1)
+  ) +
+  geom_sf(
+    data = cfp_sf,
+    color = alpha("black", .3),
+    fill = alpha("white", .1)
+  ) +
+  geom_tile(
+    data = grass_tbl,
+    aes(x, y, alpha = percent),
+    fill = "yellow green"
+  ) +
+  labs(x = "Longitude", y = "Latitude", alpha = "Grassland\npercent\ncover") +
+  coord_sf(xlim = c(-126, -114), ylim = c(28, 44)) +
+  scale_x_continuous(breaks = c(-125, -120, -115)) +
+  scale_y_continuous(breaks = c(30, 35, 40)) +
+  theme(
+    legend.position = c(0.2, 0.2),
+    legend.title = element_text(size = 10)
+  ) +
+  guides(alpha = guide_legend(reverse = TRUE))
