@@ -338,3 +338,30 @@ if (.fig_save) {
     height = 3.74 * 1.75
   )
 }
+
+## permanova
+response <- guild_niche_tbl %>%
+  filter(group =="Origin") %>% 
+  select(tmp_occ_median, ppt_occ_median)
+predict <- guild_niche_tbl %>%
+  filter(group =="Origin") %>% 
+  select(guild)
+vegan::adonis2(response ~ guild, data = predict)
+
+response <- guild_niche_tbl %>%
+  filter(group =="Life history") %>% 
+  select(tmp_occ_median, ppt_occ_median)
+predict <- guild_niche_tbl %>%
+  filter(group =="Life history") %>% 
+  select(guild)
+vegan::adonis2(response ~ guild, data = predict)
+
+response <- guild_niche_tbl %>%
+  filter(group =="Functional group") %>% 
+  filter(guild %in% c("Forb", "Grass")) %>% 
+  select(tmp_occ_median, ppt_occ_median)
+predict <- guild_niche_tbl %>%
+  filter(group =="Functional group") %>% 
+  filter(guild %in% c("Forb", "Grass")) %>% 
+  select(guild)
+vegan::adonis2(response ~ guild, data = predict)
