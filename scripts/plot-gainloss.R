@@ -381,4 +381,16 @@ if (.fig_save) {
     width = 10,
     height = 10 * .5 * .618
   )
+  ggsave(
+    plot = obs_gainloss_summ_gg,
+    filename = str_c(.path$out_fig, "fig-slide-gainloss-boxplot-obs.png"),
+    width = 3,
+    height = 3 * 1.618
+  )
+  ggsave(
+    plot = exp_gainloss_summ_gg,
+    filename = str_c(.path$out_fig, "fig-slide-gainloss-boxplot-exp.png"),
+    width = 3,
+    height = 3 * 1.618
+  )
 }
