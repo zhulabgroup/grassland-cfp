@@ -1,3 +1,8 @@
+# replot CTI-CPI for Elkhorn ----------------------------------------------
+source("scripts/plot-main-obs.R")
+elkhorn_gg_cwm <- plot_cwm(obs_idx_tbl, "elkhorn", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", yr_axis = TRUE)
+
+# plot gainloss for Elkhorn -----------------------------------------------
 niche_tbl <- read_rds(.path$sum_niche) %>%
   filter(occ_n > 100 | is.na(occ_n)) %>% # species with many observations and dummy species
   select(species, tmp_occ_median, ppt_occ_median)
@@ -76,6 +81,12 @@ elkhorn_gg_gainloss_recruitedextirpated <-
 
 # save slide figures
 if (.fig_save) {
+  ggsave(
+    plot = elkhorn_gg_cwm,
+    filename = str_c(.path$out_fig, "fig-slide-elkhorn0-cwm.png"),
+    width = 4,
+    height = 4 * 1.618
+  )
   ggsave(
     plot = elkhorn_gg_allspp,
     filename = str_c(.path$out_fig, "fig-slide-elkhorn1-allspp.png"),
