@@ -64,9 +64,13 @@ wilcox.test(obs_gainloss_tbl_long %>% filter(variable == "ppt", change == "gain"
 
 obs_gainloss_summ_gg <-
   ggplot(obs_gainloss_tbl_long %>%
-    mutate(change = if_else(change == "no clear change", "no clear\nchange", change))) +
+    mutate(change = case_when(
+      change == "gain" ~ "Gain",
+      change == "loss" ~ "Loss",
+      change == "no clear change" ~ "No change"
+    ))) +
   geom_boxplot(aes(x = change, col = change, y = value)) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
+  scale_color_manual(values = c(Gain = "dark green", `No change` = "lightgray", Loss = "dark orange")) +
   facet_wrap(. ~ variable,
     ncol = 1,
     scales = "free_y",
@@ -203,9 +207,13 @@ wilcox.test(exp_gainloss_tbl_long %>% filter(variable == "ppt", change == "gain"
 
 exp_gainloss_summ_gg <-
   ggplot(exp_gainloss_tbl_long %>%
-    mutate(change = if_else(change == "no clear change", "no clear\nchange", change))) +
+    mutate(change = case_when(
+      change == "gain" ~ "Gain",
+      change == "loss" ~ "Loss",
+      change == "no clear change" ~ "No change"
+    ))) +
   geom_boxplot(aes(x = change, col = change, y = value)) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
+  scale_color_manual(values = c(Gain = "dark green", `No change` = "lightgray", Loss = "dark orange")) +
   facet_wrap(. ~ variable,
     ncol = 1,
     scales = "free_y",
