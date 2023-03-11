@@ -91,30 +91,30 @@ if (.fig_save) {
     plot = elkhorn_gg_allspp,
     filename = str_c(.path$out_fig, "fig-slide-elkhorn1-allspp.png"),
     width = 4,
-    height = 4 * 1.618
+    height = 4
   )
   ggsave(
     plot = elkhorn_gg_gain,
     filename = str_c(.path$out_fig, "fig-slide-elkhorn2-gain.png"),
     width = 4,
-    height = 4 * 1.618
+    height = 4
   )
   ggsave(
     plot = elkhorn_gg_gain_recruited,
     filename = str_c(.path$out_fig, "fig-slide-elkhorn3-gain-recruited.png"),
     width = 4,
-    height = 4 * 1.618
+    height = 4
   )
   ggsave(
     plot = elkhorn_gg_gainloss_recruited,
     filename = str_c(.path$out_fig, "fig-slide-elkhorn4-gainloss-recruited.png"),
     width = 4,
-    height = 4 * 1.618
+    height = 4
   )
   ggsave(
     plot = elkhorn_gg_gainloss_recruitedextirpated,
     filename = str_c(.path$out_fig, "fig-slide-elkhorn5-gainloss-recruitedextirpated.png"),
     width = 4,
-    height = 4 * 1.618
+    height = 4
   )
 }
