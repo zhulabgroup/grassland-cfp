@@ -100,8 +100,8 @@ obs_gainloss_main_gg <-
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
-      color = change,
-      size = dominance
+      size = dominance,
+      color = change
     ), alpha = 1, pch = 21, fill = NA
   ) +
   geom_point(
@@ -110,6 +110,7 @@ obs_gainloss_main_gg <-
       x = tmp_occ_median,
       y = ppt_occ_median,
       size = dominance,
+      color = change,
       fill = complete,
     ), alpha = 0.75, pch = 21
   ) +
@@ -163,16 +164,6 @@ obs_gainloss_supp_2row_gg <-
     labeller = site_vec %>% as_labeller(),
     nrow = 2
   )
-
-# save figure file
-if (.fig_save) {
-  ggsave(
-    plot = obs_gainloss_supp_3row_gg,
-    filename = str_c(.path$out_fig, "fig-supp-gainloss-obs.png"),
-    width = 10,
-    height = 8
-  )
-}
 
 # experimental data -------------------------------------------------------
 exp_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "exp.rds"))
@@ -248,8 +239,8 @@ exp_gainloss_main_gg <-
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
-      color = change,
-      size = dominance
+      size = dominance,
+      color = change
     ), alpha = 1, pch = 21, fill = NA
   ) +
   geom_point(
@@ -258,6 +249,7 @@ exp_gainloss_main_gg <-
       x = tmp_occ_median,
       y = ppt_occ_median,
       size = dominance,
+      color = change,
       fill = complete,
     ), alpha = 0.75, pch = 21
   ) +
@@ -286,8 +278,8 @@ exp_gainloss_supp_gg <- ggplot() +
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
-      color = change,
-      size = dominance
+      size = dominance,
+      color = change
     ), alpha = 1, pch = 21, fill = NA
   ) +
   geom_point(
@@ -296,6 +288,7 @@ exp_gainloss_supp_gg <- ggplot() +
       x = tmp_occ_median,
       y = ppt_occ_median,
       size = dominance,
+      color = change,
       fill = complete,
     ), alpha = 0.75, pch = 21
   ) +
@@ -320,17 +313,7 @@ exp_gainloss_supp_gg <- ggplot() +
     parse = T
   )
 
-# save figure file
-if (.fig_save) {
-  ggsave(
-    plot = exp_gainloss_supp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
-    width = 8,
-    height = 8 * 1.618
-  )
-}
-
-# combine -----------------------------------------------------------------
+# combine and save -------------------------------------------------------------
 gainloss_main_gg <-
   obs_gainloss_main_3row_gg +
   obs_gainloss_summ_gg +
@@ -344,7 +327,7 @@ gainloss_main_gg <-
 ") +
   plot_annotation(tag_levels = "A")
 
-# save figure file
+# save main figure
 if (.fig_save) {
   ggsave(
     plot = gainloss_main_gg,
@@ -354,7 +337,23 @@ if (.fig_save) {
   )
 }
 
-# for slides
+# save supplementary figures
+if (.fig_save) {
+  ggsave(
+    plot = obs_gainloss_supp_3row_gg,
+    filename = str_c(.path$out_fig, "fig-supp-gainloss-obs.png"),
+    width = 10,
+    height = 8
+  )
+  ggsave(
+    plot = exp_gainloss_supp_gg,
+    filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
+    width = 8,
+    height = 8 * 1.618
+  )
+}
+
+# save slide figures
 if (.fig_save) {
   ggsave(
     plot = obs_gainloss_main_2row_gg,
