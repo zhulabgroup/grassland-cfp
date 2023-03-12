@@ -1,7 +1,10 @@
-# data -> /data/ZHULAB/grassland/
+# project folders
 data
 figures
 tests
+
+# mac
+.DS_Store
 
 # rmarkdown
 *.docx
