@@ -19,7 +19,11 @@ site_vec <- c(
   vascocaves = "Vasco Caves"
 )
 
-obs_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "obs.rds"))
+obs_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "obs.rds")) %>%
+  mutate(species_sep = str_split(species, pattern = " ")) %>%
+  rowwise() %>%
+  mutate(species_short = str_c(str_sub(species_sep[1], 1, 3), str_sub(species_sep[2], 1, 3))) %>%
+  select(-species_sep)
 
 obs_gainloss_tbl %>%
   group_by(species, change) %>%
@@ -63,14 +67,26 @@ wilcox.test(obs_gainloss_tbl_long %>% filter(variable == "ppt", change == "gain"
 )
 
 obs_gainloss_summ_gg <-
-  ggplot(obs_gainloss_tbl_long %>%
-    mutate(change = case_when(
-      change == "gain" ~ "Gain",
-      change == "loss" ~ "Loss",
-      change == "no clear change" ~ "No change"
-    ))) +
-  geom_boxplot(aes(x = change, col = change, y = value)) +
+  ggpubr::ggboxplot(
+    data = obs_gainloss_tbl_long %>%
+      mutate(change = case_when(
+        change == "gain" ~ "Gain",
+        change == "loss" ~ "Loss",
+        change == "no clear change" ~ "No change"
+      )) %>%
+      mutate(change = factor(change, levels = c("Gain", "Loss", "No change"))),
+    x = "change",
+    col = "change",
+    y = "value"
+  ) +
   scale_color_manual(values = c(Gain = "dark green", `No change` = "lightgray", Loss = "dark orange")) +
+  ggpubr::stat_compare_means(
+    label = "p.signif",
+    hide.ns = FALSE,
+    comparisons = list(c("Gain", "Loss"), c("Gain", "No change"), c("Loss", "No change")),
+    size = 3
+  ) + # Add pairwise comparisons p-value
+  # ggpubr::stat_compare_means() +    # Add global p-value
   facet_wrap(. ~ variable,
     ncol = 1,
     scales = "free_y",
@@ -88,6 +104,10 @@ obs_gainloss_summ_gg <-
   theme(
     strip.background = element_blank(),
     strip.placement = "outside"
+  ) +
+  theme(
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 8)
   )
 
 obs_gainloss_main_gg <-
@@ -125,7 +145,8 @@ obs_gainloss_main_gg <-
     fill = "none",
     size = "none",
     color = "none"
-  )
+  ) +
+  theme(axis.text = element_text(size = 8))
 
 obs_gainloss_main_3row_gg <- obs_gainloss_main_gg +
   facet_wrap(. ~ site,
@@ -146,11 +167,10 @@ obs_gainloss_supp_gg <- obs_gainloss_main_gg +
       x = tmp_occ_median,
       y = ppt_occ_median,
       color = change,
-      label = paste0("italic('", species, "')")
+      label = paste0("italic('", species_short, "')")
     ),
     size = 3.88 / 1.68,
     alpha = 1,
-    cex = 3,
     max.overlaps = 100,
     parse = T
   )
@@ -170,7 +190,38 @@ obs_gainloss_supp_2row_gg <-
   )
 
 # experimental data -------------------------------------------------------
-exp_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "exp.rds"))
+exp_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "exp.rds")) %>%
+  mutate(change = factor(change, levels = c("gain", "loss", "no clear change"))) %>%
+  filter(year != 1998) %>%
+  mutate(species_sep = str_split(species, pattern = " ")) %>%
+  rowwise() %>%
+  mutate(species_short = str_c(str_sub(species_sep[1], 1, 3), str_sub(species_sep[2], 1, 3))) %>%
+  select(-species_sep) %>%
+  mutate(phaseyear = factor(phaseyear,
+    levels = c(
+      "Phase I: 1999",
+      "Phase I: 2000",
+      "Phase I: 2001",
+      "Phase I: 2002",
+      " ",
+      "  ",
+      "   ",
+      "Phase II: 2003",
+      "Phase II: 2004",
+      "Phase II: 2005",
+      "Phase II: 2006",
+      "Phase II: 2007",
+      "Phase II: 2008",
+      "Phase II: 2009",
+      "Phase III: 2010",
+      "Phase III: 2011",
+      "Phase III: 2012",
+      "Phase III: 2013",
+      "Phase III: 2014",
+      "    ",
+      "     "
+    )
+  ))
 
 exp_gainloss_tbl %>%
   group_by(species, change) %>%
@@ -206,14 +257,26 @@ wilcox.test(exp_gainloss_tbl_long %>% filter(variable == "ppt", change == "gain"
 )
 
 exp_gainloss_summ_gg <-
-  ggplot(exp_gainloss_tbl_long %>%
-    mutate(change = case_when(
-      change == "gain" ~ "Gain",
-      change == "loss" ~ "Loss",
-      change == "no clear change" ~ "No change"
-    ))) +
-  geom_boxplot(aes(x = change, col = change, y = value)) +
+  ggpubr::ggboxplot(
+    data = exp_gainloss_tbl_long %>%
+      mutate(change = case_when(
+        change == "gain" ~ "Gain",
+        change == "loss" ~ "Loss",
+        change == "no clear change" ~ "No change"
+      )) %>%
+      mutate(change = factor(change, levels = c("Gain", "Loss", "No change"))),
+    x = "change",
+    col = "change",
+    y = "value"
+  ) +
   scale_color_manual(values = c(Gain = "dark green", `No change` = "lightgray", Loss = "dark orange")) +
+  ggpubr::stat_compare_means(
+    label = "p.signif",
+    hide.ns = FALSE,
+    comparisons = list(c("Gain", "Loss"), c("Gain", "No change"), c("Loss", "No change")),
+    size = 3
+  ) + # Add pairwise comparisons p-value
+  # ggpubr::stat_compare_means() +    # Add global p-value
   facet_wrap(. ~ variable,
     ncol = 1,
     scales = "free_y",
@@ -231,6 +294,10 @@ exp_gainloss_summ_gg <-
   theme(
     strip.background = element_blank(),
     strip.placement = "outside"
+  ) +
+  theme(
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 8)
   )
 
 exp_gainloss_main_gg <-
@@ -271,7 +338,8 @@ exp_gainloss_main_gg <-
   ) +
   facet_wrap(. ~ phaseyear,
     nrow = 1
-  )
+  ) +
+  theme(axis.text = element_text(size = 8))
 
 exp_gainloss_supp_gg <- ggplot() +
   geom_point(
@@ -305,7 +373,8 @@ exp_gainloss_supp_gg <- ggplot() +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   guides(fill = "none") +
   facet_wrap(. ~ phaseyear,
-    ncol = 3
+    nrow = 3,
+    drop = FALSE
   ) +
   ggrepel::geom_text_repel(
     data = exp_gainloss_tbl %>% filter(change != "no clear change"),
@@ -313,7 +382,7 @@ exp_gainloss_supp_gg <- ggplot() +
       x = tmp_occ_median,
       y = ppt_occ_median,
       color = change,
-      label = paste0("italic('", species, "')")
+      label = paste0("italic('", species_short, "')")
     ),
     size = 3.88 / 1.68,
     alpha = 1,
@@ -340,8 +409,8 @@ if (.fig_save) {
   ggsave(
     plot = gainloss_main_gg,
     filename = str_c(.path$out_fig, "fig-main-gainloss.png"),
-    width = 10,
-    height = 11
+    width = 10.5,
+    height = 11.5
   )
 }
 
@@ -356,8 +425,8 @@ if (.fig_save) {
   ggsave(
     plot = exp_gainloss_supp_gg,
     filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
-    width = 8,
-    height = 8 * 1.618
+    width = 12,
+    height = 8
   )
 }
 
