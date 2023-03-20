@@ -445,7 +445,7 @@ shift_gg <- p_niche + p_compare + p_obs_3row + p_exp +
 if (.fig_save) {
   ggsave(
     plot = shift_gg,
-    filename = str_c(.path$out_fig, "fig-main-shift3.png"),
+    filename = str_c(.path$out_fig, "fig-main-shift.png"),
     width = 9,
     height = 9 * 1.618
   )
