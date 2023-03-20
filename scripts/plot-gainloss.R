@@ -371,7 +371,7 @@ exp_gainloss_supp_gg <- ggplot() +
   scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
   scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
-  guides(fill = "none") +
+  guides(size = "none", color = "none", fill = "none") +
   facet_wrap(. ~ phaseyear,
     nrow = 3,
     drop = FALSE
