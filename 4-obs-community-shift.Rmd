@@ -22,6 +22,22 @@ output:
 source("scripts/_setup.R")
 ```
 
+# Methods
+
+Let us begin with the theory of moment method estimation, which is a generalization of the CTI/CPI approach. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species trait (e.g., optimal temperature) as $T_j$. At the community level, the expected trait (i.e., first moment), which is equivalent to CTI/CPI, is
+
+$$
+\mathrm{E}(T_i) = \bar{T_i} = \frac{\sum_j A_{ij}T_j}{\sum_j A_{ij}}.
+$$
+
+Furthermore, the trait variance (i.e., second central moment), using the variance-expectation formula, is
+
+$$
+\mathrm{Var}(T_i) = \mathrm{E}[T_i^2] - \mathrm{E}[T_i]^2 = \frac{\sum_j A_{ij}T_j^2}{\sum_j A_{ij}} - \bar{T_i}^2.
+$$
+
+A pair of $\{\mathrm{E}(T_i), \mathrm{Var}(T_i)\}$ characterizes the trait values under the distribution of species abundance. Operationally, we might use a pair of mean and standard deviation, $\{ \mu(T_i) = \mathrm{E}(T_i), \sigma(T_i) = \sqrt{\mathrm{Var}(T_i)}\}$, so that they are comparable with the same unit. 
+
 # Community change
 
 Show available sampling year for plot by site for observational data.
