@@ -393,14 +393,14 @@ exp_gainloss_supp_gg <- ggplot() +
 # combine and save -------------------------------------------------------------
 gainloss_main_gg <-
   obs_gainloss_main_3row_gg +
-  obs_gainloss_summ_gg +
   exp_gainloss_main_gg +
+  obs_gainloss_summ_gg +
   exp_gainloss_summ_gg +
   plot_layout(design = "
-  AAAAB
-  AAAAB
+  AAAAC
+  AAAAC
   AAAAD
-  CCCCD
+  BBBBD
 ") +
   plot_annotation(tag_levels = "A")
 
