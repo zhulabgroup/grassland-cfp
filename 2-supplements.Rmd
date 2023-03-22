@@ -219,7 +219,7 @@ mclexp_gg
 ```
 
 ```{r exp-scide-fig, fig.width=11, fig.height=8}
-#| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz IDE (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz International Drought Experiment (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
 scide_gg
 rm(list = ls())
 ```
@@ -227,7 +227,7 @@ rm(list = ls())
 
 ```{r exp-extra-lme-tab}
 source("scripts/test-exp-lme.R")
-knitr::kable(extra_lme, caption = "Comparison of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) in additional treatments and experiments, pooling data from all years, reporting average difference in the metric between treatment and ambient plots, *p*-value, and significance level from linear mixed-effect model with a random intercept for each year (ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001). ")
+knitr::kable(extra_lme, caption = "Comparison of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) in an additional treatment of the Jasper Ridge Global Change Experiment (JRGCE)s and two additional experiments, the McLaughlin Water Experiment (MWE) and the Santa Cruz International Drought Experiment (SCIDE). Pooling data from all years, we report the average difference in the metric between treatment and ambient plots, *p*-value, and significance level from linear mixed-effect model with a random intercept for each year (ns: *p* > 0.05, $.$: *p* ≤ 0.1, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). ")
 rm(list = ls())
 ```
 

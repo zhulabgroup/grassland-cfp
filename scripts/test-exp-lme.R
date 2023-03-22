@@ -38,6 +38,11 @@ mclexp_tbl <- read_rds(.path$com_exp) %>%
 
 scide_tbl <- read_rds(.path$com_exp) %>%
   filter(str_detect(site, "scide")) %>%
+  mutate(site = str_replace(site, "scide_", "")) %>%
+  mutate(site = factor(site,
+    levels = c("arboretum", "marshallfield", "ylr"),
+    labels = c("Arboretum", "Marshall Field", "Younger Lagoon")
+  )) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(
@@ -67,22 +72,30 @@ lme_calc <- function(exp, trt) {
       mutate(treat_D = factor(treat_D, levels = c("ambient", "drought")))
     for (metric in c("CTI", "CPI")) {
       if (trt == "drought") {
-        data_sub <- data_lme %>%
-          mutate(treat = treat_D) %>%
-          filter(com_idx_name == metric)
-        m <- nlme::lme(com_idx_value ~ treat,
-          random = ~ 1 | year,
-          data = data_sub
-        )
-        m_sum <- summary(m)
-        exp_lme_stat <- exp_lme_stat %>%
-          bind_rows(
-            data.frame(
-              metric = metric,
-              estimate = m_sum$tTable[2, 1],
-              p_val = m_sum$tTable[2, 5]
-            )
+        s_list <- scide_tbl %>%
+          pull(site) %>%
+          unique()
+        for (s in s_list) {
+          data_sub <- data_lme %>%
+            filter(site == s) %>%
+            mutate(treat = treat_D) %>%
+            filter(com_idx_name == metric)
+          m <- nlme::lme(com_idx_value ~ treat,
+            random = ~ 1 | year,
+            data = data_sub
           )
+          m_sum <- summary(m)
+          exp_lme_stat <- exp_lme_stat %>%
+            bind_rows(
+              data.frame(
+                Site = s,
+                metric = metric,
+                estimate = m_sum$tTable[2, 1],
+                p_val = m_sum$tTable[2, 5]
+              )
+            ) %>%
+            select(Site, everything())
+        }
       }
     }
   }
@@ -108,12 +121,22 @@ lme_calc <- function(exp, trt) {
         s_list <- c("S")
       }
       for (s in s_list) {
-        data_sub <- data_lme %>%
-          mutate(treat = treat_W) %>%
-          filter(com_idx_name == metric) %>%
-          filter(soil == s) %>%
-          select(-treat_W, -treat_D) %>%
-          drop_na()
+        if (trt == "water") {
+          data_sub <- data_lme %>%
+            mutate(treat = treat_W) %>%
+            filter(com_idx_name == metric) %>%
+            filter(soil == s) %>%
+            select(-treat_W, -treat_D) %>%
+            drop_na()
+        }
+        if (trt == "drought") {
+          data_sub <- data_lme %>%
+            mutate(treat = treat_D) %>%
+            filter(com_idx_name == metric) %>%
+            filter(soil == s) %>%
+            select(-treat_W, -treat_D) %>%
+            drop_na()
+        }
         m <- nlme::lme(com_idx_value ~ treat,
           random = ~ 1 | year,
           data = data_sub
@@ -122,18 +145,18 @@ lme_calc <- function(exp, trt) {
         exp_lme_stat <- exp_lme_stat %>%
           bind_rows(
             data.frame(
-              Soil = s,
+              Site = s,
               metric = metric,
               estimate = m_sum$tTable[2, 1],
               p_val = m_sum$tTable[2, 5]
             ) %>%
-              mutate(Soil = case_when(
-                Soil == "S" ~ "Serpentine",
-                Soil == "N" ~ "Non-serpentine"
+              mutate(Site = case_when(
+                Site == "S" ~ "Serpentine",
+                Site == "N" ~ "Non-serpentine"
               )) %>%
-              mutate(Soil = factor(Soil, levels = c("Serpentine", "Non-serpentine")))
+              mutate(Site = factor(Site, levels = c("Serpentine", "Non-serpentine")))
           ) %>%
-          select(Soil, everything())
+          select(Site, everything())
       }
     }
   }
@@ -217,14 +240,14 @@ mclexp_water_lme <- lme_calc(exp = "mclexp", trt = "water") %>%
     Experiment = "McLaughlin Water Experiment",
     Treatment = "Watering"
   ) %>%
-  select(Experiment, Treatment, Soil, everything())
+  select(Experiment, Treatment, Site, everything())
 
 mclexp_drought_lme <- lme_calc(exp = "mclexp", trt = "drought") %>%
   mutate(
     Experiment = "McLaughlin Water Experiment",
     Treatment = "Drought"
   ) %>%
-  select(Experiment, Treatment, Soil, everything())
+  select(Experiment, Treatment, Site, everything())
 
 scide_drought_lme <- lme_calc(exp = "scide", trt = "drought") %>%
   mutate(
@@ -239,4 +262,16 @@ extra_lme <- bind_rows(
   mclexp_drought_lme,
   scide_drought_lme
 ) %>%
-  select(Experiment, Treatment, Soil, everything())
+  mutate(Experiment = factor(Experiment,
+    levels = c(
+      "Jasper Ridge Global Change Experiment",
+      "McLaughlin Water Experiment",
+      "Santa Cruz International Drought Experiment"
+    ),
+    labels = c("JRGCE", "MWE", "SCIDE")
+  )) %>%
+  mutate(Metric = factor(Metric, levels = c("CTI", "CPI"))) %>%
+  mutate(Treatment = factor(Treatment, levels = c("Watering", "Drought"))) %>%
+  mutate(Site = factor(Site, levels = c("Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
+  select(Experiment, Treatment, Site, everything()) %>%
+  arrange(Experiment, Treatment, Site, Metric)
