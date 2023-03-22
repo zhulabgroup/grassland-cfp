@@ -463,3 +463,13 @@ if (.fig_save) {
     height = 3 * 1.618
   )
 }
+
+gainloss_tbl <- bind_rows(
+  obs_gainloss_tbl %>% mutate(dataset = "observation"),
+  exp_gainloss_tbl %>% mutate(dataset = "experiment") %>%
+    mutate(site = "Jasper Ridge Global Change Experiment")
+) %>%
+  select(dataset, site, year, species_short, species, gain_loss = change, comment = complete) %>%
+  mutate(comment = case_when(gain_loss != "no clear change" ~ comment))
+
+write_csv(gainloss_tbl, .path$out_tab_gainloss)

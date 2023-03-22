@@ -53,6 +53,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   out_fig = "data/output/manuscript/",
   out_fig_niche = "data/output/manuscript/species-climate-niche.pdf",
   out_tab_niche = "data/output/manuscript/species-climate-niche.csv",
+  out_tab_gainloss = "data/output/manuscript/species-gainloss.csv",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
   sum_niche_cwd = "data/occurrence/niche-estimates-cwd-2023-02-11.rds",
   sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",

@@ -24,9 +24,6 @@ for (siteoi in names(site_vec)) {
   df_trend <- read_rds(.path$com_obs) %>%
     filter(site == siteoi) %>%
     filter(guild != "DUMMY") %>%
-    group_by(year, plot, species) %>%
-    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-    ungroup() %>%
     left_join(
       group_by(., year, plot) %>%
         summarise(total = sum(abund)) %>%
@@ -57,9 +54,6 @@ for (siteoi in names(site_vec)) {
   df_dominance <- read_rds(.path$com_obs) %>%
     filter(site == siteoi) %>%
     filter(guild != "DUMMY") %>%
-    group_by(year, plot, species) %>%
-    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-    ungroup() %>%
     group_by(species) %>%
     summarise(abund = sum(abund)) %>%
     ungroup() %>%
@@ -74,9 +68,6 @@ for (siteoi in names(site_vec)) {
       year %in% (year %>% unique() %>% sort() %>% tail(5)) ~ "late"
     )) %>%
     filter(!is.na(period)) %>%
-    group_by(period, species) %>%
-    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-    ungroup() %>%
     spread(key = "species", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
     gather(key = "species", value = "abund", -period) %>%
@@ -113,10 +104,6 @@ for (yearoi in 1998:2014) {
     filter(year == yearoi) %>%
     filter(guild != "DUMMY") %>%
     left_join(plot_treat, by = "plot") %>%
-    # mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-    group_by(plot, treat_T, species) %>%
-    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-    ungroup() %>%
     left_join(
       group_by(., treat_T, plot) %>%
         summarise(total = sum(abund)) %>%
@@ -151,10 +138,6 @@ for (yearoi in 1998:2014) {
     filter(year == yearoi) %>%
     filter(guild != "DUMMY") %>%
     left_join(plot_treat, by = "plot") %>%
-    # mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-    group_by(plot, treat_T, species) %>%
-    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-    ungroup() %>%
     select(plot, species, abund) %>%
     select(species, abund) %>%
     group_by(species) %>%
@@ -168,10 +151,6 @@ for (yearoi in 1998:2014) {
     filter(year == yearoi) %>%
     filter(guild != "DUMMY") %>%
     left_join(plot_treat, by = "plot") %>%
-    # mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-    group_by(treat_T, species) %>%
-    summarise(abund = sum(abund)) %>% # doing this because of duplicated records. not the ideal solution.
-    ungroup() %>%
     spread(key = "species", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
     gather(key = "species", value = "abund", -treat_T) %>%
