@@ -35,7 +35,12 @@ guild_niche_tbl <- read_rds(.path$sum_niche) %>%
   mutate(group = factor(group,
     levels = c("native", "annual", "grass"),
     labels = c("Origin", "Life history", "Functional group")
-  ))
+  )) %>% 
+  mutate(guild = factor(guild,
+                        levels = c("Native", "Exotic",
+                                   "Annual", "Perennial",
+                                   "Grass", "Forb"
+                                   )))
 
 plot_guild_niche <- function(g, pal) {
   p <- ggplot(data = guild_niche_tbl %>%
@@ -67,11 +72,10 @@ plot_guild_niche <- function(g, pal) {
   return(p)
 }
 
-
 guild_niche_gg <-
   plot_guild_niche("Origin", "Set1") +
   plot_guild_niche("Life history", "Set2") +
-  plot_guild_niche("Functional group", "Dark2") +
+  plot_guild_niche("Functional group", "Accent") +
   plot_annotation(tag_levels = "A") +
   plot_layout(design = "
   ABC
