@@ -93,7 +93,7 @@ mclexp_tbl <- read_rds(.path$com_exp) %>%
     labels = c("CTI", "CPI")
   ))
 
-plot_mclexp <- function(trt_tag = "Watering", s_tag = "Serpentine soil") {
+plot_mclexp <- function(l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") {
   # filter data by treatment tag
   if (trt_tag == "Watering") {
     mclexp_tbl <- filter(mclexp_tbl, treat %in% c("_X", "WX"))
@@ -149,19 +149,19 @@ plot_mclexp <- function(trt_tag = "Watering", s_tag = "Serpentine soil") {
       plot.margin = unit(c(2, 1, 1, 1), "lines"), # expand margin to include warming labels
       panel.background = element_rect(fill = bg_col)
     ) +
-    ggtitle(paste0(trt_tag, " treatment\n(", s_tag, ")"))
+    ggtitle(str_c(l_tag, ". ", trt_tag, " treatment\n(", s_tag, ")"))
 
   return(p)
 }
 
 mclexp_gg <-
-  plot_mclexp(trt_tag = "Watering", s_tag = "Serpentine soil") +
-  plot_mclexp(trt_tag = "Watering", s_tag = "Non-serpentine soil") +
-  plot_mclexp(trt_tag = "Drought", s_tag = "Serpentine soil") +
+  plot_mclexp(l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") +
+  plot_mclexp(l_tag = "B", trt_tag = "Watering", s_tag = "Non-serpentine soil") +
+  plot_mclexp(l_tag = "C", trt_tag = "Drought", s_tag = "Serpentine soil") +
   plot_layout(design = "
   ABC
-") +
-  plot_annotation(tag_levels = "A")
+") #+
+# plot_annotation(tag_levels = "A")
 
 # save figure file
 if (.fig_save) {
@@ -189,7 +189,7 @@ scide_tbl <- read_rds(.path$com_exp) %>%
     labels = c("CTI", "CPI")
   ))
 
-plot_mclexp <- function(site_tag = "Arboretum") {
+plot_mclexp <- function(l_tag = "A", site_tag = "Arboretum") {
   # filter data by site tag
   if (site_tag == "Arboretum") {
     scide_tbl <- scide_tbl %>%
@@ -240,19 +240,19 @@ plot_mclexp <- function(site_tag = "Arboretum") {
       plot.margin = unit(c(2, 1, 1, 1), "lines"), # expand margin to include warming labels
       panel.background = element_rect(fill = bg_col)
     ) +
-    ggtitle(site_tag)
+    ggtitle(str_c(l_tag, ". ", site_tag))
 
   return(p)
 }
 
 scide_gg <-
-  plot_mclexp(site_tag = "Arboretum") +
-  plot_mclexp(site_tag = "Marshall Field") +
-  plot_mclexp(site_tag = "Younger Lagoon") +
+  plot_mclexp(l_tag = "A", site_tag = "Arboretum") +
+  plot_mclexp(l_tag = "B", site_tag = "Marshall Field") +
+  plot_mclexp(l_tag = "C", site_tag = "Younger Lagoon") +
   plot_layout(design = "
   ABC
-") +
-  plot_annotation(tag_levels = "A")
+") #+
+# plot_annotation(tag_levels = "A")
 
 # save figure file
 if (.fig_save) {

@@ -23,10 +23,14 @@ read_rds(.path$com_obs) %>%
   left_join(clim_tbl, by = c("site" = "abbr", "year")) %>%
   summarise(
     n = n(),
-    lat_range = max(lat, na.rm = T) - min(lat, na.rm = T),
-    lon_range = max(lon, na.rm = T) - min(lon, na.rm = T),
-    tmp_range = max(tmp, na.rm = T) - min(tmp, na.rm = T),
-    ppt_range = max(ppt, na.rm = T) - min(ppt, na.rm = T)
+    lat_max = max(lat, na.rm = T),
+    lat_min = min(lat, na.rm = T),
+    lon_max = max(lon, na.rm = T),
+    lon_min = min(lon, na.rm = T),
+    tmp_max = max(tmp, na.rm = T),
+    tmp_min = min(tmp, na.rm = T),
+    ppt_max = max(ppt, na.rm = T),
+    ppt_min = min(ppt, na.rm = T)
   )
 
 # get observational data year range
