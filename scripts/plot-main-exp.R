@@ -21,6 +21,8 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
   ))
 
 # warming phrases
+env_df <- read_csv(.path$com_exp_env)
+
 warm_tbl <- tribble(
   ~tag, ~name, ~start, ~end, ~startyear,
   1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, 1999,

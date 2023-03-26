@@ -35,6 +35,7 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   cli_chelsa_cfp_annual = "data/climate/chelsa/cfp_annual/",
   cli_prism = "data/climate/prism/2022-10-03/",
   cli_terraclimate = "data/climate/terraclimate/2022-10-03/",
+  com_exp_env = "data/community/raw/JRGCE/Environment.csv",
   com_exp = "data/community/all-experimental-data.rds",
   com_obs = "data/community/all-observational-data.rds",
   com_raw = "data/community/raw/",

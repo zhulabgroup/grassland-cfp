@@ -12,11 +12,11 @@ clim_tbl <- read_rds(.path$cli_chelsa_annual) %>%
   ))
 
 # get observational sites geographical and climatic space
-read_rds(.path$com_obs) %>%
+obs_site_space <- read_rds(.path$com_obs) %>%
   distinct(site, year) %>%
   left_join(
     read_rds(.path$geo_site) %>%
-      extract(geometry, c("lat", "lon"), "\\((.*), (.*)\\)", convert = TRUE) %>%
+      extract(geometry, c("lon", "lat"), "\\((.*), (.*)\\)", convert = TRUE) %>%
       select(abbr, lat, lon),
     by = c("site" = "abbr")
   ) %>%
