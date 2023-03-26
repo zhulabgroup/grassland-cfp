@@ -19,6 +19,7 @@ sp_gbif_vec <- read_rds(.path$sum_niche) %>%
 tmp_rng <- range(gbif_chelsa_sf$tmp)
 ppt_rng <- range(gbif_chelsa_sf$ppt)
 n_occ_tot <- nrow(gbif_chelsa_sf)
+n_sp_tot <- length(sp_gbif_vec)
 
 plot_sp_niche <- function(sp = "Danthonia californica") {
   occ_sp_sf <- filter(gbif_chelsa_sf, species == sp)

@@ -1,4 +1,25 @@
 # report stats
+cfp_sf <- st_read(.path$geo_cfp, quiet = TRUE) %>%
+  filter(
+    NAME == "California Floristic Province",
+    Type == "hotspot area"
+  )
+cfp_bbox <- sf::st_bbox(cfp_sf)
+
+chelsa_ras <- terra::rast(c(
+  str_c(.path$cli_chelsa, "bio1.tif"),
+  str_c(.path$cli_chelsa, "bio12.tif")
+))
+names(chelsa_ras) <- c("tmp", "ppt")
+chelsa_cfp_df <- chelsa_ras %>% 
+  terra::crop(cfp_sf) %>% 
+  terra::mask(cfp_sf) %>% 
+  as.data.frame() %>% 
+  summarise(t_min = min(tmp, na.rm=T),
+            t_max = max(tmp, na.rm=T),
+            p_min = min(ppt, na.rm=T),
+            p_max = max(ppt, na.rm=T))
+
 sum_cfp_cc_func <- function(param) {
   ras <- terra::rast(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))
   trend_ras <- ras[[1]]

@@ -140,6 +140,7 @@ n_occ_warm <- niche_tbl %>%
   filter(species_type == "warm") %>%
   pull(occ_n) %>%
   format(big.mark = ",")
+niche_cor <- cor.test(niche_tbl$tmp_occ_median, niche_tbl$ppt_occ_median)
 
 # for slides
 if (.fig_save) {

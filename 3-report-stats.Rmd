@@ -20,6 +20,53 @@ source("scripts/_setup.R")
 
 # Main text
 
+```{r}
+source("scripts/plot-cfp-climate.R")
+```
+
+CFP spans large geographic (`r (cfp_bbox["xmax"]-cfp_bbox["xmin"]) %>% round(0)`° longitude, `r (cfp_bbox["ymax"]-cfp_bbox["ymin"]) %>% round(0)`° latitude) and climatic gradients (`r (chelsa_cfp_df$t_max-chelsa_cfp_df$t_min) %>% signif(digits = 3)` °C temperature, `r (chelsa_cfp_df$p_max-chelsa_cfp_df$p_min) %>% signif(digits = 3)` mm precipitation).
+
+```{r}
+source("scripts/plot-cfp-climate.R")
+```
+
+Historical climate observations show considerable warming (temperature increase by `r sum_cfp_cc %>% filter(param=="tas") %>% pull(mean) %>% signif(digits = 3)` °C yr^-1^) and drying (precipitation decrease by `r sum_cfp_cc %>% filter(param=="pr") %>% pull(mean) %>% signif(digits = 3)` mm yr^-1^) from 1980 to 2019.
+
+```{r}
+source("scripts/plot-main-niche.R")
+```
+
+We retrieved `r n_occ` occurrence records of `r n_spp` species in the CFP from the Global Biodiversity Information Facility (GBIF).
+
+```{r}
+source("scripts/plot-data-avail.R")
+```
+
+We then compiled `r data_avail_tbl %>% pull(nyear) %>% min()` - `r data_avail_tbl %>% pull(nyear) %>% max()` yr observational data from 12 sites with `r data_avail_tbl %>% pull(nyear) %>% sum()` total plot years.
+
+```{r}
+source("scripts/plot-site-climate.R")
+```
+
+These observational sites spanned a large geographical area (`r obs_site_space$lon_max %>% signif(3) %>% abs()` - `r obs_site_space$lon_min %>% signif(3) %>% abs()` °W, `r obs_site_space$lat_min %>% signif(3) %>% abs()` - `r obs_site_space$lat_max %>% signif(3) %>% abs()` °N) and climate gradient (`r obs_site_space$tmp_min %>% signif(3)`  - `r obs_site_space$tmp_max %>% signif(3)` °C temperature, `r obs_site_space$ppt_min %>% signif(3)` - `r obs_site_space$ppt_max %>% signif(3)` mm precipitation).
+
+```{r}
+source("scripts/plot-main-exp.R")
+```
+
+The experiment occupied ~0.75 ha within a 5-ha grassland stand and experienced a large variation of plot-level temperature (`r env_df %>% filter(var=="tmp") %>% pull(env) %>% min() %>% signif(3)` - `r env_df %>% filter(var=="tmp") %>% pull(env) %>% max() %>% signif(3)` °C) and precipitation (`r env_df %>% filter(var=="ppt") %>% pull(env) %>% min() %>% signif(3)` - `r env_df %>% filter(var=="ppt") %>% pull(env) %>% max() %>% signif(3)` mm) in `r jrgce_tbl %>% distinct(year, plot) %>% nrow()` total plot years.
+
+```{r}
+source("scripts/plot-main-niche.R")
+```
+
+_Danthonia californica_ had `r n_occ_cool` records, with a median temperature of `r niche_tbl %>% filter(species_type=="cool") %>% pull(tmp_occ_median) %>% signif(3) %>% format(big.mark = ",")` °C and precipitation of `r niche_tbl %>% filter(species_type=="cool") %>% pull(ppt_occ_median) %>% signif(3) %>% format(big.mark = ",")` mm, whereas _Stipa pulchra_ had `r n_occ_warm` records, with a median temperature of `r niche_tbl %>% filter(species_type=="warm") %>% pull(tmp_occ_median) %>% signif(3) %>% format(big.mark = ",")` °C and precipitation of `r niche_tbl %>% filter(species_type=="warm") %>% pull(ppt_occ_median) %>% signif(3) %>% format(big.mark = ",")` mm.
+
+Among all the `r n_spp` species with more than 100 GBIF records, their average temperatures ranging from `r niche_tbl %>% pull(tmp_occ_median) %>% min() %>% signif(3) %>% format(big.mark = ",")` °C to `r niche_tbl %>% pull(tmp_occ_median) %>% max() %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r niche_tbl %>% pull(ppt_occ_median) %>% min() %>% signif(3) %>% format(big.mark = ",")` mm to `r niche_tbl %>% pull(ppt_occ_median) %>% max() %>% signif(3) %>% format(big.mark = ",")` mm.
+
+Across all the species, the temperature and precipitation averages were negatively and significantly correlated (Pearson's correlation _r_ = `r niche_cor$estimate %>% signif(3)`, _p_ = `r niche_cor$p.value %>% signif(3)`).
+
+
 # Supplementary materials
 
 ```{r compare-bioclim}
