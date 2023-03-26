@@ -61,7 +61,7 @@ exp_water_gg <-
 if (.fig_save) {
   ggsave(
     plot = exp_water_gg,
-    filename = str_c(.path$out_fig, "fig-suppl-exp-water.png"),
+    filename = str_c(.path$out_fig, "fig-supp-jrgce-water.png"),
     width = 10,
     height = 6.18
   )
@@ -167,7 +167,7 @@ mclexp_gg <-
 if (.fig_save) {
   ggsave(
     plot = mclexp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-exp-mclexp.png"),
+    filename = str_c(.path$out_fig, "fig-supp-mclexp.png"),
     width = 11,
     height = 8
   )
@@ -258,7 +258,7 @@ scide_gg <-
 if (.fig_save) {
   ggsave(
     plot = scide_gg,
-    filename = str_c(.path$out_fig, "fig-supp-exp-scide.png"),
+    filename = str_c(.path$out_fig, "fig-supp-scide.png"),
     width = 11,
     height = 8
   )
