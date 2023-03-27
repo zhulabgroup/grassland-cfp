@@ -97,6 +97,6 @@ if (.fig_save) {
 }
 
 # report stats
-cor.test(~ cwd + ppt, data = gbif_terraclim_sf)
-cor.test(~ cwd + tmp, data = gbif_terraclim_sf)
-cor.test(~ ppt + tmp, data = gbif_terraclim_sf)
+cwd_ppt_cor <- cor.test(~ cwd + ppt, data = gbif_terraclim_sf)
+cwd_tmp_cor <- cor.test(~ cwd + tmp, data = gbif_terraclim_sf)
+ppt_tmp_cor <- cor.test(~ ppt + tmp, data = gbif_terraclim_sf)

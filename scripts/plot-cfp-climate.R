@@ -11,14 +11,16 @@ chelsa_ras <- terra::rast(c(
   str_c(.path$cli_chelsa, "bio12.tif")
 ))
 names(chelsa_ras) <- c("tmp", "ppt")
-chelsa_cfp_df <- chelsa_ras %>% 
-  terra::crop(cfp_sf) %>% 
-  terra::mask(cfp_sf) %>% 
-  as.data.frame() %>% 
-  summarise(t_min = min(tmp, na.rm=T),
-            t_max = max(tmp, na.rm=T),
-            p_min = min(ppt, na.rm=T),
-            p_max = max(ppt, na.rm=T))
+chelsa_cfp_df <- chelsa_ras %>%
+  terra::crop(cfp_sf) %>%
+  terra::mask(cfp_sf) %>%
+  as.data.frame() %>%
+  summarise(
+    t_min = min(tmp, na.rm = T),
+    t_max = max(tmp, na.rm = T),
+    p_min = min(ppt, na.rm = T),
+    p_max = max(ppt, na.rm = T)
+  )
 
 sum_cfp_cc_func <- function(param) {
   ras <- terra::rast(str_c(.path$cli_chelsa_cfp_annual, param, "_trend.nc"))
@@ -37,8 +39,8 @@ sum_cfp_cc_func <- function(param) {
       se = sd(trend, na.rm = T) / sqrt(n()),
       lower = quantile(trend, 0.025, na.rm = T),
       upper = quantile(trend, 0.975, na.rm = T),
-      sig_pos_percentage = sum(p <= 0.05 & trend > 0) / n(),
-      sig_neg_percentage = sum(p <= 0.05 & trend < 0) / n()
+      sig_pos_percentage = sum(p <= 0.05 & trend > 0) / n() * 100,
+      sig_neg_percentage = sum(p <= 0.05 & trend < 0) / n() * 100
     ) %>%
     mutate(param = param)
 }

@@ -25,7 +25,7 @@ obs_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "obs.rds")) %>%
   mutate(species_short = str_c(str_sub(species_sep[1], 1, 3), str_sub(species_sep[2], 1, 3))) %>%
   select(-species_sep)
 
-obs_gainloss_tbl %>%
+obs_gainloss_eg1 <- obs_gainloss_tbl %>%
   group_by(species, change) %>%
   summarize(n = n()) %>%
   filter(change != "no clear change") %>%
@@ -33,7 +33,7 @@ obs_gainloss_tbl %>%
   arrange(desc(n)) %>%
   slice(1)
 
-obs_gainloss_tbl %>%
+obs_gainloss_eg2 <- obs_gainloss_tbl %>%
   group_by(species, complete) %>%
   summarize(n = n()) %>%
   filter(!is.na(complete)) %>%
@@ -223,7 +223,7 @@ exp_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "exp.rds")) %>%
     )
   ))
 
-exp_gainloss_tbl %>%
+exp_gainloss_eg <- exp_gainloss_tbl %>%
   group_by(species, change) %>%
   summarize(n = n()) %>%
   filter(change != "no clear change") %>%
