@@ -55,6 +55,10 @@ df_exp_sum <- jrgce_tbl %>%
   mutate(treatment = case_when(
     treat_T == "_" ~ "ambient",
     treat_T == "T" ~ "warming"
+  )) %>%
+  mutate(treatment = factor(treatment,
+    levels = c("ambient", "warming"),
+    labels = c("Ambient", "Warming")
   ))
 
 df_exp_test <- jrgce_tbl %>%
@@ -105,7 +109,7 @@ p_exp <- ggplot() +
     data = df_exp_sum,
     aes(x = m_CTI, y = m_CPI, col = treatment)
   ) +
-  scale_color_manual(values = c("ambient" = "black", "warming" = "red")) +
+  scale_color_manual(values = c("Ambient" = "black", "Warming" = "red")) +
   geom_segment(
     data = df_exp_shift,
     aes(
@@ -124,6 +128,10 @@ p_exp <- ggplot() +
   # ggtitle(warm_vec[1])+
   xlab("CTI (°C)") +
   ylab("CPI (mm)") +
+  labs(
+    alpha = "Significance",
+    col = "Treatment"
+  ) +
   guides(
     fill = "none"
   ) +
@@ -252,6 +260,10 @@ p_obs <- ggplot() +
   # facet_wrap(. ~ site, labeller = site_vec %>% as_labeller()) +
   xlab("CTI (°C)") +
   ylab("CPI (mm)") +
+  labs(
+    alpha = "Significance",
+    col = "Year"
+  ) +
   theme(strip.text.x = element_text(hjust = 0)) +
   theme(legend.position = "bottom") +
   guides(color = guide_colorbar(barwidth = 10))
@@ -273,7 +285,10 @@ df_all_shift <- bind_rows(
     select(site, CTI0 = CTI_, CTI1 = CTIT, CPI0 = CPI_, CPI1 = CPIT, significance) %>%
     mutate(group = "experiment")
 ) %>%
-  mutate(group = factor(group, levels = c("observation", "experiment")))
+  mutate(group = factor(group,
+    levels = c("observation", "experiment"),
+    labels = c("Observation", "Experiment")
+  ))
 
 cpi_to_cti <- df_all_shift %>%
   filter(significance == "sig") %>%
@@ -311,7 +326,7 @@ p_compare <- ggplot(df_all_shift) +
     arrow = arrow(length = unit(0.2, "cm")),
     linewidth = 1
   ) +
-  scale_color_manual(values = c("experiment" = "#e28a2b", "observation" = "#384c6b")) +
+  scale_color_manual(values = c("Experiment" = "#e28a2b", "Observation" = "#384c6b")) +
   scale_alpha_manual(values = c("sig2" = 1, "sig1" = 0.25, "ns" = 0.25)) +
   guides(alpha = "none") +
   xlab("Community Temperature Index (CTI, °C)") +
@@ -389,7 +404,10 @@ df_all_sum <- bind_rows(
   df_obs_all_sum %>% mutate(group = "observation"),
   df_exp_all_sum %>% mutate(group = "experiment")
 ) %>%
-  mutate(group = factor(group, levels = c("observation", "experiment")))
+  mutate(group = factor(group,
+    levels = c("observation", "experiment"),
+    labels = c("Observation", "Experiment")
+  ))
 
 p_niche <- ggplot() +
   geom_point(
@@ -406,7 +424,7 @@ p_niche <- ggplot() +
     aes(x = m_CTI, y = m_CPI, col = group),
     size = 2.5, alpha = 0.75
   ) +
-  scale_color_manual(values = c("experiment" = "#e28a2b", "observation" = "#384c6b")) +
+  scale_color_manual(values = c("Experiment" = "#e28a2b", "Observation" = "#384c6b")) +
   labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
   theme(
     legend.title = element_blank(),
