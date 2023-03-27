@@ -275,23 +275,29 @@ df_all_shift <- bind_rows(
 ) %>%
   mutate(group = factor(group, levels = c("observation", "experiment")))
 
-df_all_shift %>%
+cpi_to_cti <- df_all_shift %>%
   filter(significance == "sig") %>%
   mutate(slope = (CPI1 - CPI0) / (CTI1 - CTI0)) %>%
+  mutate(scale_factor = 0.1) %>%
+  mutate(slope = slope * scale_factor) %>%
   group_by(group) %>%
   summarise(
     mean = mean(slope),
-    se = sd(slope) / sqrt(n())
+    se = sd(slope) / sqrt(n()),
+    scale_factor = unique(scale_factor)
   ) %>%
   ungroup()
 
-df_all_shift %>%
+cti_to_cpi <- df_all_shift %>%
   filter(significance == "sig") %>%
   mutate(slope = (CTI1 - CTI0) / (CPI1 - CPI0)) %>%
+  mutate(scale_factor = 10) %>%
+  mutate(slope = slope * scale_factor) %>%
   group_by(group) %>%
   summarise(
     mean = mean(slope),
-    se = sd(slope) / sqrt(n())
+    se = sd(slope) / sqrt(n()),
+    scale_factor = unique(scale_factor)
   ) %>%
   ungroup()
 

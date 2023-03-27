@@ -58,8 +58,8 @@ occ_samp_tbl <- occ_sf %>%
   summarise(
     record_number = n() %>% format(trim = TRUE, scientific = FALSE, big.mark = ","),
     species_number = unique(species) %>% length() %>% format(trim = TRUE, scientific = FALSE, big.mark = ",")
-  ) %>% 
-  mutate(data_source = dataset_vec[dataset]) %>% 
+  ) %>%
+  mutate(data_source = dataset_vec[dataset]) %>%
   select(`Data source` = data_source, `Record number` = record_number, `Species number` = species_number)
 
 # plot side-by-side dataset maps

@@ -15,48 +15,49 @@ output:
 ---
 
 ```{r setup, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(cache = TRUE, include = FALSE)
 source("scripts/_setup.R")
 ```
 
 # Main text
 
-```{r}
+```{r cfp-space}
 source("scripts/plot-cfp-climate.R")
 ```
 
 CFP spans large geographic (`r (cfp_bbox["xmax"]-cfp_bbox["xmin"]) %>% round(0)`° longitude, `r (cfp_bbox["ymax"]-cfp_bbox["ymin"]) %>% round(0)`° latitude) and climatic gradients (`r (chelsa_cfp_df$t_max-chelsa_cfp_df$t_min) %>% signif(digits = 3)` °C temperature, `r (chelsa_cfp_df$p_max-chelsa_cfp_df$p_min) %>% signif(digits = 3)` mm precipitation).
 
-```{r}
+```{r cfp-cc}
 source("scripts/plot-cfp-climate.R")
 ```
 
 Historical climate observations show considerable warming (temperature increase by `r sum_cfp_cc %>% filter(param=="tas") %>% pull(mean) %>% signif(digits = 3)` °C yr^-1^) and drying (precipitation decrease by `r sum_cfp_cc %>% filter(param=="pr") %>% pull(mean) %>% signif(digits = 3)` mm yr^-1^) from 1980 to 2019.
 
-```{r}
+```{r gbif}
 source("scripts/plot-main-niche.R")
 ```
 
 We retrieved `r n_occ` occurrence records of `r n_spp` species in the CFP from the Global Biodiversity Information Facility (GBIF).
 
-```{r}
+```{r obs-data-avail}
 source("scripts/plot-data-avail.R")
 ```
 
 We then compiled `r data_avail_tbl %>% pull(nyear) %>% min()` - `r data_avail_tbl %>% pull(nyear) %>% max()` yr observational data from 12 sites with `r data_avail_tbl %>% pull(nyear) %>% sum()` total plot years.
 
-```{r}
+```{r obs-space}
 source("scripts/plot-site-climate.R")
 ```
 
 These observational sites spanned a large geographical area (`r obs_site_space$lon_max %>% signif(3) %>% abs()` - `r obs_site_space$lon_min %>% signif(3) %>% abs()` °W, `r obs_site_space$lat_min %>% signif(3) %>% abs()` - `r obs_site_space$lat_max %>% signif(3) %>% abs()` °N) and climate gradient (`r obs_site_space$tmp_min %>% signif(3)`  - `r obs_site_space$tmp_max %>% signif(3)` °C temperature, `r obs_site_space$ppt_min %>% signif(3)` - `r obs_site_space$ppt_max %>% signif(3)` mm precipitation).
 
-```{r}
+```{r exp-space}
 source("scripts/plot-main-exp.R")
 ```
 
 The experiment occupied ~0.75 ha within a 5-ha grassland stand and experienced a large variation of plot-level temperature (`r env_df %>% filter(var=="tmp") %>% pull(env) %>% min() %>% signif(3)` - `r env_df %>% filter(var=="tmp") %>% pull(env) %>% max() %>% signif(3)` °C) and precipitation (`r env_df %>% filter(var=="ppt") %>% pull(env) %>% min() %>% signif(3)` - `r env_df %>% filter(var=="ppt") %>% pull(env) %>% max() %>% signif(3)` mm) in `r jrgce_tbl %>% distinct(year, plot) %>% nrow()` total plot years.
 
-```{r}
+```{r niche}
 source("scripts/plot-main-niche.R")
 ```
 
@@ -64,10 +65,56 @@ _Danthonia californica_ had `r n_occ_cool` records, with a median temperature of
 
 Among all the `r n_spp` species with more than 100 GBIF records, their average temperatures ranging from `r niche_tbl %>% pull(tmp_occ_median) %>% min() %>% signif(3) %>% format(big.mark = ",")` °C to `r niche_tbl %>% pull(tmp_occ_median) %>% max() %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r niche_tbl %>% pull(ppt_occ_median) %>% min() %>% signif(3) %>% format(big.mark = ",")` mm to `r niche_tbl %>% pull(ppt_occ_median) %>% max() %>% signif(3) %>% format(big.mark = ",")` mm.
 
-Across all the species, the temperature and precipitation averages were negatively and significantly correlated (Pearson's correlation _r_ = `r niche_cor$estimate %>% signif(3)`, _p_ = `r niche_cor$p.value %>% signif(3)`).
+Across all the species, the temperature and precipitation averages were negatively and significantly correlated (Pearson's correlation _r_ = `r niche_cor$estimate`).
+
+```{r obs}
+source("scripts/report-stats.R")
+source("scripts/plot-site-climate.R")
+```
+
+`r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*"), str_detect(cpi_sig, "\\*")) %>% nrow()` out of the `r obs_sum_tbl %>% nrow()` sites had significant increases in CTI and significant decreases in CPI over the years. Among these `r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*"), str_detect(cpi_sig, "\\*")) %>% nrow()` sites, the mean thermophilization rate (increasing CTI per year) was `r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*")) %>% pull(cti_estimate) %>% mean() %>% signif(3)` °C yr^-1^, ranging from `r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*")) %>% arrange(cti_estimate) %>% head(1) %>% pull(cti_estimate) %>% signif(3)` °C yr^-1^ (`r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*")) %>% arrange(cti_estimate) %>% head(1) %>% pull(site) %>% site_vec[[.]]`) to `r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*")) %>% arrange(cti_estimate) %>% tail(1) %>% pull(cti_estimate) %>% signif(3)` °C yr^-1^ (`r obs_sum_tbl %>% filter(str_detect(cti_sig, "\\*")) %>% arrange(cpi_estimate) %>% tail(1) %>% pull(site) %>% site_vec[[.]]`); the mean xerophilization rate (decreasing CPI per year) was `r obs_sum_tbl %>% filter(str_detect(cpi_sig, "\\*")) %>% pull(cpi_estimate) %>% mean() %>% signif(3) %>% abs()` mm yr^-1^, ranging from `r obs_sum_tbl %>% filter(str_detect(cpi_sig, "\\*")) %>% arrange(cpi_estimate) %>% tail(1) %>% pull(cpi_estimate) %>% signif(3) %>% abs()` mm yr^-1^ (`r obs_sum_tbl %>% filter(str_detect(cpi_sig, "\\*")) %>% arrange(cpi_estimate) %>% tail(1) %>% pull(site) %>% site_vec[[.]]`) to `r obs_sum_tbl %>% filter(str_detect(cpi_sig, "\\*")) %>% arrange(cpi_estimate) %>% head(1) %>% pull(cpi_estimate) %>% signif(3) %>% abs()` mm yr^-1^ (`r obs_sum_tbl %>% filter(str_detect(cpi_sig, "\\*")) %>% arrange(cpi_estimate) %>% head(1) %>% pull(site) %>% site_vec[[.]]`).
+
+By comparison, the mean warming rate (increasing mean annual temperature per year) was `r obs_tmp_tbl %>% pull(Estimate) %>% mean() %>% signif(3)` °C yr^-1^, ranging from `r obs_tmp_tbl %>% pull(Estimate) %>% min() %>% signif(3)` °C yr^-1^ (`r obs_tmp_tbl %>% arrange(Estimate) %>% head(1) %>% pull(Site)`) to `r obs_tmp_tbl %>% pull(Estimate) %>% max() %>% signif(3)` °C yr^-1^(`r obs_tmp_tbl %>% arrange(Estimate) %>% tail(1) %>% pull(Site)`); the mean drying trend (decreasing total annual precipitation per year) was `r obs_ppt_tbl %>% pull(Estimate) %>% mean() %>% signif(3) %>% abs()` mm yr^-1^, ranging from `r obs_ppt_tbl %>% pull(Estimate) %>% max() %>% signif(3) %>% abs()` mm yr^-1^ (`r obs_ppt_tbl %>% arrange(Estimate) %>% tail(1) %>% pull(Site)`) to `r obs_ppt_tbl %>% pull(Estimate) %>% min() %>% signif(3) %>% abs()` mm yr^-1^ (`r obs_ppt_tbl %>% arrange(Estimate) %>% head(1) %>% pull(Site)`).
+
+```{r exp}
+source("scripts/report-stats.R")
+source("scripts/test-exp-lme.R")
+```
+
+Comparing warming plots (n = `r exp_tbl %>% filter(year==1999, treat_T=="T") %>% nrow()`) to ambient plots (n = `r exp_tbl %>% filter(year==1999, treat_T=="_") %>% nrow()`), `r exp_cti_tbl %>% filter(Warming > Ambient) %>% nrow()` out of 16 yr had higher CTI and `r exp_cpi_tbl %>% filter(Warming < Ambient) %>% nrow()` out of 16 yr had lower CPI at the community level. Notably, all the significant effects were concentrated in the later stages of the warming experiment, when the heating treatments more than doubled in strength. In phase I (+80 W m^-2^ heating, ~ +`r jrgce_avgt_tbl %>% pull(tmp_diff) %>% unique() %>% .[1]` °C warming) over 4 yr, no treatment had a significant CTI or CPI effect; in phase II (+100 W m^-2^ heating, ~ +`r jrgce_avgt_tbl %>% pull(tmp_diff) %>% unique() %>% .[2]` °C warming) over 7 yr, one year (`r exp_cti_tbl %>% filter(Significance != "ns", Phase == "II") %>% pull(Year)`) had significantly positive CTI and negative CPI effects; whereas in phase III (+250 W m^-2^ heating, ~ +`r jrgce_avgt_tbl %>% pull(tmp_diff) %>% unique() %>% .[3]` °C warming) over 5 yr, all but one year (`r exp_cti_tbl %>% filter(Significance != "ns", Phase == "III") %>% pull(Year)`) had significant positive CTI effects and all years (`r exp_cpi_tbl %>% filter(Significance != "ns", Phase == "III") %>% pull(Year)`) had significant negative CPI effects. When pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant increase in CTI of `r jrgce_warm_lme %>% filter(Phase == "III", Metric == "CTI") %>% pull(Estimate) %>% signif(3)` °C and a significant decrease in CPI of `r jrgce_warm_lme %>% filter(Phase == "III", Metric == "CPI") %>% pull(Estimate) %>% signif(3) %>% abs()` mm.
+
+```{r shift}
+source("scripts/plot-main-shift.R")
+```
+
+A community thermophilization of 0.1 °C corresponded to a xerophilization of `r cpi_to_cti %>% filter(group == "observation") %>% pull(mean) %>% signif(3) %>% abs()` ± `r cpi_to_cti %>% filter(group == "observation") %>% pull(se) %>% signif(3) %>% abs()` mm (mean ± std. err.) from the observations and `r cpi_to_cti %>% filter(group == "experiment") %>% pull(mean) %>% signif(3) %>% abs()` ± `r cpi_to_cti %>% filter(group == "experiment") %>% pull(se) %>% signif(3) %>% abs()` mm from the experiment. Likewise, a community xerophilization of 10 mm corresponded to a thermophilization of `r cti_to_cpi %>% filter(group == "observation") %>% pull(mean) %>% signif(3) %>% abs()` ± `r cti_to_cpi %>% filter(group == "observation") %>% pull(se) %>% signif(3) %>% abs()` °C from the observations and `r cti_to_cpi %>% filter(group == "experiment") %>% pull(mean) %>% signif(3) %>% abs()` ± `r cti_to_cpi %>% filter(group == "experiment") %>% pull(se) %>% signif(3) %>% abs()` °C from the experiment.
+
+```{r gainloss}
+source("scripts/plot-gainloss.R")
+```
+
+Across the observations, species gained in communities by significantly increasing abundance over time (e.g., _`r obs_gainloss_eg1 %>% filter(change == "gain") %>% pull(species)`_) or recruitment (appeared only after the 5th yr, e.g., _`r obs_gainloss_eg2 %>% filter(complete == "recruited") %>% pull(species)`_); in contrast, species lost from communities by significantly decreasing abundance over time (e.g., _`r obs_gainloss_eg1 %>% filter(change == "loss") %>% pull(species)`_) or extirpation (disappeared in the last 5 yr, e.g., _`r obs_gainloss_eg2 %>% filter(complete == "extirpated") %>% pull(species)`_). In the experiment, species did not experience complete turnover, but some gained by being more abundant (e.g., _`r exp_gainloss_eg %>% filter(change == "gain") %>% pull(species)`_), while some lost by being less abundant (e.g., _`r exp_gainloss_eg %>% filter(change == "loss") %>% pull(species)`_) in warming compared to ambient plots.
 
 
 # Supplementary materials
+
+```{r cfp-cc-add}
+source("scripts/plot-cfp-climate.R")
+```
+
+From 1980 to 2019, the CFP had an overall warming trend of `r sum_cfp_cc %>% filter(param == "tas") %>% pull(mean) %>% signif(3)` ± `r sum_cfp_cc %>% filter(param == "tas") %>% pull(se) %>% signif(3) %>% format(scientific=FALSE)` °C yr^-1^ (mean ± std. err.), with `r sum_cfp_cc %>% filter(param == "tas") %>% pull(sig_pos_percentage) %>% signif(3)`% of the area having significant warming trends; the CFP had an overall drying trend of `r sum_cfp_cc %>% filter(param == "pr") %>% pull(mean) %>% signif(3) %>% abs()` ± `r sum_cfp_cc %>% filter(param == "pr") %>% pull(se) %>% signif(3)` mm yr^-1^ with `r sum_cfp_cc %>% filter(param == "pr") %>% pull(sig_neg_percentage) %>% signif(3)`% of the area having significant drying trends.
+
+```{r cfp-grass}
+source("scripts/plot-site-map.R")
+```
+
+In the CFP, grassland has the largest land cover type, occupying `r grass_tbl %>% summarise(grass = sum (percent), total = n() * 100) %>% mutate(percent = grass / total * 100) %>% pull(percent) %>% round(0)`% of the total area.
+
+```{r site-cc}
+source("scripts/plot-site-climate.R")
+```
+
+Warming trends in 12 sites ranged from `r obs_tmp_tbl %>% arrange(Estimate) %>% .[1,2] %>% as.numeric() %>% signif(3)` ± `r obs_tmp_tbl %>% arrange(Estimate) %>% .[1,3] %>% as.numeric() %>% signif(3)` (estimate ± std. err.) to `r obs_tmp_tbl %>% arrange(desc(Estimate)) %>% .[1,2] %>% as.numeric() %>% signif(3)` ± `r obs_tmp_tbl %>% arrange(desc(Estimate)) %>% .[1,3] %>% as.numeric() %>% signif(3)` °C yr^-1^, with `r obs_tmp_tbl %>% filter(str_detect(Significance, "\\*")) %>% nrow()` sites having significant warming trends. Drying trends ranged from `r obs_ppt_tbl %>% arrange(desc(Estimate)) %>% .[1,2] %>% as.numeric() %>% signif(3) %>% abs()` ± `r obs_ppt_tbl %>% arrange(desc(Estimate)) %>% .[1,3] %>% as.numeric() %>% signif(3) %>% abs()` to `r obs_ppt_tbl %>% arrange(Estimate) %>% .[1,2] %>% as.numeric() %>% signif(3) %>% abs()` ± `r obs_ppt_tbl %>% arrange(Estimate) %>% .[1,3] %>% as.numeric() %>% signif(3) %>% abs()` mm yr^-1^, although only significant in `r obs_ppt_tbl %>% filter(str_detect(Significance, "\\*")) %>% nrow()` site.
 
 ```{r compare-bioclim}
 source("scripts/compare-bioclim.R")
@@ -81,9 +128,15 @@ We also show that annual precipitation (BIO12) used in this study is highly corr
 
 Because we are interested in the change of community-weighted mean climate, the high correlations above suggest that our results are robust to the bioclimatic variables chosen. 
 
+```{r cwd-cor}
+source("scripts/plot-cwd-niche.R")
+```
+
+Across GBIF occurrence locations, P and CWD were highly correlated (Pearson's _r_ = `r cwd_ppt_cor$estimate %>% signif(3)`). Both variables were correlated with mean annual temperature (T), with CWD more strongly correlated to T (_r_ = `r cwd_tmp_cor$estimate %>% signif(3)`) compared to P's correlation to T (_r_ = `r ppt_tmp_cor$estimate %>% signif(3)`).
+
 # Computing environment
 
-```{r}
+```{r session}
 sessionInfo()
 ```
 

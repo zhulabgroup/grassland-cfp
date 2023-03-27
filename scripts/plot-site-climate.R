@@ -89,24 +89,6 @@ obs_ppt_tbl <- site_tbl %>%
   mutate(across(estimate:`std.error`, signif, 3)) %>%
   select(Site = name, Estimate = estimate, `Standard error` = std.error, `p-value` = p.value, Significance = sig)
 
-site_tbl %>%
-  filter(clim_var == "tmp") %>%
-  pull(estimate) %>%
-  mean()
-
-site_tbl %>%
-  filter(clim_var == "tmp") %>%
-  summarise(n = sum(p.value <= 0.05))
-
-site_tbl %>%
-  filter(clim_var == "ppt") %>%
-  pull(estimate) %>%
-  mean()
-
-site_tbl %>%
-  filter(clim_var == "ppt") %>%
-  summarise(n = sum(p.value <= 0.05))
-
 # define plotting function
 plot_cc <- function(data, site_abbr,
                     tmp_lab = "", ppt_lab = "", yr_lab = NULL, yr_axis = FALSE) {

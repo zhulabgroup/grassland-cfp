@@ -13,7 +13,9 @@ site_tbl <- site_sf %>%
     latitude = round(latitude, 3),
     longitude = round(longitude, 3),
     grass_type = if_else(label == "E/F", str_c(grass_type, "/Serpentine"), grass_type)
-  ) %>% 
-  select(Label = label, `Site name` = name, 
-         Latitude = latitude, Longitude = longitude,
-         `Grass type` = grass_type, `Community data collection method` = data_method)
+  ) %>%
+  select(
+    Label = label, `Site name` = name,
+    Latitude = latitude, Longitude = longitude,
+    `Grass type` = grass_type, `Community data collection method` = data_method
+  )

@@ -32,6 +32,75 @@ niche_tbl %>%
   ) %>%
   knitr::kable(caption = "Species climate niche summary")
 
+# obs data
+# setup site labels
+site_vec <- c(
+  angelo = "Angelo Coast",
+  carrizo = "Carrizo Plain",
+  elkhorn = "Elkhorn Slough",
+  jasper = "Jasper Ridge Serpentine",
+  mclann = "McLaughlin Annual",
+  mclserp = "McLaughlin Serpentine",
+  morganterritory = "Morgan Territory",
+  pleasantonridge = "Pleasanton Ridge",
+  sunol = "Sunol",
+  swanton = "Swanton Ranch",
+  ucsc = "UC Santa Cruz",
+  vascocaves = "Vasco Caves"
+)
+
+obs_tbl <- read_rds(.path$com_obs) %>%
+  inner_join(niche_tbl, by = "species") %>%
+  group_by(site, year, plot) %>%
+  summarize(
+    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
+    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund)
+  )
+
+obs_tbl %>%
+  group_by(site) %>%
+  summarize(year_max = max(year), year_min = min(year)) %>%
+  mutate(year_rng = year_max - year_min + 1)
+
+obs_sum_tbl <- obs_tbl %>%
+  group_by(site) %>%
+  nest() %>%
+  mutate(
+    cti_lm = map(
+      data,
+      ~ lm(tmp_com_mean ~ year, data = .) %>%
+        broom::tidy() %>%
+        filter(term == "year") %>%
+        select(cti_estimate = estimate, cti_std_err = std.error, cti_p_val = p.value) %>%
+        # mutate(across(everything(), signif, 4)) %>%
+        mutate(cti_sig = gtools::stars.pval(cti_p_val))
+    ),
+    cpi_lm = map(
+      data,
+      ~ lm(ppt_com_mean ~ year, data = .) %>%
+        broom::tidy() %>%
+        filter(term == "year") %>%
+        select(cpi_estimate = estimate, cpi_std_err = std.error, cpi_p_val = p.value) %>%
+        # mutate(across(everything(), signif, 4)) %>%
+        mutate(cpi_sig = gtools::stars.pval(cpi_p_val))
+    )
+  ) %>%
+  unnest(cols = c(cti_lm, cpi_lm)) %>%
+  select(-data) %>%
+  ungroup()
+
+obs_cti_tab <- obs_sum_tbl %>%
+  mutate(site_name = site_vec[site]) %>%
+  select(Site = site_name, Estimate = cti_estimate, `Standard error` = cti_std_err, `p-value` = cti_p_val, Significance = cti_sig) %>%
+  mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
+  mutate(across(Estimate:`Standard error`, signif, 3))
+
+obs_cpi_tab <- obs_sum_tbl %>%
+  mutate(site_name = site_vec[site]) %>%
+  select(Site = site_name, Estimate = cpi_estimate, `Standard error` = cpi_std_err, `p-value` = cpi_p_val, Significance = cpi_sig) %>%
+  mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
+  mutate(across(Estimate:`Standard error`, signif, 3))
+
 # exp data
 exp_tbl <- read_rds(.path$com_exp) %>%
   filter(site == "jrgce", year >= 1999) %>%
@@ -99,12 +168,6 @@ exp_cpi_tbl <- exp_tbl %>%
     `p-value` = p.format, Significance = p.signif
   )
 
-exp_cti_tbl %>%
-  filter(Warming > Ambient)
-
-exp_cpi_tbl %>%
-  filter(Warming < Ambient)
-
 exp_cti_tab <- exp_cti_tbl %>%
   mutate(across(Ambient:Difference, signif, 3))
 
@@ -119,89 +182,5 @@ jrgce_avgt_tbl <- .path$com_raw %>%
   filter(variable == "AVGT308_126") %>%
   pivot_wider(names_from = treatment, values_from = value) %>%
   rename_with(tolower) %>%
-  mutate(tmp_diff = t_elev - amb)
-
-# obs data
-# setup site labels
-site_vec <- c(
-  angelo = "Angelo Coast",
-  carrizo = "Carrizo Plain",
-  elkhorn = "Elkhorn Slough",
-  jasper = "Jasper Ridge Serpentine",
-  mclann = "McLaughlin Annual",
-  mclserp = "McLaughlin Serpentine",
-  morganterritory = "Morgan Territory",
-  pleasantonridge = "Pleasanton Ridge",
-  sunol = "Sunol",
-  swanton = "Swanton Ranch",
-  ucsc = "UC Santa Cruz",
-  vascocaves = "Vasco Caves"
-)
-
-obs_tbl <- read_rds(.path$com_obs) %>%
-  inner_join(niche_tbl, by = "species") %>%
-  group_by(site, year, plot) %>%
-  summarize(
-    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
-    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund)
-  )
-
-obs_tbl %>%
-  group_by(site) %>%
-  summarize(year_max = max(year), year_min = min(year)) %>%
-  mutate(year_rng = year_max - year_min + 1)
-
-obs_sum_tbl <- obs_tbl %>%
-  group_by(site) %>%
-  nest() %>%
-  mutate(
-    cti_lm = map(
-      data,
-      ~ lm(tmp_com_mean ~ year, data = .) %>%
-        broom::tidy() %>%
-        filter(term == "year") %>%
-        select(cti_estimate = estimate, cti_std_err = std.error, cti_p_val = p.value) %>%
-        # mutate(across(everything(), signif, 4)) %>%
-        mutate(cti_sig = gtools::stars.pval(cti_p_val))
-    ),
-    cpi_lm = map(
-      data,
-      ~ lm(ppt_com_mean ~ year, data = .) %>%
-        broom::tidy() %>%
-        filter(term == "year") %>%
-        select(cpi_estimate = estimate, cpi_std_err = std.error, cpi_p_val = p.value) %>%
-        # mutate(across(everything(), signif, 4)) %>%
-        mutate(cpi_sig = gtools::stars.pval(cpi_p_val))
-    )
-  ) %>%
-  unnest(cols = c(cti_lm, cpi_lm)) %>%
-  select(-data) %>%
-  ungroup()
-
-obs_sum_tbl %>%
-  filter(cti_sig != " ") %>%
-  summarize(cti_mean = mean(cti_estimate))
-
-obs_sum_tbl %>%
-  filter(cpi_sig != " ") %>%
-  summarize(cpi_mean = mean(cpi_estimate))
-
-obs_sum_tbl %>%
-  filter(cti_sig != " ") %>%
-  arrange(cti_estimate)
-
-obs_sum_tbl %>%
-  filter(cpi_sig != " ") %>%
-  arrange(cpi_estimate)
-
-obs_cti_tab <- obs_sum_tbl %>%
-  mutate(site_name = site_vec[site]) %>% 
-  select(Site = site_name, Estimate = cti_estimate, `Standard error` = cti_std_err, `p-value` = cti_p_val, Significance = cti_sig) %>%
-  mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
-  mutate(across(Estimate:`Standard error`, signif, 3))
-
-obs_cpi_tab <- obs_sum_tbl %>%
-  mutate(site_name = site_vec[site]) %>% 
-  select(Site = site_name, Estimate = cpi_estimate, `Standard error` = cpi_std_err, `p-value` = cpi_p_val, Significance = cpi_sig) %>%
-  mutate(Significance = ifelse(Significance != " ", Significance, "ns")) %>%
-  mutate(across(Estimate:`Standard error`, signif, 3))
+  mutate(tmp_diff = t_elev - amb) %>%
+  drop_na()

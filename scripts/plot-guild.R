@@ -35,12 +35,14 @@ guild_niche_tbl <- read_rds(.path$sum_niche) %>%
   mutate(group = factor(group,
     levels = c("native", "annual", "grass"),
     labels = c("Origin", "Life history", "Functional group")
-  )) %>% 
+  )) %>%
   mutate(guild = factor(guild,
-                        levels = c("Native", "Exotic",
-                                   "Annual", "Perennial",
-                                   "Grass", "Forb"
-                                   )))
+    levels = c(
+      "Native", "Exotic",
+      "Annual", "Perennial",
+      "Grass", "Forb"
+    )
+  ))
 
 plot_guild_niche <- function(g, pal) {
   p <- ggplot(data = guild_niche_tbl %>%
@@ -319,7 +321,7 @@ if (.fig_save) {
 }
 
 # for slides
-obs_guild_landsc_gg <- 
+obs_guild_landsc_gg <-
   plot_guild(obs_guild_tbl, "angelo", native_lab = "% Natives", annual_lab = "% Annuals", grass_lab = "% Grasses") +
   plot_guild(obs_guild_tbl, "carrizo") +
   plot_guild(obs_guild_tbl, "elkhorn") +
@@ -345,27 +347,27 @@ if (.fig_save) {
 
 ## permanova
 response <- guild_niche_tbl %>%
-  filter(group =="Origin") %>% 
+  filter(group == "Origin") %>%
   select(tmp_occ_median, ppt_occ_median)
 predict <- guild_niche_tbl %>%
-  filter(group =="Origin") %>% 
+  filter(group == "Origin") %>%
   select(guild)
 vegan::adonis2(response ~ guild, data = predict)
 
 response <- guild_niche_tbl %>%
-  filter(group =="Life history") %>% 
+  filter(group == "Life history") %>%
   select(tmp_occ_median, ppt_occ_median)
 predict <- guild_niche_tbl %>%
-  filter(group =="Life history") %>% 
+  filter(group == "Life history") %>%
   select(guild)
 vegan::adonis2(response ~ guild, data = predict)
 
 response <- guild_niche_tbl %>%
-  filter(group =="Functional group") %>% 
-  filter(guild %in% c("Forb", "Grass")) %>% 
+  filter(group == "Functional group") %>%
+  filter(guild %in% c("Forb", "Grass")) %>%
   select(tmp_occ_median, ppt_occ_median)
 predict <- guild_niche_tbl %>%
-  filter(group =="Functional group") %>% 
-  filter(guild %in% c("Forb", "Grass")) %>% 
+  filter(group == "Functional group") %>%
+  filter(guild %in% c("Forb", "Grass")) %>%
   select(guild)
 vegan::adonis2(response ~ guild, data = predict)
