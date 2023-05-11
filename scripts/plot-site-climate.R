@@ -12,6 +12,13 @@ clim_tbl <- read_rds(.path$cli_chelsa_annual) %>%
   ))
 
 # get observational sites geographical and climatic space
+site_hull_area <- read_rds(.path$geo_site) %>%
+  extract(geometry, c("lon", "lat"), "\\((.*), (.*)\\)", convert = TRUE) %>%
+  select(abbr, lat, lon) %>%
+  terra::vect(crs = terra::crs(read_rds(.path$geo_site), proj = T)) %>%
+  terra::convHull() %>%
+  terra::expanse(unit = "ha")
+
 obs_site_space <- read_rds(.path$com_obs) %>%
   distinct(site, year) %>%
   left_join(

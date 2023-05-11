@@ -54,7 +54,7 @@ site_map_gg <-
     aes(x, y, alpha = percent),
     fill = "yellow green"
   ) +
-  geom_sf(data = site_sf, color = "red") +
+  geom_sf(data = site_sf, color = "black") +
   ggrepel::geom_label_repel(
     data = site_sf,
     mapping = aes(
@@ -63,7 +63,7 @@ site_map_gg <-
     ),
     stat = "sf_coordinates",
     size = 3,
-    color = "red",
+    color = "black",
     fill = NA,
     min.segment.length = 0,
     max.overlaps = Inf,

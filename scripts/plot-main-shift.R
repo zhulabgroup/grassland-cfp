@@ -425,7 +425,7 @@ p_niche <- ggplot() +
     size = 2.5, alpha = 0.75
   ) +
   scale_color_manual(values = c("Experiment" = "#e28a2b", "Observation" = "#384c6b")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   theme(
     legend.title = element_blank(),
     legend.position = c(.2, .2),

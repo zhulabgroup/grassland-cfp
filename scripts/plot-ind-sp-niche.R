@@ -67,9 +67,26 @@ plot_sp_niche <- function(sp = "Danthonia californica") {
     ) +
     lims(x = tmp_rng, y = ppt_rng) +
     labs(
-      x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)",
+      x = .varname$tmp, y = .varname$ppt,
       title = bquote(italic("n") ~ "=" ~ .(format(occ_sp_stat$occ_n, big.mark = ",", trim = TRUE)))
     )
 
   occ_geog + occ_clim
+}
+
+# save figure file
+if (.fig_save) {
+  ggsave(
+    plot = plot_sp_niche(sp = "Danthonia californica"),
+    filename = str_c(.path$out_fig_niche_ind, "daca", ".png"),
+    width = 8,
+    height = 8 * .618
+  )
+
+  ggsave(
+    plot = plot_sp_niche(sp = "Stipa pulchra"),
+    filename = str_c(.path$out_fig_niche_ind, "stpu", ".png"),
+    width = 8,
+    height = 8 * .618
+  )
 }

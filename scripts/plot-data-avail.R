@@ -41,7 +41,7 @@ data_avail_gg <- ggplot(data_avail) +
     aes(x = min, xend = max, y = sitename, yend = sitename), linewidth = 3, col = "dark green", alpha = 0.4
   ) +
   geom_point(data = data_avail, aes(x = year, y = sitename, cex = count), pch = 19) +
-  scale_size("sample size", range = c(2, 4), breaks = c(10, 50, 100)) +
+  scale_size("Sample size", range = c(2, 4), breaks = c(10, 50, 100)) +
   xlab("") +
   ylab("") +
   scale_y_discrete(limits = rev)
@@ -50,7 +50,7 @@ data_avail_gg <- ggplot(data_avail) +
 if (.fig_save) {
   ggsave(
     plot = data_avail_gg,
-    filename = str_c(.path$out_fig, "fig-supp-data-avail.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-data-avail.png"),
     width = 10,
     height = 10 * .618
   )

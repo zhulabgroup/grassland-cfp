@@ -52,9 +52,10 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
   occ_gbif = "data/occurrence/gbif/gbif-consolidated-2022-11-01.rds",
   occ_inat = "data/occurrence/inat/inat-cfp-2022-11-01.rds",
   out_fig = "data/output/manuscript/",
+  out_fig_niche_ind = "data/output/manuscript/fig-supp-species-",
   out_fig_niche = "data/output/manuscript/species-climate-niche.pdf",
   out_tab_niche = "data/output/manuscript/species-climate-niche.csv",
-  out_tab_gainloss = "data/output/manuscript/species-gainloss.csv",
+  out_tab_gainloss = "data/output/manuscript/species-abundance-change.csv",
   sum_niche = "data/occurrence/niche-estimates-cfp-2022-11-01.rds",
   sum_niche_cwd = "data/occurrence/niche-estimates-cwd-2023-02-11.rds",
   sum_niche_fig = "figures/species-climate-niche-2022-11-01.pdf",
@@ -64,3 +65,9 @@ if (!dir.exists("data")) { # create symlink; final release needs to copy relevan
 
 # save figures?
 .fig_save <- FALSE
+
+.varname <- list(
+  tmp = "Mean annual temperature (°C)",
+  ppt = "Annual precipitation (mm)",
+  cwd = "Annual climate water deficit (mm)"
+)
