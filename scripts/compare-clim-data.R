@@ -61,8 +61,8 @@ chelsa_prism_gg <- ggplot(clim_comp_tbl, aes(CHELSA, PRISM)) +
       variable,
       levels = c("tmp", "ppt"),
       labels = c(
-        "Mean annual temperature (°C)",
-        "Mean annual precipitation (mm)"
+        .varname$tmp,
+        .varname$ppt
       )
     ),
     scales = "free"
@@ -94,8 +94,8 @@ chelsa_terraclim_gg <- ggplot(clim_comp_tbl, aes(CHELSA, TerraClim)) +
       variable,
       levels = c("tmp", "ppt"),
       labels = c(
-        "Mean annual temperature (°C)",
-        "Mean annual precipitation (mm)"
+        .varname$tmp,
+        .varname$ppt
       )
     ),
     scales = "free"
@@ -118,7 +118,7 @@ clim_comp_gg <- chelsa_prism_gg / chelsa_terraclim_gg
 if (.fig_save) {
   ggsave(
     plot = clim_comp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-clim-comp.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-clim-comp.png"),
     width = 10,
     height = 10
   )

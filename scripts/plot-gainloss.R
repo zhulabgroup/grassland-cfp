@@ -34,10 +34,10 @@ obs_gainloss_eg1 <- obs_gainloss_tbl %>%
   slice(1)
 
 obs_gainloss_eg2 <- obs_gainloss_tbl %>%
-  group_by(species, complete) %>%
+  group_by(species, complete_change) %>%
   summarize(n = n()) %>%
-  filter(!is.na(complete)) %>%
-  group_by(complete) %>%
+  filter(!is.na(complete_change)) %>%
+  group_by(complete_change) %>%
   arrange(desc(n)) %>%
   slice(1)
 
@@ -56,13 +56,13 @@ obs_gainloss_tbl_long %>%
     upper = quantile(value, 0.975, na.rm = T)
   )
 
-wilcox.test(obs_gainloss_tbl_long %>% filter(variable == "tmp", change == "gain") %>% pull(value),
-  obs_gainloss_tbl_long %>% filter(variable == "tmp", change == "loss") %>% pull(value),
+wilcox.test(obs_gainloss_tbl_long %>% filter(variable == "tmp", change == "increase") %>% pull(value),
+  obs_gainloss_tbl_long %>% filter(variable == "tmp", change == "decrease") %>% pull(value),
   alternative = "two.sided"
 )
 
-wilcox.test(obs_gainloss_tbl_long %>% filter(variable == "ppt", change == "gain") %>% pull(value),
-  obs_gainloss_tbl_long %>% filter(variable == "ppt", change == "loss") %>% pull(value),
+wilcox.test(obs_gainloss_tbl_long %>% filter(variable == "ppt", change == "increase") %>% pull(value),
+  obs_gainloss_tbl_long %>% filter(variable == "ppt", change == "decrease") %>% pull(value),
   alternative = "two.sided"
 )
 
@@ -70,20 +70,20 @@ obs_gainloss_summ_gg <-
   ggpubr::ggboxplot(
     data = obs_gainloss_tbl_long %>%
       mutate(change = case_when(
-        change == "gain" ~ "Gain",
-        change == "loss" ~ "Loss",
+        change == "increase" ~ "Increase",
+        change == "decrease" ~ "Decrease",
         change == "no clear change" ~ "No change"
       )) %>%
-      mutate(change = factor(change, levels = c("Gain", "Loss", "No change"))),
+      mutate(change = factor(change, levels = c("Increase", "Decrease", "No change"))),
     x = "change",
     col = "change",
     y = "value"
   ) +
-  scale_color_manual(values = c(Gain = "dark green", `No change` = "lightgray", Loss = "dark orange")) +
+  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
   ggpubr::stat_compare_means(
     label = "p.signif",
     hide.ns = FALSE,
-    comparisons = list(c("Gain", "Loss"), c("Gain", "No change"), c("Loss", "No change")),
+    comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
     size = 3
   ) + # Add pairwise comparisons p-value
   # ggpubr::stat_compare_means() +    # Add global p-value
@@ -92,8 +92,8 @@ obs_gainloss_summ_gg <-
     scales = "free_y",
     strip.position = "left",
     labeller = labeller(variable = c(
-      tmp = "Mean annual temperature (°C)",
-      ppt = "Mean annual precipitation (mm)"
+      tmp = .varname$tmp,
+      ppt = .varname$ppt
     ))
   ) +
   guides(col = "none") +
@@ -129,18 +129,18 @@ obs_gainloss_main_gg <-
     ), alpha = 1, pch = 21, fill = NA
   ) +
   geom_point(
-    data = obs_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)),
+    data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
       size = dominance,
       color = change,
-      fill = complete,
+      fill = complete_change,
     ), alpha = 0.75, pch = 21
   ) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
-  scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  scale_color_manual(values = c(increase = "dark green", `no clear change` = "lightgray", decrease = "dark orange")) +
+  scale_fill_manual(values = c(new = "dark green", lost = "dark orange")) +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   guides(
     fill = "none",
     size = "none",
@@ -152,17 +152,19 @@ obs_gainloss_main_3row_gg <- obs_gainloss_main_gg +
   facet_wrap(. ~ site,
     labeller = site_vec %>% as_labeller(),
     nrow = 3
-  )
+  ) +
+  theme(strip.text = element_text(hjust = 0))
 
 obs_gainloss_main_2row_gg <- obs_gainloss_main_gg +
   facet_wrap(. ~ site,
     labeller = site_vec %>% as_labeller(),
     nrow = 2
-  )
+  ) +
+  theme(strip.text = element_text(hjust = 0))
 
 obs_gainloss_supp_gg <- obs_gainloss_main_gg +
   ggrepel::geom_text_repel(
-    data = obs_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)),
+    data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
@@ -180,18 +182,70 @@ obs_gainloss_supp_3row_gg <-
   facet_wrap(. ~ site,
     labeller = site_vec %>% as_labeller(),
     nrow = 3
-  )
+  ) +
+  theme(strip.text = element_text(hjust = 0))
 
 obs_gainloss_supp_2row_gg <-
   obs_gainloss_supp_gg +
   facet_wrap(. ~ site,
     labeller = site_vec %>% as_labeller(),
     nrow = 2
+  ) +
+  theme(strip.text = element_text(hjust = 0))
+
+df_obs_rank <- obs_gainloss_tbl %>%
+  arrange(desc(dominance)) %>%
+  mutate(speciessite = str_c(species, "_", site)) %>%
+  mutate(speciessite = factor(speciessite, levels = (.) %>% pull(speciessite))) %>%
+  select(change, species, site, speciessite, dominance) %>%
+  mutate(rank = speciessite %>% as.integer()) %>%
+  mutate(change = factor(change,
+    levels = c("increase", "decrease", "no clear change"),
+    labels = c("Increase", "Decrease", "No change")
+  ))
+
+obs_rank_summ_gg <-
+  ggpubr::ggboxplot(
+    data = df_obs_rank,
+    x = "change",
+    col = "change",
+    y = "rank"
+  ) +
+  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
+  ggpubr::stat_compare_means(
+    label = "p.signif",
+    hide.ns = FALSE,
+    comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
+    size = 3
+  ) + # Add pairwise comparisons p-value
+  guides(col = "none") +
+  labs(
+    x = NULL,
+    y = "Rank of species site"
+  ) +
+  theme(
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 8)
+  )
+
+obs_rank_gg <- ggplot() +
+  # geom_path(data = df_obs_rank %>% filter(change == "No change"),
+  #           aes(x = rank, y = dominance*100), col = "lightgray")+
+  geom_point(
+    data = df_obs_rank %>% filter(change != "No change"),
+    aes(x = rank, y = dominance * 100, group = change, col = change), alpha = 0.75
+  ) +
+  labs(x = "Rank of species site", y = "Relative abundance (%)") +
+  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
+  theme(
+    legend.position = c(0.75, 0.75),
+    legend.background = element_rect(fill = "transparent"),
+    legend.title = element_blank()
   )
 
 # experimental data -------------------------------------------------------
 exp_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "exp.rds")) %>%
-  mutate(change = factor(change, levels = c("gain", "loss", "no clear change"))) %>%
+  mutate(change = factor(change, levels = c("increase", "decrease", "no clear change"))) %>%
   filter(year != 1998) %>%
   mutate(species_sep = str_split(species, pattern = " ")) %>%
   rowwise() %>%
@@ -246,13 +300,13 @@ exp_gainloss_tbl_long %>%
     upper = quantile(value, 0.975, na.rm = T)
   )
 
-wilcox.test(exp_gainloss_tbl_long %>% filter(variable == "tmp", change == "gain") %>% pull(value),
-  exp_gainloss_tbl_long %>% filter(variable == "tmp", change == "loss") %>% pull(value),
+wilcox.test(exp_gainloss_tbl_long %>% filter(variable == "tmp", change == "increase") %>% pull(value),
+  exp_gainloss_tbl_long %>% filter(variable == "tmp", change == "decrease") %>% pull(value),
   alternative = "two.sided"
 )
 
-wilcox.test(exp_gainloss_tbl_long %>% filter(variable == "ppt", change == "gain") %>% pull(value),
-  exp_gainloss_tbl_long %>% filter(variable == "ppt", change == "loss") %>% pull(value),
+wilcox.test(exp_gainloss_tbl_long %>% filter(variable == "ppt", change == "increase") %>% pull(value),
+  exp_gainloss_tbl_long %>% filter(variable == "ppt", change == "decrease") %>% pull(value),
   alternative = "two.sided"
 )
 
@@ -260,20 +314,20 @@ exp_gainloss_summ_gg <-
   ggpubr::ggboxplot(
     data = exp_gainloss_tbl_long %>%
       mutate(change = case_when(
-        change == "gain" ~ "Gain",
-        change == "loss" ~ "Loss",
+        change == "increase" ~ "Increase",
+        change == "decrease" ~ "Decrease",
         change == "no clear change" ~ "No change"
       )) %>%
-      mutate(change = factor(change, levels = c("Gain", "Loss", "No change"))),
+      mutate(change = factor(change, levels = c("Increase", "Decrease", "No change"))),
     x = "change",
     col = "change",
     y = "value"
   ) +
-  scale_color_manual(values = c(Gain = "dark green", `No change` = "lightgray", Loss = "dark orange")) +
+  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
   ggpubr::stat_compare_means(
     label = "p.signif",
     hide.ns = FALSE,
-    comparisons = list(c("Gain", "Loss"), c("Gain", "No change"), c("Loss", "No change")),
+    comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
     size = 3
   ) + # Add pairwise comparisons p-value
   # ggpubr::stat_compare_means() +    # Add global p-value
@@ -282,8 +336,8 @@ exp_gainloss_summ_gg <-
     scales = "free_y",
     strip.position = "left",
     labeller = labeller(variable = c(
-      tmp = "Mean annual temperature (°C)",
-      ppt = "Mean annual precipitation (mm)"
+      tmp = .varname$tmp,
+      ppt = .varname$ppt
     ))
   ) +
   guides(col = "none") +
@@ -319,18 +373,18 @@ exp_gainloss_main_gg <-
     ), alpha = 1, pch = 21, fill = NA
   ) +
   geom_point(
-    data = exp_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)) %>% filter(year >= 2010),
+    data = exp_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% filter(year >= 2010),
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
       size = dominance,
       color = change,
-      fill = complete,
+      fill = complete_change,
     ), alpha = 0.75, pch = 21
   ) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
-  scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  scale_color_manual(values = c(increase = "dark green", `no clear change` = "lightgray", decrease = "dark orange")) +
+  scale_fill_manual(values = c(new = "dark green", lost = "dark orange")) +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   guides(
     fill = "none",
     size = "none",
@@ -339,7 +393,8 @@ exp_gainloss_main_gg <-
   facet_wrap(. ~ phaseyear,
     nrow = 1
   ) +
-  theme(axis.text = element_text(size = 8))
+  theme(axis.text = element_text(size = 8)) +
+  theme(strip.text = element_text(hjust = 0))
 
 exp_gainloss_supp_gg <- ggplot() +
   geom_point(
@@ -359,18 +414,18 @@ exp_gainloss_supp_gg <- ggplot() +
     ), alpha = 1, pch = 21, fill = NA
   ) +
   geom_point(
-    data = exp_gainloss_tbl %>% filter(change == "gain" | change == "loss") %>% filter(!is.na(complete)),
+    data = exp_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
     aes(
       x = tmp_occ_median,
       y = ppt_occ_median,
       size = dominance,
       color = change,
-      fill = complete,
+      fill = complete_change,
     ), alpha = 0.75, pch = 21
   ) +
-  scale_color_manual(values = c(gain = "dark green", `no clear change` = "lightgray", loss = "dark orange")) +
-  scale_fill_manual(values = c(recruited = "dark green", extirpated = "dark orange")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  scale_color_manual(values = c(increase = "dark green", `no clear change` = "lightgray", decrease = "dark orange")) +
+  scale_fill_manual(values = c(new = "dark green", lost = "dark orange")) +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   guides(size = "none", color = "none", fill = "none") +
   facet_wrap(. ~ phaseyear,
     nrow = 3,
@@ -388,7 +443,59 @@ exp_gainloss_supp_gg <- ggplot() +
     alpha = 1,
     max.overlaps = 100,
     parse = T
+  ) +
+  theme(strip.text = element_text(hjust = 0))
+
+df_exp_rank <- exp_gainloss_tbl %>%
+  arrange(desc(dominance)) %>%
+  mutate(speciesyear = str_c(species, "_", year)) %>%
+  mutate(speciesyear = factor(speciesyear, levels = (.) %>% pull(speciesyear))) %>%
+  select(change, species, year, speciesyear, dominance) %>%
+  mutate(rank = speciesyear %>% as.integer()) %>%
+  mutate(change = factor(change,
+    levels = c("increase", "decrease", "no clear change"),
+    labels = c("Increase", "Decrease", "No change")
+  ))
+
+exp_rank_summ_gg <-
+  ggpubr::ggboxplot(
+    data = df_exp_rank,
+    x = "change",
+    col = "change",
+    y = "rank"
+  ) +
+  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
+  ggpubr::stat_compare_means(
+    label = "p.signif",
+    hide.ns = FALSE,
+    comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
+    size = 3
+  ) + # Add pairwise comparisons p-value
+  guides(col = "none") +
+  labs(
+    x = NULL,
+    y = "Rank of species year"
+  ) +
+  theme(
+    axis.text = element_text(size = 8),
+    axis.title = element_text(size = 8)
   )
+
+exp_rank_gg <- ggplot() +
+  # geom_path(data = df_exp_rank,
+  #           aes(x = rank, y = dominance*100), col = "lightgray")+
+  geom_point(
+    data = df_exp_rank %>% filter(change != "No change"),
+    aes(x = rank, y = dominance * 100, group = change, col = change), alpha = 0.75
+  ) +
+  labs(x = "Rank of species year", y = "Relative abundance (%)") +
+  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
+  theme(
+    legend.position = c(0.75, 0.75),
+    legend.background = element_rect(fill = "transparent"),
+    legend.title = element_blank()
+  )
+
 
 # combine and save -------------------------------------------------------------
 gainloss_main_gg <-
@@ -404,12 +511,24 @@ gainloss_main_gg <-
 ") +
   plot_annotation(tag_levels = "A")
 
+gainloss_rank_gg <-
+  obs_rank_gg +
+  exp_rank_gg +
+  obs_rank_summ_gg +
+  exp_rank_summ_gg +
+  plot_layout(design = "
+  AAAAC
+  BBBBD
+") +
+  plot_annotation(tag_levels = "A")
+
+
 # save main figure
 if (.fig_save) {
   ggsave(
     plot = gainloss_main_gg,
     filename = str_c(.path$out_fig, "fig-main-gainloss.png"),
-    width = 10.5,
+    width = 11,
     height = 11.5
   )
 }
@@ -427,6 +546,12 @@ if (.fig_save) {
     filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
     width = 12,
     height = 8
+  )
+  ggsave(
+    plot = gainloss_rank_gg,
+    filename = str_c(.path$out_fig, "fig-supp-gainloss-rank.png"),
+    width = 11,
+    height = 10
   )
 }
 
@@ -469,7 +594,7 @@ gainloss_tbl <- bind_rows(
   exp_gainloss_tbl %>% mutate(dataset = "experiment") %>%
     mutate(site = "Jasper Ridge Global Change Experiment")
 ) %>%
-  select(dataset, site, year, species_short, species, gain_loss = change, comment = complete) %>%
-  mutate(comment = case_when(gain_loss != "no clear change" ~ comment))
+  select(dataset, site, year, species_short, species, change, comment = complete_change) %>%
+  mutate(comment = case_when(change != "no clear change" ~ comment))
 
 write_csv(gainloss_tbl, .path$out_tab_gainloss)

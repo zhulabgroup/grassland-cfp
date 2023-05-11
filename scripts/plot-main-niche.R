@@ -81,7 +81,7 @@ occ_clim_gg <-
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
   scale_alpha_manual(values = c(cool = .6, other = .01, warm = .6)) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   guides(color = "none", shape = "none", alpha = "none")
 
 clim_niche_gg <-
@@ -104,7 +104,7 @@ clim_niche_gg <-
     vjust = "outward", hjust = "outward"
   ) +
   scale_color_manual(values = c(cool = "blue", other = gray(.75), warm = "red")) +
-  labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   guides(color = "none")
 
 # combine panels

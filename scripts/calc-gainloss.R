@@ -46,10 +46,11 @@ for (siteoi in names(site_vec)) {
     unnest(cols = data) %>%
     distinct(species, estimate, p.value) %>%
     mutate(change = case_when(
-      (estimate > 0 & p.value <= 0.05) ~ "gain",
-      (estimate < 0 & p.value <= 0.05) ~ "loss",
+      (estimate > 0 & p.value <= 0.05) ~ "increase",
+      (estimate < 0 & p.value <= 0.05) ~ "decrease",
       TRUE ~ "no clear change"
-    ))
+    )) %>%
+    ungroup()
 
   df_dominance <- read_rds(.path$com_obs) %>%
     filter(site == siteoi) %>%
@@ -68,15 +69,17 @@ for (siteoi in names(site_vec)) {
       year %in% (year %>% unique() %>% sort() %>% tail(5)) ~ "late"
     )) %>%
     filter(!is.na(period)) %>%
+    group_by(period, species) %>%
+    summarise(abund = sum(abund)) %>%
     spread(key = "species", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
     gather(key = "species", value = "abund", -period) %>%
     spread(key = "period", value = "abund") %>%
-    mutate(complete = case_when(
-      (early == 0 & late != 0) ~ "recruited",
-      (early != 0 & late == 0) ~ "extirpated"
+    mutate(complete_change = case_when(
+      (early == 0 & late != 0) ~ "new",
+      (early != 0 & late == 0) ~ "lost"
     )) %>%
-    select(species, complete)
+    select(species, complete_change)
 
   obs_gainloss_tbl_list[[siteoi]] <- df_trend %>%
     left_join(df_dominance, by = "species") %>%
@@ -128,10 +131,11 @@ for (yearoi in 1998:2014) {
     unnest(cols = data) %>%
     distinct(species, estimate, p.value) %>%
     mutate(change = case_when(
-      (estimate < 0 & p.value <= 0.05) ~ "gain",
-      (estimate > 0 & p.value <= 0.05) ~ "loss",
+      (estimate < 0 & p.value <= 0.05) ~ "increase",
+      (estimate > 0 & p.value <= 0.05) ~ "decrease",
       TRUE ~ "no clear change"
-    ))
+    )) %>%
+    ungroup()
 
   df_dominance <- read_rds(.path$com_exp) %>%
     filter(site == "jrgce") %>%
@@ -151,15 +155,17 @@ for (yearoi in 1998:2014) {
     filter(year == yearoi) %>%
     filter(guild != "DUMMY") %>%
     left_join(plot_treat, by = "plot") %>%
+    group_by(treat_T, species) %>%
+    summarise(abund = sum(abund)) %>%
     spread(key = "species", value = "abund") %>%
     mutate_if(is.numeric, ~ replace_na(., 0)) %>%
     gather(key = "species", value = "abund", -treat_T) %>%
     spread(key = "treat_T", value = "abund") %>%
-    mutate(complete = case_when(
-      (`_` == 0 & T != 0) ~ "recruited",
-      (T != 0 & `_` == 0) ~ "extirpated"
+    mutate(complete_change = case_when(
+      (`_` == 0 & T != 0) ~ "new",
+      (T != 0 & `_` == 0) ~ "lost"
     )) %>%
-    select(species, complete)
+    select(species, complete_change)
 
   exp_gainloss_tbl_list[[yearoi %>% as.character()]] <- df_trend %>%
     left_join(df_dominance, by = "species") %>%

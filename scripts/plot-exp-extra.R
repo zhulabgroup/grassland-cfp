@@ -79,7 +79,7 @@ names(n_plt) <- c("ambient", "warming")
 # McLaughlin Water Experiment
 # filter mclexp data
 mclexp_tbl <- read_rds(.path$com_exp) %>%
-  filter(site == "mclexp") %>%
+  filter(site == "mclexp", year > 2015) %>%
   inner_join(niche_tbl, by = "species") %>%
   group_by(site, year, plot, treat) %>%
   summarize(

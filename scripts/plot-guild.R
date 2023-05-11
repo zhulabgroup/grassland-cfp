@@ -21,7 +21,7 @@ guild_niche_tbl <- read_rds(.path$sum_niche) %>%
   select(-guild) %>%
   mutate(native = factor(native,
     levels = c("N", "E", "D"),
-    labels = c("Native", "Exotic", "DUMMY")
+    labels = c("Native", "Non-native", "DUMMY")
   )) %>%
   mutate(annual = factor(annual,
     levels = c("P", "A", "U"),
@@ -38,7 +38,7 @@ guild_niche_tbl <- read_rds(.path$sum_niche) %>%
   )) %>%
   mutate(guild = factor(guild,
     levels = c(
-      "Native", "Exotic",
+      "Native", "Non-native",
       "Annual", "Perennial",
       "Grass", "Forb"
     )
@@ -65,9 +65,10 @@ plot_guild_niche <- function(g, pal) {
       )
     ) +
     scale_color_brewer(palette = pal) +
-    labs(x = "Mean annual temperature (°C)", y = "Mean annual precipitation (mm)") +
+    labs(x = .varname$tmp, y = .varname$ppt) +
     theme(
-      legend.position = c(0.2, 0.2),
+      legend.position = c(0.25, 0.15),
+      legend.background = element_rect(fill = "transparent"),
       legend.title = element_blank()
     )
 
@@ -152,7 +153,12 @@ exp_guild_gg <-
       grass_perc = "% Grasses"
     ))
   ) +
-  scale_y_continuous(limits = c(0, 1), expand = expansion(mult = .15)) + # expand padding to show significance tests
+  scale_y_continuous(
+    labels = function(x) {
+      trans <- x * 100
+    },
+    limits = c(0, 1), expand = expansion(mult = .15)
+  ) + # expand padding to show significance tests
   scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
   labs(
     x = NULL, # "Year",
@@ -269,7 +275,12 @@ plot_guild <- function(data, site_abbr,
       labeller = labeller(group = c(native_perc = native_lab, annual_perc = annual_lab, grass_perc = grass_lab))
     ) +
     expand_limits(x = c(min(data$year) - 1, max(data$year + 1))) +
-    ylim(0, 1) +
+    scale_y_continuous(
+      labels = function(x) {
+        trans <- x * 100
+      },
+      limits = c(0, 1)
+    ) +
     labs(
       title = site_lab,
       x = yr_lab, y = NULL

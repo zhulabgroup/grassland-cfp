@@ -40,7 +40,7 @@ tmp_cwd_gg <-
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
   scale_alpha_manual(values = c(cool = .6, other = .01, warm = .6)) +
-  labs(x = "Mean annual temperature (°C)", y = "Total annual climate water deficit (mm)") +
+  labs(x = .varname$tmp, y = .varname$cwd) +
   guides(color = "none", shape = "none", alpha = "none")
 
 ppt_cwd_gg <-
@@ -58,7 +58,7 @@ ppt_cwd_gg <-
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
   scale_alpha_manual(values = c(cool = .6, other = .01, warm = .6)) +
-  labs(x = "Total annual precipitation (°C)", y = "Total annual climate water deficit (mm)") +
+  labs(x = .varname$ppt, y = .varname$cwd) +
   guides(color = "none", shape = "none", alpha = "none")
 
 tmp_ppt_gg <-
@@ -76,7 +76,7 @@ tmp_ppt_gg <-
   scale_color_manual(values = c(cool = "blue", other = gray(.5), warm = "red")) +
   scale_shape_manual(values = c(cool = 19, other = 20, warm = 19)) +
   scale_alpha_manual(values = c(cool = .6, other = .01, warm = .6)) +
-  labs(x = "Mean annual temperature (°C)", y = "Total annual precipitation (mm)") +
+  labs(x = .varname$tmp, y = .varname$ppt) +
   guides(color = "none", shape = "none", alpha = "none")
 
 # combine panels
