@@ -9,3 +9,28 @@ Description: More about what it does (maybe more than one line)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 3.3),
+    tidyverse,
+    sf,
+    patchwork,
+    rgdal
+Imports:
+    flextable, 
+    GGally, 
+    ggpubr, 
+    ggtext, 
+    ggthemes, 
+    gtools, 
+    markdown, 
+    raster, 
+    rmarkdown, 
+    rnaturalearth, 
+    terra, 
+    tidyverse, 
+    viridis, 
+    sf, 
+    patchwork, 
+    vegan
+Remotes:
+    git::https://github.com/ropensci/rnaturalearthhires.git
