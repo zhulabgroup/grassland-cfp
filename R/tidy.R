@@ -7,11 +7,14 @@ tidy_all <- function(
   tidy_eastbay(indir, "pleasantonridge") %>% write_csv(str_c(outdir, "pleasantonridge.csv"))
   tidy_eastbay(indir, "sunol") %>% write_csv(str_c(outdir, "sunol.csv"))
   tidy_eastbay(indir, "vascocaves") %>% write_csv(str_c(outdir, "vascocaves.csv"))
+  tidy_jasper(indir) %>% write_csv(str_c(outdir, "jasper.csv"))
+  tidy_mclobs(indir, "annual") %>% write_csv(str_c(outdir, "mclann.csv"))
+  tidy_mclobs(indir, "serpentine") %>% write_csv(str_c(outdir, "mclserp.csv"))
+  tidy_morganterritory(indir) %>% write_csv(str_c(outdir, "morganterritory.csv"))
   tidy_elkhorn(indir) %>% write_csv(str_c(outdir, "elkhorn.csv"))
   tidy_swanton(indir) %>% write_csv(str_c(outdir, "swanton.csv"))
   tidy_ucsc(indir) %>% write_csv(str_c(outdir, "ucsc.csv"))
-  tidy_jasper(indir) %>% write_csv(str_c(outdir, "jasper.csv"))
-  tidy_morganterritory(indir) %>% write_csv(str_c(outdir, "morganterritory.csv"))
+
   # experimental sites
   tidy_jrgce(indir) %>% write_csv(str_c(outdir, "jrgce.csv"))
   tidy_mclexp(indir) %>% write_csv(str_c(outdir, "mclexp.csv"))
@@ -232,6 +235,76 @@ tidy_jasper <- function(basedir) {
     arrange(site, year, plot, species)
 
   return(jasper_tbl)
+}
+
+tidy_mclobs <- function(basedir, site) {
+  # community data
+  com_tbl <- basedir %>%
+    str_c("McLaughlin/Core_Community_Data2019.csv") %>%
+    read_csv(col_types = "iiiicdcc") %>%
+    rename_with(tolower) %>%
+    rename(plot = site)
+
+  # plot data
+  plt_tbl <- basedir %>%
+    str_c("McLaughlin/AbioticSiteDataNew.csv") %>%
+    read_csv(col_types = "iicdd") %>%
+    rename_with(tolower) %>%
+    rename(plot = site)
+
+  # species data
+  spp_tbl <- basedir %>%
+    str_c("McLaughlin/McLaughlin_FunctionalGroups.csv") %>%
+    read_csv(col_types = "c") %>%
+    rename_with(tolower) %>%
+    mutate(
+      species_name = str_trim(species_name),
+      guild = str_c(
+        str_sub(native.exotic, 1, 1),
+        str_sub(annual.perennial, 1, 1),
+        str_sub(grass.forb.shrub, 1, 1)
+      )
+    )
+
+  # combine
+  mclobs_tbl <- plt_tbl %>%
+    left_join(com_tbl, by = "plot") %>%
+    left_join(spp_tbl, by = "species_name") %>%
+    group_by(year, plot, serpentine, species_name, guild) %>%
+    summarize(abund = mean(cover)) %>%
+    ungroup() %>%
+    filter(
+      !is.na(abund),
+      abund > 0,
+      species_name != "Bare",
+      species_name != "Rock",
+      species_name != "Unknown grass",
+      species_name != "Unknown forb"
+    ) %>%
+    mutate(
+      abund_type = "cover"
+    ) %>%
+    select(year, plot, serpentine, species = species_name, guild, abund, abund_type) %>%
+    arrange(year, plot, species)
+
+  # return site-specific data
+  if (site == "annual") {
+    return(
+      mclobs_tbl %>%
+        filter(serpentine == "N") %>%
+        mutate(site = "mclann") %>%
+        select(site, year, plot, species, guild, abund, abund_type)
+    )
+  } else if (site == "serpentine") {
+    return(
+      mclobs_tbl %>%
+        filter(serpentine == "S") %>%
+        mutate(site = "mclserp") %>%
+        select(site, year, plot, species, guild, abund, abund_type)
+    )
+  } else {
+    stop("incorrect site")
+  }
 }
 
 tidy_morganterritory <- function(basedir) {
