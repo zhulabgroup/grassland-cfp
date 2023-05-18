@@ -11,3 +11,7 @@ download_cfp <- function() {
     exdir = "input/basemap/cfp"
   )
 }
+
+download_grasscover <- function() {
+
+}
