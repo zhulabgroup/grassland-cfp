@@ -747,4 +747,6 @@ tidy_jrgce <- function(basedir) {
     mutate(site = "jrgce", abund_type = "point_intercept") %>%
     select(site, year, plot, treat, species, guild, abund, abund_type) %>%
     arrange(year, plot, species)
+
+  return(jrgce_tbl)
 }
