@@ -15,3 +15,19 @@ download_cfp <- function() {
 download_grasscover <- function() {
 
 }
+
+download_gbif <- function() {
+
+}
+
+download_bien <- function() {
+
+}
+
+download_cch <- function() {
+
+}
+
+download_inat <- function() {
+
+}
