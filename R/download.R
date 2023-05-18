@@ -36,3 +36,17 @@ download_inat <- function() {
 
 }
 
+
+# climate -----------------------------------------------------------------
+
+download_chelsa <- function() {
+
+}
+
+download_prism <- function() {
+
+}
+
+download_terraclim <- function() {
+
+}
