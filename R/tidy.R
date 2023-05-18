@@ -4,19 +4,14 @@ tidy_all <- function(
   # observational sites
   tidy_angelo(indir) %>% write_csv(str_c(outdir, "angelo.csv"))
   tidy_carrizo(indir) %>% write_csv(str_c(outdir, "carrizo.csv"))
-  tidy_eastbay(indir) %>%
-    parse_pleasantonridge() %>%
-    write_csv(str_c(outdir, "pleasantonridge.csv"))
-  tidy_eastbay(indir) %>%
-    parse_sunol() %>%
-    write_csv(str_c(outdir, "sunol.csv"))
-  tidy_eastbay(indir) %>%
-    parse_vascocaves() %>%
-    write_csv(str_c(outdir, "vascocaves.csv"))
+  tidy_eastbay(indir, "pleasantonridge") %>% write_csv(str_c(outdir, "pleasantonridge.csv"))
+  tidy_eastbay(indir, "sunol") %>% write_csv(str_c(outdir, "sunol.csv"))
+  tidy_eastbay(indir, "vascocaves") %>% write_csv(str_c(outdir, "vascocaves.csv"))
   tidy_elkhorn(indir) %>% write_csv(str_c(outdir, "elkhorn.csv"))
   tidy_swanton(indir) %>% write_csv(str_c(outdir, "swanton.csv"))
   tidy_ucsc(indir) %>% write_csv(str_c(outdir, "ucsc.csv"))
   tidy_jasper(indir) %>% write_csv(str_c(outdir, "jasper.csv"))
+  tidy_morganterritory(indir) %>% write_csv(str_c(outdir, "morganterritory.csv"))
 }
 
 # observation -------------------------------------------------------------
@@ -125,7 +120,7 @@ tidy_carrizo <- function(basedir) {
   return(carrizo_tbl)
 }
 
-tidy_eastbay <- function(basedir) {
+tidy_eastbay <- function(basedir, site) {
   # community data
   com_tbl <- basedir %>%
     str_c("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
@@ -180,26 +175,23 @@ tidy_eastbay <- function(basedir) {
     select(site, year, plot, species, guild, abund, abund_type) %>%
     arrange(site, year, plot, species)
 
-  return(eastbay_tbl)
-}
-
-parse_pleasantonridge <- function(eastbay) {
-  eastbay %>%
-    filter(site == "PR", plot %in% str_c("PR", 4:9)) %>%
-    mutate(site = "pleasantonridge")
-}
-
-parse_sunol <- function(eastbay) {
-  eastbay %>%
-    filter(site == "SU", plot %in% str_c("SU", 1:9)) %>%
-    mutate(site = "sunol")
-}
-
-parse_vascocaves <- function(eastbay) {
-  eastbay %>%
-    filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
-    filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>%
-    mutate(site = "vascocaves")
+  # return site-specific data
+  if (site == "pleasantonridge") {
+    return(eastbay_tbl %>%
+      filter(site == "PR", plot %in% str_c("PR", 4:9)) %>%
+      mutate(site = "pleasantonridge"))
+  } else if (site == "sunol") {
+    return(eastbay_tbl %>%
+      filter(site == "SU", plot %in% str_c("SU", 1:9)) %>%
+      mutate(site = "sunol"))
+  } else if (site == "vascocaves") {
+    return(eastbay_tbl %>%
+      filter(site == "VC", plot %in% str_c("VC", 1:10)) %>%
+      filter(!(year == 2012 & plot %in% c("VC1", "VC8", "VC9"))) %>%
+      mutate(site = "vascocaves"))
+  } else {
+    stop("incorrect site")
+  }
 }
 
 utils_santacruz <- function(target) {
@@ -586,11 +578,92 @@ tidy_jasper <- function(basedir) {
       abund_type = "cover"
     ) %>%
     select(site, year,
-           plot = uniqueID,
-           species = species.name, guild,
-           abund = cover, abund_type
+      plot = uniqueID,
+      species = species.name, guild,
+      abund = cover, abund_type
     ) %>%
     arrange(site, year, plot, species)
 
   return(jasper_tbl)
+}
+
+tidy_morganterritory <- function(basedir) {
+  excel_file <- basedir %>%
+    str_c("MorganTerritory/UCBerkeley Range Lab Morgan Territory all plots transect data 2003-2011.xlsx")
+
+  com_tbl <- excel_file %>%
+    readxl::read_xlsx(sheet = "MT1-MT16 2003-2011") %>%
+    mutate(year = as.integer(year)) %>%
+    select(year, plot = `plot ID`, transect, point, species_code = species) %>%
+    mutate(species_code = toupper(species_code)) %>%
+    group_by(year, plot, species_code) %>%
+    summarize(hits = n()) %>% # hits as total counts
+    group_by(year, plot) %>%
+    mutate(tot_hits = sum(hits)) %>%
+    group_by(year, plot, species_code) %>%
+    summarize(abund = hits / tot_hits) %>% # rel abundance
+    ungroup()
+
+  spp_tbl <- excel_file %>%
+    readxl::read_xlsx(sheet = "Species codes & attributes") %>%
+    mutate(
+      species_code = toupper(species) %>% str_trim(),
+      latin = str_trim(latin),
+      guild = str_c(
+        case_when(
+          `native/exotic` == "e" ~ "E", # Exotic
+          `native/exotic` == "n" ~ "N", # Native
+          TRUE ~ "U" # else is Unknown
+        ),
+        case_when(
+          `annual/perennial` == "a" ~ "A", # Annual
+          `annual/perennial` == "p" ~ "P", # Perennial
+          `annual/perennial` == "a, p" ~ "AP", # both Annual and Perennial?
+          TRUE ~ "U" # else is Unknown
+        ),
+        case_when(
+          `forb/grass` == "f" ~ "F", # Forb
+          `forb/grass` == "g" ~ "G", # Grass
+          `forb/grass` == "n" ~ "R", # Rush
+          `forb/grass` == "s" ~ "S", # Shurb
+          `forb/grass` == "t" ~ "T", # Tree
+          TRUE ~ "U" # else is Unknown
+        )
+      )
+    ) %>%
+    select(species_code, species = latin, guild) %>%
+    filter(
+      !species_code %in% c(
+        "DISKED", # disked ground
+        "LITT", # litter
+        "MOSS", # moss
+        "MUD", # mud
+        "ND", # no data
+        "ROCK", # rock
+        "SOIL", # soil
+        "TRASH", # trash
+        "WATER" # water
+      ),
+      !str_starts(species_code, "UN") # unknown species
+    )
+
+  plt_tbl <- excel_file %>%
+    readxl::read_xlsx(sheet = "Grazed status") %>%
+    separate_rows(year, sep = "-") %>% # 2003-2004 and 2010-2011 to separate rows
+    select(year, plot = `plot ID`, grazed, type) %>%
+    mutate(year = as.integer(year))
+
+  morganterritory_tbl <- com_tbl %>%
+    inner_join(spp_tbl, by = "species_code") %>% # only keep species in species table
+    mutate(
+      site = "morganterritory",
+      abund_type = "point_intercept"
+    ) %>%
+    right_join(filter(plt_tbl, grazed == "n"), # join non-grazed plots
+      by = c("year", "plot")
+    ) %>%
+    select(site, year, plot, species, guild, abund, abund_type) %>%
+    arrange(year, plot, species)
+
+  return(morganterritory_tbl)
 }
