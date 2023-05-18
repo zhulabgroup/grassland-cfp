@@ -198,6 +198,123 @@ tidy_eastbay <- function(basedir, site) {
   }
 }
 
+tidy_jasper <- function(basedir) {
+  # read cover data
+  com_tbl <- basedir %>%
+    str_c("Jasper/JR_cover_forJosie.csv") %>%
+    read_csv(col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")) %>%
+    pivot_wider(names_from = species, values_from = cover) %>%
+    replace(is.na(.), 0) %>%
+    pivot_longer(cols = aghe:vumi, names_to = "species", values_to = "cover") %>%
+    group_by(uniqueID, year, species) %>%
+    summarize(cover = mean(cover)) %>%
+    ungroup()
+
+  # read species data
+  spp_tbl <- basedir %>%
+    str_c("Jasper/JR_speciesnames2.csv") %>%
+    read_csv(col_types = "c")
+
+  # combine
+  jasper_tbl <- com_tbl %>%
+    left_join(spp_tbl, by = "species") %>%
+    filter(cover > 0) %>%
+    mutate(
+      site = "jasper",
+      species.name = str_trim(species.name),
+      abund_type = "cover"
+    ) %>%
+    select(site, year,
+      plot = uniqueID,
+      species = species.name, guild,
+      abund = cover, abund_type
+    ) %>%
+    arrange(site, year, plot, species)
+
+  return(jasper_tbl)
+}
+
+tidy_morganterritory <- function(basedir) {
+  excel_file <- basedir %>%
+    str_c("MorganTerritory/UCBerkeley Range Lab Morgan Territory all plots transect data 2003-2011.xlsx")
+
+  com_tbl <- excel_file %>%
+    readxl::read_xlsx(sheet = "MT1-MT16 2003-2011") %>%
+    mutate(year = as.integer(year)) %>%
+    select(year, plot = `plot ID`, transect, point, species_code = species) %>%
+    mutate(species_code = toupper(species_code)) %>%
+    group_by(year, plot, species_code) %>%
+    summarize(hits = n()) %>% # hits as total counts
+    group_by(year, plot) %>%
+    mutate(tot_hits = sum(hits)) %>%
+    group_by(year, plot, species_code) %>%
+    summarize(abund = hits / tot_hits) %>% # rel abundance
+    ungroup()
+
+  spp_tbl <- excel_file %>%
+    readxl::read_xlsx(sheet = "Species codes & attributes") %>%
+    mutate(
+      species_code = toupper(species) %>% str_trim(),
+      latin = str_trim(latin),
+      guild = str_c(
+        case_when(
+          `native/exotic` == "e" ~ "E", # Exotic
+          `native/exotic` == "n" ~ "N", # Native
+          TRUE ~ "U" # else is Unknown
+        ),
+        case_when(
+          `annual/perennial` == "a" ~ "A", # Annual
+          `annual/perennial` == "p" ~ "P", # Perennial
+          `annual/perennial` == "a, p" ~ "AP", # both Annual and Perennial?
+          TRUE ~ "U" # else is Unknown
+        ),
+        case_when(
+          `forb/grass` == "f" ~ "F", # Forb
+          `forb/grass` == "g" ~ "G", # Grass
+          `forb/grass` == "n" ~ "R", # Rush
+          `forb/grass` == "s" ~ "S", # Shurb
+          `forb/grass` == "t" ~ "T", # Tree
+          TRUE ~ "U" # else is Unknown
+        )
+      )
+    ) %>%
+    select(species_code, species = latin, guild) %>%
+    filter(
+      !species_code %in% c(
+        "DISKED", # disked ground
+        "LITT", # litter
+        "MOSS", # moss
+        "MUD", # mud
+        "ND", # no data
+        "ROCK", # rock
+        "SOIL", # soil
+        "TRASH", # trash
+        "WATER" # water
+      ),
+      !str_starts(species_code, "UN") # unknown species
+    )
+
+  plt_tbl <- excel_file %>%
+    readxl::read_xlsx(sheet = "Grazed status") %>%
+    separate_rows(year, sep = "-") %>% # 2003-2004 and 2010-2011 to separate rows
+    select(year, plot = `plot ID`, grazed, type) %>%
+    mutate(year = as.integer(year))
+
+  morganterritory_tbl <- com_tbl %>%
+    inner_join(spp_tbl, by = "species_code") %>% # only keep species in species table
+    mutate(
+      site = "morganterritory",
+      abund_type = "point_intercept"
+    ) %>%
+    right_join(filter(plt_tbl, grazed == "n"), # join non-grazed plots
+      by = c("year", "plot")
+    ) %>%
+    select(site, year, plot, species, guild, abund, abund_type) %>%
+    arrange(year, plot, species)
+
+  return(morganterritory_tbl)
+}
+
 utils_santacruz <- function(target) {
   clean_com <- function(data, gathercol1, gathercol2, site = c("elk", "swa", "ucsc")) {
     filtersite <- match.arg(site, c("elk", "swa", "ucsc"))
@@ -555,122 +672,7 @@ tidy_ucsc <- function(basedir) {
   return(ucsc_tbl)
 }
 
-tidy_jasper <- function(basedir) {
-  # read cover data
-  com_tbl <- basedir %>%
-    str_c("Jasper/JR_cover_forJosie.csv") %>%
-    read_csv(col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")) %>%
-    pivot_wider(names_from = species, values_from = cover) %>%
-    replace(is.na(.), 0) %>%
-    pivot_longer(cols = aghe:vumi, names_to = "species", values_to = "cover") %>%
-    group_by(uniqueID, year, species) %>%
-    summarize(cover = mean(cover)) %>%
-    ungroup()
-
-  # read species data
-  spp_tbl <- basedir %>%
-    str_c("Jasper/JR_speciesnames2.csv") %>%
-    read_csv(col_types = "c")
-
-  # combine
-  jasper_tbl <- com_tbl %>%
-    left_join(spp_tbl, by = "species") %>%
-    filter(cover > 0) %>%
-    mutate(
-      site = "jasper",
-      species.name = str_trim(species.name),
-      abund_type = "cover"
-    ) %>%
-    select(site, year,
-      plot = uniqueID,
-      species = species.name, guild,
-      abund = cover, abund_type
-    ) %>%
-    arrange(site, year, plot, species)
-
-  return(jasper_tbl)
-}
-
-tidy_morganterritory <- function(basedir) {
-  excel_file <- basedir %>%
-    str_c("MorganTerritory/UCBerkeley Range Lab Morgan Territory all plots transect data 2003-2011.xlsx")
-
-  com_tbl <- excel_file %>%
-    readxl::read_xlsx(sheet = "MT1-MT16 2003-2011") %>%
-    mutate(year = as.integer(year)) %>%
-    select(year, plot = `plot ID`, transect, point, species_code = species) %>%
-    mutate(species_code = toupper(species_code)) %>%
-    group_by(year, plot, species_code) %>%
-    summarize(hits = n()) %>% # hits as total counts
-    group_by(year, plot) %>%
-    mutate(tot_hits = sum(hits)) %>%
-    group_by(year, plot, species_code) %>%
-    summarize(abund = hits / tot_hits) %>% # rel abundance
-    ungroup()
-
-  spp_tbl <- excel_file %>%
-    readxl::read_xlsx(sheet = "Species codes & attributes") %>%
-    mutate(
-      species_code = toupper(species) %>% str_trim(),
-      latin = str_trim(latin),
-      guild = str_c(
-        case_when(
-          `native/exotic` == "e" ~ "E", # Exotic
-          `native/exotic` == "n" ~ "N", # Native
-          TRUE ~ "U" # else is Unknown
-        ),
-        case_when(
-          `annual/perennial` == "a" ~ "A", # Annual
-          `annual/perennial` == "p" ~ "P", # Perennial
-          `annual/perennial` == "a, p" ~ "AP", # both Annual and Perennial?
-          TRUE ~ "U" # else is Unknown
-        ),
-        case_when(
-          `forb/grass` == "f" ~ "F", # Forb
-          `forb/grass` == "g" ~ "G", # Grass
-          `forb/grass` == "n" ~ "R", # Rush
-          `forb/grass` == "s" ~ "S", # Shurb
-          `forb/grass` == "t" ~ "T", # Tree
-          TRUE ~ "U" # else is Unknown
-        )
-      )
-    ) %>%
-    select(species_code, species = latin, guild) %>%
-    filter(
-      !species_code %in% c(
-        "DISKED", # disked ground
-        "LITT", # litter
-        "MOSS", # moss
-        "MUD", # mud
-        "ND", # no data
-        "ROCK", # rock
-        "SOIL", # soil
-        "TRASH", # trash
-        "WATER" # water
-      ),
-      !str_starts(species_code, "UN") # unknown species
-    )
-
-  plt_tbl <- excel_file %>%
-    readxl::read_xlsx(sheet = "Grazed status") %>%
-    separate_rows(year, sep = "-") %>% # 2003-2004 and 2010-2011 to separate rows
-    select(year, plot = `plot ID`, grazed, type) %>%
-    mutate(year = as.integer(year))
-
-  morganterritory_tbl <- com_tbl %>%
-    inner_join(spp_tbl, by = "species_code") %>% # only keep species in species table
-    mutate(
-      site = "morganterritory",
-      abund_type = "point_intercept"
-    ) %>%
-    right_join(filter(plt_tbl, grazed == "n"), # join non-grazed plots
-      by = c("year", "plot")
-    ) %>%
-    select(site, year, plot, species, guild, abund, abund_type) %>%
-    arrange(year, plot, species)
-
-  return(morganterritory_tbl)
-}
+# experiment --------------------------------------------------------------
 
 tidy_jrgce <- function(basedir) {
   # pin count table
