@@ -24,6 +24,7 @@ setup_dir <- function(release = FALSE) {
     "intermediate/background",
     "intermediate/climate-niche",
     "intermediate/observation-experiment",
+    "intermediate/observation-experiment/tidy-community",
     "intermediate/synthesis-decomposition"
   ))
 
