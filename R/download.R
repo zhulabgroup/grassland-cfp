@@ -1,3 +1,5 @@
+# basemap -----------------------------------------------------------------
+
 download_cfp <- function() {
   # Biodiversity Hotspots (version 2016.1)
   # Michael Hoffman;  Kellee Koenig; Gill Bunting;  Jennifer Costanza;  Williams, Kristen J.
@@ -16,6 +18,8 @@ download_grasscover <- function() {
 
 }
 
+# biogeography ------------------------------------------------------------
+
 download_gbif <- function() {
 
 }
@@ -31,3 +35,4 @@ download_cch <- function() {
 download_inat <- function() {
 
 }
+
