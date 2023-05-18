@@ -1,29 +1,29 @@
 tidy_all <- function(
-    in_dir = "input/community/raw/",
-    out_dir = "intermediate/observation-experiment/tidy-community/") {
+    indir = "input/community/raw/",
+    outdir = "intermediate/observation-experiment/tidy-community/") {
   # observational sites
-  tidy_angelo(in_dir) %>% write_csv(str_c(out_dir, "angelo.csv"))
-  tidy_carrizo(in_dir) %>% write_csv(str_c(out_dir, "carrizo.csv"))
-  tidy_eastbay(in_dir) %>%
+  tidy_angelo(indir) %>% write_csv(str_c(outdir, "angelo.csv"))
+  tidy_carrizo(indir) %>% write_csv(str_c(outdir, "carrizo.csv"))
+  tidy_eastbay(indir) %>%
     parse_pleasantonridge() %>%
-    write_csv(str_c(out_dir, "pleasantonridge.csv"))
-  tidy_eastbay(in_dir) %>%
+    write_csv(str_c(outdir, "pleasantonridge.csv"))
+  tidy_eastbay(indir) %>%
     parse_sunol() %>%
-    write_csv(str_c(out_dir, "sunol.csv"))
-  tidy_eastbay(in_dir) %>%
+    write_csv(str_c(outdir, "sunol.csv"))
+  tidy_eastbay(indir) %>%
     parse_vascocaves() %>%
-    write_csv(str_c(out_dir, "vascocaves.csv"))
-  tidy_elkhorn(in_dir) %>% write_csv(str_c(out_dir, "elkhorn.csv"))
-  tidy_swanton(in_dir) %>% write_csv(str_c(out_dir, "swanton.csv"))
-  tidy_ucsc(in_dir) %>% write_csv(str_c(out_dir, "ucsc.csv"))
-  tidy_jasper(in_dir) %>% write_csv(str_c(out_dir, "jasper.csv"))
+    write_csv(str_c(outdir, "vascocaves.csv"))
+  tidy_elkhorn(indir) %>% write_csv(str_c(outdir, "elkhorn.csv"))
+  tidy_swanton(indir) %>% write_csv(str_c(outdir, "swanton.csv"))
+  tidy_ucsc(indir) %>% write_csv(str_c(outdir, "ucsc.csv"))
+  tidy_jasper(indir) %>% write_csv(str_c(outdir, "jasper.csv"))
 }
 
 # observation -------------------------------------------------------------
 
-tidy_angelo <- function(base_dir) {
+tidy_angelo <- function(basedir) {
   # community data
-  com_tbl <- base_dir %>%
+  com_tbl <- basedir %>%
     str_c("Angelo/Angelo_CommCompData.csv") %>%
     read_csv(col_types = cols(.default = "d", Year = "i", Plot = "i", TMT = "c")) %>%
     filter(TMT == "C") %>%
@@ -31,7 +31,7 @@ tidy_angelo <- function(base_dir) {
     rename_with(tolower)
 
   # species data
-  spp_tbl <- base_dir %>%
+  spp_tbl <- basedir %>%
     str_c("Angelo/Angelo_spp_guilds.csv") %>%
     read_csv(col_types = "c")
 
@@ -52,9 +52,9 @@ tidy_angelo <- function(base_dir) {
   return(angelo_tbl)
 }
 
-tidy_carrizo <- function(base_dir) {
+tidy_carrizo <- function(basedir) {
   # community data spreadsheet
-  com_tbl <- base_dir %>%
+  com_tbl <- basedir %>%
     str_c("Carrizo/2022-06-28/Carrizo_data for Joise_2007_2021.xlsx") %>%
     readxl::read_xlsx(
       sheet = 1,
@@ -76,7 +76,7 @@ tidy_carrizo <- function(base_dir) {
     filter(intercept > 0, !is.na(intercept))
 
   # species data
-  spp_tbl <- base_dir %>%
+  spp_tbl <- basedir %>%
     str_c("Carrizo/2022-07-05/Carrizo_global_species list_v2.csv") %>%
     read_csv(col_types = "c") %>%
     mutate(guild = case_when(
@@ -125,9 +125,9 @@ tidy_carrizo <- function(base_dir) {
   return(carrizo_tbl)
 }
 
-tidy_eastbay <- function(base_dir) {
+tidy_eastbay <- function(basedir) {
   # community data
-  com_tbl <- base_dir %>%
+  com_tbl <- basedir %>%
     str_c("Dudney/EBRPD_2002thru2012_Dec2013_BRXX AVXX updated.csv") %>%
     read_csv(col_types = "cicidc") %>%
     rename(plot = plot.ID, species_code = species) %>%
@@ -139,7 +139,7 @@ tidy_eastbay <- function(base_dir) {
     summarize(abund = hits / tot_hits)
 
   # species data
-  spp_tbl <- base_dir %>%
+  spp_tbl <- basedir %>%
     str_c("Dudney/_VegSpCodeAttributes_2010.xlsx") %>%
     readxl::read_xlsx() %>%
     mutate(
@@ -252,24 +252,24 @@ utils_santacruz <- function(target) {
   }
 }
 
-tidy_elkhorn <- function(base_dir) {
+tidy_elkhorn <- function(basedir) {
   # set clean functions
   clean_com <- utils_santacruz("community")
   clean_plt <- utils_santacruz("plot")
 
   # import data
-  elkspp <- base_dir %>%
+  elkspp <- basedir %>%
     str_c("HollData/ElkhornSpecies.csv") %>%
     read_csv() %>%
     mutate(species.code = tolower(species.code))
-  elk_guilds <- base_dir %>%
+  elk_guilds <- basedir %>%
     str_c("HollData/ElkhornGuilds.csv") %>%
     read_csv()
   elk_counts <- list()
   for (i in 1:20) {
     year <- as.character(1999:2018)[i]
     skips <- c(4, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 1, 1, 1, 1, 1)
-    filename <- str_c(base_dir, "HollData/Elk_", year, ".csv")
+    filename <- str_c(basedir, "HollData/Elk_", year, ".csv")
     out <- read_csv(filename, skip = skips[i], show_col_types = FALSE)
     # elk_counts[[year]] <- select_if(out, has_data)
     elk_counts[[year]] <- out
@@ -356,17 +356,17 @@ tidy_elkhorn <- function(base_dir) {
   return(elkhorn_tbl)
 }
 
-tidy_swanton <- function(base_dir) {
+tidy_swanton <- function(basedir) {
   # set clean functions
   clean_com <- utils_santacruz("community")
   clean_plt <- utils_santacruz("plot")
 
   # import data
-  Swanspp <- base_dir %>%
+  Swanspp <- basedir %>%
     str_c("HollData/ElkhornSpecies.csv") %>%
     read_csv() %>%
     mutate(species.code = tolower(species.code))
-  Swan_guilds <- base_dir %>%
+  Swan_guilds <- basedir %>%
     str_c("HollData/ElkhornGuilds.csv") %>%
     read_csv()
   swan_counts <- list()
@@ -374,9 +374,9 @@ tidy_swanton <- function(base_dir) {
     year <- as.character(1999:2012)[i]
     skips <- c(4, 3, 3, 3, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0)
     if (i != 10) {
-      filename <- str_c(base_dir, "HollData/Elk_", year, ".csv")
+      filename <- str_c(basedir, "HollData/Elk_", year, ".csv")
     } else {
-      filename <- str_c(base_dir, "HollData/swanton_08.csv")
+      filename <- str_c(basedir, "HollData/swanton_08.csv")
     }
     out <- read_csv(filename, skip = skips[i], show_col_types = FALSE)
     swan_counts[[year]] <- out
@@ -455,17 +455,17 @@ tidy_swanton <- function(base_dir) {
   return(swanton_tbl)
 }
 
-tidy_ucsc <- function(base_dir) {
+tidy_ucsc <- function(basedir) {
   # set clean functions
   clean_com <- utils_santacruz("community")
   clean_plt <- utils_santacruz("plot")
 
   # import data
-  UCSCspp <- base_dir %>%
+  UCSCspp <- basedir %>%
     str_c("HollData/ElkhornSpecies.csv") %>%
     read_csv() %>%
     mutate(species.code = tolower(species.code))
-  UCSC_guilds <- base_dir %>%
+  UCSC_guilds <- basedir %>%
     str_c("HollData/ElkhornGuilds.csv") %>%
     read_csv()
   ucsc_counts <- list()
@@ -473,9 +473,9 @@ tidy_ucsc <- function(base_dir) {
     year <- as.character(1999:2012)[i]
     skips <- c(4, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0)
     if (i != 10) {
-      filename <- str_c(base_dir, "HollData/Elk_", year, ".csv")
+      filename <- str_c(basedir, "HollData/Elk_", year, ".csv")
     } else {
-      filename <- str_c(base_dir, "HollData/ucsc_08.csv")
+      filename <- str_c(basedir, "HollData/ucsc_08.csv")
     }
     out <- read_csv(filename, skip = skips[i], show_col_types = FALSE)
     ucsc_counts[[year]] <- out
@@ -559,9 +559,9 @@ tidy_ucsc <- function(base_dir) {
   return(ucsc_tbl)
 }
 
-tidy_jasper <- function(base_dir) {
+tidy_jasper <- function(basedir) {
   # read cover data
-  com_tbl <- base_dir %>%
+  com_tbl <- basedir %>%
     str_c("Jasper/JR_cover_forJosie.csv") %>%
     read_csv(col_types = cols_only(year = "d", species = "c", cover = "d", uniqueID = "c")) %>%
     pivot_wider(names_from = species, values_from = cover) %>%
@@ -572,7 +572,7 @@ tidy_jasper <- function(base_dir) {
     ungroup()
 
   # read species data
-  spp_tbl <- base_dir %>%
+  spp_tbl <- basedir %>%
     str_c("Jasper/JR_speciesnames2.csv") %>%
     read_csv(col_types = "c")
 
