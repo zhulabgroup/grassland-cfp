@@ -36,7 +36,6 @@ download_inat <- function() {
 
 }
 
-
 # climate -----------------------------------------------------------------
 
 download_chelsa <- function() {
