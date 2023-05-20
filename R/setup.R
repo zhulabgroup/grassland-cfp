@@ -3,10 +3,10 @@ setup_dir <- function(release = FALSE) {
 
   # setup base dir
   if (!release) { # create link to turbo
-    base_dir <- "~/.turbo/grassland/submission"
-    link_create(str_c(base_dir, "/input"), "input")
-    link_create(str_c(base_dir, "/intermediate"), "intermediate")
-    link_create(str_c(base_dir, "/output"), "output")
+    base_dir <- "~/.turbo/grassland/package/"
+    link_create(str_c(base_dir, "input"), "input")
+    link_create(str_c(base_dir, "intermediate"), "intermediate")
+    link_create(str_c(base_dir, "output"), "output")
   } else { # create dir with files
     NULL
   }
