@@ -1,18 +1,16 @@
 setup_dir <- function(release = FALSE) {
-  library(fs) # cross-platform file system operations
-
   # setup base dir
   if (!release) { # create link to turbo
     base_dir <- "~/.turbo/grassland/package/"
-    link_create(str_c(base_dir, "input"), "input")
-    link_create(str_c(base_dir, "intermediate"), "intermediate")
-    link_create(str_c(base_dir, "output"), "output")
+    fs::link_create(str_c(base_dir, "input"), "input")
+    fs::link_create(str_c(base_dir, "intermediate"), "intermediate")
+    fs::link_create(str_c(base_dir, "output"), "output")
   } else { # create dir with files
     NULL
   }
 
   # setup input dir
-  dir_create(c(
+  fs::dir_create(c(
     "input/basemap",
     "input/biogeography",
     "input/climate",
@@ -20,7 +18,7 @@ setup_dir <- function(release = FALSE) {
   ))
 
   # setup intermediate dir
-  dir_create(c(
+  fs::dir_create(c(
     "intermediate/background",
     "intermediate/climate-niche",
     "intermediate/observation-experiment",
@@ -29,11 +27,9 @@ setup_dir <- function(release = FALSE) {
   ))
 
   # setup output dir
-  dir_create(c(
+  fs::dir_create(c(
     "output/data",
     "output/figures",
     "output/tables"
   ))
-
-  detach(package:fs, unload = TRUE)
 }
