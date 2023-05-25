@@ -193,55 +193,6 @@ obs_gainloss_supp_2row_gg <-
   ) +
   theme(strip.text = element_text(hjust = 0))
 
-df_obs_rank <- obs_gainloss_tbl %>%
-  arrange(desc(dominance)) %>%
-  mutate(speciessite = str_c(species, "_", site)) %>%
-  mutate(speciessite = factor(speciessite, levels = (.) %>% pull(speciessite))) %>%
-  select(change, species, site, speciessite, dominance) %>%
-  mutate(rank = speciessite %>% as.integer()) %>%
-  mutate(change = factor(change,
-    levels = c("increase", "decrease", "no clear change"),
-    labels = c("Increase", "Decrease", "No change")
-  ))
-
-obs_rank_summ_gg <-
-  ggpubr::ggboxplot(
-    data = df_obs_rank,
-    x = "change",
-    col = "change",
-    y = "rank"
-  ) +
-  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
-  ggpubr::stat_compare_means(
-    label = "p.signif",
-    hide.ns = FALSE,
-    comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
-    size = 3
-  ) + # Add pairwise comparisons p-value
-  guides(col = "none") +
-  labs(
-    x = NULL,
-    y = "Rank of species site"
-  ) +
-  theme(
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 8)
-  )
-
-obs_rank_gg <- ggplot() +
-  # geom_path(data = df_obs_rank %>% filter(change == "No change"),
-  #           aes(x = rank, y = dominance*100), col = "lightgray")+
-  geom_point(
-    data = df_obs_rank %>% filter(change != "No change"),
-    aes(x = rank, y = dominance * 100, group = change, col = change), alpha = 0.75
-  ) +
-  labs(x = "Rank of species site", y = "Relative abundance (%)") +
-  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
-  theme(
-    legend.position = c(0.75, 0.75),
-    legend.background = element_rect(fill = "transparent"),
-    legend.title = element_blank()
-  )
 
 # experimental data -------------------------------------------------------
 exp_gainloss_tbl <- read_rds(str_c(.path$sum_gainloss, "exp.rds")) %>%
@@ -446,57 +397,6 @@ exp_gainloss_supp_gg <- ggplot() +
   ) +
   theme(strip.text = element_text(hjust = 0))
 
-df_exp_rank <- exp_gainloss_tbl %>%
-  arrange(desc(dominance)) %>%
-  mutate(speciesyear = str_c(species, "_", year)) %>%
-  mutate(speciesyear = factor(speciesyear, levels = (.) %>% pull(speciesyear))) %>%
-  select(change, species, year, speciesyear, dominance) %>%
-  mutate(rank = speciesyear %>% as.integer()) %>%
-  mutate(change = factor(change,
-    levels = c("increase", "decrease", "no clear change"),
-    labels = c("Increase", "Decrease", "No change")
-  ))
-
-exp_rank_summ_gg <-
-  ggpubr::ggboxplot(
-    data = df_exp_rank,
-    x = "change",
-    col = "change",
-    y = "rank"
-  ) +
-  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
-  ggpubr::stat_compare_means(
-    label = "p.signif",
-    hide.ns = FALSE,
-    comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
-    size = 3
-  ) + # Add pairwise comparisons p-value
-  guides(col = "none") +
-  labs(
-    x = NULL,
-    y = "Rank of species year"
-  ) +
-  theme(
-    axis.text = element_text(size = 8),
-    axis.title = element_text(size = 8)
-  )
-
-exp_rank_gg <- ggplot() +
-  # geom_path(data = df_exp_rank,
-  #           aes(x = rank, y = dominance*100), col = "lightgray")+
-  geom_point(
-    data = df_exp_rank %>% filter(change != "No change"),
-    aes(x = rank, y = dominance * 100, group = change, col = change), alpha = 0.75
-  ) +
-  labs(x = "Rank of species year", y = "Relative abundance (%)") +
-  scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
-  theme(
-    legend.position = c(0.75, 0.75),
-    legend.background = element_rect(fill = "transparent"),
-    legend.title = element_blank()
-  )
-
-
 # combine and save -------------------------------------------------------------
 gainloss_main_gg <-
   obs_gainloss_main_3row_gg +
@@ -510,18 +410,6 @@ gainloss_main_gg <-
   BBBBD
 ") +
   plot_annotation(tag_levels = "A")
-
-gainloss_rank_gg <-
-  obs_rank_gg +
-  exp_rank_gg +
-  obs_rank_summ_gg +
-  exp_rank_summ_gg +
-  plot_layout(design = "
-  AAAAC
-  BBBBD
-") +
-  plot_annotation(tag_levels = "A")
-
 
 # save main figure
 if (.fig_save) {
@@ -546,12 +434,6 @@ if (.fig_save) {
     filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
     width = 12,
     height = 8
-  )
-  ggsave(
-    plot = gainloss_rank_gg,
-    filename = str_c(.path$out_fig, "fig-supp-gainloss-rank.png"),
-    width = 11,
-    height = 10
   )
 }
 
