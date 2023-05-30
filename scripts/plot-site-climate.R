@@ -193,7 +193,8 @@ if (.fig_save) {
     plot = site_clim_gg,
     filename = str_c(.path$out_fig, "fig-supp-site-map2.png"),
     width = 11,
-    height = 11 * 1.5
+    height = 11 * 1.5,
+    device = png, type = "cairo"
   )
 }
 
@@ -203,7 +204,8 @@ if (.fig_save) {
     plot = site_map_gg,
     filename = str_c(.path$out_fig, "fig-slide-site-map.png"),
     width = 11 / 3,
-    height = 11 * 1.5 / 3
+    height = 11 * 1.5 / 3,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = grass_map_gg,

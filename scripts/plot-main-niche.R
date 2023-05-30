@@ -124,7 +124,8 @@ if (.fig_save) {
     plot = niche_gg,
     filename = str_c(.path$out_fig, "fig-main-niche2.png"),
     width = 8,
-    height = 8 * 1.618
+    height = 8 * 1.618,
+    device = png, type = "cairo"
   )
 }
 

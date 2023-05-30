@@ -46,8 +46,9 @@ thin_comp_gg <- thin_tmp_gg + thin_ppt_gg
 if (.fig_save) {
   ggsave(
     plot = thin_comp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-thin-comp.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-thin-comp.png"),
     width = 10,
-    height = 7
+    height = 5,
+    device = png, type = "cairo"
   )
 }

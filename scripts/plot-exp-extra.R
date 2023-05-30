@@ -63,7 +63,8 @@ if (.fig_save) {
     plot = exp_water_gg,
     filename = str_c(.path$out_fig, "fig-supp-jrgce-water.png"),
     width = 10,
-    height = 6.18
+    height = 6.18,
+    device = png, type = "cairo"
   )
 }
 
@@ -169,7 +170,8 @@ if (.fig_save) {
     plot = mclexp_gg,
     filename = str_c(.path$out_fig, "fig-supp-mclexp.png"),
     width = 11,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
 }
 
@@ -260,6 +262,7 @@ if (.fig_save) {
     plot = scide_gg,
     filename = str_c(.path$out_fig, "fig-supp-scide.png"),
     width = 11,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
 }

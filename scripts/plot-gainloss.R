@@ -417,7 +417,8 @@ if (.fig_save) {
     plot = gainloss_main_gg,
     filename = str_c(.path$out_fig, "fig-main-gainloss.png"),
     width = 11,
-    height = 11.5
+    height = 11.5,
+    device = png, type = "cairo"
   )
 }
 
@@ -427,13 +428,15 @@ if (.fig_save) {
     plot = obs_gainloss_supp_3row_gg,
     filename = str_c(.path$out_fig, "fig-supp-gainloss-obs.png"),
     width = 10,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = exp_gainloss_supp_gg,
     filename = str_c(.path$out_fig, "fig-supp-gainloss-exp.png"),
     width = 12,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
 }
 
@@ -443,31 +446,36 @@ if (.fig_save) {
     plot = obs_gainloss_main_2row_gg,
     filename = str_c(.path$out_fig, "fig-slide-gainloss-obs.png"),
     width = 10,
-    height = 10 * .5
+    height = 10 * .5,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = obs_gainloss_supp_2row_gg,
     filename = str_c(.path$out_fig, "fig-slide-gainloss-obs-name.png"),
     width = 10,
-    height = 10 * .5
+    height = 10 * .5,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = exp_gainloss_main_gg,
     filename = str_c(.path$out_fig, "fig-slide-gainloss-exp.png"),
     width = 10,
-    height = 10 * .5 * .618
+    height = 10 * .5 * .618,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = obs_gainloss_summ_gg,
     filename = str_c(.path$out_fig, "fig-slide-gainloss-boxplot-obs.png"),
     width = 3,
-    height = 3 * 1.618
+    height = 3 * 1.618,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = exp_gainloss_summ_gg,
     filename = str_c(.path$out_fig, "fig-slide-gainloss-boxplot-exp.png"),
     width = 3,
-    height = 3 * 1.618
+    height = 3 * 1.618,
+    device = png, type = "cairo"
   )
 }
 

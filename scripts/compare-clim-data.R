@@ -120,6 +120,7 @@ if (.fig_save) {
     plot = clim_comp_gg,
     filename = str_c(.path$out_fig, "fig-supp-clim-comp.png"),
     width = 10,
-    height = 10
+    height = 10,
+    device = png, type = "cairo"
   )
 }

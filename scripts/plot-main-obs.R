@@ -124,7 +124,8 @@ if (.fig_save) {
     plot = obs_gg,
     filename = str_c(.path$out_fig, "fig-main-obs-comb.png"),
     width = 11,
-    height = 11 * 1.5
+    height = 11 * 1.5,
+    device = png, type = "cairo"
   )
 }
 
@@ -149,7 +150,8 @@ if (.fig_save) {
     plot = obs_gg_2row,
     filename = str_c(.path$out_fig, "fig-slide-obs.png"),
     width = 9.32 * 1.75,
-    height = 3.74 * 1.75
+    height = 3.74 * 1.75,
+    device = png, type = "cairo"
   )
 }
 
@@ -173,6 +175,7 @@ if (.fig_save) {
     plot = obs_gg_3row,
     filename = str_c(.path$out_fig, "fig-slide-obs-3row.png"),
     width = 9.32 * 2.5 / 2,
-    height = 3.74 * 2.5
+    height = 3.74 * 2.5,
+    device = png, type = "cairo"
   )
 }

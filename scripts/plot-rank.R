@@ -253,24 +253,28 @@ if (.fig_save) {
     plot = obs_rank_gg,
     filename = str_c(.path$out_fig, "fig-supp-rank-obs.png"),
     width = 10,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = exp_rank_gg,
     filename = str_c(.path$out_fig, "fig-supp-rank-exp.png"),
     width = 12,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = obs_even_gg,
     filename = str_c(.path$out_fig, "fig-supp-even-obs.png"),
     width = 10,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = exp_even_gg,
     filename = str_c(.path$out_fig, "fig-supp-even-exp.png"),
     width = 12,
-    height = 8
+    height = 8,
+    device = png, type = "cairo"
   )
 }
