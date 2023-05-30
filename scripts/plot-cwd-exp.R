@@ -94,7 +94,8 @@ if (.fig_save) {
     plot = cwd_exp_gg,
     filename = str_c(.path$out_fig, "fig-main-exp-cwd.png"),
     width = 10,
-    height = 6.18 / 2 * 3
+    height = 6.18 / 2 * 3,
+    device = png, type = "cairo"
   )
 }
 
@@ -138,9 +139,10 @@ cwd_exp_water_gg <-
 if (.fig_save) {
   ggsave(
     plot = cwd_exp_water_gg,
-    filename = str_c(.path$out_fig, "fig-main-exp-water-cwd.pdf"),
+    filename = str_c(.path$out_fig, "fig-main-exp-water-cwd.png"),
     width = 10,
-    height = 6.18 / 2 * 3
+    height = 6.18 / 2 * 3,
+    device = png, type = "cairo"
   )
 }
 

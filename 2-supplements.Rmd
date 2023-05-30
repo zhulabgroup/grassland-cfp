@@ -67,6 +67,40 @@ rm(list = ls())
 
 # Species occurrence and climate niche estimation
 
+```{r guild-niche-fig, fig.width=12, fig.height=5}
+#| fig.cap = "Comparing the ecological niches of species of different guilds in terms of (A) origin, (B) life history, and (C) functional group. Red Gaussian ellipses show the 95% confidence interval of the ecological niche of each guild."
+source("scripts/plot-guild.R")
+guild_niche_gg
+rm(list = ls())
+```
+
+```{r cool-sp-fig, fig.width=8, fig.height=8*.618}
+#| fig.cap = "Example species *Danthonia californica* distributions in geographical space and climate space.
+#|  The left shows GBIF occurrence records in the CFP.
+#|  The right panel shows the number of GBIF records (*n*) and their distribution in reference to mean annual temperature and precipitation from CHELSA data.
+#|  The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution."
+source("scripts/plot-ind-sp-niche.R")
+plot_sp_niche("Danthonia californica")
+```
+
+```{r warm-sp-fig, fig.width=8, fig.height=8*.618}
+#| fig.cap = "Example species *Stipa pulchra* distributions in geographical space and climate space.
+#|  Symbols follow the last figure."
+plot_sp_niche("Stipa pulchra")
+dev.off()
+```
+
+```{r all-sp-niche-fig, eval=FALSE}
+source("scripts/plot-all-sp-niche.R")
+rm(list = ls())
+```
+
+```{r all-sp-niche-tab, eval=FALSE}
+# CSV file for species niche table
+source("scripts/print-sp-niche.R")
+rm(list = ls())
+```
+
 ```{r occ-data-fig, fig.width=10, fig.height=7, eval=TRUE}
 #| fig.cap = "Occurrence data comparison from multiple sources in CFP.
 #|  BIEN: Botanical Information and Ecology Network, CCH: Consortium of California Herbaria, GBIF: Global Biodiversity Information Facility, iNat: iNaturalist.
@@ -113,32 +147,6 @@ thin_comp_gg
 rm(list = ls())
 ```
 
-```{r cool-sp-fig, fig.width=8, fig.height=8*.618}
-#| fig.cap = "Example species *Danthonia californica* distributions in geographical space and climate space.
-#|  The left shows GBIF occurrence records in the CFP.
-#|  The right panel shows the number of GBIF records (*n*) and their distribution in reference to mean annual temperature and precipitation from CHELSA data.
-#|  The scatters are summarized by axis rugs for marginal distributions and a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution."
-source("scripts/plot-ind-sp-niche.R")
-plot_sp_niche("Danthonia californica")
-```
-
-```{r warm-sp-fig, fig.width=8, fig.height=8*.618}
-#| fig.cap = "Example species *Stipa pulchra* distributions in geographical space and climate space.
-#|  Symbols follow the last figure."
-plot_sp_niche("Stipa pulchra")
-dev.off()
-```
-
-```{r all-sp-niche-fig, eval=FALSE}
-source("scripts/plot-all-sp-niche.R")
-rm(list = ls())
-```
-
-```{r all-sp-niche-tab, eval=FALSE}
-# CSV file for species niche table
-source("scripts/print-sp-niche.R")
-rm(list = ls())
-```
 
 # Community compositional shift analysis
 
@@ -151,6 +159,14 @@ obs_cti_tab %>%
 ```{r obs-cpi-tab}
 obs_cpi_tab %>%
   knitr::kable(caption = "Trends of Community Precipitation Index (CPI, mm) across observational sites, reporting the linear slope estimate, standard error,  *p*-value, and significance level from *t*-test (ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).")
+```
+
+```{r guild-obs-fig, fig.width=11, fig.height=11*1.5}
+#| fig.cap = "Grassland community shifts characterized by guilds from long-term observations.
+#|  Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ? 0.05).
+#|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
+source("scripts/plot-guild.R")
+obs_guild_gg
 ```
 
 ```{r exp-cti-tab}
@@ -170,56 +186,30 @@ knitr::kable(jrgce_warm_lme, caption = "Comparison of Community Temperature Inde
 rm(list = ls())
 ```
 
-# Individual species and guild changes
-
-```{r gainloss-obs-fig, fig.width=12, fig.height=10}
-#| fig.cap = "Gain and loss of species during grassland community shifts at observational sites. Ecological niches of species with a significant increase in abundance over time (green circle), with a significant decrease in abundance over time (yellow circle), newly recruited (not present at the site in the first five years, green-filled circle), completely lost (not present at the site in the last five years, yellow-filled circle), and all other species present at each observational site (gray) (*t*-test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community. Names of species newly recruited and completely lost were labeled."
-source("scripts/plot-gainloss.R")
-obs_gainloss_supp_gg
-```
-
-```{r gainloss-exp-fig, fig.width=12, fig.height=18}
-#| fig.cap = "Gain and loss of species during grassland community shifts in experiments. Ecological niches of species with a significant increase in abundance under warming (green circle), with a significant decrease in abundance under warming (yellow circle), and all other species present in each year of Phase III of the Jasper Ridge Global Change Experiment (gray) (non-parametric two-sample Wilcoxon test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community. Names of species significantly increased or decreased in abundance were labeled."
-exp_gainloss_supp_gg
-rm(list = ls())
-```
-
-```{r guild-niche-fig, fig.width=12, fig.height=5}
-#| fig.cap = "Comparing the ecological niches of species of different guilds in terms of (A) origin, (B) life history, and (C) functional group. Red Gaussian ellipses show the 95% confidence interval of the ecological niche of each guild."
-source("scripts/plot-guild.R")
-guild_niche_gg
-```
-
-```{r guild-obs-fig, fig.width=11, fig.height=11*1.5}
-#| fig.cap = "Grassland community shifts characterized by guilds from long-term observations.
-#|  Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
-#|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
-obs_guild_gg
-```
-
 ```{r guild-exp-fig, fig.width=10, fig.height=6.18/2*3}
 #| fig.cap = "Grassland community shifts characterized by guilds from long-term experiments.
-#|  Warming treatment causes inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).
-#|  The orange background shades denote phase I heating +80 W m^–2^ leading to ~ +1 °C warming in 1999-2002, phase II heating +100 W m^–2^ leading to ~ +1.5 °C warming in 2003-2009, and phase III heating +250 W m^–2^ leading to ~ +2 °C warming in 2010-2014."
+#|  Warming treatment causes inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001).
+#|  The orange background shades denote phase I heating +80 W m^?2^ leading to ~ +1 °C warming in 1999-2002, phase II heating +100 W m^?2^ leading to ~ +1.5 °C warming in 2003-2009, and phase III heating +250 W m^?2^ leading to ~ +2 °C warming in 2010-2014."
 exp_guild_gg
 rm(list = ls())
 ```
 
+
 # Additional watering and drought experiments
 
 ```{r exp-water-fig, fig.width=10, fig.height=6.18}
-#| fig.cap="In most years, watering treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="In most years, watering treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001)."
 source("scripts/plot-exp-extra.R")
 exp_water_gg
 ```
 
 ```{r exp-mclexp-fig, fig.width=11, fig.height=8}
-#| fig.cap="In most years, watering and drought treatments did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the McLaughlin Water Experiment (ambient plots in black, watering plots in blue, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="In most years, watering and drought treatments did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the McLaughlin Water Experiment (ambient plots in black, watering plots in blue, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001)."
 mclexp_gg
 ```
 
 ```{r exp-scide-fig, fig.width=11, fig.height=8}
-#| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz International Drought Experiment (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="In most years, drought treatment did not lead to significant community compositional shift measured by CTI (°C) and CPI (mm) in the Santa Cruz International Drought Experiment (ambient plots in black, drought plots in brown, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001)."
 scide_gg
 rm(list = ls())
 ```
@@ -227,7 +217,7 @@ rm(list = ls())
 
 ```{r exp-extra-lme-tab}
 source("scripts/test-exp-lme.R")
-knitr::kable(extra_lme, caption = "Comparison of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) in an additional treatment of the Jasper Ridge Global Change Experiment (JRGCE)s and two additional experiments, the McLaughlin Water Experiment (MWE) and the Santa Cruz International Drought Experiment (SCIDE). Pooling data from all years, we report the average difference in the metric between treatment and ambient plots, *p*-value, and significance level from linear mixed-effect model with a random intercept for each year (ns: *p* > 0.05, $.$: *p* ≤ 0.1, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001). ")
+knitr::kable(extra_lme, caption = "Comparison of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) in an additional treatment of the Jasper Ridge Global Change Experiment (JRGCE)s and two additional experiments, the McLaughlin Water Experiment (MWE) and the Santa Cruz International Drought Experiment (SCIDE). Pooling data from all years, we report the average difference in the metric between treatment and ambient plots, *p*-value, and significance level from linear mixed-effect model with a random intercept for each year (ns: *p* > 0.05, $.$: *p* ? 0.1, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001). ")
 rm(list = ls())
 ```
 
@@ -241,7 +231,7 @@ rm(list = ls())
 ```
 
 ```{r cwd-obs-fig, fig.width=11, fig.height=11*1.5}
-#| fig.cap="Comparison of grassland community shifts from long-term observations evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI and increasing CDI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ≤ 0.05).
+#| fig.cap="Comparison of grassland community shifts from long-term observations evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Consistent with climate warming and drying, grassland communities shift dominance to warmer (increasing CTI) and drier (decreasing CPI and increasing CDI) species in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by *t*-test, *p* ? 0.05).
 #|  The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data."
 source("scripts/plot-cwd-obs.R")
 cwd_obs_gg
@@ -249,15 +239,41 @@ rm(list = ls())
 ```
 
 ```{r cwd-exp-warm-fig, fig.width=10, fig.height=6.18/2*3}
-#| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm and CDI, mm) species in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001).
-#|  The orange background shades denote phase I heating +80 W m^–2^ leading to ~ +1 °C warming in 1999-2002, phase II heating +100 W m^–2^ leading to ~ +1.5 °C warming in 2003-2009, and phase III heating +250 W m^–2^ leading to ~ +2 °C warming in 2010-2014."
+#| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Warming treatment causes communities to shift dominance to warmer (CTI, °C) and drier (CPI, mm and CDI, mm) species in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001).
+#|  The orange background shades denote phase I heating +80 W m^?2^ leading to ~ +1 °C warming in 1999-2002, phase II heating +100 W m^?2^ leading to ~ +1.5 °C warming in 2003-2009, and phase III heating +250 W m^?2^ leading to ~ +2 °C warming in 2010-2014."
 source("scripts/plot-cwd-exp.R")
 cwd_exp_gg
 ```
 
 ```{r cwd-exp-water-fig, fig.width=10, fig.height=6.18/2*3}
-#| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Watering treatment did not lead to significant community compositional shift in most years measured by CTI (°C), CPI (mm), or CDI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ≤ 0.05, $**$: *p* ≤ 0.01, $***$: *p* ≤ 0.001)."
+#| fig.cap="Comparison of grassland community shifts from long-term experiments evaluated using precipitation measurements and a drought index (climate water deficit), respectively. Watering treatment did not lead to significant community compositional shift in most years measured by CTI (°C), CPI (mm), or CDI (mm) in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 watering plots in blue, non-parametric two-sample Wilcoxon test, ns: *p* > 0.05, $*$: *p* ? 0.05, $**$: *p* ? 0.01, $***$: *p* ? 0.001)."
 cwd_exp_water_gg
+rm(list = ls())
+```
+
+# Changes in abundance of individual species
+
+```{r gainloss-obs-fig, fig.width=12, fig.height=10}
+#| fig.cap = "Gain and loss of species during grassland community shifts at observational sites. Ecological niches of species with a significant increase in abundance over time (green circle), with a significant decrease in abundance over time (yellow circle), newly recruited (not present at the site in the first five years, green-filled circle), completely lost (not present at the site in the last five years, yellow-filled circle), and all other species present at each observational site (gray) (*t*-test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community. Names of species newly recruited and completely lost were labeled."
+source("scripts/plot-gainloss.R")
+obs_gainloss_supp_gg
+```
+
+```{r gainloss-exp-fig, fig.width=12, fig.height=18}
+#| fig.cap = "Gain and loss of species during grassland community shifts in experiments. Ecological niches of species with a significant increase in abundance under warming (green circle), with a significant decrease in abundance under warming (yellow circle), and all other species present in each year of Phase III of the Jasper Ridge Global Change Experiment (gray) (non-parametric two-sample Wilcoxon test, *p* ≤ 0.05). The size of circles is proportional to the species' dominance in the community. Names of species significantly increased or decreased in abundance were labeled."
+exp_gainloss_supp_gg
+rm(list = ls())
+```
+
+```{r rank-obs-fig, fig.width=10, fig.height=8}
+#| fig.cap = "Rank abundance curves of species at the observational sites. Colors indicate the year of observation."
+source("scripts/plot-rank.R")
+obs_rank_gg
+```
+
+```{r rank-exp-fig, fig.width=12, fig.height=8}
+#| fig.cap = "Rank abundance curves of species in the Jasper Ridge Global Change Experiment, comparing ambient treatments (black) and warming treatments (red). Lines show median values; ribbons show 95% intervals."
+exp_rank_gg
 rm(list = ls())
 ```
 

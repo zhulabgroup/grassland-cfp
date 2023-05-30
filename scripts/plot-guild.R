@@ -90,113 +90,43 @@ if (.fig_save) {
     plot = guild_niche_gg,
     filename = str_c(.path$out_fig, "fig-supp-guild-niche.png"),
     width = 12,
-    height = 5
+    height = 5,
+    device = png, type = "cairo"
   )
 }
 
-### changes at experimental site
-# summarize percentage of natives, annuals, and grasses
-exp_guild_tbl <- read_rds(.path$com_exp) %>%
-  filter(site == "jrgce", year >= 1999) %>%
-  filter(guild != "DUMMY") %>%
-  mutate(
-    native = str_sub(guild, 1, 1),
-    annual = str_sub(guild, 2, 2),
-    grass = str_sub(guild, 3, 3)
-  ) %>%
-  select(-guild) %>%
-  group_by(site, year, plot, treat) %>%
-  summarize(
-    native_perc = sum(abund * (native == "N")) / sum(abund),
-    annual_perc = sum(abund * (annual == "A")) / sum(abund),
-    grass_perc = sum(abund * (grass == "G")) / sum(abund)
-  ) %>%
-  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-  select(site, year, plot, treat_T, native_perc, annual_perc, grass_perc) %>%
-  pivot_longer(cols = native_perc:grass_perc, names_to = "group", values_to = "value") %>%
-  mutate(group = factor(group,
-    levels = c("native_perc", "annual_perc", "grass_perc")
-  ))
+## permanova
+response <- guild_niche_tbl %>%
+  filter(!is.na(guild)) %>%
+  filter(group == "Origin") %>%
+  select(tmp_occ_median, ppt_occ_median)
+predict <- guild_niche_tbl %>%
+  filter(!is.na(guild)) %>%
+  filter(group == "Origin") %>%
+  select(guild)
+vegan::adonis2(response ~ guild, data = predict)
 
-# warming phrases
-warm_tbl <- tribble(
-  ~tag, ~name, ~start, ~end, ~startyear,
-  1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, 1999,
-  2, "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C", 2003, 2009, 2003,
-  3, "Phase~III:~+250~W~m^-2%~~%+2~degree*C", 2010, Inf, 2010 # end in 2014, but set to Inf to fill space
-)
+response <- guild_niche_tbl %>%
+  filter(!is.na(guild)) %>%
+  filter(group == "Life history") %>%
+  select(tmp_occ_median, ppt_occ_median)
+predict <- guild_niche_tbl %>%
+  filter(!is.na(guild)) %>%
+  filter(group == "Life history") %>%
+  select(guild)
+vegan::adonis2(response ~ guild, data = predict)
 
-exp_guild_gg <-
-  ggplot(exp_guild_tbl) +
-  geom_rect( # warming phrases
-    data = warm_tbl,
-    aes(xmin = start - .5, xmax = end + .5, fill = tag),
-    ymin = -Inf, ymax = Inf, alpha = 0.5
-  ) +
-  scale_fill_gradient(low = "antiquewhite", high = "orange") +
-  geom_boxplot( # treatment effects
-    aes(x = year, y = value, col = treat_T, group = interaction(treat_T, year))
-  ) +
-  scale_color_manual(values = c("black", "red")) +
-  ggpubr::stat_compare_means( # significance
-    aes(x = year, y = value, group = treat_T),
-    method = "wilcox.test",
-    label = "p.signif", hide.ns = FALSE
-  ) +
-  facet_wrap(
-    ~group,
-    ncol = 1, scales = "free_y",
-    strip.position = "left",
-    labeller = labeller(group = c(
-      native_perc = "% Natives",
-      annual_perc = "% Annuals",
-      grass_perc = "% Grasses"
-    ))
-  ) +
-  scale_y_continuous(
-    labels = function(x) {
-      trans <- x * 100
-    },
-    limits = c(0, 1), expand = expansion(mult = .15)
-  ) + # expand padding to show significance tests
-  scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
-  labs(
-    x = NULL, # "Year",
-    y = NULL,
-    color = "Warming treatment",
-  ) +
-  geom_text(
-    data = warm_tbl %>%
-      mutate(
-        group = factor("native_perc",
-          levels = c("native_perc", "annual_perc", "grass_perc")
-        )
-      ),
-    aes(
-      label = name,
-      x = startyear - 0.25,
-    ),
-    y = 1.2, # manually label phase text
-    parse = TRUE,
-    hjust = 0,
-  ) +
-  coord_cartesian(clip = "off") +
-  theme(
-    strip.background = element_blank(),
-    strip.placement = "outside",
-    legend.position = "none",
-    plot.margin = unit(c(2, 1, 1, 1), "lines") # expand margin to include warming labels
-  )
-
-# save figure
-if (.fig_save) {
-  ggsave(
-    plot = exp_guild_gg,
-    filename = str_c(.path$out_fig, "fig-supp-guild-exp.png"),
-    width = 11,
-    height = 6.18 * 1.5
-  )
-}
+response <- guild_niche_tbl %>%
+  filter(!is.na(guild)) %>%
+  filter(group == "Functional group") %>%
+  filter(guild %in% c("Forb", "Grass")) %>%
+  select(tmp_occ_median, ppt_occ_median)
+predict <- guild_niche_tbl %>%
+  filter(!is.na(guild)) %>%
+  filter(group == "Functional group") %>%
+  filter(guild %in% c("Forb", "Grass")) %>%
+  select(guild)
+vegan::adonis2(response ~ guild, data = predict)
 
 ### changes at observational sites
 # make a map for observational sites and grassland percent cover
@@ -327,7 +257,8 @@ if (.fig_save) {
     plot = obs_guild_gg,
     filename = str_c(.path$out_fig, "fig-supp-guild-obs.png"),
     width = 11,
-    height = 11 * 1.5
+    height = 11 * 1.5,
+    device = png, type = "cairo"
   )
 }
 
@@ -352,33 +283,112 @@ if (.fig_save) {
     plot = obs_guild_landsc_gg,
     filename = str_c(.path$out_fig, "fig-slide-guild-obs.png"),
     width = 9.32 * 1.75,
-    height = 3.74 * 1.75
+    height = 3.74 * 1.75,
+    device = png, type = "cairo"
   )
 }
 
-## permanova
-response <- guild_niche_tbl %>%
-  filter(group == "Origin") %>%
-  select(tmp_occ_median, ppt_occ_median)
-predict <- guild_niche_tbl %>%
-  filter(group == "Origin") %>%
-  select(guild)
-vegan::adonis2(response ~ guild, data = predict)
+### changes at experimental site
+# summarize percentage of natives, annuals, and grasses
+exp_guild_tbl <- read_rds(.path$com_exp) %>%
+  filter(site == "jrgce", year >= 1999) %>%
+  filter(guild != "DUMMY") %>%
+  mutate(
+    native = str_sub(guild, 1, 1),
+    annual = str_sub(guild, 2, 2),
+    grass = str_sub(guild, 3, 3)
+  ) %>%
+  select(-guild) %>%
+  group_by(site, year, plot, treat) %>%
+  summarize(
+    native_perc = sum(abund * (native == "N")) / sum(abund),
+    annual_perc = sum(abund * (annual == "A")) / sum(abund),
+    grass_perc = sum(abund * (grass == "G")) / sum(abund)
+  ) %>%
+  mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+  select(site, year, plot, treat_T, native_perc, annual_perc, grass_perc) %>%
+  pivot_longer(cols = native_perc:grass_perc, names_to = "group", values_to = "value") %>%
+  mutate(group = factor(group,
+    levels = c("native_perc", "annual_perc", "grass_perc")
+  ))
 
-response <- guild_niche_tbl %>%
-  filter(group == "Life history") %>%
-  select(tmp_occ_median, ppt_occ_median)
-predict <- guild_niche_tbl %>%
-  filter(group == "Life history") %>%
-  select(guild)
-vegan::adonis2(response ~ guild, data = predict)
+# warming phrases
+warm_tbl <- tribble(
+  ~tag, ~name, ~start, ~end, ~startyear,
+  1, "Phase~I:~+80~W~m^-2%~~%+1~degree*C", -Inf, 2002, 1999,
+  2, "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C", 2003, 2009, 2003,
+  3, "Phase~III:~+250~W~m^-2%~~%+2~degree*C", 2010, Inf, 2010 # end in 2014, but set to Inf to fill space
+)
 
-response <- guild_niche_tbl %>%
-  filter(group == "Functional group") %>%
-  filter(guild %in% c("Forb", "Grass")) %>%
-  select(tmp_occ_median, ppt_occ_median)
-predict <- guild_niche_tbl %>%
-  filter(group == "Functional group") %>%
-  filter(guild %in% c("Forb", "Grass")) %>%
-  select(guild)
-vegan::adonis2(response ~ guild, data = predict)
+exp_guild_gg <-
+  ggplot(exp_guild_tbl) +
+  geom_rect( # warming phrases
+    data = warm_tbl,
+    aes(xmin = start - .5, xmax = end + .5, fill = tag),
+    ymin = -Inf, ymax = Inf, alpha = 0.5
+  ) +
+  scale_fill_gradient(low = "antiquewhite", high = "orange") +
+  geom_boxplot( # treatment effects
+    aes(x = year, y = value, col = treat_T, group = interaction(treat_T, year))
+  ) +
+  scale_color_manual(values = c("black", "red")) +
+  ggpubr::stat_compare_means( # significance
+    aes(x = year, y = value, group = treat_T),
+    method = "wilcox.test",
+    label = "p.signif", hide.ns = FALSE
+  ) +
+  facet_wrap(
+    ~group,
+    ncol = 1, scales = "free_y",
+    strip.position = "left",
+    labeller = labeller(group = c(
+      native_perc = "% Natives",
+      annual_perc = "% Annuals",
+      grass_perc = "% Grasses"
+    ))
+  ) +
+  scale_y_continuous(
+    labels = function(x) {
+      trans <- x * 100
+    },
+    limits = c(0, 1), expand = expansion(mult = .15)
+  ) + # expand padding to show significance tests
+  scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+  labs(
+    x = NULL, # "Year",
+    y = NULL,
+    color = "Warming treatment",
+  ) +
+  geom_text(
+    data = warm_tbl %>%
+      mutate(
+        group = factor("native_perc",
+          levels = c("native_perc", "annual_perc", "grass_perc")
+        )
+      ),
+    aes(
+      label = name,
+      x = startyear - 0.25,
+    ),
+    y = 1.2, # manually label phase text
+    parse = TRUE,
+    hjust = 0,
+  ) +
+  coord_cartesian(clip = "off") +
+  theme(
+    strip.background = element_blank(),
+    strip.placement = "outside",
+    legend.position = "none",
+    plot.margin = unit(c(2, 1, 1, 1), "lines") # expand margin to include warming labels
+  )
+
+# save figure
+if (.fig_save) {
+  ggsave(
+    plot = exp_guild_gg,
+    filename = str_c(.path$out_fig, "fig-supp-guild-exp.png"),
+    width = 11,
+    height = 6.18 * 1.5,
+    device = png, type = "cairo"
+  )
+}

@@ -80,13 +80,15 @@ if (.fig_save) {
     plot = plot_sp_niche(sp = "Danthonia californica"),
     filename = str_c(.path$out_fig_niche_ind, "daca", ".png"),
     width = 8,
-    height = 8 * .618
+    height = 8 * .618,
+    device = png, type = "cairo"
   )
 
   ggsave(
     plot = plot_sp_niche(sp = "Stipa pulchra"),
     filename = str_c(.path$out_fig_niche_ind, "stpu", ".png"),
     width = 8,
-    height = 8 * .618
+    height = 8 * .618,
+    device = png, type = "cairo"
   )
 }

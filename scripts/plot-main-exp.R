@@ -93,7 +93,8 @@ if (.fig_save) {
     plot = exp_gg,
     filename = str_c(.path$out_fig, "fig-main-exp2.png"),
     width = 10,
-    height = 6.18
+    height = 6.18,
+    device = png, type = "cairo"
   )
 }
 

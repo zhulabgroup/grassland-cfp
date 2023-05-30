@@ -52,6 +52,7 @@ if (.fig_save) {
     plot = data_avail_gg,
     filename = str_c(.path$out_fig, "fig-supp-data-avail.png"),
     width = 10,
-    height = 10 * .618
+    height = 10 * .618,
+    device = png, type = "cairo"
   )
 }

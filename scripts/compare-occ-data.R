@@ -96,8 +96,9 @@ occ_comp_gg <- ggplot() +
 if (.fig_save) {
   ggsave(
     plot = occ_comp_gg,
-    filename = str_c(.path$out_fig, "fig-supp-occ-comp.pdf"),
+    filename = str_c(.path$out_fig, "fig-supp-occ-comp.png"),
     width = 10,
-    height = 7
+    height = 5,
+    device = png, type = "cairo"
   )
 }

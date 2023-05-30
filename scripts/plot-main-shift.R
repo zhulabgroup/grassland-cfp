@@ -20,7 +20,7 @@ jrgce_tbl <- read_rds(.path$com_exp) %>%
     labels = c("CTI", "CPI")
   ))
 
-# warming phrases: +80 W m2 (years 25), to +100 W m2 (years 612), to +250 W m2 (years 1317)
+# warming phrases: +80 W m^-2 (years 2-5), to +100 W m^-2 (years 6-12), to +250 W m^-2 (years 13-17)
 warm_tbl <- tribble(
   ~tag, ~name, ~start, ~end,
   1, "Phase I", -Inf, 2002,
@@ -471,7 +471,8 @@ if (.fig_save) {
     plot = shift_gg,
     filename = str_c(.path$out_fig, "fig-main-shift.png"),
     width = 9,
-    height = 9 * 1.618
+    height = 9 * 1.618,
+    device = png, type = "cairo"
   )
 }
 
@@ -481,18 +482,21 @@ if (.fig_save) {
     plot = (p_niche + p_compare + plot_annotation(tag_levels = "A")),
     filename = str_c(.path$out_fig, "fig-slide-shift-compare.png"),
     width = 8,
-    height = 8 * .5
+    height = 8 * .5,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = p_obs_2row + plot_annotation(tag_levels = list("C")),
     filename = str_c(.path$out_fig, "fig-slide-shift-obs.png"),
     width = 10,
-    height = 10 * .5
+    height = 10 * .5,
+    device = png, type = "cairo"
   )
   ggsave(
     plot = p_exp + plot_annotation(tag_levels = list("D")),
     filename = str_c(.path$out_fig, "fig-slide-shift-exp.png"),
     width = 8,
-    height = 8 * .5
+    height = 8 * .5,
+    device = png, type = "cairo"
   )
 }

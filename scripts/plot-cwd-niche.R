@@ -92,7 +92,8 @@ if (.fig_save) {
     plot = cwd_niche_gg,
     filename = str_c(.path$out_fig, "fig-supp-niche-cwd.png"),
     width = 12,
-    height = 5
+    height = 5,
+    device = png, type = "cairo"
   )
 }
 

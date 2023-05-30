@@ -144,6 +144,7 @@ if (.fig_save) {
     plot = cfp_clim_gg,
     filename = str_c(.path$out_fig, "fig-supp-cfp-climate.png"),
     width = 9,
-    height = 9 * .618
+    height = 9 * .618,
+    device = png, type = "cairo"
   )
 }
