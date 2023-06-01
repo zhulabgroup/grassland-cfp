@@ -1,5 +1,4 @@
 site_vec <- c(
-  jrgce = "Jasper Ridge\nGlobal Change Experiment",
   angelo = "Angelo Coast",
   carrizo = "Carrizo Plain",
   elkhorn = "Elkhorn Slough",
@@ -11,7 +10,10 @@ site_vec <- c(
   sunol = "Sunol",
   swanton = "Swanton Ranch",
   ucsc = "UC Santa Cruz",
-  vascocaves = "Vasco Caves"
+  vascocaves = "Vasco Caves",
+  jrgce = "Jasper Ridge\nGlobal Change Experiment",
+  mclexp = "McLaughlin Water Experiment",
+  scide = "Santa Cruz\nInternational Drought Experiment"
 )
 
 data_avail_tbl <- read_rds(.path$com_obs) %>%
@@ -25,6 +27,11 @@ data_avail <- bind_rows(
   read_rds(.path$com_obs) %>%
     distinct(site, plot, year)
 ) %>%
+  rowwise() %>%
+  mutate(site = str_split(site, "_", simplify = T)[1]) %>%
+  ungroup() %>%
+  filter(!(site == "jrgce" & year == 1998)) %>% # pre-treatment
+  filter(!(site == "scide" & year == 2015)) %>% # pre-treatment
   mutate(sitename = site_vec[site]) %>%
   filter(!is.na(sitename)) %>%
   group_by(sitename, year) %>%
