@@ -1,7 +1,7 @@
 setup_dir <- function(release = FALSE) {
   # setup base dir
   if (!release) { # create link to turbo
-    base_dir <- "~/.turbo/grassland/package/"
+    base_dir <- "/nfs/turbo/seas-zhukai/grassland/package/"
     fs::link_create(str_c(base_dir, "input"), "input")
     fs::link_create(str_c(base_dir, "intermediate"), "intermediate")
     fs::link_create(str_c(base_dir, "output"), "output")

@@ -34,3 +34,6 @@ Imports:
     vegan
 Remotes:
     git::https://github.com/ropensci/rnaturalearthhires.git
+Suggests: 
+    knitr
+VignetteBuilder: knitr

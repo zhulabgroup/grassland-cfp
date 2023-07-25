@@ -1,0 +1,27 @@
+---
+title: "Vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+setup_dir(release = F)
+```
+
+Download basemap, biogeography data, and climate data.
+```{r download}
+download_cfp()
+download_grasscover() # need Earthdata login credentials, slow
+```
+
