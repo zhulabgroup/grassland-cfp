@@ -1,6 +1,10 @@
-tidy_all <- function(
-    indir = "input/community/raw/",
-    outdir = "intermediate/observation-experiment/tidy-community/") {
+tidy_all <- function(indir = "input/community/raw/",
+                     outdir = "intermediate/observation-experiment/tidy-community/") {
+  # experimental sites
+  tidy_jrgce(indir) %>% write_csv(str_c(outdir, "jrgce.csv"))
+  tidy_mclexp(indir) %>% write_csv(str_c(outdir, "mclexp.csv"))
+  tidy_scide(indir) %>% write_csv(str_c(outdir, "scide.csv"))
+
   # observational sites
   tidy_angelo(indir) %>% write_csv(str_c(outdir, "angelo.csv"))
   tidy_carrizo(indir) %>% write_csv(str_c(outdir, "carrizo.csv"))
@@ -15,10 +19,213 @@ tidy_all <- function(
   tidy_swanton(indir) %>% write_csv(str_c(outdir, "swanton.csv"))
   tidy_ucsc(indir) %>% write_csv(str_c(outdir, "ucsc.csv"))
 
-  # experimental sites
-  tidy_jrgce(indir) %>% write_csv(str_c(outdir, "jrgce.csv"))
-  tidy_mclexp(indir) %>% write_csv(str_c(outdir, "mclexp.csv"))
-  tidy_scide(indir) %>% write_csv(str_c(outdir, "scide.csv"))
+  return(outdir)
+}
+
+# experiment --------------------------------------------------------------
+
+tidy_jrgce <- function(basedir) {
+  # pin count table
+  pin_tbl <- basedir %>%
+    str_c("JRGCE/Pin count.csv") %>%
+    read_csv(col_types = "iiccicc") %>%
+    select(year = YEAR, plot = ID, species = SPECIES, abund = TOTAL) %>%
+    mutate(species = if_else(
+      str_starts(species, "Acmispon americanus"),
+      "Acmispon americanus var.americanus",
+      species
+    )) %>%
+    mutate(species = if_else(
+      str_starts(species, "Crepis"),
+      "Crepis vesicaria ssp. taraxacifolia",
+      species
+    )) %>%
+    filter(!is.na(abund))
+
+  # species table
+  spp_tbl <- basedir %>%
+    str_c("JRGCE/Species.csv") %>%
+    read_csv(col_types = "c") %>%
+    mutate(guild = str_c(case_when(
+      NATIVE_CODE == "I" ~ "E", # Invasive -> Exotic
+      NATIVE_CODE == "N" ~ "N", # Native
+      NATIVE_CODE == "U" ~ "U", # Unknown
+      is.na(NATIVE_CODE) ~ "U"
+    ), FXNGROUP_CODE)) %>%
+    select(species = `Species or unit name`, guild)
+
+  # treatment table
+  trt_tbl_raw <- basedir %>%
+    str_c("JRGCE/Treatment.csv") %>%
+    read_csv(col_types = "iiiiciiiiiiiiic")
+
+  trt_tbl <- trt_tbl_raw %>%
+    pull(id) %>%
+    expand_grid(year = 1998:2014, plot = .) %>% # full year-treatment tibble
+    full_join(
+      trt_tbl_raw %>%
+        select(plot = id, starts_with("Heat_"), Precip, CO2, Nitrogen),
+      by = "plot"
+    ) %>%
+    mutate( # recode treatment
+      tmp = case_when(
+        year >= 1998 & year <= 2003 ~ as.logical(Heat_1998_2003 - 1),
+        year >= 2004 & year <= 2006 ~ as.logical(Heat_2004_2006 - 1),
+        year >= 2007 & year <= 2014 ~ as.logical(Heat_2007_2014 - 1)
+      ),
+      ppt = as.logical(Precip - 1),
+      co2 = as.logical(CO2 - 1),
+      ntg = as.logical(Nitrogen - 1)
+    ) %>%
+    mutate(
+      tmp = if_else(year == 1998, FALSE, tmp),
+      ppt = if_else(year == 1998, FALSE, ppt),
+      co2 = if_else(year == 1998, FALSE, co2),
+      ntg = if_else(year == 1998, FALSE, ntg)
+    ) %>%
+    mutate(
+      treat = str_c(
+        ifelse(tmp, "T", "_"),
+        ifelse(ppt, "P", "_"),
+        ifelse(co2, "C", "_"),
+        ifelse(ntg, "N", "_")
+      )
+    ) %>%
+    select(year, plot, treat) %>%
+    arrange(year, plot)
+
+  # join all tables
+  jrgce_tbl <- pin_tbl %>%
+    left_join(spp_tbl, by = "species") %>%
+    left_join(trt_tbl, by = c("year", "plot")) %>%
+    mutate(site = "jrgce", abund_type = "point_intercept") %>%
+    select(site, year, plot, treat, species, guild, abund, abund_type) %>%
+    arrange(year, plot, species)
+
+  return(jrgce_tbl)
+}
+
+tidy_mclexp <- function(basedir) {
+  # read in raw data
+  # note 2020 data is missing.
+  excel_file <- str_c(basedir, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
+  com_2015_tbl <- readxl::read_excel(excel_file, sheet = "2015")
+  com_2016_tbl <- readxl::read_excel(excel_file, sheet = "2016")
+  com_2017_tbl <- readxl::read_excel(excel_file, sheet = "2017")
+  com_2018_tbl <- readxl::read_excel(excel_file, sheet = "2018")
+  com_2019_tbl <- readxl::read_excel(excel_file, sheet = "2019")
+  # com_2020_tbl <- readxl::read_excel(excel_file, sheet = "2020")
+  com_2021_tbl <- readxl::read_excel(excel_file, sheet = "2021")
+  plt_tbl <- readxl::read_excel(excel_file, sheet = "Plot codes")
+
+  # combine cover data across years and join with plot-treatment data.
+  com_long_tbl <- (
+    com_2015_tbl %>%
+      rename(species = "Plots") %>%
+      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+      mutate(year = 2015)
+  ) %>%
+    bind_rows(
+      com_2016_tbl %>%
+        rename(species = "Plots") %>%
+        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+        mutate(year = 2016)
+    ) %>%
+    bind_rows(
+      com_2017_tbl %>%
+        rename(species = "Plots") %>%
+        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+        mutate(year = 2017)
+    ) %>%
+    bind_rows(
+      com_2018_tbl %>%
+        rename(species = "Plots") %>%
+        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+        mutate(year = 2018)
+    ) %>%
+    bind_rows(
+      com_2019_tbl %>%
+        rename(species = "Plots") %>%
+        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+        mutate(year = 2019)
+    ) %>%
+    bind_rows(
+      com_2021_tbl %>%
+        rename(species = "Plots") %>%
+        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
+        mutate(year = 2021)
+    ) %>%
+    select(year, plot, species, abund) %>%
+    mutate(plot = as.integer(plot))
+
+  mclexp_tbl <- plt_tbl %>%
+    mutate(
+      plot = as.integer(Site),
+      treat = case_when(
+        Trt == "W" ~ "WX", # watering; X means not available; watering is paired--compare WX vs. _X, not X_
+        Trt == "WC" ~ "_X", # watering control (_)
+        Trt == "S" ~ "XD", # shelter -> drought
+        Trt == "SC" ~ "X_" # shelter control -> drought control
+      ) %>%
+        str_c(Soil) # S = serpentine soil, N = non-serpentine soil
+    ) %>%
+    select(plot, treat) %>%
+    full_join(com_long_tbl, by = "plot") %>%
+    mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
+    select(site, year, plot, treat, species, guild, abund, abund_type) %>%
+    filter(
+      abund > 0,
+      !(species %in% c("bare", "gopher", "litter", "mosses", "rock", "soil"))
+    ) %>%
+    arrange(year, plot, species)
+
+  return(mclexp_tbl)
+}
+
+tidy_scide <- function(basedir) {
+  scide_tbl <- basedir %>%
+    str_c("SantaCruzIDE/IDESpeciesComp_LongFormat_2015_2021.csv") %>%
+    read_csv(col_types = c("ciicdicdcc")) %>%
+    mutate(
+      site = Site %>%
+        str_replace(" ", "") %>%
+        tolower() %>%
+        str_c("scide_", .),
+      year = Year,
+      plot = str_c(Plot, Block, sep = "-"),
+      treat = case_when(
+        Treatment == "Ambient" ~ "_",
+        Treatment == "Drought" ~ "D"
+      ),
+      species = Species,
+      guild = str_c(
+        case_when( # origin
+          Origin == "Native" ~ "N",
+          Origin == "Non-native" ~ "E", # exotic
+          is.na(Origin) ~ "U" # unknown
+        ),
+        case_when( # lifeform
+          Lifeform == "Annual" ~ "AU", # annual unknown
+          Lifeform == "Annual forb" ~ "AF",
+          Lifeform == "Annual grass" ~ "AG",
+          Lifeform == "Annual rush" ~ "AR",
+          Lifeform == "N-fixer" ~ "NF",
+          Lifeform == "Perennial forb" ~ "PF",
+          Lifeform == "Perennial grass" ~ "PG",
+          Lifeform == "Perennial sedge" ~ "PS",
+          Lifeform == "Rhizomatous forb" ~ "RF",
+          Lifeform == "Rhizomatous grass" ~ "RG",
+          Lifeform == "Rhizomatous rush" ~ "RR",
+          Lifeform %in% c("Shrub", "Shurb") ~ "S",
+          is.na(Lifeform) ~ "U" # unknown
+        )
+      ),
+      abund = Cover,
+      abund_type = "cover"
+    ) %>%
+    select(site, year, plot, treat, species, guild, abund, abund_type)
+
+  return(scide_tbl)
 }
 
 # observation -------------------------------------------------------------
@@ -743,210 +950,4 @@ tidy_ucsc <- function(basedir) {
     arrange(site, year, plot, species)
 
   return(ucsc_tbl)
-}
-
-# experiment --------------------------------------------------------------
-
-tidy_jrgce <- function(basedir) {
-  # pin count table
-  pin_tbl <- basedir %>%
-    str_c("JRGCE/Pin count.csv") %>%
-    read_csv(col_types = "iiccicc") %>%
-    select(year = YEAR, plot = ID, species = SPECIES, abund = TOTAL) %>%
-    mutate(species = if_else(
-      str_starts(species, "Acmispon americanus"),
-      "Acmispon americanus var.americanus",
-      species
-    )) %>%
-    mutate(species = if_else(
-      str_starts(species, "Crepis"),
-      "Crepis vesicaria ssp. taraxacifolia",
-      species
-    )) %>%
-    filter(!is.na(abund))
-
-  # species table
-  spp_tbl <- basedir %>%
-    str_c("JRGCE/Species.csv") %>%
-    read_csv(col_types = "c") %>%
-    mutate(guild = str_c(case_when(
-      NATIVE_CODE == "I" ~ "E", # Invasive -> Exotic
-      NATIVE_CODE == "N" ~ "N", # Native
-      NATIVE_CODE == "U" ~ "U", # Unknown
-      is.na(NATIVE_CODE) ~ "U"
-    ), FXNGROUP_CODE)) %>%
-    select(species = `Species or unit name`, guild)
-
-  # treatment table
-  trt_tbl_raw <- basedir %>%
-    str_c("JRGCE/Treatment.csv") %>%
-    read_csv(col_types = "iiiiciiiiiiiiic")
-
-  trt_tbl <- trt_tbl_raw %>%
-    pull(id) %>%
-    expand_grid(year = 1998:2014, plot = .) %>% # full year-treatment tibble
-    full_join(
-      trt_tbl_raw %>%
-        select(plot = id, starts_with("Heat_"), Precip, CO2, Nitrogen),
-      by = "plot"
-    ) %>%
-    mutate( # recode treatment
-      tmp = case_when(
-        year >= 1998 & year <= 2003 ~ as.logical(Heat_1998_2003 - 1),
-        year >= 2004 & year <= 2006 ~ as.logical(Heat_2004_2006 - 1),
-        year >= 2007 & year <= 2014 ~ as.logical(Heat_2007_2014 - 1)
-      ),
-      ppt = as.logical(Precip - 1),
-      co2 = as.logical(CO2 - 1),
-      ntg = as.logical(Nitrogen - 1)
-    ) %>%
-    mutate(
-      tmp = if_else(year == 1998, FALSE, tmp),
-      ppt = if_else(year == 1998, FALSE, ppt),
-      co2 = if_else(year == 1998, FALSE, co2),
-      ntg = if_else(year == 1998, FALSE, ntg)
-    ) %>%
-    mutate(
-      treat = str_c(
-        ifelse(tmp, "T", "_"),
-        ifelse(ppt, "P", "_"),
-        ifelse(co2, "C", "_"),
-        ifelse(ntg, "N", "_")
-      )
-    ) %>%
-    select(year, plot, treat) %>%
-    arrange(year, plot)
-
-  # join all tables
-  jrgce_tbl <- pin_tbl %>%
-    left_join(spp_tbl, by = "species") %>%
-    left_join(trt_tbl, by = c("year", "plot")) %>%
-    mutate(site = "jrgce", abund_type = "point_intercept") %>%
-    select(site, year, plot, treat, species, guild, abund, abund_type) %>%
-    arrange(year, plot, species)
-
-  return(jrgce_tbl)
-}
-
-tidy_mclexp <- function(basedir) {
-  # read in raw data
-  # note 2020 data is missing.
-  excel_file <- str_c(basedir, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
-  com_2015_tbl <- readxl::read_excel(excel_file, sheet = "2015")
-  com_2016_tbl <- readxl::read_excel(excel_file, sheet = "2016")
-  com_2017_tbl <- readxl::read_excel(excel_file, sheet = "2017")
-  com_2018_tbl <- readxl::read_excel(excel_file, sheet = "2018")
-  com_2019_tbl <- readxl::read_excel(excel_file, sheet = "2019")
-  # com_2020_tbl <- readxl::read_excel(excel_file, sheet = "2020")
-  com_2021_tbl <- readxl::read_excel(excel_file, sheet = "2021")
-  plt_tbl <- readxl::read_excel(excel_file, sheet = "Plot codes")
-
-  # combine cover data across years and join with plot-treatment data.
-  com_long_tbl <- (
-    com_2015_tbl %>%
-      rename(species = "Plots") %>%
-      pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
-      mutate(year = 2015)
-  ) %>%
-    bind_rows(
-      com_2016_tbl %>%
-        rename(species = "Plots") %>%
-        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
-        mutate(year = 2016)
-    ) %>%
-    bind_rows(
-      com_2017_tbl %>%
-        rename(species = "Plots") %>%
-        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
-        mutate(year = 2017)
-    ) %>%
-    bind_rows(
-      com_2018_tbl %>%
-        rename(species = "Plots") %>%
-        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
-        mutate(year = 2018)
-    ) %>%
-    bind_rows(
-      com_2019_tbl %>%
-        rename(species = "Plots") %>%
-        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
-        mutate(year = 2019)
-    ) %>%
-    bind_rows(
-      com_2021_tbl %>%
-        rename(species = "Plots") %>%
-        pivot_longer(-species, names_to = "plot", values_to = "abund") %>%
-        mutate(year = 2021)
-    ) %>%
-    select(year, plot, species, abund) %>%
-    mutate(plot = as.integer(plot))
-
-  mclexp_tbl <- plt_tbl %>%
-    mutate(
-      plot = as.integer(Site),
-      treat = case_when(
-        Trt == "W" ~ "WX", # watering; X means not available; watering is paired--compare WX vs. _X, not X_
-        Trt == "WC" ~ "_X", # watering control (_)
-        Trt == "S" ~ "XD", # shelter -> drought
-        Trt == "SC" ~ "X_" # shelter control -> drought control
-      ) %>%
-        str_c(Soil) # S = serpentine soil, N = non-serpentine soil
-    ) %>%
-    select(plot, treat) %>%
-    full_join(com_long_tbl, by = "plot") %>%
-    mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
-    select(site, year, plot, treat, species, guild, abund, abund_type) %>%
-    filter(
-      abund > 0,
-      !(species %in% c("bare", "gopher", "litter", "mosses", "rock", "soil"))
-    ) %>%
-    arrange(year, plot, species)
-
-  return(mclexp_tbl)
-}
-
-tidy_scide <- function(basedir) {
-  scide_tbl <- basedir %>%
-    str_c("SantaCruzIDE/IDESpeciesComp_LongFormat_2015_2021.csv") %>%
-    read_csv(col_types = c("ciicdicdcc")) %>%
-    mutate(
-      site = Site %>%
-        str_replace(" ", "") %>%
-        tolower() %>%
-        str_c("scide_", .),
-      year = Year,
-      plot = str_c(Plot, Block, sep = "-"),
-      treat = case_when(
-        Treatment == "Ambient" ~ "_",
-        Treatment == "Drought" ~ "D"
-      ),
-      species = Species,
-      guild = str_c(
-        case_when( # origin
-          Origin == "Native" ~ "N",
-          Origin == "Non-native" ~ "E", # exotic
-          is.na(Origin) ~ "U" # unknown
-        ),
-        case_when( # lifeform
-          Lifeform == "Annual" ~ "AU", # annual unknown
-          Lifeform == "Annual forb" ~ "AF",
-          Lifeform == "Annual grass" ~ "AG",
-          Lifeform == "Annual rush" ~ "AR",
-          Lifeform == "N-fixer" ~ "NF",
-          Lifeform == "Perennial forb" ~ "PF",
-          Lifeform == "Perennial grass" ~ "PG",
-          Lifeform == "Perennial sedge" ~ "PS",
-          Lifeform == "Rhizomatous forb" ~ "RF",
-          Lifeform == "Rhizomatous grass" ~ "RG",
-          Lifeform == "Rhizomatous rush" ~ "RR",
-          Lifeform %in% c("Shrub", "Shurb") ~ "S",
-          is.na(Lifeform) ~ "U" # unknown
-        )
-      ),
-      abund = Cover,
-      abund_type = "cover"
-    ) %>%
-    select(site, year, plot, treat, species, guild, abund, abund_type)
-
-  return(scide_tbl)
 }

@@ -1,0 +1,74 @@
+---
+title: "Vignette_full"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+setup_dir(release = F)
+```
+
+Tidy up and correct community composition data (experimental and observational).
+```{r}
+dir_tidy_community <- tidy_all()
+dat_tidy_community <- read_community(version = "tidy")
+```
+
+Resolve taxonomy
+```{r}
+# Prepare a species list from all tidy data
+tidy_species_file <- compile_tidy_species(dat_tidy_community)
+# Josie and Justin used the output for manual correction, producing "misspelling.csv".
+
+# rename species
+dir_final_community <- rename_species()
+dat_final_community <- read_community(version = "final")
+```
+
+Download basemap
+```{r download}
+path_cfp <- download_cfp()
+cfp_sf <- read_cfp (cfp_file= path_cfp)
+
+path_grass <- download_grasscover(cfp_sf) # need Earthdata login credentials, slow
+grass_ras <- read_grasscover (grass_file = path_grass)
+```
+
+Download biogeography data
+```{r}
+spp_tbl <- consolidate_species(dat_community=dat_final_community) # explain this step? also where did consolication.csv come from
+dir_biogeography <- get_biogeography (species_table = spp_tbl, cfp_sf = cfp_sf) # needs parallel computation
+```
+
+Download climate data.
+```{r}
+dir_climate <- get_climate ()
+climate_ras <- load_climate (path_climate = dir_climate)
+```
+
+Calculate species niche and plot
+```{r}
+extract_climate_gbif (dir_biogeography, climate_ras)
+```
+
+Calculate CTI CPI
+
+Plot observational CTI CPI change
+
+Plot experimental CTI CPI change
+
+Synthesize coupled CTI CPI change
+
+Analysis of species contributing to CTI CPI change
+
