@@ -2,8 +2,8 @@ consolidate_species <- function(dat_community,
                                 consolidation_file = "input/community/species/consolidation.csv") {
   # species list from all experimental and observational data
   spp_comm_tbl <- bind_rows(
-    dat_community$exp %>% select(species, guild),
-    dat_community$obs %>% select(species, guild)
+    dat_community$exp %>% select(species),
+    dat_community$obs %>% select(species)
   ) %>%
     distinct(species) %>%
     arrange(species)
@@ -24,6 +24,7 @@ consolidate_species <- function(dat_community,
         )
     ) %>%
     filter(!str_detect(query_name, "DUMMY")) %>%
+    mutate(consolidated_name = ifelse(is.na(consolidated_name), query_name, consolidated_name)) %>%
     arrange(query_name) %>%
     distinct(query_name, consolidated_name)
 

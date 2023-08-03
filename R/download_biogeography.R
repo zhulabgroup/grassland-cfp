@@ -1,6 +1,6 @@
-get_biogeography <- function(species_table, cfp_sf, num_cores = 22, outdir = "input/biogeography/", date = NULL) {
+get_occurrence <- function(species_table, cfp_sf, num_cores = 22, outdir = "input/biogeography/", date = NULL) {
   path_gbif <- download_gbif(species_table, cfp_sf, num_cores, outdir, date)
-  path_bien <- download_bien(species_table, cfp_sf, num_cores, outdir, date)
+  path_bien <- download_bien(species_table, cfp_sf, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
   path_cch <- download_cch(species_table, cfp_sf, outdir, date)
   path_inat <- download_inat(gbif_file = path_gbif, date)
 
@@ -18,8 +18,9 @@ download_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
     date <- Sys.Date()
   }
   outfile <- str_c(outdir, "gbif-", date, ".rds")
+  outfile_full <- str_c(outdir, "gbif-full-", date, ".rds")
 
-  cl <- makeCluster(num_cores)
+  cl <- makeCluster(num_cores, outfile = "")
   registerDoSNOW(cl)
 
   gbif_box_ls <-
@@ -28,7 +29,7 @@ download_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
       .packages = c("spocc", "sf", "tidyverse")
     ) %dopar% {
       sp <- species_table$query_name[i]
-      res <- occ(
+      res <- spocc::occ(
         query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
         geometry = st_bbox(cfp_sf),
         gbifopts = list(
@@ -36,39 +37,35 @@ download_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
           hasGeospatialIssue = FALSE
         )
       )
-      print(i)
+      print(str_c(i, " ", sp))
       tibble(queryName = sp, gbif = res$gbif$data) %>%
         unnest(cols = c(gbif))
     }
   stopCluster(cl)
 
-  gbif_box_tbl <- bind_rows(gbif_box_ls) # collapse from list to tibble
+  gbif_box_tbl <- bind_rows(gbif_box_ls) %>% # collapse from list to tibble
+    distinct(key, .keep_all = T) # remove duplicated data entries
 
   gbif_cfp_tbl <- gbif_box_tbl %>%
     select(key, longitude, latitude) %>%
     st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
     st_intersection(cfp_sf) %>% # find GBIF and CFP intersection
-    as_tibble() %>% # drop geometry
+    # as_tibble() %>% # drop geometry
     select(key) %>% # use key to join (fast)
     right_join(gbif_box_tbl, ., by = "key")
 
   # filter coords and consolidate species
-  dat_gbif <- gbif_cfp_tbl %>%
+  dat_gbif_full <- gbif_cfp_tbl %>%
     # filter(coordinatePrecision < 0.01 | is.na(coordinatePrecision)) %>%
     filter(coordinateUncertaintyInMeters < 10000 | is.na(coordinateUncertaintyInMeters)) %>%
     filter(!coordinateUncertaintyInMeters %in% c(301, 3036, 999, 9999)) %>%
     left_join(species_table, by = c("queryName" = "query_name")) %>%
-    select(consolidatedName = consolidated_name, everything()) %>%
-    mutate(
-      consolidatedName =
-        ifelse(
-          is.na(consolidatedName),
-          queryName,
-          consolidatedName
-        )
-    ) %>%
-    distinct() # remove duplicated data entries
+    select(queryName, consolidatedName = consolidated_name, key, longitude, latitude, everything())
 
+  dat_gbif <- dat_gbif_full %>%
+    select(queryName, consolidatedName, key, longitude, latitude)
+
+  write_rds(dat_gbif_full, outfile_full)
   write_rds(dat_gbif, outfile)
   return(outfile)
 }
@@ -78,8 +75,9 @@ download_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
     date <- Sys.Date()
   }
   outfile <- str_c(outdir, "bien-", date, ".rds")
+  outfile_full <- str_c(outdir, "bien-full-", date, ".rds")
 
-  cl <- makeCluster(num_cores)
+  cl <- makeCluster(num_cores, outfile = "")
   registerDoSNOW(cl)
   bien_df_list <-
     foreach(
@@ -87,15 +85,16 @@ download_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
       .packages = c("BIEN", "tidyverse")
     ) %dopar% {
       sp <- species_table$query_name[i]
-      res <- BIEN_occurrence_species(species = sp)
-      print(i)
+      res <- BIEN::BIEN_occurrence_species(species = sp)
+      print(str_c(i, " ", sp))
       tibble(queryName = sp, res) %>%
         mutate(date_collected = as.Date(date_collected))
     }
+  stopCluster(cl)
+
   bien_all_df <- bind_rows(bien_df_list) %>%
     mutate(key = row_number()) %>%
     drop_na(latitude, longitude)
-  stopCluster(cl)
 
   bien_all_sf <- st_as_sf(
     x = bien_all_df %>% dplyr::select(key, longitude, latitude),
@@ -103,10 +102,17 @@ download_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
     crs = 4326
   )
   bien_cfp_sf <- st_intersection(bien_all_sf, cfp_sf)
-  bien_cfp_df <- bien_all_df %>%
-    right_join(as_tibble(bien_cfp_sf) %>% dplyr::select(key), by = "key")
 
-  write_rds(bien_cfp_df, outfile)
+  dat_bien_full <- bien_all_df %>%
+    right_join(as_tibble(bien_cfp_sf) %>% dplyr::select(key), by = "key") %>%
+    left_join(species_table, by = c("queryName" = "query_name")) %>%
+    select(queryName, consolidatedName = consolidated_name, key, longitude, latitude, everything())
+
+  dat_bien <- dat_bien_full %>%
+    select(queryName, consolidatedName, key, longitude, latitude)
+
+  write_rds(dat_bien_full, outfile_full)
+  write_rds(dat_bien, outfile)
 
   return(outfile)
 }
@@ -116,6 +122,7 @@ download_cch <- function(species_table, cfp_sf, outdir, date) {
     date <- Sys.Date()
   }
   outfile <- str_c(outdir, "cch-", date, ".rds")
+  outfile_full <- str_c(outdir, "cch-full-", date, ".rds")
 
   # downloaded the data manually from https://www.cch2.org/portal/collections/harvestparams.php
   # downloading limit is 1000000 records, so downloaded in three latitudinal bands
@@ -140,30 +147,31 @@ download_cch <- function(species_table, cfp_sf, outdir, date) {
 
   cch_all_tbl <- bind_rows(ls_cch) %>%
     drop_na(decimalLongitude, decimalLatitude) %>%
-    select(
+    inner_join(species_table, by = c("scientificName" = "query_name")) %>%
+    rename(
       queryName = scientificName,
+      consolidatedName = consolidated_name,
       longitude = decimalLongitude,
       latitude = decimalLatitude,
       key = id
     ) %>%
-    distinct(key, .keep_all = T) %>%
-    left_join(species_table, by = c("queryName" = "query_name")) %>%
-    mutate(species_name = ifelse(
-      is.na(consolidated_name),
-      queryName,
-      consolidated_name
-    )) %>%
-    select(species_name, longitude, latitude, key)
+    distinct(key, .keep_all = T)
 
   # filter by CFP
-  cch_cfp_tbl <- cch_all_tbl %>%
+  dat_cch_full <- cch_all_tbl %>%
     st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
     st_intersection(cfp_sf) %>% # find CCH and CFP intersection
-    as_tibble() %>% # drop geometry
     select(key) %>% # use key to join (fast)
-    right_join(cch_all_tbl, ., by = "key")
+    right_join(cch_all_tbl, ., by = "key") %>%
+    select(queryName, consolidatedName, key, longitude, latitude, everything())
 
-  write_rds(cch_cfp_tbl, outfile)
+  dat_cch <- dat_cch_full %>%
+    select(queryName, consolidatedName, key, longitude, latitude)
+
+  write_rds(dat_cch_full, outfile_full)
+  write_rds(dat_cch, outfile)
+
+  return(outfile)
 }
 
 download_inat <- function(gbif_file, date = NULL) {
@@ -173,9 +181,38 @@ download_inat <- function(gbif_file, date = NULL) {
   outfile <- str_c(outdir, "inat-", date, ".rds")
 
   dat_inat <- read_rds(gbif_file) %>%
-    filter(datasetName == "iNaturalist research-grade observations")
+    filter(datasetName == "iNaturalist research-grade observations") %>%
+    select(queryName, consolidatedName, key, longitude, latitude)
 
   write_rds(dat_inat, outfile)
 
   return(outfile)
+}
+
+
+load_occurrence <- function(path_occ = NULL, indir = "input/biogeography/") {
+  if (is.null(path_occ)) {
+    path_occ <- list(
+      gbif = list.files(indir, pattern = "gbif-20", full.names = T) %>% tail(1),
+      bien = list.files(indir, pattern = "bien-20", full.names = T) %>% tail(1),
+      cch = list.files(indir, pattern = "cch-20", full.names = T) %>% tail(1),
+      inat = list.files(indir, pattern = "inat-20", full.names = T) %>% tail(1)
+    )
+  }
+
+  out <- vector(mode = "list")
+  dataset <- c(
+    "gbif",
+    # "bien",
+    "cch", "inat"
+  )
+  for (d in dataset) {
+    out[[d]] <- read_rds(path_occ[[d]]) %>%
+      mutate(
+        dataset = d
+      ) %>%
+      st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+  }
+
+  return(out)
 }

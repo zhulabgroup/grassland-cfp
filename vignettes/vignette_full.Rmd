@@ -8,14 +8,18 @@ vignette: >
 ---
 
 ```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
 knitr::opts_chunk$set(
   collapse = TRUE,
+  out.width = "100%",
+  cache = T,
   comment = "#>"
 )
 ```
 
 ```{r setup}
 library(grassland)
+theme_set(ggthemes::theme_few())
 setup_dir(release = F)
 ```
 
@@ -48,27 +52,48 @@ grass_ras <- read_grasscover (grass_file = path_grass)
 Download biogeography data
 ```{r}
 spp_tbl <- consolidate_species(dat_community=dat_final_community) # explain this step? also where did consolication.csv come from
-dir_biogeography <- get_biogeography (species_table = spp_tbl, cfp_sf = cfp_sf) # needs parallel computation
+dir_occ <- get_occurrence (species_table = spp_tbl, cfp_sf = cfp_sf) # needs parallel computation
+dat_occ <- load_occurrence (path_occ = dir_occ)
 ```
 
-Download climate data.
+Download climate data
 ```{r}
-dir_climate <- get_climate ()
-climate_ras <- load_climate (path_climate = dir_climate)
+dir_clim <- get_climate ()
+dat_clim <- load_climate (path_clim = dir_clim)
 ```
 
 Calculate species niche and plot
 ```{r}
-extract_climate_gbif (dir_biogeography, climate_ras)
+path_trait <- extract_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa")
+dat_trait <- load_individual_trait(path_trait =  path_trait)
+dat_niche <- summarize_species_niche (dat_trait, add_dummy = T)
+
+cool_sp_niche_gg <- plot_ind_sp_niche(dat_occ,dat_trait, cfp_sf,sp = "Danthonia californica")
+warm_sp_niche_gg <- plot_ind_sp_niche(dat_occ,dat_trait, cfp_sf,sp = "Stipa pulchra")
+print_sp_niche(dat_occ,dat_trait, dat_niche,cfp_sf)
+
+niche_gg <- plot_all_niche(dat_occ, dat_trait, dat_niche, cfp_sf)
 ```
 
-Calculate CTI CPI
+Calculate CTI CPI in observations and experiments and plot
 
-Plot observational CTI CPI change
-
-Plot experimental CTI CPI change
+```{r}
+dat_index <- calculate_community_index(dat_niche= dat_niche, dat_community=dat_final_community)
+obs_comm_gg<- plot_comm_index (option = "obs", dat_index = dat_index,cfp_sf, grass_ras )
+exp_comm_gg<- plot_comm_index (option = "exp", dat_index = dat_index)
+```
 
 Synthesize coupled CTI CPI change
+```{r}
+dat_shift <- calc_community_shift(dat_index = dat_index)
+comm_shift_gg <- plot_community_shift(dat_shift, dat_niche)
+comm_shift_gg$combined
+```
 
 Analysis of species contributing to CTI CPI change
+```{r}
+path_gainloss <- calc_species_gainloss(dat_community = dat_final_community, dat_niche = dat_niche)
+species_change_gg <- plot_species_gainloss(dat_niche=dat_niche, path_gainloss = path_gainloss)
+species_change_gg$combined
+```
 
