@@ -5,7 +5,7 @@ print_ind_sp_niche <- function(dat_occ, dat_trait, dat_niche, cfp_sf, outfile = 
 
   niche_gg <- vector(mode = "list")
   for (sp in sp_vec) {
-    niche_gg[[sp]] <- plot_sp_niche(dat_occ, dat_trait, cfp_sf, sp = sp) # no need to print(); will slow down
+    niche_gg[[sp]] <- plot_ind_sp_niche(dat_occ, dat_trait, cfp_sf, sp = sp) # no need to print(); will slow down
   }
 
   # runtime ~= 4 min
