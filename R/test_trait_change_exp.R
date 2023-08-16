@@ -91,19 +91,30 @@ test_trait_change_exp_data <- function(dat_community, dat_niche, exp, trt, grp, 
         soil == "S" ~ "Serpentine",
         soil == "N" ~ "Non-serpentine"
       )) %>%
-      mutate(treat_W = case_when(
-        treat == "_X" ~ "_",
-        treat == "WX" ~ "P"
-      )) %>%
-      mutate(treat_W = factor(treat_W, levels = c("_", "P"))) %>%
-      mutate(treat_D = case_when(
-        treat == "X_" ~ "_",
-        treat == "XD" ~ "D"
-      )) %>%
-      mutate(treat_D = factor(treat_D, levels = c("_", "D"))) %>%
-      filter(soil == grp) %>%
-      select(trt = treat_W, year, plot, species, abund) %>%
-      drop_na(trt)
+      filter(soil == grp)
+
+
+    if (trt == "Watering") {
+      dat_exp <- dat_exp%>%
+        mutate(treat_W = case_when(
+          treat == "_X" ~ "_",
+          treat == "WX" ~ "P"
+        )) %>%
+        mutate(trt = factor(treat_W, levels = c("_", "P"))) %>%
+        drop_na(trt) %>%
+        select(trt, year, plot, species, abund)
+    }
+
+    if (trt == "Drought") {
+      dat_exp <- dat_exp%>%
+        mutate(treat_D = case_when(
+          treat == "X_" ~ "_",
+          treat == "XD" ~ "D"
+        )) %>%
+        mutate(trt = factor(treat_D, levels = c("_", "D"))) %>%
+        drop_na(trt) %>%
+        select(trt, year, plot, species, abund)
+    }
   }
   if (exp == "scide") {
     dat_exp <- dat_community %>%
