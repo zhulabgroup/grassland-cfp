@@ -1,5 +1,4 @@
-
-compile_tidy_species <- function(dat_tidy_community, outdir = "input/community/species/taxonomy/", date = NULL) {
+tidy_taxonomy_list <- function(dat_tidy_community, outdir = "alldata/input/community/species/taxonomy/", date = NULL) {
   # compile a unique species-guild list from tidy data
   df_tidy_taxa <- bind_rows(
     dat_tidy_community$exp %>% select(species, guild),

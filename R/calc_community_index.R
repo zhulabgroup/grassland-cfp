@@ -1,7 +1,5 @@
-
 # calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
-
-calculate_community_index <- function(dat_niche, dat_community) {
+calc_community_index <- function(dat_niche, dat_community) {
   # load niche estimates.
   niche_tbl <- dat_niche %>%
     filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
@@ -10,14 +8,14 @@ calculate_community_index <- function(dat_niche, dat_community) {
   obs_tbl <- dat_community$obs %>%
     inner_join(niche_tbl, by = "species") %>%
     group_by(site, year, plot) %>% # w/o treatment for obs
-    sum_cwm() %>%
+    calc_community_weighted_mean() %>%
     ungroup()
 
   # experimental data and CWM
   exp_tbl <- dat_community$exp %>%
     inner_join(niche_tbl, by = "species") %>%
     group_by(site, year, plot, treat) %>% # w/ treatment for exp
-    sum_cwm() %>%
+    calc_community_weighted_mean() %>%
     ungroup()
 
   out <- list(
@@ -30,7 +28,7 @@ calculate_community_index <- function(dat_niche, dat_community) {
 
 
 # define summarize CWM function
-sum_cwm <- function(.) {
+calc_community_weighted_mean <- function(.) {
   # CTI, CTI_sd, CPI, CPI_sd, CVI, CVI_sd
   summarize(.,
     tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),

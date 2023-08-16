@@ -1,4 +1,4 @@
-calc_species_gainloss <- function(dat_community, dat_niche, outdir = "intermediate/synthesis-analysis/") {
+calc_species_gainloss <- function(dat_community, dat_niche, outdir = "alldata/intermediate/synthesis-analysis/") {
   dat_gainloss_obs <- calc_species_gainloss_obs(com_obs = dat_community$obs, dat_niche)
   dat_gainloss_exp <- calc_species_gainloss_exp(com_exp = dat_community$exp, dat_niche)
 
