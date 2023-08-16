@@ -1,9 +1,9 @@
 
 # climate -----------------------------------------------------------------
-get_climate <- function(outdir = "input/climate/") {
-  path_chelsa <- download_chelsa(outdir)
-  path_prism <- download_prism(outdir)
-  path_terraclim <- download_terraclim(outdir)
+down_climate <- function(outdir = "input/climate/") {
+  path_chelsa <- down_chelsa(outdir)
+  path_prism <- down_prism(outdir)
+  path_terraclim <- down_terraclim(outdir)
 
   out <- list(
     chelsa = path_chelsa,
@@ -13,7 +13,7 @@ get_climate <- function(outdir = "input/climate/") {
   return(out)
 }
 
-download_chelsa <- function(outdir) {
+down_chelsa <- function(outdir) {
   dir_chelsa <- str_c(outdir, "chelsa/")
   # download CHELSA climatology data, 1981-2010
   # https://chelsa-climate.org/wp-admin/download-page/CHELSA_tech_specification_V2.pdf
@@ -34,7 +34,7 @@ download_chelsa <- function(outdir) {
   return(dir_chelsa)
 }
 
-download_prism <- function(outdir) {
+down_prism <- function(outdir) {
   dir_prism <- str_c(outdir, "prism/")
   # download PRISM data
   prism::prism_set_dl_dir(dir_prism)
@@ -45,7 +45,7 @@ download_prism <- function(outdir) {
   return(dir_prism)
 }
 
-download_terraclim <- function(outdir) {
+down_terraclim <- function(outdir) {
   dir_terraclim <- str_c(outdir, "terraclim/")
 
   # http://thredds.northwestknowledge.net:8080/thredds/catalog/TERRACLIMATE_ALL/summaries/catalog.html
@@ -144,56 +144,4 @@ download_terraclim <- function(outdir) {
     }
   }
   return(dir_terraclim)
-}
-
-
-load_climate <- function(path_clim = NULL, indir = "input/climate/") {
-  if (is.null(path_clim)) {
-    path_clim <- list(
-      chelsa = str_c(indir, "chelsa/"),
-      prism = str_c(indir, "prism/"),
-      terraclim = str_c(indir, "terraclim/")
-    )
-  }
-  # chelsa
-  chelsa_ras <- terra::rast(c(
-    str_c(path_clim$chelsa, "bio1.tif"),
-    str_c(path_clim$chelsa, "bio12.tif"),
-    str_c(path_clim$chelsa, "vpd_max.tif")
-  ))
-  names(chelsa_ras) <- c("tmp", "ppt", "vpd")
-  # terra::crs(chelsa_ras, proj = TRUE) # WGS84
-
-  # prism
-  prism::prism_set_dl_dir(path_clim$prism)
-  prism_ras <- terra::rast(list(
-    prism::prism_archive_subset("tmean", "annual normals", resolution = "800m") %>%
-      prism::pd_to_file() %>%
-      terra::rast(),
-    prism::prism_archive_subset("ppt", "annual normals", resolution = "800m") %>%
-      prism::pd_to_file() %>%
-      terra::rast(),
-    prism::prism_archive_subset("vpdmax", "annual normals", resolution = "800m") %>%
-      prism::pd_to_file() %>%
-      terra::rast()
-  ))
-  names(prism_ras) <- c("tmp", "ppt", "vpd")
-  # terra::crs(prism_ras, proj = TRUE) # NAD83
-
-  # terraclimate
-  terraclim_ras <- terra::rast(c(
-    str_c(path_clim$terraclim, "tmp.tif"),
-    str_c(path_clim$terraclim, "ppt.tif"),
-    str_c(path_clim$terraclim, "vpd.tif"),
-    str_c(path_clim$terraclim, "def.tif")
-  ))
-  names(terraclim_ras) <- c("tmp", "ppt", "vpd", "cwd")
-  # terra::crs(terraclim_ras, proj = TRUE) # WGS84
-
-  out <- list(
-    chelsa = chelsa_ras,
-    prism = prism_ras,
-    terraclim = terraclim_ras
-  )
-  return(out)
 }

@@ -1,8 +1,8 @@
 read_community <- function(version = c("tidy", "final")) {
   if (version == "tidy") {
-    indir <- "intermediate/observation-experiment/tidy-community/"
+    indir <- "alldata/intermediate/observation-experiment/tidy-community/"
   } else if (version == "final") {
-    indir <- "intermediate/observation-experiment/final-community/"
+    indir <- "alldata/intermediate/observation-experiment/final-community/"
   }
 
   obs_tbl <- c(

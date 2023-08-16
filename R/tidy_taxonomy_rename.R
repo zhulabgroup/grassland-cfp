@@ -1,6 +1,6 @@
-rename_species <- function(dir_tidy_community = "intermediate/observation-experiment/tidy-community/",
-                           dir_final_community = "intermediate/observation-experiment/final-community/",
-                           misspelling_file = "input/community/species/misspelling.csv") {
+tidy_taxonomy_rename <- function(dir_tidy_community = "alldata/intermediate/observation-experiment/tidy-community/",
+                                 dir_final_community = "alldata/intermediate/observation-experiment/final-community/",
+                                 misspelling_file = "alldata/input/community/species/misspelling.csv") {
   # import misspelling table prepared Josie and Justin
   misspelling_tbl <- misspelling_file %>%
     read_csv(col_types = "cccclcd")

@@ -1,41 +1,15 @@
-plot_comm_index <- function(option, dat_index, cfp_sf, grass_ras) {
+plot_community_index <- function(option, dat_index, cfp_sf, grass_ras) {
   if (option == "obs") {
-    comm_index_gg <- plot_comm_index_obs(obs_tbl = dat_index$obs, cfp_sf, grass_ras)
+    community_index_gg <- plot_community_index_obs(obs_tbl = dat_index$obs, cfp_sf, grass_ras)
   }
   if (option == "exp") {
-    comm_index_gg <- plot_comm_index_exp(exp_tbl = dat_index$exp)
+    community_index_gg <- plot_community_index_exp(exp_tbl = dat_index$exp)
   }
 
-  return(comm_index_gg)
+  return(community_index_gg)
 }
 
-site_name_label <- function(name, with_letter = F) {
-  # setup site labels
-  site_vec <- c(
-    angelo = "Angelo Coast",
-    carrizo = "Carrizo Plain",
-    elkhorn = "Elkhorn Slough",
-    jasper = "Jasper Ridge Serpentine",
-    mclann = "McLaughlin Annual",
-    mclserp = "McLaughlin Serpentine",
-    morganterritory = "Morgan Territory",
-    pleasantonridge = "Pleasanton Ridge",
-    sunol = "Sunol",
-    swanton = "Swanton Ranch",
-    ucsc = "UC Santa Cruz",
-    vascocaves = "Vasco Caves"
-  )
-
-  if (with_letter) {
-    label <- str_c(LETTERS[which(site_vec == site_vec[name])], site_vec[name], sep = ". ")
-  } else {
-    label <- site_vec[name]
-  }
-
-  return(label)
-}
-
-plot_comm_index_obs <- function(obs_tbl, cfp_sf, grass_ras) {
+plot_community_index_obs <- function(obs_tbl, cfp_sf, grass_ras) {
   site_map_gg <- plot_site_map(cfp_sf, grass_ras)
   # reshape data
   obs_idx_tbl <- obs_tbl %>%
@@ -81,7 +55,7 @@ plot_comm_index_obs <- function(obs_tbl, cfp_sf, grass_ras) {
 # define plotting function
 plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
-  site_lab <- site_name_label(site_name, with_letter = T)
+  site_lab <- plot_site_name(site_name, with_letter = T)
 
   site_tbl <- tbl %>%
     filter(site == site_name) %>%
@@ -128,8 +102,34 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", yr_lab = NULL, 
   }
 }
 
+plot_site_name <- function(name, with_letter = F) {
+  # setup site labels
+  site_vec <- c(
+    angelo = "Angelo Coast",
+    carrizo = "Carrizo Plain",
+    elkhorn = "Elkhorn Slough",
+    jasper = "Jasper Ridge Serpentine",
+    mclann = "McLaughlin Annual",
+    mclserp = "McLaughlin Serpentine",
+    morganterritory = "Morgan Territory",
+    pleasantonridge = "Pleasanton Ridge",
+    sunol = "Sunol",
+    swanton = "Swanton Ranch",
+    ucsc = "UC Santa Cruz",
+    vascocaves = "Vasco Caves"
+  )
 
-plot_comm_index_exp <- function(exp_tbl, site = "jrgce") {
+  if (with_letter) {
+    label <- str_c(LETTERS[which(site_vec == site_vec[name])], site_vec[name], sep = ". ")
+  } else {
+    label <- site_vec[name]
+  }
+
+  return(label)
+}
+
+
+plot_community_index_exp <- function(exp_tbl, site = "jrgce") {
   # JRGCE data
   jrgce_tbl <- exp_tbl %>%
     filter(site == "jrgce", year >= 1999) %>%

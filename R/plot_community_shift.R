@@ -59,7 +59,7 @@ plot_community_shift_obs <- function(obs_tbl) {
     theme(strip.text.x = element_text(hjust = 0)) +
     theme(legend.position = "bottom") +
     guides(color = guide_colorbar(barwidth = 10)) +
-    facet_wrap(. ~ site %>% site_name_label(with_letter = F), nrow = 2)
+    facet_wrap(. ~ site %>% plot_site_name(with_letter = F), nrow = 2)
 
   return(p_obs)
 }

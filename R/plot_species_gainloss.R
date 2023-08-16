@@ -1,4 +1,4 @@
-plot_species_gainloss <- function(dat_niche, path_gainloss = NULL, indir = "intermediate/synthesis-analysis/") {
+plot_species_gainloss <- function(dat_niche, path_gainloss = NULL, indir = "alldata/intermediate/synthesis-analysis/") {
   if (is.null(path_gainloss)) {
     path_gainloss <- list.files(indir, pattern = "gainloss", full.names = T)
   }
@@ -138,7 +138,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
       color = "none"
     ) +
     theme(axis.text = element_text(size = 8)) +
-    facet_wrap(. ~ site %>% site_name_label(with_letter = F),
+    facet_wrap(. ~ site %>% plot_site_name(with_letter = F),
       nrow = 3
     ) +
     theme(strip.text = element_text(hjust = 0))
@@ -157,7 +157,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
       max.overlaps = 100,
       parse = T
     ) +
-    facet_wrap(. ~ site %>% site_name_label(with_letter = F),
+    facet_wrap(. ~ site %>% plot_site_name(with_letter = F),
       nrow = 3
     ) +
     theme(strip.text = element_text(hjust = 0))

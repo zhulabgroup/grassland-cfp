@@ -1,8 +1,8 @@
-get_occurrence <- function(species_table, cfp_sf, num_cores = 22, outdir = "input/biogeography/", date = NULL) {
-  path_gbif <- download_gbif(species_table, cfp_sf, num_cores, outdir, date)
-  path_bien <- download_bien(species_table, cfp_sf, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
-  path_cch <- download_cch(species_table, cfp_sf, outdir, date)
-  path_inat <- download_inat(gbif_file = path_gbif, date)
+down_biogeography <- function(species_table, cfp_sf, num_cores = 22, outdir = "alldata/input/biogeography/", date = NULL) {
+  path_gbif <- down_gbif(species_table, cfp_sf, num_cores, outdir, date)
+  path_bien <- down_bien(species_table, cfp_sf, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
+  path_cch <- down_cch(species_table, cfp_sf, outdir, date)
+  path_inat <- down_inat(gbif_file = path_gbif, date)
 
   out <- list(
     gbif = path_gbif,
@@ -13,7 +13,7 @@ get_occurrence <- function(species_table, cfp_sf, num_cores = 22, outdir = "inpu
   return(out)
 }
 
-download_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
+down_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -70,7 +70,7 @@ download_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
   return(outfile)
 }
 
-download_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
+down_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -117,7 +117,7 @@ download_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
   return(outfile)
 }
 
-download_cch <- function(species_table, cfp_sf, outdir, date) {
+down_cch <- function(species_table, cfp_sf, outdir, date) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -174,7 +174,7 @@ download_cch <- function(species_table, cfp_sf, outdir, date) {
   return(outfile)
 }
 
-download_inat <- function(gbif_file, date = NULL) {
+down_inat <- function(gbif_file, date = NULL) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -187,32 +187,4 @@ download_inat <- function(gbif_file, date = NULL) {
   write_rds(dat_inat, outfile)
 
   return(outfile)
-}
-
-
-load_occurrence <- function(path_occ = NULL, indir = "input/biogeography/") {
-  if (is.null(path_occ)) {
-    path_occ <- list(
-      gbif = list.files(indir, pattern = "gbif-20", full.names = T) %>% tail(1),
-      bien = list.files(indir, pattern = "bien-20", full.names = T) %>% tail(1),
-      cch = list.files(indir, pattern = "cch-20", full.names = T) %>% tail(1),
-      inat = list.files(indir, pattern = "inat-20", full.names = T) %>% tail(1)
-    )
-  }
-
-  out <- vector(mode = "list")
-  dataset <- c(
-    "gbif",
-    # "bien",
-    "cch", "inat"
-  )
-  for (d in dataset) {
-    out[[d]] <- read_rds(path_occ[[d]]) %>%
-      mutate(
-        dataset = d
-      ) %>%
-      st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
-  }
-
-  return(out)
 }

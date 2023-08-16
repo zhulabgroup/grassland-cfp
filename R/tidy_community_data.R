@@ -1,5 +1,5 @@
-tidy_all <- function(indir = "input/community/raw/",
-                     outdir = "intermediate/observation-experiment/tidy-community/") {
+tidy_community_data <- function(indir = "alldata/input/community/raw/",
+                                outdir = "alldata/intermediate/observation-experiment/tidy-community/") {
   # experimental sites
   tidy_jrgce(indir) %>% write_csv(str_c(outdir, "jrgce.csv"))
   tidy_mclexp(indir) %>% write_csv(str_c(outdir, "mclexp.csv"))
