@@ -69,6 +69,14 @@ exp_comm_gg <- plot_community_index(option = "exp", dat_index = dat_index)
 exp_comm_gg
 ```
 
+Statistical test using lme
+```{r}
+df_test_trait_change_obs <- test_trait_change_obs_all(dat_community_obs = dat_community$obs, dat_niche)
+df_test_trait_change_obs %>% knitr::kable()
+df_test_trait_change_exp <- test_trait_change_exp_all(dat_community_exp = dat_community$exp, dat_niche)
+df_test_trait_change_exp %>% knitr::kable()
+```
+
 Synthesize coupled CTI CPI change
 ```{r}
 dat_shift <- calc_community_shift(dat_index = dat_index)
