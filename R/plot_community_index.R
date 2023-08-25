@@ -134,6 +134,8 @@ plot_community_index_exp <- function(exp_tbl, site = "jrgce") {
   jrgce_tbl <- exp_tbl %>%
     filter(site == "jrgce", year >= 1999) %>%
     mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
+    # mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
+    # filter(subgrp == "___") %>%
     select(site, year, plot, treat_T, tmp_com_mean, ppt_com_mean) %>%
     pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
     mutate(com_idx_name = factor(com_idx_name,

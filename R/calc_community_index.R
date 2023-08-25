@@ -31,12 +31,12 @@ calc_community_index <- function(dat_niche, dat_community) {
 calc_community_weighted_mean <- function(.) {
   # CTI, CTI_sd, CPI, CPI_sd, CVI, CVI_sd
   summarize(.,
-    tmp_com_mean = sum(abund * tmp_occ_mean) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_mean^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_mean) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_mean^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_mean) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_mean^2) / sum(abund) - vpd_com_mean^2
+    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
+    tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
+    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
+    ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
+    vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
+    vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2
   ) %>%
     mutate(
       tmp_com_sd = sqrt(tmp_com_var),

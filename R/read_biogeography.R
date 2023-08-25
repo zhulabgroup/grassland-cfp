@@ -15,11 +15,13 @@ read_biogeography <- function(path_occ = NULL, indir = "alldata/input/biogeograp
     "cch", "inat"
   )
   for (d in dataset) {
-    out[[d]] <- read_rds(path_occ[[d]]) %>%
+    df <- read_rds(path_occ[[d]]) %>%
       mutate(
         dataset = d
       ) %>%
       st_as_sf(coords = c("longitude", "latitude"), crs = 4326) # WGS84
+
+    out[[d]] <- df
   }
 
   return(out)
