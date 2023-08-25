@@ -1,69 +1,120 @@
-test_trait_change_exp_all <- function(dat_community_exp, dat_niche) {
-  df_test_trait_change_exp <- test_trait_change_exp_comb() %>%
-    rowwise() %>%
-    mutate(test_trait_change_exp(dat_community_exp, dat_niche, exp, trt, grp, var)) %>%
+test_trait_change_all <- function(dat_community, dat_niche, type) {
+  df_test_trait_change_exp <- test_trait_change_comb(dat_community, type) %>%
+    mutate(test_trait_change(dat_community, dat_niche, var, grouping, type)) %>%
+    select(grouping, everything()) %>%
+    unnest(grouping) %>%
     ungroup()
 
   return(df_test_trait_change_exp)
 }
 
 
-test_trait_change_exp <- function(dat_community, dat_niche, exp, trt, grp, var) {
+test_trait_change <- function(dat_community, dat_niche, var, grouping, type) {
   # subset data
-  dat_lme <- test_trait_change_exp_data(dat_community, dat_niche, exp, trt, grp, var)
+  dat_lme <- test_trait_change_data(dat_community, dat_niche, var, grouping, type)
 
   # fit lme
-  mod_lme <- test_trait_change_exp_model(dat_lme, var)
+  mod_lme <- test_trait_change_model(dat_lme, var, type)
   # summarize results
 
-  df_lme_exp <- test_trait_change_summ(mod_lme)
+  df_lme <- test_trait_change_summ(mod_lme)
 
-  c(exp, trt, grp, var) %>%
-    str_replace_na() %>%
-    str_c(collapse = "_") %>%
-    print()
 
-  return(df_lme_exp)
+  return(df_lme)
 }
 
 test_trait_change_summ <- function(mod_lme) {
   df_summ <- data.frame(
     estimate = mod_lme$summary$coefficients[2, 1],
-    p.value = mod_lme$summary$coefficients[2, 5]
+    p.value = mod_lme$summary$coefficients[2, ncol(mod_lme$summary$coefficients)] # good for both lm and lme
   ) %>%
     mutate(sig = gtools::stars.pval(p.value))
 
   return(df_summ)
 }
 
-test_trait_change_exp_model <- function(dat_lme, var) {
-  if (var == "ppt") {
-    dat_lme <- dat_lme %>%
-      mutate(value = log(value))
+test_trait_change_model <- function(dat_lme, var, type) {
+  # if (var == "ppt") {
+  #   dat_lme <- dat_lme %>%
+  #     mutate(value = rank(value))
+  # }
+
+  if (type == "obs") {
+    if (dat_lme %>% pull(site) %>% unique() %>% length() > 1) {
+      model <- lmerTest::lmer(value ~ year + (1 | site),
+        weights = dat_lme %>% pull(weight),
+        data = dat_lme
+      )
+    } else {
+      model <- lm(value ~ year,
+        weights = dat_lme %>% pull(weight),
+        data = dat_lme
+      )
+    }
   }
-  if ("subgrp" %in% colnames(dat_lme)) {
-    model <- lmerTest::lmer(value ~ trt + (1 | year) + (1 | subgrp),
-      weights = dat_lme %>% pull(weight),
-      data = dat_lme
-    )
-  } else {
+
+  if (type == "exp") {
+    # if ("subgrp" %in% colnames(dat_lme)) {
+    #   model <- lmerTest::lmer(value ~ trt + subgrp + (1 | year),
+    #                           weights = dat_lme %>% pull(weight),
+    #                           data = dat_lme
+    #   )
+    # }
+    # else {
     model <- lmerTest::lmer(value ~ trt + (1 | year),
       weights = dat_lme %>% pull(weight),
       data = dat_lme
     )
+    # }
   }
 
   res <- list(model = model, summary = summary(model))
   return(res)
 }
 
-test_trait_change_exp_data <- function(dat_community, dat_niche, exp, trt, grp, var) {
+test_trait_change_data <- function(dat_community, dat_niche, var, grouping, type) {
+  if (type == "obs") {
+    return(test_trait_change_data_obs(dat_community$obs, dat_niche, var,
+      siteoi = grouping$site
+    ))
+  }
+  if (type == "exp") {
+    return(test_trait_change_data_exp(dat_community$exp, dat_niche, var,
+      exp = grouping$exp,
+      trt = grouping$trt,
+      grp = grouping$grp
+    ))
+  }
+}
+
+test_trait_change_data_obs <- function(dat_community, dat_niche, var, siteoi = "all") {
+  if (siteoi == "all") {
+    siteoi <- dat_community %>%
+      pull(site) %>%
+      unique()
+  }
+  dat_lme <- dat_community %>%
+    filter(site %in% siteoi) %>%
+    select(site, year, plot, species, abund) %>%
+    group_by(site, plot, year) %>%
+    mutate(weight = abund / sum(abund)) %>% # convert all abundance (absolute or relative) to percentage, such that all plots get equal weight later in lme
+    ungroup() %>%
+    left_join(
+      dat_niche %>%
+        select(species, value = !!sym(str_c(var, "_occ_mean"))),
+      by = "species"
+    )
+
+  return(dat_lme)
+}
+test_trait_change_data_exp <- function(dat_community, dat_niche, var, exp, trt, grp) {
   if (exp == "jrgce") {
     if (trt == "Warming") {
       dat_exp <- dat_community %>%
         filter(site == exp, year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 1L, end = 1L)) %>%
         mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
+        filter(subgrp == "___") %>%
         mutate(phase = case_when(
           year <= 2002 ~ "Phase I",
           year >= 2010 ~ "Phase III",
@@ -80,6 +131,7 @@ test_trait_change_exp_data <- function(dat_community, dat_niche, exp, trt, grp, 
           str_sub(treat, start = 1L, end = 1L),
           str_sub(treat, start = 3L, end = 4L)
         )) %>%
+        filter(subgrp == "___") %>%
         select(trt, subgrp, year, plot, species, abund)
     }
   }
@@ -95,7 +147,7 @@ test_trait_change_exp_data <- function(dat_community, dat_niche, exp, trt, grp, 
 
 
     if (trt == "Watering") {
-      dat_exp <- dat_exp%>%
+      dat_exp <- dat_exp %>%
         mutate(treat_W = case_when(
           treat == "_X" ~ "_",
           treat == "WX" ~ "P"
@@ -106,7 +158,7 @@ test_trait_change_exp_data <- function(dat_community, dat_niche, exp, trt, grp, 
     }
 
     if (trt == "Drought") {
-      dat_exp <- dat_exp%>%
+      dat_exp <- dat_exp %>%
         mutate(treat_D = case_when(
           treat == "X_" ~ "_",
           treat == "XD" ~ "D"
@@ -143,9 +195,37 @@ test_trait_change_exp_data <- function(dat_community, dat_niche, exp, trt, grp, 
   return(dat_lme)
 }
 
-test_trait_change_exp_comb <- function() {
+
+test_trait_change_comb <- function(dat_community, type) {
+  if (type == "obs") {
+    return(test_trait_change_comb_obs(dat_community$obs))
+  }
+  if (type == "exp") {
+    return(test_trait_change_comb_exp(dat_community$exp))
+  }
+}
+test_trait_change_comb_obs <- function(dat_community_obs) {
+  df_trait_change_obs <- expand_grid(
+    site = dat_community_obs %>% pull(site) %>% unique() %>% c("all"),
+    var = c("tmp", "ppt")
+  ) %>%
+    mutate(var = factor(var, levels = c("tmp", "ppt"))) %>%
+    arrange(site, var) %>%
+    rowwise() %>%
+    mutate(grouping = list(tibble(site))) %>%
+    select(var, grouping)
+
+  return(df_trait_change_obs)
+}
+test_trait_change_comb_exp <- function(dat_community_exp) {
+  ls_exp <- dat_community_exp %>%
+    rowwise() %>%
+    mutate(site = str_split(site, "_", simplify = T)[1]) %>%
+    ungroup() %>%
+    pull(site) %>%
+    unique()
   ls_df_trait_change_exp_comb <- vector(mode = "list")
-  for (exp in c("jrgce", "mclexp", "scide")) {
+  for (exp in ls_exp) {
     if (exp == "jrgce") {
       for (trt in c("Warming", "Watering")) {
         if (trt == "Warming") {
@@ -179,6 +259,9 @@ test_trait_change_exp_comb <- function() {
         ls_df_trait_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
       }
     }
+    if (!exp %in% c("jrgce", "mclexp", "scide")) {
+      message(str_c("Experiment ", exp, " not recognized."))
+    }
   }
   df_trait_change_exp <- bind_rows(ls_df_trait_change_exp_comb) %>%
     cross_join(data.frame(var = c("tmp", "ppt"))) %>%
@@ -193,6 +276,9 @@ test_trait_change_exp_comb <- function() {
     mutate(trt = factor(trt, levels = c("Warming", "Watering", "Drought"))) %>%
     mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
     select(exp, trt, grp, var, everything()) %>%
-    arrange(exp, trt, grp, var)
+    arrange(exp, trt, grp, var) %>%
+    rowwise() %>%
+    mutate(grouping = list(tibble(exp, trt, grp))) %>%
+    select(var, grouping)
   return(df_trait_change_exp)
 }
