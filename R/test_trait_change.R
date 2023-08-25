@@ -68,6 +68,8 @@ test_trait_change_model <- function(dat_lme, var, type) {
     # }
   }
 
+  # sample <- sample(residuals(model), 1000,prob =dat_lme %>% drop_na() %>% pull(weight) )
+  # shapiro.test(sample)
   res <- list(model = model, summary = summary(model))
   return(res)
 }
@@ -101,7 +103,7 @@ test_trait_change_data_obs <- function(dat_community, dat_niche, var, siteoi = "
     ungroup() %>%
     left_join(
       dat_niche %>%
-        select(species, value = !!sym(str_c(var, "_occ_mean"))),
+        select(species, value = !!sym(str_c(var, "_occ_median"))),
       by = "species"
     )
 
@@ -114,7 +116,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, var, exp, trt, 
         filter(site == exp, year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 1L, end = 1L)) %>%
         mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
-        filter(subgrp == "___") %>%
+        # filter(subgrp == "___") %>%
         mutate(phase = case_when(
           year <= 2002 ~ "Phase I",
           year >= 2010 ~ "Phase III",
@@ -131,7 +133,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, var, exp, trt, 
           str_sub(treat, start = 1L, end = 1L),
           str_sub(treat, start = 3L, end = 4L)
         )) %>%
-        filter(subgrp == "___") %>%
+        # filter(subgrp == "___") %>%
         select(trt, subgrp, year, plot, species, abund)
     }
   }
@@ -188,7 +190,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, var, exp, trt, 
     ungroup() %>%
     left_join(
       dat_niche %>%
-        select(species, value = !!sym(str_c(var, "_occ_mean"))),
+        select(species, value = !!sym(str_c(var, "_occ_median"))),
       by = "species"
     )
 
