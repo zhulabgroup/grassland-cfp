@@ -1,0 +1,38 @@
+---
+title: "2 Field sites"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+
+Tidy up and correct community composition data (experimental and observational).
+```{r, eval=F}
+path_community_tidy <- tidy_community_data()
+dat_community_tidy <- read_community(version = "tidy")
+```
+
+```{r}
+read_site_info() %>% knitr::kable() # perhaps make extdata
+```
+
+Output figures and r data files
+```{r, eval = F}
+```

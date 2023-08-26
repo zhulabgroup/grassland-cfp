@@ -1,7 +1,9 @@
-down_biogeography <- function(species_table, cfp_sf, num_cores = 22, outdir = "alldata/input/biogeography/", date = NULL) {
-  path_gbif <- down_gbif(species_table, cfp_sf, num_cores, outdir, date)
-  path_bien <- down_bien(species_table, cfp_sf, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
-  path_cch <- down_cch(species_table, cfp_sf, outdir, date)
+down_biogeography <- function(species_table, num_cores = 22, outdir = "alldata/input/biogeography/", date = NULL) {
+  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+
+  path_gbif <- down_gbif(species_table, sf_cfp, num_cores, outdir, date)
+  path_bien <- down_bien(species_table, sf_cfp, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
+  path_cch <- down_cch(species_table, sf_cfp, outdir, date)
   path_inat <- down_inat(gbif_file = path_gbif, date)
 
   out <- list(
@@ -10,10 +12,11 @@ down_biogeography <- function(species_table, cfp_sf, num_cores = 22, outdir = "a
     cch = path_cch,
     inat = path_inat
   )
+
   return(out)
 }
 
-down_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
+down_gbif <- function(species_table, sf_cfp, num_cores, outdir, date) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -31,7 +34,7 @@ down_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
       sp <- species_table$query_name[i]
       res <- spocc::occ(
         query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
-        geometry = st_bbox(cfp_sf),
+        geometry = st_bbox(sf_cfp),
         gbifopts = list(
           # occ_options(from = "gbif", where = "console")
           hasGeospatialIssue = FALSE
@@ -49,7 +52,7 @@ down_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
   gbif_cfp_tbl <- gbif_box_tbl %>%
     select(key, longitude, latitude) %>%
     st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
-    st_intersection(cfp_sf) %>% # find GBIF and CFP intersection
+    st_intersection(sf_cfp) %>% # find GBIF and CFP intersection
     # as_tibble() %>% # drop geometry
     select(key) %>% # use key to join (fast)
     right_join(gbif_box_tbl, ., by = "key")
@@ -70,7 +73,7 @@ down_gbif <- function(species_table, cfp_sf, num_cores, outdir, date) {
   return(outfile)
 }
 
-down_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
+down_bien <- function(species_table, sf_cfp, num_cores, outdir, date) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -101,7 +104,7 @@ down_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
     coords = c("longitude", "latitude"),
     crs = 4326
   )
-  bien_cfp_sf <- st_intersection(bien_all_sf, cfp_sf)
+  bien_cfp_sf <- st_intersection(bien_all_sf, sf_cfp)
 
   dat_bien_full <- bien_all_df %>%
     right_join(as_tibble(bien_cfp_sf) %>% dplyr::select(key), by = "key") %>%
@@ -117,7 +120,7 @@ down_bien <- function(species_table, cfp_sf, num_cores, outdir, date) {
   return(outfile)
 }
 
-down_cch <- function(species_table, cfp_sf, outdir, date) {
+down_cch <- function(species_table, sf_cfp, outdir, date) {
   if (is.null(date)) {
     date <- Sys.Date()
   }
@@ -160,7 +163,7 @@ down_cch <- function(species_table, cfp_sf, outdir, date) {
   # filter by CFP
   dat_cch_full <- cch_all_tbl %>%
     st_as_sf(coords = c("longitude", "latitude"), crs = 4326) %>%
-    st_intersection(cfp_sf) %>% # find CCH and CFP intersection
+    st_intersection(sf_cfp) %>% # find CCH and CFP intersection
     select(key) %>% # use key to join (fast)
     right_join(cch_all_tbl, ., by = "key") %>%
     select(queryName, consolidatedName, key, longitude, latitude, everything())

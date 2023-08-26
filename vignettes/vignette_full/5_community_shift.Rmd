@@ -1,0 +1,59 @@
+---
+title: "5 Community shift"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Calculate CTI CPI in observations and experiments and plot
+```{r, eval = F}
+dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+```
+
+```{r}
+gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index, sf_cfp, ras_grass)
+gg_community_index_obs
+gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index)
+gg_community_index_exp
+```
+
+Statistical test of trait change using lme
+```{r}
+df_test_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, type = "obs")
+df_test_trait_change_obs %>% knitr::kable()
+df_test_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, type = "exp")
+df_test_trait_change_exp %>% knitr::kable()
+```
+
+Synthesize coupled CTI CPI change
+```{r, eval = F}
+dat_shift <- calc_community_shift(dat_index = dat_index)
+```
+
+```{r}
+gg_community_shift <- plot_community_shift(dat_shift, dat_niche)
+gg_community_shift$combined
+```
+
+Output figures and r data files
+```{r, eval = F}
+# save_figure()
+save_rda(out = list(dat_index, dat_shift))
+```

@@ -1,0 +1,40 @@
+---
+title: "8 Species change"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Analysis of species contributing to CTI CPI change
+```{r, eval=F}
+dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
+# need to output to csv
+```
+
+```{r}
+gg_species_change <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
+gg_species_change$combined
+```
+
+Output figures and r data files
+```{r, eval = F}
+save_figure()
+save_rda(out = list(dat_gainloss))
+```

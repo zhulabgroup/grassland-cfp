@@ -1,20 +1,26 @@
-plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, dat_niche, cfp_sf, outfile = "alldata/output/figures/species-climate-niche.pdf") {
+plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, dat_niche, outfile = "alldata/output/figures/species-climate-niche.pdf") {
+  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+
   sp_vec <- dat_niche %>%
     filter(occ_n > 100) %>% # no dummy species
     pull(species)
 
   niche_gg <- vector(mode = "list")
   for (sp in sp_vec) {
-    niche_gg[[sp]] <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, cfp_sf, sp = sp) # no need to print(); will slow down
+    niche_gg[[sp]] <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sf_cfp, sp = sp) # no need to print(); will slow down
   }
 
   # runtime ~= 4 min
   pdf(outfile, width = 8, height = 8 * .618)
   print(niche_gg)
   dev.off()
+
+  return(outfile)
 }
 
-plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, cfp_sf, sp = "Danthonia californica") {
+plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sp = "Danthonia californica") {
+  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+
   geo_sp <- dat_occ$gbif %>%
     rename(species = consolidatedName) %>%
     filter(species == sp)
@@ -48,7 +54,7 @@ plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, cfp_s
       color = alpha("black", .1)
     ) +
     geom_sf(
-      data = cfp_sf,
+      data = sf_cfp,
       color = alpha("black", .3),
       fill = alpha("white", .1)
     ) +
@@ -81,14 +87,14 @@ plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, cfp_s
   return(out)
 }
 
-plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_niche, cfp_sf,
+plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_niche, # sf_cfp,
                                                     cool_species = "Danthonia californica",
                                                     warm_species = "Stipa pulchra") {
   # example species
   # Michael: important native species in California
   # Susan: Stipa pulchra is the state grass, and is the subject of a lot of ecological research and restoration effort
 
-  occ_geog_gg <- plot_individual_distribution(dat_occ, cool_species, warm_species, cfp_sf)
+  occ_geog_gg <- plot_individual_distribution(dat_occ, cool_species, warm_species)
   ind_trait_gg <- plot_individual_trait(dat_trait, cool_species, warm_species)
   sp_niche_gg <- plot_species_niche(dat_niche, cool_species, warm_species)
 

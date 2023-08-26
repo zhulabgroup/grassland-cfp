@@ -1,4 +1,4 @@
-calc_species_gainloss <- function(dat_community, dat_niche, outdir = "alldata/intermediate/synthesis-analysis/") {
+calc_species_gainloss <- function(dat_community, dat_niche) {
   dat_gainloss_obs <- calc_species_gainloss_obs(com_obs = dat_community$obs, dat_niche)
   dat_gainloss_exp <- calc_species_gainloss_exp(com_exp = dat_community$exp, dat_niche)
 
@@ -7,13 +7,11 @@ calc_species_gainloss <- function(dat_community, dat_niche, outdir = "alldata/in
     exp = dat_gainloss_exp
   )
 
-  outfile <- str_c(outdir, "gainloss.rds")
-  write_rds(dat_gainloss, outfile)
-  return(outfile)
+  return(dat_gainloss)
 }
 
 calc_species_gainloss_obs <- function(com_obs, dat_niche) {
-  site_list <- site_info() %>%
+  site_list <- read_site_info() %>%
     filter(!abbr %in% c("jrgce", "scide")) %>%
     pull(abbr)
 

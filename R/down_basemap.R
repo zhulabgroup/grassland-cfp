@@ -1,6 +1,6 @@
 # basemap -----------------------------------------------------------------
 
-down_cfp <- function(cfp_sf, outdir = "alldata/input/basemap/cfp/") {
+down_cfp <- function(sf_cfp, outdir = "alldata/input/basemap/cfp/") {
   # Biodiversity Hotspots (version 2016.1)
   # Michael Hoffman;  Kellee Koenig; Gill Bunting;  Jennifer Costanza;  Williams, Kristen J.
   # https://doi.org/10.5281/zenodo.3261807
@@ -13,17 +13,17 @@ down_cfp <- function(cfp_sf, outdir = "alldata/input/basemap/cfp/") {
     exdir = str_c(outdir)
   )
 
-  outfile <- list.files(outdir, pattern = ".shp$", full.names = T)
-  return(outfile)
+  # outfile <- list.files(outdir, pattern = ".shp$", full.names = T)
+  return(outdir)
 }
 
-down_grasscover <- function(outdir = "alldata/input/basemap/grass/") {
+down_grasscover <- function(sf_cfp, outdir = "alldata/input/basemap/grass/") {
   # MCD12Q1 MODIS/Terra+Aqua Land Cover Type Yearly L3 Global 500m SIN Grid V006
   # Friedl, M., Sulla-Menashe, D.
   # https://doi.org/10.5067/MODIS/MCD12Q1.006
   download.file(
-    url = "https://e4ftl01.cr.usgs.gov//MODV6_Cmp_C/MOTA/MCD12C1.006/2020.01.01/MCD12C1.A2020001.006.2021362215328.hdf",
-    destfile = str_c(outdir, "MCD12C1.A2020001.006.2021362215328.hdf"),
+    url = "https://e4ftl01.cr.usgs.gov/MOTA/MCD12C1.061/2021.01.01/MCD12C1.A2021001.061.2022217040006.hdf",
+    destfile = str_c(outdir, "MCD12C1.A2021001.061.2022217040006.hdf"),
     method = "wget",
     extra = str_c(
       "-c",
@@ -33,13 +33,13 @@ down_grasscover <- function(outdir = "alldata/input/basemap/grass/") {
   )
 
   # get grass percentage cover
-  grass_ras <- terra::rast(str_c(outdir, "MCD12C1.A2020001.006.2021362215328.hdf")) %>%
-    terra::crop(terra::ext(cfp_sf)) %>%
-    terra::mask(cfp_sf) %>%
+  ras_grass <- terra::rast(str_c(outdir, "MCD12C1.A2021001.061.2022217040006.hdf")) %>%
+    terra::crop(terra::ext(sf_cfp)) %>%
+    terra::mask(sf_cfp) %>%
     terra::subset("Land_Cover_Type_1_Percent_10") # User guide at https://lpdaac.usgs.gov/documents/101/MCD12_User_Guide_V6.pdf
 
   outfile <- str_c(outdir, "cfp-grassland-percent-cover.tif")
-  terra::writeRaster(grass_ras, outfile, overwrite = T)
+  terra::writeRaster(ras_grass, outfile, overwrite = T)
 
   return(outfile)
 }
