@@ -1,9 +1,4 @@
-plot_species_gainloss <- function(dat_niche, path_gainloss = NULL, indir = "alldata/intermediate/synthesis-analysis/") {
-  if (is.null(path_gainloss)) {
-    path_gainloss <- list.files(indir, pattern = "gainloss", full.names = T)
-  }
-  dat_gainloss <- read_rds(path_gainloss)
-
+plot_species_gainloss <- function(dat_niche, dat_gainloss) {
   p_obs <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche)
   p_exp <- plot_species_gainloss_exp(exp_tbl = dat_gainloss$exp, dat_niche)
 

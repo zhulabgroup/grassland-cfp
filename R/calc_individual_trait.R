@@ -10,7 +10,8 @@ calc_individual_trait <- function(dat_occ, dat_clim,
   occ_proj <- occ_sf %>%
     terra::crs(proj = T)
 
-  clim_ras <- dat_clim[[clim_source]]
+  clim_ras <- dat_clim[[clim_source]] %>%
+    terra::rast()
   clim_proj <- clim_ras %>%
     terra::crs(proj = T)
 

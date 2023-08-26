@@ -1,11 +1,11 @@
-plot_site_map <- function(cfp_sf, grass_ras) {
+plot_site_map <- function(sf_cfp, ras_grass) {
   # read site data
   site_sf <- read_site_info() %>%
     filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
     arrange(abbr) %>%
     add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
 
-  grass_tbl <- grass_ras %>%
+  grass_tbl <- ras_grass %>%
     terra::as.data.frame(xy = T) %>%
     as_tibble() %>%
     select(x, y, percent = Land_Cover_Type_1_Percent_10)
@@ -23,7 +23,7 @@ plot_site_map <- function(cfp_sf, grass_ras) {
       color = alpha("black", .1)
     ) +
     geom_sf(
-      data = cfp_sf,
+      data = sf_cfp,
       color = alpha("black", .3),
       fill = alpha("white", .1)
     ) +
@@ -69,7 +69,7 @@ plot_site_map <- function(cfp_sf, grass_ras) {
   #     color = alpha("black", .1)
   #   ) +
   #   geom_sf(
-  #     data = cfp_sf,
+  #     data = sf_cfp,
   #     color = alpha("black", .3),
   #     fill = alpha("white", .1)
   #   ) +

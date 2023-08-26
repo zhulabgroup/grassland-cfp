@@ -1,23 +1,22 @@
 
-read_cfp <- function(cfp_file = NULL, indir = "alldata/input/basemap/cfp/") {
-  if (is.null(cfp_file)) {
-    cfp_file <- list.files(indir, pattern = ".shp$", full.names = T)
+read_cfp <- function(path_cfp = NULL, indir = "alldata/input/basemap/cfp/") {
+  if (is.null(path_cfp)) {
+    path_cfp <- list.files(indir, pattern = ".shp$", full.names = T)
   }
-  cfp_sf <- st_read(cfp_file, quiet = TRUE) %>%
+  sf_cfp <- st_read(path_cfp, quiet = TRUE) %>%
     filter(
       NAME == "California Floristic Province",
       Type == "hotspot area"
-    )
+    ) %>%
+    select(-NAME, -Type)
 
-  return(cfp_sf)
+  return(sf_cfp)
 }
 
-
-
-read_grasscover <- function(grass_file = NULL, indir = "alldata/input/basemap/grass/") {
-  if (is.null(grass_file)) {
-    grass_file <- list.files(indir, pattern = ".tif", full.names = T)
+read_grasscover <- function(path_grass = NULL, indir = "alldata/input/basemap/grass/") {
+  if (is.null(path_grass)) {
+    path_grass <- list.files(indir, pattern = ".tif", full.names = T)
   }
-  grass_ras <- terra::rast(grass_file)
-  return(grass_ras)
+  ras_grass <- terra::rast(path_grass)
+  return(ras_grass)
 }

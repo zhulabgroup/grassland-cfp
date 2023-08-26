@@ -1,0 +1,45 @@
+---
+title: "3 Taxonomy"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Resolve taxonomy
+```{r, eval=F}
+# Save a species list from all tidy data
+f_species_tidy <- tidy_taxonomy_list(dat_community_tidy)
+# Josie and Justin used the output for manual correction, producing "misspelling.csv".
+
+# rename species
+path_community <- tidy_taxonomy_rename()
+dat_community <- read_community(version = "final")
+```
+
+```{r}
+dat_community
+```
+
+
+Output figures and r data files
+```{r, eval = F}
+save_rda(out = list(dat_community))
+```
+

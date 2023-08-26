@@ -1,0 +1,72 @@
+---
+title: "4 Species niche"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Download biogeography data
+```{r, eval=F}
+spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community) # explain this step? also where did consolication.csv come from
+path_occ <- down_biogeography(species_table = spp_tbl) # needs parallel computation
+dat_occ <- read_biogeography(path_occ = path_occ)
+```
+
+```{r}
+dat_occ
+```
+
+Download climate data
+```{r, eval = F}
+path_clim <- down_climate()
+dat_clim <- read_climate(path_clim = path_clim)
+```
+
+Calculate species niche and plot
+```{r, eval = F}
+path_trait <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa")
+```
+
+```{r}
+dat_trait <- read_individual_trait(path_trait = path_trait)
+dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
+```
+
+```{r}
+gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait,  sp = "Danthonia californica")
+gg_individual_trait_species_niche_cool
+gg_individual_trait_species_niche_warm <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Stipa pulchra")
+gg_individual_trait_species_niche_warm
+```
+
+```{r, eval = F}
+path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_trait, dat_niche)
+```
+
+```{r}
+gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche)
+gg_niche$combined
+```
+
+Output figures and r data files
+```{r, eval = F}
+# save_figure()
+save_rda(out = list(dat_occ, dat_trait, dat_niche))
+```

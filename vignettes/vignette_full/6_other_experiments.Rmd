@@ -1,0 +1,30 @@
+---
+title: "6 Other experiments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+
+Output figures and r data files
+```{r, eval = F}
+save_figure()
+save_rda(out = list())
+```

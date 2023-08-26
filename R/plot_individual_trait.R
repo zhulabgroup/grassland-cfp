@@ -1,7 +1,6 @@
 plot_individual_distribution <- function(data_occ,
                                          cool_species = "Danthonia californica",
                                          warm_species = "Stipa pulchra",
-                                         cfp_sf,
                                          frac = 1) {
   occ_sf <- dat_occ[["gbif"]] %>%
     select(species = consolidatedName, geometry) %>%

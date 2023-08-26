@@ -1,4 +1,4 @@
-read_community <- function(version = c( "final","tidy")) {
+read_community <- function(version = c("final", "tidy")) {
   if (version == "tidy") {
     indir <- "alldata/intermediate/observation-experiment/tidy-community/"
   } else if (version == "final") {

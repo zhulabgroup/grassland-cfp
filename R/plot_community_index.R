@@ -1,6 +1,6 @@
-plot_community_index <- function(option, dat_index, cfp_sf, grass_ras) {
+plot_community_index <- function(option, dat_index) {
   if (option == "obs") {
-    community_index_gg <- plot_community_index_obs(obs_tbl = dat_index$obs, cfp_sf, grass_ras)
+    community_index_gg <- plot_community_index_obs(obs_tbl = dat_index$obs)
   }
   if (option == "exp") {
     community_index_gg <- plot_community_index_exp(exp_tbl = dat_index$exp)
@@ -9,8 +9,11 @@ plot_community_index <- function(option, dat_index, cfp_sf, grass_ras) {
   return(community_index_gg)
 }
 
-plot_community_index_obs <- function(obs_tbl, cfp_sf, grass_ras) {
-  site_map_gg <- plot_site_map(cfp_sf, grass_ras)
+plot_community_index_obs <- function(obs_tbl) {
+  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+  ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
+
+  site_map_gg <- plot_site_map(sf_cfp, ras_grass)
   # reshape data
   obs_idx_tbl <- obs_tbl %>%
     select(site, year, plot, tmp_com_mean, ppt_com_mean) %>%
