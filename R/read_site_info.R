@@ -27,3 +27,24 @@ read_site_info <- function() {
 
   return(site_sf)
 }
+
+read_site_name <- function () {
+  site_vec <- c(
+    angelo = "Angelo Coast",
+    carrizo = "Carrizo Plain",
+    elkhorn = "Elkhorn Slough",
+    jasper = "Jasper Ridge Serpentine",
+    mclann = "McLaughlin Annual",
+    mclserp = "McLaughlin Serpentine",
+    morganterritory = "Morgan Territory",
+    pleasantonridge = "Pleasanton Ridge",
+    sunol = "Sunol",
+    swanton = "Swanton Ranch",
+    ucsc = "UC Santa Cruz",
+    vascocaves = "Vasco Caves",
+    jrgce = "Jasper Ridge\nGlobal Change Experiment",
+    mclexp = "McLaughlin Water Experiment",
+    scide = "Santa Cruz\nInternational Drought Experiment"
+  )
+  return(site_vec)
+}

@@ -57,6 +57,13 @@ save_figure_param <- function(gg_name) {
     filename <- "fig-supp-cfp-cc.png"
   }
 
+  if (str_detect(gg_name, "data_avail")) {
+    type <- "supp"
+    width <- 10
+    height <- 10 * .618
+    filename <- "fig-supp-data-avail.png"
+  }
+
   out <- list(type = type, width = width, height = height, filename = filename)
   return(out)
 }

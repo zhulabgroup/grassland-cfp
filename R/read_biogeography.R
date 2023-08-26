@@ -12,7 +12,8 @@ read_biogeography <- function(path_occ = NULL, indir = "alldata/input/biogeograp
   dataset <- c(
     "gbif",
     # "bien",
-    "cch", "inat"
+    "cch",
+    "inat"
   )
   for (d in dataset) {
     df <- read_rds(path_occ[[d]]) %>%

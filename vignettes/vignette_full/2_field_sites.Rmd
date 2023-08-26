@@ -25,13 +25,28 @@ theme_set(ggthemes::theme_few())
 Tidy up and correct community composition data (experimental and observational).
 ```{r, eval=F}
 path_community_tidy <- tidy_community_data()
-dat_community_tidy <- read_community(version = "tidy")
 ```
+
+```{r}
+dat_community_tidy <- read_community(version = "tidy")
+df_data_avail_obs <- summ_data_avail (dat_community, type ="short", subset = "obs")
+```
+
+We then compiled `r df_data_avail_obs %>% pull(nyear) %>% min()` - `r df_data_avail_obs %>% pull(nyear) %>% max()` yr observational data from 12 sites with `r df_data_avail_obs %>% pull(nyear) %>% sum()` total site years.
+
+```{r}
+df_data_avail <- summ_data_avail (dat_community, type ="long")
+gg_data_avail <- plot_data_availability(df_data_avail)
+gg_data_avail
+```
+
 
 ```{r}
 read_site_info() %>% knitr::kable() # perhaps make extdata
 ```
 
+
 Output figures and r data files
 ```{r, eval = F}
+save_figure(out = list(data_avail = gg_data_avail))
 ```
