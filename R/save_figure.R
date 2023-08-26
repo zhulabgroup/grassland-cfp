@@ -67,7 +67,7 @@ save_figure_param <- function(gg_name) {
   if (str_detect(gg_name, "site_cc")) {
     type <- "supp"
     width <- 11
-    height <- 11 * .618
+    height <- 11 * 1.5
     filename <- "fig-supp-site-cc.png"
   }
 
