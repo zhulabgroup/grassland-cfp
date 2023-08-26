@@ -56,7 +56,8 @@ plot_individual_distribution <- function(data_occ,
 
 plot_individual_trait <- function(dat_trait,
                                   cool_species = "Danthonia californica",
-                                  warm_species = "Stipa pulchra") {
+                                  warm_species = "Stipa pulchra",
+                                  frac = 1) {
   trait_tbl <- dat_trait %>%
     mutate(species_type = case_when(
       species == cool_species ~ "cool",
@@ -67,7 +68,13 @@ plot_individual_trait <- function(dat_trait,
       tmp > quantile(tmp, .0001), tmp < quantile(tmp, .9999), # remove extreme climate points for plotting
       ppt > quantile(ppt, .0001), ppt < quantile(ppt, .9999)
     )
-
+  trait_tbl <- bind_rows(
+    trait_tbl %>%
+      filter(species == "other") %>%
+      sample_frac(frac),
+    trait_tbl %>%
+      filter(species != "other")
+  )
   ind_trait_gg <-
     ggplot(
       data = trait_tbl,

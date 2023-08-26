@@ -28,7 +28,7 @@ dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_com
 ```
 
 ```{r}
-gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index, sf_cfp, ras_grass)
+gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
 gg_community_index_obs
 gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index)
 gg_community_index_exp

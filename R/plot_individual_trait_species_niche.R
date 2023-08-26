@@ -18,8 +18,10 @@ plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, d
   return(outfile)
 }
 
-plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sp = "Danthonia californica") {
-  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sf_cfp = NULL, sp = "Danthonia californica") {
+  if (is.null(sf_cfp)) {
+    sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+  }
 
   geo_sp <- dat_occ$gbif %>%
     rename(species = consolidatedName) %>%
@@ -89,13 +91,14 @@ plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sp = 
 
 plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_niche, # sf_cfp,
                                                     cool_species = "Danthonia californica",
-                                                    warm_species = "Stipa pulchra") {
+                                                    warm_species = "Stipa pulchra",
+                                                    frac = 1) {
   # example species
   # Michael: important native species in California
   # Susan: Stipa pulchra is the state grass, and is the subject of a lot of ecological research and restoration effort
 
-  occ_geog_gg <- plot_individual_distribution(dat_occ, cool_species, warm_species)
-  ind_trait_gg <- plot_individual_trait(dat_trait, cool_species, warm_species)
+  occ_geog_gg <- plot_individual_distribution(dat_occ, cool_species, warm_species, frac)
+  ind_trait_gg <- plot_individual_trait(dat_trait, cool_species, warm_species, frac)
   sp_niche_gg <- plot_species_niche(dat_niche, cool_species, warm_species)
 
   # combine panels
