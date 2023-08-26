@@ -49,6 +49,11 @@ path_clim <- down_climate()
 dat_clim <- read_climate(path_clim = path_clim)
 ```
 
+```{r}
+dat_clim <- read_climate()
+dat_clim
+```
+
 Summarize cfp climate
 ```{r}
 bbox_cfp <- summ_cfp_geography()
