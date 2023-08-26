@@ -22,7 +22,6 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-
 Tidy up and correct community composition data (experimental and observational).
 ```{r, eval=F}
 path_community_tidy <- tidy_community_data()

@@ -42,10 +42,10 @@ dat_clim <- read_climate(path_clim = path_clim)
 Calculate species niche and plot
 ```{r, eval = F}
 path_trait <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa")
+dat_trait <- read_individual_trait(path_trait = path_trait)
 ```
 
 ```{r}
-dat_trait <- read_individual_trait(path_trait = path_trait)
 dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 ```
 
@@ -62,11 +62,11 @@ path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_tra
 
 ```{r}
 gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche)
-gg_niche$combined
+gg_niche$sp_niche
 ```
 
 Output figures and r data files
 ```{r, eval = F}
-# save_figure()
+save_figure(out = list(niche = gg_niche$combined))
 save_rda(out = list(dat_occ, dat_trait, dat_niche))
 ```
