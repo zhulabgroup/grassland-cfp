@@ -31,13 +31,12 @@ dat_occ <- read_biogeography(path_occ = path_occ)
 
 ```{r}
 dat_occ
+df_summ_occ <- summ_biogeography(dat_occ = dat_occ)
+df_summ_occ
 ```
 
-Download climate data
-```{r, eval = F}
-path_clim <- down_climate()
-dat_clim <- read_climate(path_clim = path_clim)
-```
+We retrieved `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_occ)` occurrence records of `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_sp)` species in the CFP from the Global Biodiversity Information Facility (GBIF).
+
 
 Calculate species niche and plot
 ```{r, eval = F}
@@ -47,23 +46,38 @@ dat_trait <- read_individual_trait(path_trait = path_trait)
 
 ```{r}
 dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
+df_summ_niche <- summ_species_niche(dat_niche = dat_niche)
 ```
+Among all the `r df_summ_niche$n` species with more than 100 GBIF records, their average temperatures ranging from `r df_summ_niche$tmp_min %>% signif(3) %>% format(big.mark = ",")` °C to `r df_summ_niche$tmp_max %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r df_summ_niche$ppt_min %>% signif(3) %>% format(big.mark = ",")` mm to `r df_summ_niche$ppt_max %>% signif(3) %>% format(big.mark = ",")` mm.
 
 ```{r}
-gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait,  sp = "Danthonia californica")
+gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
 gg_individual_trait_species_niche_cool
 gg_individual_trait_species_niche_warm <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Stipa pulchra")
 gg_individual_trait_species_niche_warm
 ```
+```{r}
+df_summ_niche_cool <- summ_species_niche(dat_niche = dat_niche, sp = "Danthonia californica")
+df_summ_niche_warm <- summ_species_niche(dat_niche = dat_niche, sp = "Stipa pulchra")
+```
+
+_Danthonia californica_ had `r df_summ_niche_cool$n_occ` records, with temperature of `r df_summ_niche_cool$tmp_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_cool$tmp_lower %>% signif(3) %>% format(big.mark = ",")` -`r df_summ_niche_cool$tmp_upper %>% signif(3) %>% format(big.mark = ",")` )°C and precipitation of `r df_summ_niche_cool$ppt_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_cool$ppt_lower %>% signif(3) %>% format(big.mark = ",")`-`r df_summ_niche_cool$ppt_upper %>% signif(3) %>% format(big.mark = ",")`) mm, whereas _Stipa pulchra_ had `r df_summ_niche_warm$n_occ` records, with temperature of `r df_summ_niche_warm$tmp_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_warm$tmp_lower %>% signif(3) %>% format(big.mark = ",")` -`r df_summ_niche_warm$tmp_upper %>% signif(3) %>% format(big.mark = ",")` )°C and precipitation of `r df_summ_niche_warm$ppt_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_warm$ppt_lower %>% signif(3) %>% format(big.mark = ",")`-`r df_summ_niche_warm$ppt_upper %>% signif(3) %>% format(big.mark = ",")`) mm.
+
 
 ```{r, eval = F}
 path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_trait, dat_niche)
 ```
 
 ```{r}
-gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche)
+gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 0)
 gg_niche$sp_niche
 ```
+
+```{r}
+mod_species_niche_cor <- test_species_niche(dat_niche = dat_niche)
+mod_species_niche_cor
+```
+Across all the species, the temperature and precipitation averages were negatively and significantly correlated (Pearson's correlation _r_ = `r mod_species_niche_cor$estimate`).
 
 Output figures and r data files
 ```{r, eval = F}

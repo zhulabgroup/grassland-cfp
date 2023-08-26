@@ -43,11 +43,32 @@ save_figure_param <- function(gg_name) {
     filename <- "fig-main-shift.png"
   }
 
-  if (str_detect(gg_name, "gg_species_change")) {
+  if (str_detect(gg_name, "species_change")) {
     type <- "main"
     width <- 11
     height <- 11.5
     filename <- "fig-main-gainloss.png"
+  }
+
+  if (str_detect(gg_name, "cfp_cc")) {
+    type <- "supp"
+    width <- 9
+    height <- 9 * .618
+    filename <- "fig-supp-cfp-cc.png"
+  }
+
+  if (str_detect(gg_name, "data_avail")) {
+    type <- "supp"
+    width <- 10
+    height <- 10 * .618
+    filename <- "fig-supp-data-avail.png"
+  }
+
+  if (str_detect(gg_name, "site_cc")) {
+    type <- "supp"
+    width <- 11
+    height <- 11 * .618
+    filename <- "fig-supp-site-cc.png"
   }
 
   out <- list(type = type, width = width, height = height, filename = filename)

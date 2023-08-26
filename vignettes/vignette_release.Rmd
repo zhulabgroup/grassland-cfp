@@ -32,7 +32,7 @@ dat_community
 ```{r}
 dat_occ$gbif
 # dat_clim
-dat_trait 
+dat_trait
 ```
 
 Calculate species niche and plot

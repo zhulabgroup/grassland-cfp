@@ -1,7 +1,6 @@
 plot_site_map <- function(sf_cfp, ras_grass) {
   # read site data
-  site_sf <- read_site_info() %>%
-    filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves")) %>%
+  site_sf <- read_site_info(subset = "obs") %>%
     arrange(abbr) %>%
     add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
 
