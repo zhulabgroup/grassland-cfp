@@ -1,4 +1,4 @@
-read_site_info <- function() {
+read_site_info <- function(subset = NULL) {
   # site info data
   site_sf <- tribble(
     ~abbr, ~name, ~latitude, ~longitude, ~grass_type, ~data_method,
@@ -25,10 +25,17 @@ read_site_info <- function() {
     ) %>%
     sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
+  if (!is.null(subset)) {
+    if (subset == "obs") {
+      site_sf <- site_sf %>%
+        filter(abbr %in% c("angelo", "carrizo", "elkhorn", "jasper", "mclann", "morganterritory", "pleasantonridge", "sunol", "swanton", "ucsc", "vascocaves"))
+    }
+  }
+
   return(site_sf)
 }
 
-read_site_name <- function () {
+read_site_name <- function() {
   site_vec <- c(
     angelo = "Angelo Coast",
     carrizo = "Carrizo Plain",
@@ -47,4 +54,10 @@ read_site_name <- function () {
     scide = "Santa Cruz\nInternational Drought Experiment"
   )
   return(site_vec)
+}
+
+read_jrgce_env <- function(path = "alldata/input/climate/Environment.csv") {
+  env_df <- read_csv(path) %>%
+    filter(yr != 1998)
+  return(env_df)
 }

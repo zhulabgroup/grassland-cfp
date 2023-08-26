@@ -31,7 +31,7 @@ dat_occ <- read_biogeography(path_occ = path_occ)
 
 ```{r}
 dat_occ
-df_summ_occ <- summ_biogeography (dat_occ = dat_occ)
+df_summ_occ <- summ_biogeography(dat_occ = dat_occ)
 df_summ_occ
 ```
 
@@ -51,7 +51,7 @@ df_summ_niche <- summ_species_niche(dat_niche = dat_niche)
 Among all the `r df_summ_niche$n` species with more than 100 GBIF records, their average temperatures ranging from `r df_summ_niche$tmp_min %>% signif(3) %>% format(big.mark = ",")` °C to `r df_summ_niche$tmp_max %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r df_summ_niche$ppt_min %>% signif(3) %>% format(big.mark = ",")` mm to `r df_summ_niche$ppt_max %>% signif(3) %>% format(big.mark = ",")` mm.
 
 ```{r}
-gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait,  sp = "Danthonia californica")
+gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
 gg_individual_trait_species_niche_cool
 gg_individual_trait_species_niche_warm <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Stipa pulchra")
 gg_individual_trait_species_niche_warm
@@ -74,7 +74,7 @@ gg_niche$sp_niche
 ```
 
 ```{r}
-mod_species_niche_cor <- test_species_niche (dat_niche= dat_niche)
+mod_species_niche_cor <- test_species_niche(dat_niche = dat_niche)
 mod_species_niche_cor
 ```
 Across all the species, the temperature and precipitation averages were negatively and significantly correlated (Pearson's correlation _r_ = `r mod_species_niche_cor$estimate`).

@@ -57,6 +57,7 @@ Output figures and r data files
 save_figure(out = list(
   community_index_obs = gg_community_index_obs,
   community_index_exp = gg_community_index_exp,
-  community_shift =gg_community_shift$combined))
+  community_shift = gg_community_shift$combined
+))
 save_rda(out = list(dat_index, dat_shift))
 ```
