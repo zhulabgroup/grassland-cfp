@@ -35,6 +35,9 @@ gg_species_change$combined
 
 Output figures and r data files
 ```{r, eval = F}
-save_figure(out = list(species_change = gg_species_change$combined))
+save_figure(out = list(species_change = gg_species_change$combined,
+                       species_change_obs = gg_species_change$obs$circle_detail,
+                       species_change_exp = gg_species_change$exp$circle_detail
+                       ))
 save_rda(out = list(dat_gainloss))
 ```

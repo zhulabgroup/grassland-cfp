@@ -81,6 +81,8 @@ Across all the species, the temperature and precipitation averages were negative
 
 Output figures and r data files
 ```{r, eval = F}
-save_figure(out = list(niche = gg_niche$combined))
+save_figure(out = list(niche = gg_niche$combined, 
+                       niche_cool = gg_individual_trait_species_niche_cool,
+                       niche_warm = gg_individual_trait_species_niche_warm))
 save_rda(out = list(dat_occ, dat_trait, dat_niche))
 ```
