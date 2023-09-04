@@ -13,7 +13,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   out.width = "100%",
   cache = T,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 8
 )
 ```
 
@@ -86,5 +88,4 @@ The experiment occupied ~0.75 ha within a 5-ha grassland stand and experienced a
 Output figures and r data files
 ```{r, eval = F}
 save_figure(out = list(data_avail = gg_data_avail, site_cc = gg_site_cc))
-save_extdata(out = list("alldata/input/climate/Environment.csv"))
 ```
