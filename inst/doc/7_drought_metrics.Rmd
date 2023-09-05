@@ -1,0 +1,61 @@
+---
+title: "7 Drought metrics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{7 Drought metrics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 8
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Extract individual trait niche using TerraClim data that has CWD
+```{r, eval = F}
+dat_clim <- read_climate()
+dat_trait_cwd <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "terraclim")
+```
+
+```{r}
+dat_trait_cwd <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-terraclim.rds")
+gg_trait_cwd <- plot_trait_cwd(dat_trait_cwd)
+gg_trait_cwd
+test_trait_cwd_cor(dat_trait_cwd)
+```
+
+Calculate species niche and community index
+```{r}
+dat_niche_cwd <- calc_species_niche(dat_trait_cwd, add_dummy = T)
+dat_index_cwd <- calc_community_index(dat_niche = dat_niche_cwd, dat_community = dat_community)
+```
+
+Plot community index
+```{r}
+gg_community_index_obs_cwd <- plot_community_index(option = "obs", dat_index = dat_index_cwd)
+gg_community_index_obs_cwd
+gg_community_index_exp_cwd <- plot_community_index(option = "exp", dat_index = dat_index_cwd, experiment = "jrgce", treatment = "warming")
+gg_community_index_exp_cwd
+```
+
+Output figures and r data files
+```{r, eval = F}
+save_figure(out = list(
+  trait_cwd = gg_trait_cwd,
+  community_index_obs_cwd = gg_community_index_obs_cwd,
+  community_index_exp_cwd = gg_community_index_exp_cwd
+))
+```
