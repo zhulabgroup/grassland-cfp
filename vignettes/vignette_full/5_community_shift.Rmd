@@ -24,9 +24,12 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Calculate CTI CPI in observations and experiments and plot
-```{r, eval = F}
-dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+Change in percentage of guilds
+```{r}
+gg_guild_percentage_obs <- plot_guild_percentage(option = "obs", dat_community = dat_community)
+gg_guild_percentage_obs
+gg_guild_percentage_exp <- plot_guild_percentage(option = "exp", dat_community = dat_community)
+gg_guild_percentage_exp
 ```
 
 Statistical test of trait change using weighted lm or lme
@@ -44,6 +47,17 @@ By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 si
 
 Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant increase in temperature trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "ppt") %>% pull(estimate) %>%magrittr::multiply_by(-1)` mm.
 
+```{r}
+gg_trait_change_obs <- plot_trait_change(option = "obs",dat_community, dat_niche)
+gg_trait_change_obs
+gg_trait_change_exp <- plot_trait_change(option = "exp",dat_community, dat_niche)
+gg_trait_change_exp
+```
+
+Calculate CTI CPI in observations and experiments and plot
+```{r, eval = F}
+dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+```
 
 Statistical test of index change using lm or lme
 ```{r}
@@ -63,10 +77,9 @@ Comparing warming plots to ambient plots, pooling data from all years in each ph
 ```{r}
 gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
 gg_community_index_obs
-gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index)
+gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index, experiment = "jrgce", treatment = "warming")
 gg_community_index_exp
 ```
-
 
 Synthesize coupled CTI CPI change
 ```{r, eval = F}
@@ -78,9 +91,21 @@ gg_community_shift <- plot_community_shift(dat_shift, dat_niche)
 gg_community_shift$combined
 ```
 
+```{r}
+df_summ_shift_coupling <- summ_shift_coupling (dat_shift)
+df_summ_shift_coupling
+```
+
+A community thermophilization of 0.1 °C corresponded to a xerophilization of `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` mm from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` mm from the experiment. Likewise, a community xerophilization of 10 mm corresponded to a thermophilization of `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` °C from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` °C from the experiment.
+
+
 Output figures and r data files
 ```{r, eval = F}
 save_figure(out = list(
+  guild_perc_obs = gg_guild_percentage_obs,
+  guild_perc_exp = gg_guild_percentage_exp,
+  trait_change_obs = gg_trait_change_obs, 
+  trait_change_exp = gg_trait_change_exp,
   community_index_obs = gg_community_index_obs,
   community_index_exp = gg_community_index_exp,
   community_shift = gg_community_shift$combined

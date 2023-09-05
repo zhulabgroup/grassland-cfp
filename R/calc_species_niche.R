@@ -27,6 +27,23 @@ calc_species_niche <- function(dat_trait, add_dummy = T) {
       vpd_occ_q95 = quantile(vpd, .95, na.rm = TRUE)
     )
 
+  if ("cwd" %in% colnames(dat_trait)) {
+    dat_niche_cwd <- dat_trait %>%
+      select(key, species, cwd) %>%
+      group_by(species) %>%
+      summarize(
+        cwd_occ_mean = mean(cwd, na.rm = TRUE),
+        cwd_occ_sd = sd(cwd, na.rm = TRUE),
+        cwd_occ_median = median(cwd, na.rm = TRUE),
+        cwd_occ_q05 = quantile(cwd, .05, na.rm = TRUE),
+        cwd_occ_q25 = quantile(cwd, .25, na.rm = TRUE),
+        cwd_occ_q75 = quantile(cwd, .75, na.rm = TRUE),
+        cwd_occ_q95 = quantile(cwd, .95, na.rm = TRUE)
+      )
+
+    dat_niche <- left_join(dat_niche, dat_niche_cwd, by = "species")
+  }
+
   if (add_dummy) {
     # add genus-only species as dummy and set their niche as average
     Avena_tbl <- dat_niche %>%

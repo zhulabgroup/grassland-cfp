@@ -7,18 +7,18 @@ test_index_change_model <- function(dat_lme, index, option) {
   if (option == "obs") {
     if (dat_lme %>% pull(site) %>% unique() %>% length() > 1) {
       model <- lmerTest::lmer(value ~ year + (1 | site),
-                              data = dat_lme
+        data = dat_lme
       )
     } else {
       model <- lm(value ~ year,
-                  data = dat_lme
+        data = dat_lme
       )
     }
   }
 
   if (option == "exp") {
     model <- lmerTest::lmer(value ~ trt + (1 | year),
-                            data = dat_lme
+      data = dat_lme
     )
   }
 
@@ -38,13 +38,13 @@ test_trait_change_model <- function(dat_lme, trait, option) {
   if (option == "obs") {
     if (dat_lme %>% pull(site) %>% unique() %>% length() > 1) {
       model <- lmerTest::lmer(value ~ year + (1 | site),
-                              weights = dat_lme %>% pull(weight),
-                              data = dat_lme
+        weights = dat_lme %>% pull(weight),
+        data = dat_lme
       )
     } else {
       model <- lm(value ~ year,
-                  weights = dat_lme %>% pull(weight),
-                  data = dat_lme
+        weights = dat_lme %>% pull(weight),
+        data = dat_lme
       )
     }
   }
@@ -58,8 +58,8 @@ test_trait_change_model <- function(dat_lme, trait, option) {
     # }
     # else {
     model <- lmerTest::lmer(value ~ trt + (1 | year),
-                            weights = dat_lme %>% pull(weight),
-                            data = dat_lme
+      weights = dat_lme %>% pull(weight),
+      data = dat_lme
     )
     # }
   }

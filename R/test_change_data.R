@@ -2,20 +2,22 @@
 test_index_change_data <- function(dat_index, index, grouping, option) {
   if (option == "obs") {
     return(test_index_change_data_obs(dat_index$obs, index,
-                                      siteoi = grouping$site
+      siteoi = grouping$site
     ))
   }
   if (option == "exp") {
     return(test_index_change_data_exp(dat_index$exp, index,
-                                      exp = grouping$exp,
-                                      trt = grouping$trt,
-                                      grp = grouping$grp
+      exp = grouping$exp,
+      trt = grouping$trt,
+      grp = grouping$grp
     ))
   }
 }
 test_index_change_data_obs <- function(dat_index, index, siteoi = "all") {
-  var <- case_when(index == "cti"~"tmp",
-                   index == "cpi"~"ppt")
+  var <- case_when(
+    index == "cti" ~ "tmp",
+    index == "cpi" ~ "ppt"
+  )
   dat_index <- dat_index %>%
     select(site, year, plot, value = !!sym(str_c(var, "_com_mean")))
 
@@ -31,8 +33,10 @@ test_index_change_data_obs <- function(dat_index, index, siteoi = "all") {
 }
 
 test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
-  var <- case_when(index == "cti"~"tmp",
-                   index == "cpi"~"ppt")
+  var <- case_when(
+    index == "cti" ~ "tmp",
+    index == "cpi" ~ "ppt"
+  )
   dat_index <- dat_index %>%
     select(site, year, plot, treat, value = !!sym(str_c(var, "_com_mean")))
   if (exp == "jrgce") {
@@ -117,14 +121,14 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
 test_trait_change_data <- function(dat_community, dat_niche, trait, grouping, option) {
   if (option == "obs") {
     return(test_trait_change_data_obs(dat_community$obs, dat_niche, trait,
-                                      siteoi = grouping$site
+      siteoi = grouping$site
     ))
   }
   if (option == "exp") {
     return(test_trait_change_data_exp(dat_community$exp, dat_niche, trait,
-                                      exp = grouping$exp,
-                                      trt = grouping$trt,
-                                      grp = grouping$grp
+      exp = grouping$exp,
+      trt = grouping$trt,
+      grp = grouping$grp
     ))
   }
 }
@@ -225,7 +229,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, trait, exp, trt
   }
 
   dat_lme <- dat_exp %>%
-    group_by(plot, year) %>%
+    group_by(trt, plot, year) %>%
     mutate(weight = abund / sum(abund)) %>% # convert all abundance (absolute or relative) to percentage, such that all plots get equal weight later in lme
     ungroup() %>%
     left_join(

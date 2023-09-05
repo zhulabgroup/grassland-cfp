@@ -1,4 +1,4 @@
-test_index_change_all <- function(dat_index, option ) {
+test_index_change_all <- function(dat_index, option) {
   df_index_change_exp <- test_index_change_comb(dat_index, option) %>%
     mutate(test_index_change(dat_index, index, grouping, option)) %>%
     select(grouping, everything()) %>%

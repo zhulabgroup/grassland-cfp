@@ -1,6 +1,7 @@
 plot_species_niche <- function(dat_niche,
-                               cool_species = "Danthonia californica",
-                               warm_species = "Stipa pulchra") {
+                               cool_species = "Danthonia californica", # Michael: important native species in California
+                               warm_species = "Stipa pulchra" # Susan: Stipa pulchra is the state grass, and is the subject of a lot of ecological research and restoration effort
+) {
   niche_tbl <- dat_niche %>%
     mutate(species_type = case_when(
       species == cool_species ~ "cool",

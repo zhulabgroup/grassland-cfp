@@ -1,9 +1,11 @@
 test_index_change_comb <- function(dat_community, option) {
-  df <- test_trait_change_comb (dat_community, option) %>%
-    mutate(index = case_when (trait == "tmp" ~ "cti",
-                              trait == "ppt" ~ "cpi",
-                              trait == "cwd" ~ "cdi")) %>%
-    mutate(index = factor (index, levels = c("cti", "cpi", "cdi"))) %>%
+  df <- test_trait_change_comb(dat_community, option) %>%
+    mutate(index = case_when(
+      trait == "tmp" ~ "cti",
+      trait == "ppt" ~ "cpi",
+      trait == "cwd" ~ "cdi"
+    )) %>%
+    mutate(index = factor(index, levels = c("cti", "cpi", "cdi"))) %>%
     select(index, grouping)
   return(df)
 }
@@ -78,11 +80,11 @@ test_change_comb_exp <- function(dat_community_exp) {
   df_trait_change_exp <- bind_rows(ls_df_trait_change_exp_comb) %>%
     cross_join(data.frame(trait = c("tmp", "ppt"))) %>%
     mutate(exp = factor(exp,
-                        levels = c(
-                          "jrgce",
-                          "mclexp",
-                          "scide"
-                        )
+      levels = c(
+        "jrgce",
+        "mclexp",
+        "scide"
+      )
     )) %>%
     mutate(trait = factor(trait, levels = c("tmp", "ppt"))) %>%
     mutate(trt = factor(trt, levels = c("Warming", "Watering", "Drought"))) %>%

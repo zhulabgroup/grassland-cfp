@@ -23,15 +23,16 @@ Imports:
     ggthemes, 
     gtools, 
     markdown, 
+    patchwork, 
     raster, 
     rmarkdown, 
     rnaturalearth, 
+    sf, 
+    spThin,
     terra, 
     tidyverse, 
-    viridis, 
-    sf, 
-    patchwork, 
-    vegan
+    vegan, 
+    viridis
 Remotes:
     git::https://github.com/ropensci/rnaturalearthhires.git
 Suggests: 

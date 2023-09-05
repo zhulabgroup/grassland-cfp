@@ -158,7 +158,8 @@ down_cch <- function(species_table, sf_cfp, outdir, date) {
       latitude = decimalLatitude,
       key = id
     ) %>%
-    distinct(key, .keep_all = T)
+    distinct(key, .keep_all = T) %>%
+    mutate(key = as.character(key))
 
   # filter by CFP
   dat_cch_full <- cch_all_tbl %>%
