@@ -1,4 +1,3 @@
-
 read_climate <- function(path_clim = NULL, indir = "alldata/input/climate/") {
   if (is.null(path_clim)) {
     path_clim <- list(
@@ -11,9 +10,29 @@ read_climate <- function(path_clim = NULL, indir = "alldata/input/climate/") {
   chelsa_ras <- terra::rast(c(
     str_c(path_clim$chelsa, "bio1.tif"),
     str_c(path_clim$chelsa, "bio12.tif"),
-    str_c(path_clim$chelsa, "vpd_max.tif")
+    str_c(path_clim$chelsa, "vpd_max.tif"),
+    str_c(path_clim$chelsa, "bio1.tif"),
+    str_c(path_clim$chelsa, "bio8.tif"),
+    str_c(path_clim$chelsa, "bio9.tif"),
+    str_c(path_clim$chelsa, "bio10.tif"),
+    str_c(path_clim$chelsa, "bio11.tif"),
+    str_c(path_clim$chelsa, "bio12.tif"),
+    str_c(path_clim$chelsa, "bio13.tif"),
+    str_c(path_clim$chelsa, "bio16.tif"),
+    str_c(path_clim$chelsa, "bio19.tif")
   ))
-  names(chelsa_ras) <- c("tmp", "ppt", "vpd")
+  names(chelsa_ras) <- c(
+    "tmp", "ppt", "vpd",
+    "bio1", # Annual Mean Temperature
+    "bio8", # Mean Temperature of Wettest Quarter
+    "bio9", # Mean Temperature of Driest Quarter
+    "bio10", # Mean Temperature of Warmest Quarter
+    "bio11", # Mean Temperature of Coldest Quarter
+    "bio12", # Annual Precipitation
+    "bio13", # Precipitation of Wettest Month
+    "bio16", # Precipitation of Wettest Quarter
+    "bio19" # Precipitation of Coldest Quarter
+  )
   # terra::crs(chelsa_ras, proj = TRUE) # WGS84
 
   # prism
