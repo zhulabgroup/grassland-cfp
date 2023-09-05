@@ -53,6 +53,6 @@ rsconnect
 
 # R Environment Variables
 .Renviron
-inst/doc
+# inst/doc
 # /doc/
 # /Meta
