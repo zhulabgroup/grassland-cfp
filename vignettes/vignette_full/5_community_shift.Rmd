@@ -38,7 +38,7 @@ df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = 
 df_trait_change_obs %>% knitr::kable()
 df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = "exp")
 df_trait_change_exp %>% knitr::kable()
-df_summ_trait_change_obs <- summ_change (df_trait_change_obs, option = "obs")
+df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs")
 ```
 
 Overall, the 12 observational sites had significant increases in temperature trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant decreases in precipitation trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "ppt") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
@@ -48,9 +48,9 @@ By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 si
 Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant increase in temperature trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "ppt") %>% pull(estimate) %>%magrittr::multiply_by(-1)` mm.
 
 ```{r}
-gg_trait_change_obs <- plot_trait_change(option = "obs",dat_community, dat_niche)
+gg_trait_change_obs <- plot_trait_change(option = "obs", dat_community, dat_niche)
 gg_trait_change_obs
-gg_trait_change_exp <- plot_trait_change(option = "exp",dat_community, dat_niche)
+gg_trait_change_exp <- plot_trait_change(option = "exp", dat_community, dat_niche)
 gg_trait_change_exp
 ```
 
@@ -65,7 +65,7 @@ df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
 df_index_change_obs %>% knitr::kable()
 df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
 df_index_change_exp %>% knitr::kable()
-df_summ_index_change_obs <- summ_change (df_index_change_obs, option = "obs")
+df_summ_index_change_obs <- summ_change(df_index_change_obs, option = "obs")
 ```
 
 Overall, the 12 observational sites had significant thermophilization (increases in CTI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant xerophilization (decreases in CPI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
@@ -92,7 +92,7 @@ gg_community_shift$combined
 ```
 
 ```{r}
-df_summ_shift_coupling <- summ_shift_coupling (dat_shift)
+df_summ_shift_coupling <- summ_shift_coupling(dat_shift)
 df_summ_shift_coupling
 ```
 
@@ -104,7 +104,7 @@ Output figures and r data files
 save_figure(out = list(
   guild_perc_obs = gg_guild_percentage_obs,
   guild_perc_exp = gg_guild_percentage_exp,
-  trait_change_obs = gg_trait_change_obs, 
+  trait_change_obs = gg_trait_change_obs,
   trait_change_exp = gg_trait_change_exp,
   community_index_obs = gg_community_index_obs,
   community_index_exp = gg_community_index_exp,

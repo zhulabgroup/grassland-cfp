@@ -1,4 +1,4 @@
-test_index_change_model <- function(dat_lme, index, option) {
+test_index_change_model <- function(dat_lme, option) {
   # if (index == "cpi") {
   #   dat_lme <- dat_lme %>%
   #     mutate(value = rank(value))
@@ -29,7 +29,7 @@ test_index_change_model <- function(dat_lme, index, option) {
 }
 
 
-test_trait_change_model <- function(dat_lme, trait, option) {
+test_trait_change_model <- function(dat_lme, option) {
   # if (trait == "ppt") {
   #   dat_lme <- dat_lme %>%
   #     mutate(value = rank(value))

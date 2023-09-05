@@ -34,7 +34,7 @@ dat_trait_cwd <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", c
 dat_trait_cwd <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-terraclim.rds")
 gg_trait_cwd <- plot_trait_cwd(dat_trait_cwd)
 gg_trait_cwd
-test_trait_cwd_cor (dat_trait_cwd)
+test_trait_cwd_cor(dat_trait_cwd)
 ```
 
 Calculate species niche and community index
@@ -53,7 +53,9 @@ gg_community_index_exp_cwd
 
 Output figures and r data files
 ```{r, eval = F}
-save_figure(out = list (trait_cwd = gg_trait_cwd,
-                        community_index_obs_cwd = gg_community_index_obs_cwd,
-                        community_index_exp_cwd = gg_community_index_exp_cwd))
+save_figure(out = list(
+  trait_cwd = gg_trait_cwd,
+  community_index_obs_cwd = gg_community_index_obs_cwd,
+  community_index_exp_cwd = gg_community_index_exp_cwd
+))
 ```

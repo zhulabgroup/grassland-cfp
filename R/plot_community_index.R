@@ -178,6 +178,49 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       labels = c("CTI", "CPI", "CDI")
     ))
 
+  change_tbl <- jrgce_tbl %>%
+    mutate(grp = case_when(
+      year <= 2002 ~ "Phase I",
+      year >= 2010 ~ "Phase III",
+      TRUE ~ "Phase II"
+    )) %>%
+    rename(
+      trt = treat_T,
+      value = com_idx_value
+    ) %>%
+    group_by(grp, com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(unit = case_when(
+      com_idx_name == "CTI" ~ "°C",
+      com_idx_name == "CPI" ~ "mm",
+      com_idx_name == "CDI" ~ "mm",
+    )) %>%
+    mutate(start = case_when(
+      grp == "Phase I" ~ 1999,
+      grp == "Phase II" ~ 2003,
+      grp == "Phase III" ~ 2010
+    )) %>%
+    mutate(end = case_when(
+      grp == "Phase I" ~ 2002,
+      grp == "Phase II" ~ 2009,
+      grp == "Phase III" ~ 2014
+    )) %>%
+    left_join(
+      jrgce_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 0.5,
+      com_idx_name == "CPI" ~ max + 100,
+      com_idx_name == "CDI" ~ max + 100
+    ))
+
   warm_tbl <- read_warm_treatment()
 
   exp_gg <-
@@ -207,6 +250,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         CDI = "Community Drought Index\n(CDI, mm)"
       ))
     ) +
+    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -226,7 +270,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         label = name,
         x = startyear - 0.25, # y = cti_max
       ),
-      y = 17, # manually label phase text
+      y = 17.5, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +
@@ -240,6 +284,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
 
   return(exp_gg)
 }
+
 plot_community_index_jrgce_watering <- function(exp_tbl) {
   jrgce_tbl <- exp_tbl %>%
     filter(site == "jrgce", year >= 1999) %>%
@@ -249,6 +294,37 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     mutate(com_idx_name = factor(com_idx_name,
       levels = c("tmp_com_mean", "ppt_com_mean"),
       labels = c("CTI", "CPI")
+    ))
+
+  change_tbl <- jrgce_tbl %>%
+    rename(
+      trt = treat_P,
+      value = com_idx_value
+    ) %>%
+    group_by(com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(unit = case_when(
+      com_idx_name == "CTI" ~ "°C",
+      com_idx_name == "CPI" ~ "mm",
+      com_idx_name == "CDI" ~ "mm",
+    )) %>%
+    mutate(
+      start = jrgce_tbl %>% pull(year) %>% min(),
+      end = jrgce_tbl %>% pull(year) %>% max()
+    ) %>%
+    left_join(
+      jrgce_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 0.5,
+      com_idx_name == "CPI" ~ max + 100
     ))
 
   exp_water_gg <-
@@ -271,6 +347,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
+    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -333,6 +410,37 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     stop("Unknown soil tag")
   }
 
+  change_tbl <- mclexp_tbl %>%
+    rename(
+      trt = treat,
+      value = com_idx_value
+    ) %>%
+    group_by(com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(unit = case_when(
+      com_idx_name == "CTI" ~ "°C",
+      com_idx_name == "CPI" ~ "mm",
+      com_idx_name == "CDI" ~ "mm",
+    )) %>%
+    mutate(
+      start = mclexp_tbl %>% pull(year) %>% min(),
+      end = mclexp_tbl %>% pull(year) %>% max()
+    ) %>%
+    left_join(
+      mclexp_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 0.5,
+      com_idx_name == "CPI" ~ max + 100
+    ))
+
   p <-
     ggplot(mclexp_tbl) +
     geom_boxplot( # treatment effects
@@ -353,6 +461,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
+    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -410,6 +519,37 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
   box_col <- "brown"
   bg_col <- "#FFFFE0"
 
+  change_tbl <- scide_tbl %>%
+    rename(
+      trt = treat,
+      value = com_idx_value
+    ) %>%
+    group_by(com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(unit = case_when(
+      com_idx_name == "CTI" ~ "°C",
+      com_idx_name == "CPI" ~ "mm",
+      com_idx_name == "CDI" ~ "mm",
+    )) %>%
+    mutate(
+      start = scide_tbl %>% pull(year) %>% min(),
+      end = scide_tbl %>% pull(year) %>% max()
+    ) %>%
+    left_join(
+      scide_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 0.5,
+      com_idx_name == "CPI" ~ max + 100
+    ))
+
   p <-
     ggplot(scide_tbl) +
     geom_boxplot( # treatment effects
@@ -430,6 +570,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
+    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(

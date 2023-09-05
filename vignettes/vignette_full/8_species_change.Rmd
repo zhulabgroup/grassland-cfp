@@ -44,26 +44,27 @@ Across the observations, species gained in communities by significantly increasi
 
 Compare rank abundance
 ```{r}
-dat_rank <- calc_rank_abundance (dat_community = dat_community)
-gg_rank_abundance <- plot_rank_abundance (dat_rank = dat_rank)
+dat_rank <- calc_rank_abundance(dat_community = dat_community)
+gg_rank_abundance <- plot_rank_abundance(dat_rank = dat_rank)
 gg_rank_abundance$obs
 gg_rank_abundance$exp
 ```
 
 Compare evenness
 ```{r}
-dat_evenness <- calc_evenness (dat_community = dat_community)
+dat_evenness <- calc_evenness(dat_community = dat_community)
 test_evenness_change(dat_evenness = dat_evenness)
 ```
 
 
 Output figures and r data files
 ```{r, eval = F}
-save_figure(out = list(species_change = gg_species_change$combined,
-                       species_change_obs = gg_species_change$obs$circle_detail,
-                       species_change_exp = gg_species_change$exp$circle_detail,
-                       rank_abund_obs = gg_rank_abundance$obs,
-                       rank_abund_exp = gg_rank_abundance$exp
-                       ))
+save_figure(out = list(
+  species_change = gg_species_change$combined,
+  species_change_obs = gg_species_change$obs$circle_detail,
+  species_change_exp = gg_species_change$exp$circle_detail,
+  rank_abund_obs = gg_rank_abundance$obs,
+  rank_abund_exp = gg_rank_abundance$exp
+))
 save_rda(out = list(dat_gainloss))
 ```
