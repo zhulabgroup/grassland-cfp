@@ -1,8 +1,8 @@
 ---
-title: "7 drought metrics"
+title: "7 Drought metrics"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{7 Drought metrics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
