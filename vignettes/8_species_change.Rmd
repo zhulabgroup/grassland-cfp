@@ -34,13 +34,13 @@ dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche =
 gg_species_change <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
 gg_species_change$combined
 ```
+
 ```{r}
 df_summ_species_change_obs <- summ_species_change(dat_gainloss, option = "obs")
 df_summ_species_change_exp <- summ_species_change(dat_gainloss, option = "exp")
 ```
 
 Across the observations, species gained in communities by significantly increasing abundance over time (e.g., _`r df_summ_species_change_obs %>% filter(change == "increase") %>% pull(species)`_) or recruitment (appeared only after the 5th yr, e.g., _`r df_summ_species_change_obs %>% filter(change == "new") %>% pull(species)`_); in contrast, species lost from communities by significantly decreasing abundance over time (e.g., _`r df_summ_species_change_obs %>% filter(change == "decrease") %>% pull(species)`_) or extirpation (disappeared in the last 5 yr, e.g., _`r df_summ_species_change_obs %>% filter(change == "lost") %>% pull(species)`_). In the experiment, species did not experience complete turnover, but some gained by being more abundant (e.g., _`r df_summ_species_change_exp %>% filter(change == "increase") %>% pull(species)`_), while some lost by being less abundant (e.g., _`r df_summ_species_change_exp %>% filter(change == "decrease") %>% pull(species)`_) in warming compared to ambient plots.
-
 
 Compare rank abundance
 ```{r}
@@ -55,7 +55,6 @@ Compare evenness
 dat_evenness <- calc_evenness(dat_community = dat_community)
 test_evenness_change(dat_evenness = dat_evenness)
 ```
-
 
 Output figures and r data files
 ```{r, eval = F}
