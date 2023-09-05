@@ -113,7 +113,6 @@ calc_community_shift_exp <- function(exp_tbl) {
       labels = c("CTI", "CPI")
     ))
 
-
   df_exp_sum_coarse <- jrgce_tbl %>%
     mutate(phase = case_when(
       year <= 2002 ~ "Phase I",
@@ -159,14 +158,25 @@ calc_community_shift_exp <- function(exp_tbl) {
     ))
 
   df_exp_test <- jrgce_tbl %>%
-    group_by(site, year, com_idx_name) %>%
+    mutate(phase = case_when(
+      year <= 2002 ~ "Phase I",
+      year >= 2010 ~ "Phase III",
+      TRUE ~ "Phase II"
+    )) %>%
+    rename(
+      trt = treat_T,
+      value = com_idx_value
+    ) %>%
+    group_by(phase, com_idx_name) %>%
     nest() %>%
-    mutate(p = map_dbl(data, ~ wilcox.test(com_idx_value ~ treat_T, data = .)$p.value)) %>% # get p value for wilcoxon test
-    select(-data) %>%
+    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    ungroup() %>%
+    select(-data, -estimate, -sig) %>%
     pivot_wider(
-      id_cols = c("site", "year"),
+      id_cols = c("phase"),
       names_from = com_idx_name,
-      values_from = p
+      values_from = p.value
     ) %>%
     mutate(significance = case_when(
       CTI <= 0.05 & CPI <= 0.05 ~ "sig",
@@ -191,7 +201,7 @@ calc_community_shift_exp <- function(exp_tbl) {
       names_from = group_metric,
       values_from = m
     ) %>%
-    left_join(df_exp_test, by = c("site", "year"))
+    left_join(df_exp_test, by = c("phase"))
 
   out <- list(
     sum_coarse = df_exp_sum_coarse,

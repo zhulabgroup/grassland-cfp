@@ -23,7 +23,7 @@ test_index_change <- function(dat_index, index, grouping, option) {
   dat_lme <- test_index_change_data(dat_index, index, grouping, option)
 
   # fit lme
-  mod_lme <- test_index_change_model(dat_lme, index, option)
+  mod_lme <- test_index_change_model(dat_lme, option)
 
   # summarize results
   df_lme <- test_change_summ(mod_lme)
@@ -36,7 +36,7 @@ test_trait_change <- function(dat_community, dat_niche, trait, grouping, option)
   dat_lme <- test_trait_change_data(dat_community, dat_niche, trait, grouping, option)
 
   # fit lme
-  mod_lme <- test_trait_change_model(dat_lme, trait, option)
+  mod_lme <- test_trait_change_model(dat_lme, option)
   # summarize results
 
   df_lme <- test_change_summ(mod_lme)

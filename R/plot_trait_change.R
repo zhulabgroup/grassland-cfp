@@ -40,7 +40,45 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
   #   summarise(weight = mean(weight)) %>%
   #   ungroup()
 
+  change_tbl <- df_weight %>%
+    mutate(grp = case_when(
+      year <= 2002 ~ "Phase I",
+      year >= 2010 ~ "Phase III",
+      TRUE ~ "Phase II"
+    )) %>%
+    group_by(grp, trait) %>%
+    nest() %>%
+    mutate(test_trait_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(unit = case_when(
+      trait == "tmp" ~ "°C",
+      trait == "ppt" ~ "mm"
+    )) %>%
+    mutate(start = case_when(
+      grp == "Phase I" ~ 1999,
+      grp == "Phase II" ~ 2003,
+      grp == "Phase III" ~ 2010
+    )) %>%
+    mutate(end = case_when(
+      grp == "Phase I" ~ 2002,
+      grp == "Phase II" ~ 2009,
+      grp == "Phase III" ~ 2014
+    )) %>%
+    left_join(
+      df_weight %>%
+        group_by(trait) %>%
+        summarise(max = max(value)),
+      by = "trait"
+    ) %>%
+    mutate(max = case_when(
+      trait == "tmp" ~ max + 0.5,
+      trait == "ppt" ~ max + 100
+    ))
+
   warm_tbl <- read_warm_treatment()
+
   exp_gg <-
     ggplot() +
     geom_rect( # warming phrases
@@ -73,6 +111,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ppt = "Annual precipitation\n(AP, mm)"
       ))
     ) +
+    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -91,7 +130,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         label = name,
         x = startyear - 0.25, # y = cti_max
       ),
-      y = 17, # manually label phase text
+      y = 18, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +

@@ -142,6 +142,35 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       levels = c("native_perc", "annual_perc", "grass_perc")
     ))
 
+  change_tbl <- exp_guild_tbl %>%
+    mutate(grp = case_when(
+      year <= 2002 ~ "Phase I",
+      year >= 2010 ~ "Phase III",
+      TRUE ~ "Phase II"
+    )) %>%
+    rename(
+      trt = treat_T,
+      value = value
+    ) %>%
+    group_by(grp, group) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(unit = "%") %>%
+    mutate(start = case_when(
+      grp == "Phase I" ~ 1999,
+      grp == "Phase II" ~ 2003,
+      grp == "Phase III" ~ 2010
+    )) %>%
+    mutate(end = case_when(
+      grp == "Phase I" ~ 2002,
+      grp == "Phase II" ~ 2009,
+      grp == "Phase III" ~ 2014
+    )) %>%
+    mutate(max = 1.10)
+
   warm_tbl <- read_warm_treatment()
 
   exp_guild_gg <-
@@ -171,11 +200,14 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         grass_perc = "% Grasses"
       ))
     ) +
+    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
     scale_y_continuous(
       labels = function(x) {
         trans <- x * 100
       },
-      limits = c(0, 1), expand = expansion(mult = .15)
+      limits = c(0, 1.1),
+      breaks = c(0, 0.5, 1),
+      expand = expansion(mult = .15)
     ) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -194,7 +226,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         label = name,
         x = startyear - 0.25,
       ),
-      y = 1.2, # manually label phase text
+      y = 1.4, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +
@@ -205,4 +237,6 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       legend.position = "none",
       plot.margin = unit(c(2, 1, 1, 1), "lines") # expand margin to include warming labels
     )
+
+  return(exp_guild_gg)
 }
