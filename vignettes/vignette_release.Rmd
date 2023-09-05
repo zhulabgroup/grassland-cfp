@@ -57,16 +57,24 @@ Calculate CTI CPI in observations and experiments and plot
 dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
 gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
 gg_community_index_obs
-gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index)
+gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index, experiment = "jrgce", treatment = "warming")
 gg_community_index_exp
 ```
 
 Statistical test of trait change using lme
 ```{r}
-df_test_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, type = "obs")
-df_test_trait_change_obs %>% knitr::kable()
-df_test_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, type = "exp")
-df_test_trait_change_exp %>% knitr::kable()
+df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
+df_trait_change_obs %>% knitr::kable()
+df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = "exp")
+df_trait_change_exp %>% knitr::kable()
+```
+
+Statistical test of index change using lm or lme
+```{r}
+df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
+df_index_change_obs %>% knitr::kable()
+df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
+df_index_change_exp %>% knitr::kable()
 ```
 
 Synthesize coupled CTI CPI change

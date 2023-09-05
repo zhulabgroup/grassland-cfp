@@ -2,7 +2,7 @@
 title: "4 Species niche"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{4 Species niche}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -26,7 +26,7 @@ theme_set(ggthemes::theme_few())
 
 Download biogeography data
 ```{r, eval=F}
-spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community) # explain this step? also where did consolication.csv come from
+spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
 path_occ <- down_biogeography(species_table = spp_tbl) # needs parallel computation
 dat_occ <- read_biogeography(path_occ = path_occ)
 gg_biogeography <- plot_biogeography(dat_occ)
@@ -99,25 +99,27 @@ path_trait_chelsa <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif
 path_trait_prism <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "prism")
 path_trait_terraclim <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "terraclim")
 ```
+
 ```{r}
-dat_trait_chelsa <- read_individual_trait(path_trait = path_trait_chelsa)
-dat_trait_prism <- read_individual_trait(path_trait = path_trait_prism)
-dat_trait_terraclim <- read_individual_trait(path_trait = path_trait_terraclim)
+dat_trait_chelsa <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-chelsa.rds")
+dat_trait_prism <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-prism.rds")
+dat_trait_terraclim <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-terraclim.rds")
 gg_climate_source <- plot_climate_source(dat_trait_chelsa, dat_trait_prism, dat_trait_terraclim)
+gg_climate_source
 ```
 
 Comparing using bioclim variables
 ```{r, eval = F}
 path_trait_bioclim <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa", allbioclim = T)
 ```
+
 ```{r}
-dat_trait_bioclim <- read_individual_trait(path_trait = path_trait_bioclim)
+dat_trait_bioclim <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-chelsa_full.rds")
 gg_bioclim_tmp <- plot_bioclim(dat_trait_bioclim, var = "tmp")
 gg_bioclim_tmp
 gg_bioclim_ppt <- plot_bioclim(dat_trait_bioclim, var = "ppt")
 gg_bioclim_ppt
 ```
-
 
 Comparing using different summary statistics for SNC
 ```{r}

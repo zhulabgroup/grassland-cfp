@@ -2,7 +2,7 @@
 title: "3 Taxonomy"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{3 Taxonomy}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -24,13 +24,18 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Resolve taxonomy
+Save a species list from all tidy data
 ```{r, eval=F}
-# Save a species list from all tidy data
 f_species_tidy <- tidy_taxonomy_list(dat_community_tidy)
-# Josie and Justin used the output for manual correction, producing "misspelling.csv".
+```
 
-# rename species
+Josie and Justin used the output for manual correction, producing "misspelling.csv".
+```{r}
+read_csv("alldata/input/community/species/misspelling.csv") %>% head(20) %>% knitr::kable() 
+```
+
+Rename species
+```{r, eval = F}
 path_community <- tidy_taxonomy_rename()
 dat_community <- read_community(version = "final")
 ```
@@ -39,6 +44,10 @@ dat_community <- read_community(version = "final")
 dat_community
 ```
 
+Josie and Justin made "consolidation.csv", where old species names are later used for querying biogeography data and new species names (onsolidated names) are used in this analysis.
+```{r}
+read_csv("alldata/input/community/species/consolidation.csv") %>% head(20) %>% knitr::kable()
+```
 
 Output figures and r data files
 ```{r, eval = F}

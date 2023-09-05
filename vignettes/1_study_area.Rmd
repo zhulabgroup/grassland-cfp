@@ -2,7 +2,7 @@
 title: "1 Study area"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{1 Study area}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -81,12 +81,10 @@ Historical climate observations show considerable warming (temperature increase 
 
 From 1980 to 2019, the CFP had an overall warming trend of `r df_cc_cfp %>% filter(param == "tas") %>% pull(mean) %>% signif(3)` ± `r df_cc_cfp %>% filter(param == "tas") %>% pull(se) %>% signif(3) %>% format(scientific=FALSE)` °C yr^-1^ (mean ± std. err.), with `r df_cc_cfp %>% filter(param == "tas") %>% pull(sig_pos_percentage) %>% signif(3)`% of the area having significant warming trends; the CFP had an overall drying trend of `r df_cc_cfp %>% filter(param == "pr") %>% pull(mean) %>% signif(3) %>% abs()` ± `r df_cc_cfp %>% filter(param == "pr") %>% pull(se) %>% signif(3)` mm yr^-1^ with `r df_cc_cfp %>% filter(param == "pr") %>% pull(sig_neg_percentage) %>% signif(3)`% of the area having significant drying trends.
 
-
 ```{r}
 gg_cfp_cc <- plot_climate_change_cfp()
 gg_cfp_cc
 ```
-
 
 Output figures and r data files
 ```{r, eval = F}

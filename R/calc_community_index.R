@@ -29,24 +29,24 @@ calc_community_index <- function(dat_niche, dat_community) {
 
 # define summarize CWM function
 calc_community_weighted_mean <- function(.) {
-  # CTI, CTI_sd, CPI, CPI_sd, CVI, CVI_sd
-  summarize(.,
-    tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
-    tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
-    ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
-    ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
-    vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
-    vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2
-  ) %>%
-    mutate(
-      tmp_com_sd = sqrt(tmp_com_var),
-      ppt_com_sd = sqrt(ppt_com_var),
-      vpd_com_sd = sqrt(vpd_com_var)
-    )
+  if (!"cwd_occ_median" %in% colnames(.)) {
+    df <- summarize(.,
+      tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
+      tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
+      ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
+      ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
+      vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
+      vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2
+    ) %>%
+      mutate(
+        tmp_com_sd = sqrt(tmp_com_var),
+        ppt_com_sd = sqrt(ppt_com_var),
+        vpd_com_sd = sqrt(vpd_com_var)
+      )
+  }
 
-  # add CDI, CDI_sd
   if ("cwd_occ_median" %in% colnames(.)) {
-    summarize(.,
+    df <- summarize(.,
       tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
       tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
       ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
@@ -63,4 +63,5 @@ calc_community_weighted_mean <- function(.) {
         cwd_com_sd = sqrt(cwd_com_var)
       )
   }
+  return(df)
 }
