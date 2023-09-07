@@ -3,8 +3,10 @@ title: "1 Study area"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{1 Study area}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -24,7 +26,8 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Download basemap
+Download base maps. First, the study region boundary of the California Floristic Province (CFP).
+
 ```{r, eval=F}
 path_cfp <- down_cfp()
 sf_cfp <- read_cfp(path_cfp = path_cfp)
@@ -34,6 +37,7 @@ sf_cfp <- read_cfp(path_cfp = path_cfp)
 sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 sf_cfp %>% plot()
 ```
+Second, the CFP's grassland cover from Sentinel-2.
 
 ```{r, eval=F}
 path_grass <- down_grasscover(sf_cfp) # need Earthdata login credentials, slow
@@ -50,7 +54,8 @@ perc_grass <- summ_grass(ras_grass)
 
 In the CFP, grassland has the largest land cover type, occupying `r perc_grass %>% round(0)`% of the total area.
 
-Download climate data
+Download climate data from three sources: CHELSA, PRISM, and TerraClimate.
+
 ```{r, eval = F}
 path_clim <- down_climate()
 dat_clim <- read_climate(path_clim = path_clim)
@@ -61,12 +66,15 @@ dat_clim <- read_climate()
 dat_clim
 ```
 
-Summarize cfp climate
+Summarize climate data in CFP.
+
 ```{r}
 bbox_cfp <- summ_cfp_geography()
 df_chelsa_cfp <- summ_cfp_climate(dat_clim, source = "chelsa")
 ```
 CFP spans large geographic (`r bbox_cfp["xmax"] %>% abs() %>% round(0)`-`r bbox_cfp["xmin"] %>% abs() %>% round(0)`° W longitude, `r bbox_cfp["ymin"] %>% round(0)`-`r bbox_cfp["ymax"] %>% round(0)`° N latitude) and climatic gradients (`r df_chelsa_cfp$t_min %>% signif(digits = 3)`-`r df_chelsa_cfp$t_max %>% signif(digits = 3)` °C temperature, `r df_chelsa_cfp$p_min %>% signif(digits = 3)`-`r df_chelsa_cfp$p_max %>% signif(digits = 3)` mm precipitation).
+
+Calculate climate change in CFP.
 
 ```{r, eval = F}
 path_climate_monthly <- down_climate_monthly()
@@ -86,7 +94,8 @@ gg_cfp_cc <- plot_climate_change_cfp()
 gg_cfp_cc
 ```
 
-Output figures and r data files
+Output figures and R data files.
+
 ```{r, eval = F}
 save_figure(out = list(cfp_cc = gg_cfp_cc))
 save_extdata(out = list(path_cfp, path_grass))
