@@ -3,8 +3,10 @@ title: "4 Species niche"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{4 Species niche}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -24,7 +26,8 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Download biogeography data
+Download biogeography (occurrence) data from four sources: BIEN, CCH, GBIF, iNat.
+
 ```{r, eval=F}
 spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
 path_occ <- down_biogeography(species_table = spp_tbl) # needs parallel computation
@@ -41,8 +44,8 @@ df_summ_occ
 
 We retrieved `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_occ)` occurrence records of `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_sp)` species in the CFP from the Global Biodiversity Information Facility (GBIF).
 
+Calculate and summarize species climate niches.
 
-Calculate species niche and plot
 ```{r, eval = F}
 dat_clim <- read_climate()
 path_trait <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa")
@@ -53,9 +56,11 @@ dat_trait <- read_individual_trait(path_trait = path_trait)
 dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 df_summ_niche <- summ_species_niche(dat_niche = dat_niche)
 ```
+
 Among all the `r df_summ_niche$n` species with more than 100 GBIF records, their average temperatures ranging from `r df_summ_niche$tmp_min %>% signif(3) %>% format(big.mark = ",")` °C to `r df_summ_niche$tmp_max %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r df_summ_niche$ppt_min %>% signif(3) %>% format(big.mark = ",")` mm to `r df_summ_niche$ppt_max %>% signif(3) %>% format(big.mark = ",")` mm.
 
-Compare niche by guild
+Compare species niches by guilds.
+
 ```{r}
 dat_guild_niche <- calc_guild_niche(dat_community, dat_niche)
 gg_guild_niche <- plot_guild_niche(dat_guild_niche = dat_guild_niche)
@@ -64,12 +69,15 @@ res_guild_niche <- test_guild_niche(dat_guild_niche = dat_guild_niche)
 res_guild_niche
 ```
 
+Plot and summarize two example species geographic distributions and climate niches.
+
 ```{r}
 gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
 gg_individual_trait_species_niche_cool
 gg_individual_trait_species_niche_warm <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Stipa pulchra")
 gg_individual_trait_species_niche_warm
 ```
+
 ```{r}
 df_summ_niche_cool <- summ_species_niche(dat_niche = dat_niche, sp = "Danthonia californica")
 df_summ_niche_warm <- summ_species_niche(dat_niche = dat_niche, sp = "Stipa pulchra")
@@ -77,6 +85,7 @@ df_summ_niche_warm <- summ_species_niche(dat_niche = dat_niche, sp = "Stipa pulc
 
 _Danthonia californica_ had `r df_summ_niche_cool$n_occ` records, with temperature of `r df_summ_niche_cool$tmp_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_cool$tmp_lower %>% signif(3) %>% format(big.mark = ",")` -`r df_summ_niche_cool$tmp_upper %>% signif(3) %>% format(big.mark = ",")` )°C and precipitation of `r df_summ_niche_cool$ppt_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_cool$ppt_lower %>% signif(3) %>% format(big.mark = ",")`-`r df_summ_niche_cool$ppt_upper %>% signif(3) %>% format(big.mark = ",")`) mm, whereas _Stipa pulchra_ had `r df_summ_niche_warm$n_occ` records, with temperature of `r df_summ_niche_warm$tmp_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_warm$tmp_lower %>% signif(3) %>% format(big.mark = ",")` -`r df_summ_niche_warm$tmp_upper %>% signif(3) %>% format(big.mark = ",")` )°C and precipitation of `r df_summ_niche_warm$ppt_median %>% signif(3) %>% format(big.mark = ",")` (`r df_summ_niche_warm$ppt_lower %>% signif(3) %>% format(big.mark = ",")`-`r df_summ_niche_warm$ppt_upper %>% signif(3) %>% format(big.mark = ",")`) mm.
 
+Plot all species climate niches.
 
 ```{r, eval = F}
 path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_trait, dat_niche)
@@ -87,13 +96,17 @@ gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_nich
 gg_niche$sp_niche
 ```
 
+Calculate all species climate niches temperature and precipitation correlation.
+
 ```{r}
 mod_species_niche_cor <- test_species_niche(dat_niche = dat_niche)
 mod_species_niche_cor
 ```
+
 Across all the species, the temperature and precipitation averages were negatively and significantly correlated (Pearson's correlation _r_ = `r mod_species_niche_cor$estimate`).
 
-Comparing using different climate data source
+Compare climate associated with species occurrence from different data sources.
+
 ```{r, eval = F}
 path_trait_chelsa <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa")
 path_trait_prism <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "prism")
@@ -108,7 +121,8 @@ gg_climate_source <- plot_climate_source(dat_trait_chelsa, dat_trait_prism, dat_
 gg_climate_source
 ```
 
-Comparing using bioclim variables
+Compare estimates of species climate niche using different bioclim variables.
+
 ```{r, eval = F}
 path_trait_bioclim <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa", allbioclim = T)
 ```
@@ -121,7 +135,8 @@ gg_bioclim_ppt <- plot_bioclim(dat_trait_bioclim, var = "ppt")
 gg_bioclim_ppt
 ```
 
-Comparing using different summary statistics for SNC
+Compare estimates of species climate niche using different summary statistics.
+
 ```{r}
 gg_niche_stat_tmp <- plot_niche_stat(dat_niche, var = "tmp")
 gg_niche_stat_tmp
@@ -129,7 +144,8 @@ gg_niche_stat_ppt <- plot_niche_stat(dat_niche, var = "ppt")
 gg_niche_stat_ppt
 ```
 
-Spatial thinning
+Compare estimates of species climate niche by spatial thinning occurrence records.
+
 ```{r, eval = F}
 path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif) # slow
 ```
@@ -141,7 +157,8 @@ gg_niche_thin <- plot_niche_thin(dat_niche, dat_niche_thin)
 gg_niche_thin
 ```
 
-Output figures and r data files
+Output figures and R data files.
+
 ```{r, eval = F}
 save_figure(out = list(
   biogeography = gg_biogeography,
