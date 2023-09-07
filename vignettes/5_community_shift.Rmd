@@ -60,7 +60,14 @@ gg_trait_change_exp <- plot_trait_change(option = "exp", dat_community, dat_nich
 gg_trait_change_exp
 ```
 
-Calculate Community Temperature Index (CTI) and Community Precipitation Index (CPI) in observations and experiments.
+Scaling up from the individual species to the community, we can calculate Community Temperature Index (CTI) and Community Precipitation Index (CPI). CTI (or CPI) are species temperature (or precipitaion) weighted by their relative abundance in any community. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species temperature and precipitaion niche as $T_j$ and $P_j$. The CTI and CPI are defined as follows.
+
+$$
+\mathrm{CTI}_i = \mathrm{E}[T]_i = \frac{\sum_j A_{ij}T_j}{\sum_j A_{ij}},\\
+\mathrm{CPI}_i = \mathrm{E}[P]_i = \frac{\sum_j A_{ij}P_j}{\sum_j A_{ij}}.
+$$
+
+Calculate CTI-CPI in observational and experimental communities.
 
 ```{r, eval = F}
 dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
