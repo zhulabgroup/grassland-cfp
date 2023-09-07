@@ -3,8 +3,10 @@ title: "5 Community shift"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{5 Community shift}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -24,7 +26,8 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Change in percentage of guilds
+Plot guild percentage change over time from observational and experimental data.
+
 ```{r}
 gg_guild_percentage_obs <- plot_guild_percentage(option = "obs", dat_community = dat_community)
 gg_guild_percentage_obs
@@ -32,7 +35,8 @@ gg_guild_percentage_exp <- plot_guild_percentage(option = "exp", dat_community =
 gg_guild_percentage_exp
 ```
 
-Statistical test of trait change using weighted lm or lme
+Statistically test species climate trait (temperature or precipitation) change using weighted LM or LME.
+
 ```{r}
 df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
 df_trait_change_obs %>% knitr::kable()
@@ -47,6 +51,8 @@ By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 si
 
 Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant increase in temperature trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "ppt") %>% pull(estimate) %>%magrittr::multiply_by(-1)` mm.
 
+Plot the above comparisons and tests.
+
 ```{r}
 gg_trait_change_obs <- plot_trait_change(option = "obs", dat_community, dat_niche)
 gg_trait_change_obs
@@ -54,12 +60,14 @@ gg_trait_change_exp <- plot_trait_change(option = "exp", dat_community, dat_nich
 gg_trait_change_exp
 ```
 
-Calculate CTI CPI in observations and experiments and plot
+Calculate Community Temperature Index (CTI) and Community Precipitation Index (CPI) in observations and experiments.
+
 ```{r, eval = F}
 dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
 ```
 
-Statistical test of index change using lm or lme
+Statistically test CTI and CPI changes using LM or LME.
+
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
 df_index_change_obs %>% knitr::kable()
@@ -74,6 +82,8 @@ By site, `r df_summ_index_change_obs %>% pull(n_sig) %>% min()` out of the 12 si
 
 Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant thermophilization (increase in CTI) of `r df_index_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_index_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm.
 
+Plot the above comparisons and tests.
+
 ```{r}
 gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
 gg_community_index_obs
@@ -81,7 +91,8 @@ gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_i
 gg_community_index_exp
 ```
 
-Synthesize coupled CTI CPI change
+Due to the high correlation of species temperature and precipitation niches, CTI and CPI shifts at the community level appear highly coupled. Synthesize the coupled CTI-CPI shifts, both visually and numerically.
+
 ```{r, eval = F}
 dat_shift <- calc_community_shift(dat_index = dat_index)
 ```
@@ -98,8 +109,8 @@ df_summ_shift_coupling
 
 A community thermophilization of 0.1 °C corresponded to a xerophilization of `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` mm from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` mm from the experiment. Likewise, a community xerophilization of 10 mm corresponded to a thermophilization of `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` °C from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` °C from the experiment.
 
+Output figures and R data files.
 
-Output figures and r data files
 ```{r, eval = F}
 save_figure(out = list(
   guild_perc_obs = gg_guild_percentage_obs,
