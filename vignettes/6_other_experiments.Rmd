@@ -3,8 +3,10 @@ title: "6 Other experiments"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{6 Other experiments}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -24,26 +26,29 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Jasper Ridge Global Change Experiment watering treatment
+Compare CTI-CPI from the Jasper Ridge Global Change Experiment watering treatment.
+
 ```{r}
 gg_community_index_exp_jrgce_water <- plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "watering")
 gg_community_index_exp_jrgce_water
 ```
 
-McLaughlin Water Experiment
+Compare CTI-CPI from the McLaughlin Water Experiment.
+
 ```{r}
 gg_community_index_exp_mclexp <- plot_community_index(option = "exp", dat_index, experiment = "mclexp")
 gg_community_index_exp_mclexp
 ```
 
-Santa Cruz International Drought Experiment
+Compare CTI-CPI from the Santa Cruz International Drought Experiment.
+
 ```{r}
 gg_community_index_exp_scide <- plot_community_index(option = "exp", dat_index, experiment = "scide")
 gg_community_index_exp_scide
 ```
 
+Output figures and R data files.
 
-Output figures and r data files
 ```{r, eval = F}
 save_figure(out = list(
   community_index_exp_jrgce_water = gg_community_index_exp_jrgce_water,
