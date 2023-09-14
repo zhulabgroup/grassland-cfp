@@ -48,6 +48,7 @@ ras_grass <- read_grasscover(path_grass = path_grass)
 ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
 ras_grass %>% terra::plot()
 ```
+
 ```{r}
 perc_grass <- summ_grass(ras_grass)
 ```
@@ -72,13 +73,14 @@ Summarize climate data in CFP.
 bbox_cfp <- summ_cfp_geography()
 df_chelsa_cfp <- summ_cfp_climate(dat_clim, source = "chelsa")
 ```
+
 CFP spans large geographic (`r bbox_cfp["xmax"] %>% abs() %>% round(0)`-`r bbox_cfp["xmin"] %>% abs() %>% round(0)`° W longitude, `r bbox_cfp["ymin"] %>% round(0)`-`r bbox_cfp["ymax"] %>% round(0)`° N latitude) and climatic gradients (`r df_chelsa_cfp$t_min %>% signif(digits = 3)`-`r df_chelsa_cfp$t_max %>% signif(digits = 3)` °C temperature, `r df_chelsa_cfp$p_min %>% signif(digits = 3)`-`r df_chelsa_cfp$p_max %>% signif(digits = 3)` mm precipitation).
 
 Calculate climate change in CFP.
 
 ```{r, eval = F}
 path_climate_monthly <- down_climate_monthly()
-path_climate_change <- calc_climate_change(path = path_climate_monthly)
+path_climate_change_cfp <- calc_climate_change_cfp(path = path_climate_monthly)
 ```
 
 ```{r}

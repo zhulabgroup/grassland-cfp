@@ -112,7 +112,8 @@ down_bien <- function(species_table, sf_cfp, num_cores, outdir, date) {
     select(queryName, consolidatedName = consolidated_name, key, longitude, latitude, everything())
 
   dat_bien <- dat_bien_full %>%
-    select(queryName, consolidatedName, key, longitude, latitude)
+    select(queryName, consolidatedName, key, longitude, latitude) %>%
+    mutate(key = as.character(key))
 
   write_rds(dat_bien_full, outfile_full)
   write_rds(dat_bien, outfile)

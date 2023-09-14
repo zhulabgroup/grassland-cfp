@@ -31,14 +31,18 @@ Download biogeography (occurrence) data from four sources: BIEN, CCH, GBIF, iNat
 ```{r, eval=F}
 spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
 path_occ <- down_biogeography(species_table = spp_tbl) # needs parallel computation
-dat_occ <- read_biogeography(path_occ = path_occ)
-gg_biogeography <- plot_biogeography(dat_occ)
+dat_occ_full <- read_biogeography(path_occ = path_occ, gbif_only = F)
+dat_occ <- read_biogeography(path_occ = path_occ, gbif_only = T)
+```
+
+```{r}
+dat_occ_full <- read_biogeography(gbif_only = F)
+gg_biogeography <- plot_biogeography(dat_occ_full)
 gg_biogeography
 ```
 
 ```{r}
-dat_occ
-df_summ_occ <- summ_biogeography(dat_occ = dat_occ)
+df_summ_occ <- summ_biogeography(dat_occ = dat_occ_full)
 df_summ_occ
 ```
 

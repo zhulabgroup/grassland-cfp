@@ -39,7 +39,7 @@ dat_community_tidy <- read_community(version = "tidy")
 Read site information.
 
 ```{r}
-read_site_info() %>% knitr::kable() # perhaps make extdata
+read_site_info() %>% knitr::kable()
 ```
 
 Visualize data availability across sites.
@@ -80,11 +80,13 @@ Calculate and summarize climate change at these observational sites.
 dat_clim_site <- read_climate_site()
 df_cc_site <- calc_climate_change_site(dat_clim_site = dat_clim_site)
 df_cc_site %>% knitr::kable()
-df_summ_site_cc <- summ_site_climate_change(df_cc_site = df_cc_site)
+df_summ_site_cc <- summ_change(df_change = df_cc_site, option = "obs")
 gg_site_cc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail)
 ```
 
-The mean warming rate (increasing mean annual temperature per year) was `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(mean) %>% signif(3)` °C yr^-1^, ranging from `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(max)  %>% signif(3)` °C yr^-1^; the mean drying trend (decreasing total annual precipitation per year) was `r df_summ_site_cc %>% filter(clim_var == "ppt") %>% pull(mean) %>% signif(3) %>% abs()` mm yr^-1^, ranging from `r df_summ_site_cc %>% filter(clim_var == "ppt") %>% pull(max) %>% signif(3) %>% abs()` mm yr^-1^ to `r df_summ_site_cc %>% filter(clim_var == "ppt") %>% pull(min) %>% signif(3) %>% abs()` mm yr^-1^.
+Overall, the 12 observational sites had significant warming (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant drying (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "ppt") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
+
+By site, `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(n_sig)` out of the 12 sites had significant warming and `r df_summ_site_cc %>% filter(clim_var == "ppt") %>% pull(n_sig)` had significant drying over the years. Among all 12 sites, the warming rate ranged from `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(max) %>% signif(3)` °C yr^-1^; the drying rate ranged from `r df_summ_site_cc %>% filter(clim_var == "tmp") %>% pull(max) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^ to `r df_summ_site_cc %>% filter(clim_var == "ppt") %>% pull(min) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^.
 
 Likewise, summarize climate information at the experimental site.
 
@@ -100,4 +102,6 @@ Output figures and R data files.
 
 ```{r, eval = F}
 save_figure(out = list(data_avail = gg_data_avail, site_cc = gg_site_cc))
+
+save_extdata(out = list("alldata/input/basemap/site_info.csv"))
 ```

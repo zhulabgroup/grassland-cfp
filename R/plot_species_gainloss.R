@@ -87,6 +87,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
       x = NULL,
       y = NULL
     ) +
+    ggthemes::theme_few() +
     theme(
       strip.background = element_blank(),
       strip.placement = "outside"
@@ -249,6 +250,7 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
       x = NULL,
       y = NULL
     ) +
+    ggthemes::theme_few() +
     theme(
       strip.background = element_blank(),
       strip.placement = "outside"

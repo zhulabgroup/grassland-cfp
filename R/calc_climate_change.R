@@ -1,7 +1,7 @@
 # need to separate into two functions calculating annual metrics andchange respectively
-calc_climate_change <- function(indir = "alldata/input/climate/monthly/",
-                                v_param = c("tas", "pr", "vpd"),
-                                outdir = "alldata/intermediate/background/cfp_annual") {
+calc_climate_change_cfp <- function(indir = "alldata/input/climate/monthly/",
+                                    v_param = c("tas", "pr", "vpd"),
+                                    outdir = "alldata/intermediate/background/cfp_annual") {
   # read cfp data
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 
