@@ -1,4 +1,4 @@
-read_biogeography <- function(path_occ = NULL, indir = "alldata/input/biogeography/") {
+read_biogeography <- function(path_occ = NULL, indir = "alldata/input/biogeography/", gbif_only = F) {
   if (is.null(path_occ)) {
     path_occ <- list(
       gbif = list.files(indir, pattern = "gbif-20", full.names = T) %>% tail(1),
@@ -9,12 +9,20 @@ read_biogeography <- function(path_occ = NULL, indir = "alldata/input/biogeograp
   }
 
   out <- vector(mode = "list")
-  dataset <- c(
-    "gbif",
-    # "bien",
-    "cch",
-    "inat"
-  )
+
+  if (gbif_only) {
+    dataset <- c(
+      "gbif"
+    )
+  } else {
+    dataset <- c(
+      "gbif",
+      "bien",
+      "cch",
+      "inat"
+    )
+  }
+
   for (d in dataset) {
     df <- read_rds(path_occ[[d]]) %>%
       mutate(

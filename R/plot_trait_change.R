@@ -48,7 +48,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
     )) %>%
     group_by(grp, trait) %>%
     nest() %>%
-    mutate(test_trait_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_trait_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -73,35 +73,77 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
       by = "trait"
     ) %>%
     mutate(max = case_when(
+      trait == "tmp" ~ max + 1,
+      trait == "ppt" ~ max + 200
+    ))
+
+  change_tbl_year <- df_weight %>%
+    mutate(grp = year) %>%
+    group_by(grp, trait) %>%
+    nest() %>%
+    mutate(test_trait_change_model(dat_model = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    left_join(
+      df_weight %>%
+        group_by(trait) %>%
+        summarise(max = max(value)),
+      by = "trait"
+    ) %>%
+    mutate(max = case_when(
       trait == "tmp" ~ max + 0.5,
       trait == "ppt" ~ max + 100
     ))
 
+  df_trt <- df_weight %>%
+    distinct(year, trt, trait) %>%
+    left_join(
+      df_weight %>%
+        group_by(trait) %>%
+        summarise(min = min(value)),
+      by = "trait"
+    ) %>%
+    mutate(min = case_when(
+      trait == "tmp" ~ min - 0.5,
+      trait == "ppt" ~ min - 100
+    ))
+
   warm_tbl <- read_warm_treatment()
+
 
   exp_gg <-
     ggplot() +
     geom_rect( # warming phrases
       data = warm_tbl,
-      aes(xmin = start - .5, xmax = end + .5, fill = tag),
-      ymin = -Inf, ymax = Inf, alpha = 0.5
+      aes(xmin = start - .45, xmax = end + .45, col = tag),
+      fill = "white",
+      ymin = -Inf, ymax = Inf, alpha = 1,
+      linewidth = 3
     ) +
-    scale_fill_gradient(low = "antiquewhite", high = "orange") +
-    geom_boxplot(
-      data = df_stack,
-      aes(x = year, y = value, col = trt, group = interaction(trt, year)),
-      color = "black", fill = NA, outlier.shape = 20, outlier.alpha = 0, coef = 0
-    ) +
-    geom_jitter(
-      data = df_weight %>%
+    scale_color_gradient(low = "antiquewhite", high = "orange") +
+    geom_bin2d(
+      data = df_stack %>%
         mutate(year = case_when(
-          trt == "_" ~ year - 0.2,
-          trt == "T" ~ year + 0.2
+          trt == "_" ~ year - 0.125,
+          trt == "T" ~ year + 0.125
         )),
-      aes(x = year, y = value, col = trt, size = weight),
-      alpha = 0.02
+      aes(x = year, y = value),
+      bins = c((max(df_weight$year) - min(df_weight$year)) * 4 + 2 - 1, 10)
     ) +
-    scale_color_manual(values = c("_" = "black", "T" = "red")) +
+    scale_fill_gradient(low = "white", high = "#5A5A5A", na.value = "white") +
+    geom_text(
+      data = df_trt %>%
+        filter(trt == "_"),
+      aes(x = year - 0.125, y = min),
+      label = "_", col = "black"
+    ) +
+    geom_text(
+      data = df_trt %>%
+        filter(trt == "T"),
+      aes(x = year + 0.125, y = min),
+      label = "T", col = "red"
+    ) +
     facet_wrap( # CTI & CPI panels
       ~trait,
       ncol = 1, scales = "free_y",
@@ -111,9 +153,10 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ppt = "Annual precipitation\n(AP, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
-    scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+    scale_x_continuous(expand = expansion(mult = 0, add = c(0.25, 0.25))) +
     labs(
       x = NULL, # "Year",
       y = NULL,
@@ -128,9 +171,9 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ),
       aes(
         label = name,
-        x = startyear - 0.25, # y = cti_max
+        x = startyear - 0.125, # y = cti_max
       ),
-      y = 18, # manually label phase text
+      y = 18.75, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +
@@ -176,8 +219,7 @@ plot_trait_change_obs <- function(dat_community_obs, dat_niche) {
 
 plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", ppt_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
-  site_lab <- read_site_name()[site_name]
-  site_lab <- str_c(LETTERS[which(read_site_name() == site_lab)], site_lab, sep = ". ")
+  site_lab <- plot_site_name(site_name, with_letter = T)
 
   df_weight <- dat_community_obs %>%
     filter(site == site_name) %>%
@@ -203,32 +245,23 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
     ) %>%
     unnest(cols = data)
 
-  n_plot <- dat_community_obs %>%
-    filter(site == site_name) %>%
-    distinct(plot) %>%
-    nrow()
-
   df_stack <- tidy_stack_weighted_data(df_weight)
 
   # plot
   set.seed(1)
   out_gg <- ggplot() +
-    geom_jitter(
-      data = df_weight %>%
+    geom_bin2d(
+      data = df_stack %>%
         group_by(var) %>%
         filter(
           value >= quantile(value, 0.025, na.rm = T),
           value <= quantile(value, 0.975, na.rm = T)
         ) %>%
         ungroup(),
-      aes(x = year, y = value, size = weight),
-      pch = 21, alpha = 0.1 / (n_plot), fill = "blue", color = "blue"
+      aes(x = year, y = value),
+      bins = c(max(dat_community_obs$year) - min(dat_community_obs$year) + 1 - 1, 10)
     ) +
-    geom_boxplot(
-      data = df_stack,
-      aes(x = year, y = value, group = year),
-      color = "#5A5A5A", fill = NA, outlier.shape = 20, outlier.alpha = 0, coef = 0
-    ) +
+    scale_fill_gradient(low = "white", high = "#5A5A5A", na.value = "white") +
     geom_smooth( # add lm trend line when significant
       data = df_weight %>% filter(p_val <= 0.05),
       aes(x = year, y = value, weight = weight),

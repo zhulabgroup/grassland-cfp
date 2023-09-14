@@ -1,5 +1,5 @@
 summ_change <- function(df_change, option = "obs") {
-  grouping_factor <- intersect(df_change %>% colnames(), c("index", "trait"))
+  grouping_factor <- intersect(df_change %>% colnames(), c("index", "trait", "clim_var"))
   if (option == "obs") {
     df <- df_change %>%
       filter(site != "all") %>%

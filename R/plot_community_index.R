@@ -95,7 +95,7 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
 
   # plot
   out_gg <- ggplot(site_tbl, aes(year, com_idx_value)) +
-    geom_boxplot(aes(group = year), color = "#5A5A5A", outlier.shape = 20) +
+    geom_boxplot(aes(group = year), color = "gray", outlier.shape = 20) +
     geom_smooth( # add lm trend line when significant
       data = . %>% filter(p_val <= 0.05),
       method = "lm", formula = y ~ x, se = FALSE,
@@ -190,7 +190,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     ) %>%
     group_by(grp, com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -209,6 +209,30 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       grp == "Phase II" ~ 2009,
       grp == "Phase III" ~ 2014
     )) %>%
+    left_join(
+      jrgce_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 1,
+      com_idx_name == "CPI" ~ max + 200,
+      com_idx_name == "CDI" ~ max + 200
+    ))
+
+  change_tbl_year <- jrgce_tbl %>%
+    mutate(grp = year) %>%
+    rename(
+      trt = treat_T,
+      value = com_idx_value
+    ) %>%
+    group_by(grp, com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
     left_join(
       jrgce_tbl %>%
         group_by(com_idx_name) %>%
@@ -235,11 +259,6 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       aes(x = year, y = com_idx_value, col = treat_T, group = interaction(treat_T, year))
     ) +
     scale_color_manual(values = c("black", "red")) +
-    # ggpubr::stat_compare_means( # significance
-    #   aes(x = year, y = com_idx_value, group = treat_T),
-    #   method = "wilcox.test",
-    #   label = "p.signif", hide.ns = FALSE
-    # ) +
     facet_wrap( # CTI & CPI panels
       ~com_idx_name,
       ncol = 1, scales = "free_y",
@@ -250,7 +269,8 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         CDI = "Community Drought Index\n(CDI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -270,7 +290,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         label = name,
         x = startyear - 0.25, # y = cti_max
       ),
-      y = 17.5, # manually label phase text
+      y = 18, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +
@@ -303,7 +323,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     ) %>%
     group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -323,6 +343,29 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 1,
+      com_idx_name == "CPI" ~ max + 200
+    ))
+
+  change_tbl_year <- jrgce_tbl %>%
+    mutate(grp = year) %>%
+    rename(
+      trt = treat_P,
+      value = com_idx_value
+    ) %>%
+    group_by(grp, com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    left_join(
+      jrgce_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
       com_idx_name == "CTI" ~ max + 0.5,
       com_idx_name == "CPI" ~ max + 100
     ))
@@ -333,11 +376,6 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
       aes(x = year, y = com_idx_value, col = treat_P, group = interaction(treat_P, year))
     ) +
     scale_color_manual(values = c("black", "blue")) +
-    # ggpubr::stat_compare_means( # significance
-    #   aes(x = year, y = com_idx_value, group = treat_P),
-    #   method = "wilcox.test",
-    #   label = "p.signif", hide.ns = FALSE
-    # ) +
     facet_wrap( # CTI & CPI panels
       ~com_idx_name,
       ncol = 1, scales = "free_y",
@@ -347,7 +385,8 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -417,7 +456,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     ) %>%
     group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -437,6 +476,29 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 1,
+      com_idx_name == "CPI" ~ max + 200
+    ))
+
+  change_tbl_year <- mclexp_tbl %>%
+    mutate(grp = year) %>%
+    rename(
+      trt = treat,
+      value = com_idx_value
+    ) %>%
+    group_by(grp, com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    left_join(
+      mclexp_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
       com_idx_name == "CTI" ~ max + 0.5,
       com_idx_name == "CPI" ~ max + 100
     ))
@@ -447,11 +509,6 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
       aes(x = year, y = com_idx_value, col = treat, group = interaction(treat, year))
     ) +
     scale_color_manual(values = c("black", box_col)) +
-    # ggpubr::stat_compare_means( # significance
-    #   aes(x = year, y = com_idx_value, group = treat),
-    #   method = "wilcox.test",
-    #   label = "p.signif", hide.ns = FALSE
-    # ) +
     facet_wrap( # CTI & CPI panels
       ~com_idx_name,
       ncol = 1, scales = "free_y",
@@ -461,7 +518,8 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -526,7 +584,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     ) %>%
     group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -546,6 +604,29 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
+      com_idx_name == "CTI" ~ max + 1,
+      com_idx_name == "CPI" ~ max + 200
+    ))
+
+  change_tbl_year <- scide_tbl %>%
+    mutate(grp = year) %>%
+    rename(
+      trt = treat,
+      value = com_idx_value
+    ) %>%
+    group_by(grp, com_idx_name) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
+      test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    left_join(
+      scide_tbl %>%
+        group_by(com_idx_name) %>%
+        summarise(max = max(com_idx_value)),
+      by = "com_idx_name"
+    ) %>%
+    mutate(max = case_when(
       com_idx_name == "CTI" ~ max + 0.5,
       com_idx_name == "CPI" ~ max + 100
     ))
@@ -556,11 +637,6 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
       aes(x = year, y = com_idx_value, col = treat, group = interaction(treat, year))
     ) +
     scale_color_manual(values = c("black", box_col)) +
-    # ggpubr::stat_compare_means( # significance
-    #   aes(x = year, y = com_idx_value, group = treat),
-    #   method = "wilcox.test",
-    #   label = "p.signif", hide.ns = FALSE
-    # ) +
     facet_wrap( # CTI & CPI panels
       ~com_idx_name,
       ncol = 1, scales = "free_y",
@@ -570,7 +646,8 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(

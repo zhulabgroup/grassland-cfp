@@ -336,13 +336,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(grassland)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(ggthemes<span class="sc">::</span><span class="fu">theme_few</span>())</span></code></pre></div>
-<p>Save a species list from all tidy data</p>
+<p>Save a species list from all tidy data.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>f_species_tidy <span class="ot">&lt;-</span> <span class="fu">tidy_taxonomy_list</span>(dat_community_tidy)</span></code></pre></div>
-<p>Josie and Justin used the output for manual correction, producing
-“misspelling.csv”.</p>
+<p>Manually correct misspelling species names based on expert opinions
+(Josie and Justin).</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">&quot;alldata/input/community/species/misspelling.csv&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>() </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 814 Columns: 7</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ───────────────────────────────────────</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (5): original_species, original_guild, corrected_species, corrected_guil...</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dbl (1): # occurrences in dataset</span></span>
@@ -554,7 +554,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </tr>
 </tbody>
 </table>
-<p>Rename species</p>
+<p>Rename species.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>path_community <span class="ot">&lt;-</span> <span class="fu">tidy_taxonomy_rename</span>()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dat_community <span class="ot">&lt;-</span> <span class="fu">read_community</span>(<span class="at">version =</span> <span class="st">&quot;final&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dat_community</span>
@@ -589,12 +589,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 jrgce  1998 10    ____  Bromus hordeaceus  EAG      12 point_intercept</span></span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 jrgce  1998 10    ____  Erodium botrys     EAF       3 point_intercept</span></span>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ℹ 26,890 more rows</span></span></code></pre></div>
-<p>Josie and Justin made “consolidation.csv”, where old species names
-are later used for querying biogeography data and new species names
-(onsolidated names) are used in this analysis.</p>
+<p>Manually consolidate species based on expert opinions (Josie and
+Justin), where old species names are later used for querying
+biogeography data and new species names (consolidated names) are used in
+this analysis.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">&quot;alldata/input/community/species/consolidation.csv&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">20</span>) <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 148 Columns: 2</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ───────────────────────────────────────</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (2): old_species_name, new_species_name</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -690,7 +691,7 @@ are later used for querying biogeography data and new species names
 </tr>
 </tbody>
 </table>
-<p>Output figures and r data files</p>
+<p>Output figures and R data files.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_rda</span>(<span class="at">out =</span> <span class="fu">list</span>(dat_community))</span></code></pre></div>
 
 

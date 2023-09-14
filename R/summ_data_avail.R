@@ -12,7 +12,7 @@ summ_data_avail <- function(dat_community, type, subset = NULL) {
     filter(!(site == "scide" & year == 2015)) %>% # pre-treatment
     mutate(sitename = read_site_name()[site]) %>%
     filter(!is.na(sitename)) %>%
-    group_by(sitename, year) %>%
+    group_by(site, sitename, year) %>%
     summarise(count = n()) %>%
     ungroup() %>%
     arrange(count) %>%
@@ -20,7 +20,7 @@ summ_data_avail <- function(dat_community, type, subset = NULL) {
 
   if (type == "short") {
     df_data_avail <- df_data_avail %>%
-      group_by(sitename) %>%
+      group_by(site, sitename) %>%
       summarise(nyear = unique(year) %>% length()) %>%
       arrange(nyear)
   }

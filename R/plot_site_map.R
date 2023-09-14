@@ -1,7 +1,7 @@
 plot_site_map <- function(sf_cfp, ras_grass) {
   # read site data
   site_sf <- read_site_info(subset = "obs") %>%
-    arrange(abbr) %>%
+    arrange(site) %>%
     add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
 
   grass_tbl <- ras_grass %>%

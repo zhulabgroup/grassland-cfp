@@ -31,22 +31,21 @@ plot_site_climate_change <- function(dat_clim_site, dat_avail) {
 
 
 # define plotting function
-plot_site_cc <- function(data, dat_avail, site_abbr,
+plot_site_cc <- function(data, dat_avail, site_name,
                          tmp_lab = "", ppt_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
-  site_lab <- read_site_name()[site_abbr]
-  site_lab <- str_c(LETTERS[which(read_site_name() == site_lab)], site_lab, sep = ". ")
+  site_lab <- plot_site_name(site_name, with_letter = T)
 
   df_range <- dat_avail %>%
-    filter(sitename == read_site_name()[site_abbr]) %>%
+    filter(site == site_name) %>%
     summarise(
       min = min(year),
       max = max(year)
     )
 
   site_tbl <- data %>%
-    filter(abbr == site_abbr) %>%
-    select(abbr, year, tmp, ppt) %>%
+    filter(site == site_name) %>%
+    select(site, year, tmp, ppt) %>%
     pivot_longer(tmp:ppt, names_to = "clim_var", values_to = "clim_val") %>%
     mutate(clim_var = factor(clim_var,
       levels = c("tmp", "ppt")

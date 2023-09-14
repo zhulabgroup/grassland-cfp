@@ -154,7 +154,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     ) %>%
     group_by(grp, group) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%

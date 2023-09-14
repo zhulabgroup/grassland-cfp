@@ -340,19 +340,27 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 observational).</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>path_community_tidy <span class="ot">&lt;-</span> <span class="fu">tidy_community_data</span>()</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>dat_community_tidy <span class="ot">&lt;-</span> <span class="fu">read_community</span>(<span class="at">version =</span> <span class="st">&quot;tidy&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_site_info</span>() <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>() <span class="co"># perhaps make extdata</span></span></code></pre></div>
+<p>Read site information.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_site_info</span>() <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 16 Columns: 6</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (6): site, site_name, latitude, longitude, grass_type, data_method</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
 <table>
 <colgroup>
-<col width="9%" />
-<col width="23%" />
-<col width="9%" />
-<col width="41%" />
-<col width="16%" />
+<col width="8%" />
+<col width="19%" />
+<col width="8%" />
+<col width="49%" />
+<col width="14%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">abbr</th>
-<th align="left">name</th>
+<th align="left">site</th>
+<th align="left">site_name</th>
 <th align="left">grass_type</th>
 <th align="left">data_method</th>
 <th align="left">geometry</th>
@@ -362,22 +370,24 @@ observational).</p>
 <tr class="odd">
 <td align="left">angelo</td>
 <td align="left">Angelo Coast</td>
-<td align="left">Valley</td>
-<td align="left">Cover in 30x0.09-m2 quadrats</td>
+<td align="left">Coastal prairie</td>
+<td align="left">Cover in 30×0.09-m2 quadrats</td>
 <td align="left">POINT (-123.6531 39.71736)</td>
 </tr>
 <tr class="even">
 <td align="left">carrizo</td>
 <td align="left">Carrizo Plain</td>
 <td align="left">Valley</td>
-<td align="left">9x9 point intercept in 1-m2 quadrats</td>
+<td align="left">9×9 point-intercepts in 1-m2 quadrats, first species
+hit</td>
 <td align="left">POINT (-119.8626 35.18906)</td>
 </tr>
 <tr class="odd">
 <td align="left">elkhorn</td>
 <td align="left">Elkhorn Slough</td>
 <td align="left">Coastal prairie</td>
-<td align="left">5x5 point intercept in 0.25-m2 quadrats</td>
+<td align="left">5×5 point-intercepts in 0.25-m2 quadrats; each species
+recorded only once at each sample point</td>
 <td align="left">POINT (-121.741 36.86733)</td>
 </tr>
 <tr class="even">
@@ -398,16 +408,14 @@ observational).</p>
 <td align="left">mclann</td>
 <td align="left">McLaughlin Annual</td>
 <td align="left">Valley</td>
-<td align="left">Cover in 1-m2 quadrats; first 6 years are richness
-only</td>
+<td align="left">Cover in 1-m2 quadrats</td>
 <td align="left">POINT (-122.421 38.86978)</td>
 </tr>
 <tr class="odd">
 <td align="left">mclserp</td>
 <td align="left">McLaughlin Serpentine</td>
 <td align="left">Serpentine</td>
-<td align="left">Cover in 1-m2 quadrats; first 6 years are richness
-only</td>
+<td align="left">Cover in 1-m2 quadrats</td>
 <td align="left">POINT (-122.421 38.86978)</td>
 </tr>
 <tr class="even">
@@ -459,25 +467,29 @@ species only</td>
 <td align="left">swanton</td>
 <td align="left">Swanton Ranch</td>
 <td align="left">Coastal prairie</td>
-<td align="left">5x5 point intercept in 0.25-m2 quadrats</td>
+<td align="left">5×5 point-intercepts in 0.25-m2 quadrats; each species
+recorded only once at each sample point</td>
 <td align="left">POINT (-122.2211 37.04531)</td>
 </tr>
 <tr class="odd">
 <td align="left">ucsc</td>
 <td align="left">UC Santa Cruz</td>
 <td align="left">Coastal prairie</td>
-<td align="left">5x5 point intercept in 0.25-m2 quadrats</td>
+<td align="left">5×5 point-intercepts in 0.25-m2 quadrats; each species
+recorded only once at each sample point</td>
 <td align="left">POINT (-122.0526 36.98642)</td>
 </tr>
 <tr class="even">
 <td align="left">vascocaves</td>
 <td align="left">Vasco Caves</td>
-<td align="left">???</td>
-<td align="left">???</td>
+<td align="left">Valley</td>
+<td align="left">70 point-intercepts along four 17-m transects; tallest
+species only</td>
 <td align="left">POINT (-121.687 37.805)</td>
 </tr>
 </tbody>
 </table>
+<p>Visualize data availability across sites.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_data_avail <span class="ot">&lt;-</span> <span class="fu">summ_data_avail</span>(dat_community, <span class="at">type =</span> <span class="st">&quot;long&quot;</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>gg_data_avail <span class="ot">&lt;-</span> <span class="fu">plot_data_availability</span>(df_data_avail)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>gg_data_avail</span></code></pre></div>
@@ -485,34 +497,41 @@ species only</td>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_data_avail_obs <span class="ot">&lt;-</span> <span class="fu">summ_data_avail</span>(dat_community, <span class="at">type =</span> <span class="st">&quot;short&quot;</span>, <span class="at">subset =</span> <span class="st">&quot;obs&quot;</span>)</span></code></pre></div>
 <p>We compiled 8 - 33 yr observational data from 12 sites with 176 total
 site years.</p>
+<p>Summarize the geographic and climatic extents of the study sites.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sf_site_obs <span class="ot">&lt;-</span> <span class="fu">read_site_info</span>(<span class="at">subset =</span> <span class="st">&quot;obs&quot;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dat_clim <span class="ot">&lt;-</span> <span class="fu">read_climate</span>()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>df_summ_site_latlon <span class="ot">&lt;-</span> <span class="fu">summ_site_obs</span>(<span class="at">sf_site =</span> sf_site_obs, <span class="at">dat_clim =</span> dat_clim<span class="sc">$</span>chelsa, <span class="at">type =</span> <span class="st">&quot;latlon&quot;</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df_summ_site_clim <span class="ot">&lt;-</span> <span class="fu">summ_site_obs</span>(<span class="at">sf_site =</span> sf_site_obs, <span class="at">dat_clim =</span> dat_clim<span class="sc">$</span>chelsa, <span class="at">type =</span> <span class="st">&quot;climate&quot;</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>summ_site_hull <span class="ot">&lt;-</span> <span class="fu">summ_site_obs</span>(<span class="at">sf_site =</span> sf_site_obs, <span class="at">dat_clim =</span> dat_clim<span class="sc">$</span>chelsa, <span class="at">type =</span> <span class="st">&quot;hull&quot;</span>)</span></code></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 16 Columns: 6</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (6): site, site_name, latitude, longitude, grass_type, data_method</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>dat_clim <span class="ot">&lt;-</span> <span class="fu">read_climate</span>()</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>df_summ_site_latlon <span class="ot">&lt;-</span> <span class="fu">summ_site_obs</span>(<span class="at">sf_site =</span> sf_site_obs, <span class="at">dat_clim =</span> dat_clim<span class="sc">$</span>chelsa, <span class="at">type =</span> <span class="st">&quot;latlon&quot;</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>df_summ_site_clim <span class="ot">&lt;-</span> <span class="fu">summ_site_obs</span>(<span class="at">sf_site =</span> sf_site_obs, <span class="at">dat_clim =</span> dat_clim<span class="sc">$</span>chelsa, <span class="at">type =</span> <span class="st">&quot;climate&quot;</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>summ_site_hull <span class="ot">&lt;-</span> <span class="fu">summ_site_obs</span>(<span class="at">sf_site =</span> sf_site_obs, <span class="at">dat_clim =</span> dat_clim<span class="sc">$</span>chelsa, <span class="at">type =</span> <span class="st">&quot;hull&quot;</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 16 Columns: 6</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (6): site, site_name, latitude, longitude, grass_type, data_method</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
 <p>These observational sites spanned a large geographical area (120 -
 124 °W, 35.2 - 39.7 °N) and climate gradient (12.8 - 17 °C temperature,
 255 - 1840 mm precipitation).</p>
 <p>These observational sites spanned an approximately 30,000 km^2
 geographical area.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>path_climate_site_annual <span class="ot">&lt;-</span> <span class="fu">calc_climate_annual_site</span>()</span></code></pre></div>
+<p>Calculate and summarize climate change at these observational
+sites.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat_clim_site <span class="ot">&lt;-</span> <span class="fu">read_climate_site</span>()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_cc_site <span class="ot">&lt;-</span> <span class="fu">calc_climate_change_site</span>(<span class="at">dat_clim_site =</span> dat_clim_site)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_cc_site <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
 <table>
-<colgroup>
-<col width="19%" />
-<col width="26%" />
-<col width="10%" />
-<col width="14%" />
-<col width="12%" />
-<col width="12%" />
-<col width="4%" />
-</colgroup>
 <thead>
 <tr class="header">
-<th align="left">abbr</th>
-<th align="left">name</th>
+<th align="left">site</th>
 <th align="left">clim_var</th>
 <th align="right">estimate</th>
 <th align="right">std.error</th>
@@ -522,8 +541,23 @@ geographical area.</p>
 </thead>
 <tbody>
 <tr class="odd">
+<td align="left">all</td>
+<td align="left">tmp</td>
+<td align="right">0.0177386</td>
+<td align="right">0.0020771</td>
+<td align="right">0.0000000</td>
+<td align="left">***</td>
+</tr>
+<tr class="even">
+<td align="left">all</td>
+<td align="left">ppt</td>
+<td align="right">-4.2215845</td>
+<td align="right">1.0489982</td>
+<td align="right">0.0000666</td>
+<td align="left">***</td>
+</tr>
+<tr class="odd">
 <td align="left">angelo</td>
-<td align="left">Angelo Coast</td>
 <td align="left">tmp</td>
 <td align="right">0.0053096</td>
 <td align="right">0.0067221</td>
@@ -532,7 +566,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">angelo</td>
-<td align="left">Angelo Coast</td>
 <td align="left">ppt</td>
 <td align="right">-15.1323668</td>
 <td align="right">6.9741870</td>
@@ -541,7 +574,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">carrizo</td>
-<td align="left">Carrizo Plain</td>
 <td align="left">tmp</td>
 <td align="right">0.0245310</td>
 <td align="right">0.0077458</td>
@@ -550,7 +582,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">carrizo</td>
-<td align="left">Carrizo Plain</td>
 <td align="left">ppt</td>
 <td align="right">-1.5408734</td>
 <td align="right">1.3219092</td>
@@ -559,7 +590,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">elkhorn</td>
-<td align="left">Elkhorn Slough</td>
 <td align="left">tmp</td>
 <td align="right">0.0130722</td>
 <td align="right">0.0071605</td>
@@ -568,7 +598,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">elkhorn</td>
-<td align="left">Elkhorn Slough</td>
 <td align="left">ppt</td>
 <td align="right">-2.3224850</td>
 <td align="right">2.2905098</td>
@@ -577,7 +606,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">jasper</td>
-<td align="left">Jasper Ridge</td>
 <td align="left">tmp</td>
 <td align="right">0.0151329</td>
 <td align="right">0.0075780</td>
@@ -586,7 +614,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">jasper</td>
-<td align="left">Jasper Ridge</td>
 <td align="left">ppt</td>
 <td align="right">-5.8882289</td>
 <td align="right">3.4685199</td>
@@ -595,7 +622,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">mclann</td>
-<td align="left">McLaughlin Annual</td>
 <td align="left">tmp</td>
 <td align="right">0.0183497</td>
 <td align="right">0.0075257</td>
@@ -604,7 +630,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">mclann</td>
-<td align="left">McLaughlin Annual</td>
 <td align="left">ppt</td>
 <td align="right">-4.1635159</td>
 <td align="right">4.4791337</td>
@@ -613,7 +638,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">mclserp</td>
-<td align="left">McLaughlin Serpentine</td>
 <td align="left">tmp</td>
 <td align="right">0.0183497</td>
 <td align="right">0.0075257</td>
@@ -622,7 +646,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">mclserp</td>
-<td align="left">McLaughlin Serpentine</td>
 <td align="left">ppt</td>
 <td align="right">-4.1635159</td>
 <td align="right">4.4791337</td>
@@ -631,7 +654,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">morganterritory</td>
-<td align="left">Morgan Territory</td>
 <td align="left">tmp</td>
 <td align="right">0.0243441</td>
 <td align="right">0.0064703</td>
@@ -640,7 +662,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">morganterritory</td>
-<td align="left">Morgan Territory</td>
 <td align="left">ppt</td>
 <td align="right">-0.7081013</td>
 <td align="right">2.3234359</td>
@@ -649,7 +670,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">pleasantonridge</td>
-<td align="left">Pleasanton Ridge</td>
 <td align="left">tmp</td>
 <td align="right">0.0235741</td>
 <td align="right">0.0071860</td>
@@ -658,7 +678,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">pleasantonridge</td>
-<td align="left">Pleasanton Ridge</td>
 <td align="left">ppt</td>
 <td align="right">-1.9649493</td>
 <td align="right">2.1917413</td>
@@ -667,7 +686,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">sunol</td>
-<td align="left">Sunol</td>
 <td align="left">tmp</td>
 <td align="right">0.0260452</td>
 <td align="right">0.0077089</td>
@@ -676,7 +694,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">sunol</td>
-<td align="left">Sunol</td>
 <td align="left">ppt</td>
 <td align="right">-2.5350291</td>
 <td align="right">2.3555645</td>
@@ -685,7 +702,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">swanton</td>
-<td align="left">Swanton Ranch</td>
 <td align="left">tmp</td>
 <td align="right">0.0084631</td>
 <td align="right">0.0072860</td>
@@ -694,7 +710,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">swanton</td>
-<td align="left">Swanton Ranch</td>
 <td align="left">ppt</td>
 <td align="right">-6.1709165</td>
 <td align="right">3.7655941</td>
@@ -703,7 +718,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">ucsc</td>
-<td align="left">UC Santa Cruz</td>
 <td align="left">tmp</td>
 <td align="right">0.0079190</td>
 <td align="right">0.0064514</td>
@@ -712,7 +726,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">ucsc</td>
-<td align="left">UC Santa Cruz</td>
 <td align="left">ppt</td>
 <td align="right">-5.7431445</td>
 <td align="right">3.9555091</td>
@@ -721,7 +734,6 @@ geographical area.</p>
 </tr>
 <tr class="odd">
 <td align="left">vascocaves</td>
-<td align="left">Vasco Caves</td>
 <td align="left">tmp</td>
 <td align="right">0.0277720</td>
 <td align="right">0.0066405</td>
@@ -730,7 +742,6 @@ geographical area.</p>
 </tr>
 <tr class="even">
 <td align="left">vascocaves</td>
-<td align="left">Vasco Caves</td>
 <td align="left">ppt</td>
 <td align="right">-0.3258874</td>
 <td align="right">2.0808536</td>
@@ -739,34 +750,45 @@ geographical area.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_summ_site_cc <span class="ot">&lt;-</span> <span class="fu">summ_site_climate_change</span>(<span class="at">df_cc_site =</span> df_cc_site)</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_summ_site_cc <span class="ot">&lt;-</span> <span class="fu">summ_change</span>(<span class="at">df_change =</span> df_cc_site, <span class="at">option =</span> <span class="st">&quot;obs&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>gg_site_cc <span class="ot">&lt;-</span> <span class="fu">plot_site_climate_change</span>(<span class="at">dat_clim_site =</span> dat_clim_site, <span class="at">dat_avail =</span> df_data_avail)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in CPL_read_ogr(dsn, layer, query, as.character(options), quiet, :</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; GDAL Message 1: Non closed ring detected. To avoid accepting it, set the</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OGR_GEOMETRY_ACCEPT_UNCLOSED_RING configuration option to NO</span></span></code></pre></div>
-<p>The mean warming rate (increasing mean annual temperature per year)
-was 0.0177 °C yr<sup>-1</sup>, ranging from 0.00531 °C yr<sup>-1</sup>
-to 0.0278 °C yr<sup>-1</sup>; the mean drying trend (decreasing total
-annual precipitation per year) was 4.22 mm yr<sup>-1</sup>, ranging from
-0.326 mm yr<sup>-1</sup> to 15.1 mm yr<sup>-1</sup>.</p>
-<p>Info on experimental site</p>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; OGR_GEOMETRY_ACCEPT_UNCLOSED_RING configuration option to NO</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 16 Columns: 6</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (6): site, site_name, latitude, longitude, grass_type, data_method</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span></code></pre></div>
+<p>Overall, the 12 observational sites had significant warming (0.0177
+°C yr<sup>-1</sup>) and significant drying (4.22 mm yr<sup>-1</sup>)
+over the years.</p>
+<p>By site, 7 out of the 12 sites had significant warming and 1 had
+significant drying over the years. Among all 12 sites, the warming rate
+ranged from 0.00531 °C yr<sup>-1</sup> to 0.0278 °C yr<sup>-1</sup>; the
+drying rate ranged from -0.0278 mm yr<sup>-1</sup> to 15.1 mm
+yr<sup>-1</sup>.</p>
+<p>Likewise, summarize climate information at the experimental site.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df_data_avail_exp <span class="ot">&lt;-</span> <span class="fu">summ_data_avail</span>(dat_community, <span class="at">type =</span> <span class="st">&quot;long&quot;</span>, <span class="at">subset =</span> <span class="st">&quot;exp&quot;</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df_jrgce_env <span class="ot">&lt;-</span> <span class="fu">read_jrgce_env</span>()</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 132 Columns: 4</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ───────────────────────────────────────</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (1): var</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dbl (3): yr, trt, env</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>df_summ_jrgce_env <span class="ot">&lt;-</span> <span class="fu">summ_jrgce_env</span>(<span class="at">df_env =</span> df_jrgce_env)</span></code></pre></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_jrgce_env <span class="ot">&lt;-</span> <span class="fu">read_jrgce_env</span>()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Rows: 132 Columns: 4</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ── Column specification ────────────────────────────────────────────────────────</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Delimiter: &quot;,&quot;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; chr (1): var</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; dbl (3): yr, trt, env</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>df_summ_jrgce_env <span class="ot">&lt;-</span> <span class="fu">summ_jrgce_env</span>(<span class="at">df_env =</span> df_jrgce_env)</span></code></pre></div>
 <p>The experiment occupied ~0.75 ha within a 5-ha grassland stand and
 experienced a large variation of plot-level temperature (8.69 - 12.3 °C)
 and precipitation (240 - 1380 mm) in 2174 total plot years.</p>
-<p>Output figures and r data files</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_figure</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="at">data_avail =</span> gg_data_avail, <span class="at">site_cc =</span> gg_site_cc))</span></code></pre></div>
+<p>Output figures and R data files.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_figure</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="at">data_avail =</span> gg_data_avail, <span class="at">site_cc =</span> gg_site_cc))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">save_extdata</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="st">&quot;alldata/input/basemap/site_info.csv&quot;</span>))</span></code></pre></div>
 
 
 

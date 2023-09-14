@@ -169,7 +169,7 @@ calc_community_shift_exp <- function(exp_tbl) {
     ) %>%
     group_by(phase, com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_lme = data[[1]], option = "exp") %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     ungroup() %>%
     select(-data, -estimate, -sig) %>%

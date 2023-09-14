@@ -3,7 +3,7 @@ summ_site_obs <- function(sf_site, dat_clim, type) {
   if (type == "latlon") {
     out <- sf_site %>%
       extract(geometry, c("lon", "lat"), "\\((.*), (.*)\\)", convert = TRUE) %>%
-      select(abbr, lat, lon) %>%
+      select(site, lat, lon) %>%
       summarise(
         lat_max = max(lat, na.rm = T),
         lat_min = min(lat, na.rm = T),
@@ -25,7 +25,7 @@ summ_site_obs <- function(sf_site, dat_clim, type) {
   if (type == "hull") {
     out <- sf_site %>%
       extract(geometry, c("lon", "lat"), "\\((.*), (.*)\\)", convert = TRUE) %>%
-      select(abbr, lat, lon) %>%
+      select(site, lat, lon) %>%
       terra::vect(crs = terra::crs(read_site_info(), proj = T)) %>%
       terra::convHull() %>%
       terra::expanse(unit = "km")
