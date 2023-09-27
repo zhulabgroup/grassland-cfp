@@ -101,7 +101,8 @@ The experiment occupied ~0.75 ha within a 5-ha grassland stand and experienced a
 Output figures and R data files.
 
 ```{r, eval = F}
-save_figure(out = list(data_avail = gg_data_avail, site_cc = gg_site_cc))
+save_figure(out = list(data_avail = gg_data_avail, 
+                       site_cc = gg_site_cc))
 
 save_extdata(out = list("alldata/input/basemap/site_info.csv"))
 ```
