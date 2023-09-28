@@ -129,7 +129,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
           trt == "T" ~ year + 0.125
         )),
       aes(x = year, y = value),
-      bins = c((max(df_weight$year) - min(df_weight$year)) * 4 + 2 - 1, 10)
+      bins = c((max(df_weight$year) - min(df_weight$year)) * 4 + 2 - 1, 10 - 1)
     ) +
     scale_fill_gradient(low = "white", high = "#5A5A5A", na.value = "white") +
     geom_text(
@@ -153,7 +153,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ppt = "Annual precipitation\n(AP, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), " ", unit, " (", sig, ")", sep = ""))) +
     geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.25, 0.25))) +
@@ -251,15 +251,9 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
   set.seed(1)
   out_gg <- ggplot() +
     geom_bin2d(
-      data = df_stack %>%
-        group_by(var) %>%
-        filter(
-          value >= quantile(value, 0.025, na.rm = T),
-          value <= quantile(value, 0.975, na.rm = T)
-        ) %>%
-        ungroup(),
+      data = df_stack,
       aes(x = year, y = value),
-      bins = c(max(dat_community_obs$year) - min(dat_community_obs$year) + 1 - 1, 10)
+      bins = c(max(dat_community_obs$year) - min(dat_community_obs$year) + 1 - 1, 10 - 1)
     ) +
     scale_fill_gradient(low = "white", high = "#5A5A5A", na.value = "white") +
     geom_smooth( # add lm trend line when significant

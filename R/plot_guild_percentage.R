@@ -80,7 +80,7 @@ plot_guild_site <- function(data, site_abbr,
     ggplot(site_tbl) +
     geom_boxplot(
       aes(x = year, y = value, group = year),
-      color = "#5A5A5A", outlier.shape = 20
+      color = "gray", outlier.shape = 20
     ) +
     geom_smooth(
       data = . %>% filter(p_val <= 0.05),
@@ -140,7 +140,8 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     pivot_longer(cols = native_perc:grass_perc, names_to = "group", values_to = "value") %>%
     mutate(group = factor(group,
       levels = c("native_perc", "annual_perc", "grass_perc")
-    ))
+    )) %>%
+    ungroup()
 
   change_tbl <- exp_guild_tbl %>%
     mutate(grp = case_when(
@@ -169,7 +170,21 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       grp == "Phase II" ~ 2009,
       grp == "Phase III" ~ 2014
     )) %>%
-    mutate(max = 1.10)
+    mutate(max = 1.3)
+
+  change_tbl_year <- exp_guild_tbl %>%
+    mutate(grp = year) %>%
+    rename(
+      trt = treat_T,
+      value = value
+    ) %>%
+    group_by(grp, group) %>%
+    nest() %>%
+    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
+             test_change_summ()) %>%
+    select(-data) %>%
+    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+    mutate(max = 1.1)
 
   warm_tbl <- read_warm_treatment()
 
@@ -185,11 +200,6 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       aes(x = year, y = value, col = treat_T, group = interaction(treat_T, year))
     ) +
     scale_color_manual(values = c("black", "red")) +
-    # ggpubr::stat_compare_means( # significance
-    #   aes(x = year, y = value, group = treat_T),
-    #   method = "wilcox.test",
-    #   label = "p.signif", hide.ns = FALSE
-    # ) +
     facet_wrap(
       ~group,
       ncol = 1, scales = "free_y",
@@ -200,14 +210,15 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         grass_perc = "% Grasses"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = end, y = max, label = str_c("effect size: ", estimate %>% signif(3), unit, sig, sep = " ")), hjust = 1) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), unit," (",  sig,")", sep = ""))) +
+    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(
       labels = function(x) {
         trans <- x * 100
       },
-      limits = c(0, 1.1),
+      limits = c(0, 1.3),
       breaks = c(0, 0.5, 1),
-      expand = expansion(mult = .15)
+      expand = expansion(mult = 0.1)
     ) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -226,7 +237,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         label = name,
         x = startyear - 0.25,
       ),
-      y = 1.4, # manually label phase text
+      y = 1.55, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +

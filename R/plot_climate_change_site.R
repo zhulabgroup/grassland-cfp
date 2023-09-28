@@ -62,8 +62,11 @@ plot_site_cc <- function(data, dat_avail, site_name,
   out_gg <-
     ggplot(site_tbl) +
     geom_rect( # highlight observational years
-      aes(xmin = df_range$min, xmax = df_range$max),
-      ymin = -Inf, ymax = Inf,
+      data = df_range,
+      aes(
+        xmin = min, xmax = max,
+        ymin = -Inf, ymax = Inf
+      ),
       fill = "orange", alpha = 0.25
     ) +
     geom_point(

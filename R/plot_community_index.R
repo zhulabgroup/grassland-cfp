@@ -269,7 +269,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         CDI = "Community Drought Index\n(CDI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), " ", unit, " (", sig, ")", sep = ""))) +
     geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
@@ -385,7 +385,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), " ", unit, " (", sig, ")", sep = ""))) +
     geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
@@ -518,7 +518,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), " ", unit, " (", sig, ")", sep = ""))) +
     geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
@@ -646,7 +646,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c("overall", estimate %>% signif(3), unit, sig, sep = " "))) +
+    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), " ", unit, " (", sig, ")", sep = " "))) +
     geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
