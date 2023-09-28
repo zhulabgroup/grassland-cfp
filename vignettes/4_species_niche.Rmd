@@ -43,7 +43,7 @@ gg_biogeography
 
 ```{r}
 df_summ_occ <- summ_biogeography(dat_occ = dat_occ_full)
-df_summ_occ
+df_summ_occ %>% knitr::kable()
 ```
 
 We retrieved `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_occ)` occurrence records of `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_sp)` species in the CFP from the Global Biodiversity Information Facility (GBIF).

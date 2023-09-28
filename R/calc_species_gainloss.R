@@ -12,8 +12,8 @@ calc_species_gainloss <- function(dat_community, dat_niche) {
 
 calc_species_gainloss_obs <- function(com_obs, dat_niche) {
   site_list <- read_site_info() %>%
-    filter(!abbr %in% c("jrgce", "scide")) %>%
-    pull(abbr)
+    filter(!site %in% c("jrgce", "scide")) %>%
+    pull(site)
 
   obs_gainloss_tbl_list <- vector(mode = "list")
   for (siteoi in site_list) {
@@ -36,7 +36,7 @@ calc_species_gainloss_obs <- function(com_obs, dat_niche) {
       mutate(
         map(data, ~ lm(abund ~ year, data = .)) %>%
           map_df(~ broom::tidy(.) %>%
-            filter(term == "year") %>%
+            filter(term != "(Intercept)") %>%
             select(estimate, p.value)),
       ) %>%
       unnest(cols = data) %>%
@@ -127,15 +127,16 @@ calc_species_gainloss_exp <- function(com_exp, dat_niche) {
       group_by(species) %>%
       nest() %>%
       mutate(
-        map(data, ~ wilcox.test(abund ~ treat_T, data = ., conf.int = T)) %>%
+        map(data, ~ lm(abund ~ treat_T, data = .)) %>%
           map_df(~ broom::tidy(.) %>%
-            select(estimate, p.value)),
+                   filter(term != "(Intercept)") %>%
+                   select(estimate, p.value)),
       ) %>%
       unnest(cols = data) %>%
       distinct(species, estimate, p.value) %>%
       mutate(change = case_when(
-        (estimate < 0 & p.value <= 0.05) ~ "increase",
-        (estimate > 0 & p.value <= 0.05) ~ "decrease",
+        (estimate > 0 & p.value <= 0.05) ~ "increase",
+        (estimate < 0 & p.value <= 0.05) ~ "decrease",
         TRUE ~ "no clear change"
       )) %>%
       ungroup()

@@ -50,7 +50,7 @@ calc_climate_change_site <- function(dat_clim_site) {
   ) %>%
     select(site, everything()) %>%
     mutate(sig = gtools::stars.pval(p.value)) %>%
-    mutate(sig = ifelse(sig != " ", sig, "ns"))
+    mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns"))
 
   return(df_cc_site)
 }
