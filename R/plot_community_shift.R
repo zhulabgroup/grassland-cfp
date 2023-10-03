@@ -66,22 +66,11 @@ plot_community_shift_obs <- function(obs_tbl) {
 
 plot_community_shift_exp <- function(exp_tbl) {
   # warming phrases: +80 W m^-2 (years 2-5), to +100 W m^-2 (years 6-12), to +250 W m^-2 (years 13-17)
-  warm_tbl <- tribble(
-    ~tag, ~name, ~start, ~end,
-    1, "Phase I", -Inf, 2002,
-    2, "Phase II", 2003, 2009,
-    3, "Phase III", 2010, Inf # end in 2014, but set to Inf to fill space
-  )
-
-  warm_vec <- c(
-    `Phase I` = "Phase~I:~+80~W~m^-2%~~%+1~degree*C",
-    `Phase II` = "Phase~II:~+100~W~m^-2%~~%+1.5~degree*C",
-    `Phase III` = "Phase~III:~+250~W~m^-2%~~%+2~degree*C"
-  )
+  warm_tbl <- read_warm_treatment()
 
   p_exp <- ggplot() +
     geom_rect( # warming phrases
-      data = warm_tbl %>% rename(phase = name),
+      data = warm_tbl,
       aes(fill = tag),
       xmin = -Inf, xmax = Inf,
       ymin = -Inf, ymax = Inf,
@@ -105,8 +94,8 @@ plot_community_shift_exp <- function(exp_tbl) {
     ) +
     scale_alpha_manual(values = c("sig" = 1, "ns" = 0.25)) +
     facet_wrap(. ~ phase,
-      nrow = 1,
-      labeller = warm_vec %>% as_labeller(label_parsed)
+      nrow = 1 # ,
+      # labeller = warm_vec %>% as_labeller(label_parsed)
     ) +
     # ggtitle(warm_vec[1])+
     xlab("CTI (°C)") +

@@ -109,17 +109,17 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    geom_text(
-      data = . %>% distinct(com_idx_name, .keep_all = T),
-      aes(
-        label = paste("beta", " == ", beta),
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      x = -Inf, y = Inf,
-      vjust = 1.5, hjust = -0.2
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = . %>% distinct(com_idx_name, .keep_all = T),
+    #   aes(
+    #     label = paste("beta", " == ", beta),
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   x = -Inf, y = Inf,
+    #   vjust = 1.5, hjust = -0.2
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~com_idx_name,
       ncol = 1, scales = "free_y",
       strip.position = "left",
@@ -291,23 +291,23 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         CDI = "Community Drought Index\n(CDI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(
-        label = str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl,
+    #   aes(
+    #     label = str_c("delta", " == ", delta),
+    #     x = (start + end) / 2, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
       vjust = 3
     ) +
-    scale_y_continuous(expand = expansion(mult = .4)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -323,11 +323,11 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
           )
         ),
       aes(
-        label = name,
+        label = phase,
         x = startyear - 0.25, # y = cti_max
       ),
-      y = 18, # manually label phase text
-      parse = TRUE,
+      y = 16.8, # manually label phase text
+      # parse = TRUE,
       hjust = 0,
     ) +
     coord_cartesian(clip = "off") +
@@ -423,23 +423,23 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(
-        label = str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl,
+    #   aes(
+    #     label = str_c("delta", " == ", delta),
+    #     x = (start + end) / 2, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
       vjust = 3
     ) +
-    scale_y_continuous(expand = expansion(mult = .4)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -572,23 +572,23 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(
-        label = str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl,
+    #   aes(
+    #     label = str_c("delta", " == ", delta),
+    #     x = (start + end) / 2, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
       vjust = 3
     ) +
-    scale_y_continuous(expand = expansion(mult = .4)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -716,23 +716,23 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(
-        label = str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl,
+    #   aes(
+    #     label = str_c("delta", " == ", delta),
+    #     x = (start + end) / 2, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
       vjust = 3
     ) +
-    scale_y_continuous(expand = expansion(mult = .4)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",

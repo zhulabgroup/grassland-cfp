@@ -183,6 +183,13 @@ save_figure_param <- function(gg_name) {
     filename <- "fig-supp-niche-thin.png"
   }
 
+  if (gg_name == "niche_thin_clim") {
+    type <- "supp"
+    width <- 10
+    height <- 5
+    filename <- "fig-supp-niche-thin-clim.png"
+  }
+
   if (gg_name == "rank_abund_obs") {
     type <- "supp"
     width <- 10

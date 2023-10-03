@@ -146,17 +146,35 @@ gg_niche_stat_ppt
 Compare estimates of species climate niche by spatial thinning occurrence records.
 
 ```{r, eval = F}
-path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "spatial") # slow
+path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "spatial", num_cores = 4) # slow
 ```
 
 ```{r}
-dat_trait_thin <- calc_trait_thin(path_occ_thin = NULL, dat_trait)
+dat_trait_thin <- calc_trait_thin(path_occ_thin = NULL, dat_trait, option = "spatial")
+```
+After spatial thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_trait_thin)` records.
+
+```{r}
 dat_niche_thin <- calc_species_niche(dat_trait_thin, add_dummy = T)
 gg_niche_thin <- plot_niche_thin(dat_niche, dat_niche_thin)
 gg_niche_thin
 ```
 
-Compare estimates of species climate niche by spatial thinning occurrence records.
+Compare estimates of species climate niche by climate thinning occurrence records.
+```{r, eval = F}
+path_occ_thin_clim <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "climate", num_cores = 4) # slow
+```
+
+```{r}
+dat_trait_thin_clim <- calc_trait_thin(path_occ_thin = NULL, dat_trait, option = "climate")
+```
+After climate thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_trait_thin_clim)` records.
+
+```{r}
+dat_niche_thin_clim <- calc_species_niche(dat_trait_thin_clim, add_dummy = T)
+gg_niche_thin_clim <- plot_niche_thin(dat_niche, dat_niche_thin_clim)
+gg_niche_thin_clim
+```
 
 Output figures and R data files.
 
@@ -172,6 +190,7 @@ save_figure(out = list(
   niche_stat_tmp = gg_niche_stat_tmp,
   niche_stat_ppt = gg_niche_stat_ppt,
   niche_thin = gg_niche_thin
+  niche_thin_clim = gg_niche_thin_clim
 ))
 save_rda(out = list(dat_occ, dat_trait, dat_niche))
 ```
