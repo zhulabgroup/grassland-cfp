@@ -129,8 +129,8 @@ calc_species_gainloss_exp <- function(com_exp, dat_niche) {
       mutate(
         map(data, ~ lm(abund ~ treat_T, data = .)) %>%
           map_df(~ broom::tidy(.) %>%
-                   filter(term != "(Intercept)") %>%
-                   select(estimate, p.value)),
+            filter(term != "(Intercept)") %>%
+            select(estimate, p.value)),
       ) %>%
       unnest(cols = data) %>%
       distinct(species, estimate, p.value) %>%

@@ -1,0 +1,58 @@
+---
+title: "6 Other experiments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{6 Other experiments}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 8
+)
+```
+
+```{r setup, cache = F}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Compare CTI-CPI from the Jasper Ridge Global Change Experiment watering treatment.
+
+```{r}
+gg_community_index_exp_jrgce_water <- plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "watering")
+gg_community_index_exp_jrgce_water
+```
+
+Compare CTI-CPI from the McLaughlin Water Experiment.
+
+```{r}
+gg_community_index_exp_mclexp <- plot_community_index(option = "exp", dat_index, experiment = "mclexp")
+gg_community_index_exp_mclexp
+```
+
+Compare CTI-CPI from the Santa Cruz International Drought Experiment.
+
+```{r}
+gg_community_index_exp_scide <- plot_community_index(option = "exp", dat_index, experiment = "scide")
+gg_community_index_exp_scide
+```
+
+Output figures and R data files.
+
+```{r, eval = F}
+save_figure(out = list(
+  community_index_exp_jrgce_water = gg_community_index_exp_jrgce_water,
+  community_index_exp_mclexp = gg_community_index_exp_mclexp,
+  community_index_exp_scide = gg_community_index_exp_scide
+))
+```

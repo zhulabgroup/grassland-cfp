@@ -43,7 +43,7 @@ gg_biogeography
 
 ```{r}
 df_summ_occ <- summ_biogeography(dat_occ = dat_occ_full)
-df_summ_occ %>% knitr::kable()
+df_summ_occ
 ```
 
 We retrieved `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_occ)` occurrence records of `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_sp)` species in the CFP from the Global Biodiversity Information Facility (GBIF).
@@ -62,6 +62,16 @@ df_summ_niche <- summ_species_niche(dat_niche = dat_niche)
 ```
 
 Among all the `r df_summ_niche$n` species with more than 100 GBIF records, their average temperatures ranging from `r df_summ_niche$tmp_min %>% signif(3) %>% format(big.mark = ",")` °C to `r df_summ_niche$tmp_max %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r df_summ_niche$ppt_min %>% signif(3) %>% format(big.mark = ",")` mm to `r df_summ_niche$ppt_max %>% signif(3) %>% format(big.mark = ",")` mm.
+
+Compare species niches by guilds.
+
+```{r}
+dat_guild_niche <- calc_guild_niche(dat_community, dat_niche)
+gg_guild_niche <- plot_guild_niche(dat_guild_niche = dat_guild_niche)
+gg_guild_niche
+res_guild_niche <- test_guild_niche(dat_guild_niche = dat_guild_niche)
+res_guild_niche
+```
 
 Plot and summarize two example species geographic distributions and climate niches.
 
@@ -83,11 +93,6 @@ Plot all species climate niches.
 
 ```{r, eval = F}
 path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_trait, dat_niche)
-```
-
-```{r, eval = F}
-gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 1)
-gg_niche$sp_niche
 ```
 
 ```{r}
@@ -146,7 +151,7 @@ gg_niche_stat_ppt
 Compare estimates of species climate niche by spatial thinning occurrence records.
 
 ```{r, eval = F}
-path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "spatial") # slow
+path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif) # slow
 ```
 
 ```{r}
@@ -156,13 +161,12 @@ gg_niche_thin <- plot_niche_thin(dat_niche, dat_niche_thin)
 gg_niche_thin
 ```
 
-Compare estimates of species climate niche by spatial thinning occurrence records.
-
 Output figures and R data files.
 
 ```{r, eval = F}
 save_figure(out = list(
   biogeography = gg_biogeography,
+  guild_niche = gg_guild_niche,
   niche = gg_niche$combined,
   niche_cool = gg_individual_trait_species_niche_cool,
   niche_warm = gg_individual_trait_species_niche_warm,

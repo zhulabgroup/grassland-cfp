@@ -1,0 +1,63 @@
+---
+title: "3 Taxonomy"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{3 Taxonomy}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  out.width = "100%",
+  cache = T,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 8
+)
+```
+
+```{r setup, cache = F}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+Save a species list from all tidy data.
+
+```{r, eval=F}
+f_species_tidy <- tidy_taxonomy_list(dat_community_tidy)
+```
+
+Manually correct misspelling species names based on expert opinions (Josie and Justin).
+
+```{r}
+read_csv("alldata/input/community/species/misspelling.csv") %>% head(20) %>% knitr::kable() 
+```
+
+Rename species.
+
+```{r, eval = F}
+path_community <- tidy_taxonomy_rename()
+dat_community <- read_community(version = "final")
+```
+
+```{r}
+dat_community
+```
+
+Manually consolidate species based on expert opinions (Josie and Justin), where old species names are later used for querying biogeography data and new species names (consolidated names) are used in this analysis.
+
+```{r}
+read_csv("alldata/input/community/species/consolidation.csv") %>% head(20) %>% knitr::kable()
+```
+
+Output figures and R data files.
+
+```{r, eval = F}
+save_rda(out = list(dat_community))
+```
+

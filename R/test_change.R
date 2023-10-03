@@ -20,27 +20,27 @@ test_trait_change_all <- function(dat_community, dat_niche, option) {
 
 test_index_change <- function(dat_index, index, grouping, option) {
   # subset data
-  dat_lme <- test_index_change_data(dat_index, index, grouping, option)
+  dat_model <- test_index_change_data(dat_index, index, grouping, option)
 
   # fit lme
-  mod_lme <- test_index_change_model(dat_lme, option)
+  model <- test_index_change_model(dat_model, option)
 
   # summarize results
-  df_lme <- test_change_summ(mod_lme)
+  df_model <- test_change_summ(model)
 
-  return(df_lme)
+  return(df_model)
 }
 
 test_trait_change <- function(dat_community, dat_niche, trait, grouping, option) {
   # subset data
-  dat_lme <- test_trait_change_data(dat_community, dat_niche, trait, grouping, option)
+  dat_model <- test_trait_change_data(dat_community, dat_niche, trait, grouping, option)
 
   # fit lme
-  mod_lme <- test_trait_change_model(dat_lme, option)
+  model <- test_trait_change_model(dat_model, option)
   # summarize results
 
-  df_lme <- test_change_summ(mod_lme)
+  df_model <- test_change_summ(model)
 
 
-  return(df_lme)
+  return(df_model)
 }
