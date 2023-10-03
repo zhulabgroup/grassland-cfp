@@ -77,14 +77,6 @@ df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
 df_index_change_exp %>% knitr::kable()
 ```
 
-Analysis of species contributing to CTI CPI change
-```{r}
-dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
-gg_species_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
-gg_species_gainloss$obs$circle_detail
-gg_species_gainloss$exp$circle_detail
-```
-
 Synthesize coupled CTI CPI change
 ```{r}
 dat_shift <- calc_community_shift(dat_index = dat_index)
@@ -92,4 +84,12 @@ gg_community_shift <- plot_community_shift(dat_shift, dat_niche)
 gg_community_shift$obs
 gg_community_shift$exp
 gg_community_shift$compare
+```
+
+Analysis of species contributing to CTI CPI change
+```{r}
+dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
+gg_species_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
+gg_species_gainloss$obs$circle_detail
+gg_species_gainloss$exp$circle_detail
 ```

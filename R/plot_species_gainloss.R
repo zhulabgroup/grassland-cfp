@@ -67,6 +67,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
     ) +
     scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
     ggpubr::stat_compare_means(
+      method = "wilcox.test",
       label = "p.signif",
       hide.ns = FALSE,
       comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
@@ -230,6 +231,7 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
     ) +
     scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
     ggpubr::stat_compare_means(
+      method = "wilcox.test",
       label = "p.signif",
       hide.ns = FALSE,
       comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),

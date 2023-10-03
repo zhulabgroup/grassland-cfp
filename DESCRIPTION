@@ -32,7 +32,9 @@ Imports:
     terra, 
     tidyverse, 
     vegan, 
-    viridis
+    viridis,
+    parallel,
+    doSNOW
 Remotes:
     git::https://github.com/ropensci/rnaturalearthhires.git
 Suggests: 

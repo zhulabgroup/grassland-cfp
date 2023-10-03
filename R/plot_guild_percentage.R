@@ -54,14 +54,13 @@ plot_guild_percentage_obs <- function(dat_community_obs) {
   return(obs_guild_gg)
 }
 
-plot_guild_site <- function(data, site_abbr,
+plot_guild_site <- function(data, site_name,
                             native_lab = "", annual_lab = "", grass_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
-  site_lab <- read_site_name()[site_abbr]
-  site_lab <- str_c(LETTERS[which(read_site_name() == site_lab)], site_lab, sep = ". ")
+  site_lab <- plot_site_name(site_name, with_letter = T)
 
   site_tbl <- data %>%
-    filter(abbr == site_abbr) %>%
+    filter(abbr == site_name) %>%
     select(abbr, year, plot, native_perc, annual_perc, grass_perc) %>%
     pivot_longer(native_perc:grass_perc, names_to = "group", values_to = "value") %>%
     mutate(group = factor(group,
@@ -70,9 +69,17 @@ plot_guild_site <- function(data, site_abbr,
     group_by(group) %>%
     nest() %>%
     mutate(
-      p_val = map(data, ~ lm(value ~ year, data = .)) %>%
-        map_dbl(~ broom::glance(.) %>% pull(p.value))
+      map(data, ~ lm(value ~ year, data = .)) %>%
+        map_df(~ broom::tidy(.) %>%
+          filter(term != "(Intercept)") %>%
+          select(
+            beta = estimate,
+            p.value
+          ))
     ) %>%
+    mutate(sig = gtools::stars.pval(p.value)) %>%
+    mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns")) %>%
+    mutate(beta = beta %>% signif(3)) %>%
     unnest(cols = data)
 
   # plot
@@ -83,11 +90,22 @@ plot_guild_site <- function(data, site_abbr,
       color = "gray", outlier.shape = 20
     ) +
     geom_smooth(
-      data = . %>% filter(p_val <= 0.05),
+      data = . %>% filter(p.value <= 0.05),
       aes(x = year, y = value),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
+    geom_text(
+      data = . %>% distinct(group, .keep_all = T),
+      aes(
+        label = paste("beta", " == ", beta),
+        alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      x = -Inf, y = Inf,
+      vjust = 1.5, hjust = -0.2
+    ) +
+    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~group,
       ncol = 1, scales = "free_y",
       strip.position = "left",
@@ -109,7 +127,8 @@ plot_guild_site <- function(data, site_abbr,
       strip.background = element_blank(),
       strip.placement = "outside",
       plot.title = element_text(size = 11)
-    )
+    ) +
+    guides(alpha = "none")
 
   # remove yr axis text
   if (yr_axis) {
@@ -158,6 +177,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
+    mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
     mutate(unit = "%") %>%
     mutate(start = case_when(
@@ -181,7 +201,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     group_by(grp, group) %>%
     nest() %>%
     mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-             test_change_summ()) %>%
+      test_change_summ()) %>%
     select(-data) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
     mutate(max = 1.1)
@@ -210,15 +230,29 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         grass_perc = "% Grasses"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), unit," (",  sig,")", sep = ""))) +
-    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
+    geom_text(
+      data = change_tbl,
+      aes(
+        label = str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf,
+        alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      vjust = 1.5
+    ) +
+    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    geom_text(
+      data = change_tbl_year,
+      aes(x = grp, y = Inf, label = sig),
+      vjust = 3
+    ) +
     scale_y_continuous(
       labels = function(x) {
         trans <- x * 100
       },
       limits = c(0, 1.3),
       breaks = c(0, 0.5, 1),
-      expand = expansion(mult = 0.1)
+      expand = expansion(mult = 0.4)
     ) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -237,7 +271,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         label = name,
         x = startyear - 0.25,
       ),
-      y = 1.55, # manually label phase text
+      y = 2, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +

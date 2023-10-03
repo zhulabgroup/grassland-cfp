@@ -51,6 +51,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
     mutate(test_trait_change_model(dat_model = data[[1]], option = "exp") %>%
       test_change_summ()) %>%
     select(-data) %>%
+    mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
     mutate(unit = case_when(
       trait == "tmp" ~ "°C",
@@ -111,7 +112,6 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
 
   warm_tbl <- read_warm_treatment()
 
-
   exp_gg <-
     ggplot() +
     geom_rect( # warming phrases
@@ -153,9 +153,23 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ppt = "Annual precipitation\n(AP, mm)"
       ))
     ) +
-    geom_text(data = change_tbl, aes(x = (start + end) / 2, y = max, label = str_c(estimate %>% signif(3), " ", unit, " (", sig, ")", sep = ""))) +
-    geom_text(data = change_tbl_year, aes(x = grp, y = max, label = sig)) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    geom_text(
+      data = change_tbl,
+      aes(
+        label = str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf,
+        alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      vjust = 1.5
+    ) +
+    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    geom_text(
+      data = change_tbl_year,
+      aes(x = grp, y = Inf, label = sig),
+      vjust = 3
+    ) +
+    scale_y_continuous(expand = expansion(mult = .4)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.25, 0.25))) +
     labs(
       x = NULL, # "Year",
@@ -173,7 +187,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         label = name,
         x = startyear - 0.125, # y = cti_max
       ),
-      y = 18.75, # manually label phase text
+      y = 20, # manually label phase text
       parse = TRUE,
       hjust = 0,
     ) +
@@ -240,9 +254,17 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
     group_by(var) %>%
     nest() %>%
     mutate( # lm and p value
-      p_val = map(data, ~ lm(value ~ year, data = ., weights = .$weight)) %>%
-        map_dbl(~ broom::glance(.) %>% pull(p.value))
+      map(data, ~ lm(value ~ year, data = ., weights = .$weight)) %>%
+        map_df(~ broom::tidy(.) %>%
+          filter(term != "(Intercept)") %>%
+          select(
+            beta = estimate,
+            p.value
+          ))
     ) %>%
+    mutate(sig = gtools::stars.pval(p.value)) %>%
+    mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns")) %>%
+    mutate(beta = beta %>% signif(3)) %>%
     unnest(cols = data)
 
   df_stack <- tidy_stack_weighted_data(df_weight)
@@ -257,11 +279,22 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
     ) +
     scale_fill_gradient(low = "white", high = "#5A5A5A", na.value = "white") +
     geom_smooth( # add lm trend line when significant
-      data = df_weight %>% filter(p_val <= 0.05),
+      data = df_weight %>% filter(p.value <= 0.05),
       aes(x = year, y = value, weight = weight),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
+    geom_text(
+      data = df_weight %>% distinct(var, .keep_all = T),
+      aes(
+        label = paste("beta", " == ", beta),
+        alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      x = -Inf, y = Inf,
+      vjust = 1.5, hjust = -0.2
+    ) +
+    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~var,
       ncol = 1, scales = "free_y",
       strip.position = "left",
