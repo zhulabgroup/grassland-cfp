@@ -27,13 +27,13 @@ test_evenness_change_obs <- function(dat_evenness_obs) {
   return(df)
 }
 
-
 test_evenness_change_exp <- function(dat_evenness_exp) {
   df <- ggpubr::compare_means(
     formula = even ~ treat_T,
     data = dat_evenness_exp,
     method = "wilcox.test",
-    group.by = "year"
+    group.by = "year",
+    ref.group = "_"
   ) %>%
     mutate(phase = case_when(
       year <= 2002 ~ "Phase I",

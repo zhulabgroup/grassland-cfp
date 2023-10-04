@@ -1,10 +1,14 @@
-down_biogeography <- function(species_table, num_cores = 22, outdir = "alldata/input/biogeography/", date = NULL) {
+down_biogeography <- function(species_table, num_cores = 22, outdir = "alldata/input/biogeography/", date = NULL, start_year = NULL, end_year = NULL, gbif_only = F, postfox = "") {
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 
-  path_gbif <- down_gbif(species_table, sf_cfp, num_cores, outdir, date)
-  path_bien <- down_bien(species_table, sf_cfp, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
-  path_cch <- down_cch(species_table, sf_cfp, outdir, date)
-  path_inat <- down_inat(gbif_file = path_gbif, date)
+  path_gbif <- down_gbif(species_table, sf_cfp, num_cores, outdir, date, start_year = start_year, end_year = end_year, postfix = postfix)
+  if (!gbif_only) {
+    path_bien <- down_bien(species_table, sf_cfp, num_cores, outdir, date) # sometimes blocked by firewall, in which case it needs to be run somewhere else
+    path_cch <- down_cch(species_table, sf_cfp, outdir, date)
+    path_inat <- down_inat(gbif_file = path_gbif, date)
+  } else {
+    path_bien <- path_cch <- path_inat <- NULL
+  }
 
   out <- list(
     gbif = path_gbif,
@@ -16,13 +20,22 @@ down_biogeography <- function(species_table, num_cores = 22, outdir = "alldata/i
   return(out)
 }
 
-down_gbif <- function(species_table, sf_cfp, num_cores, outdir, date) {
+down_gbif <- function(species_table, sf_cfp, num_cores, outdir, date, start_year = NULL, end_year = NULL, postfix = "") {
   if (is.null(date)) {
     date <- Sys.Date()
+  }
+  if (is.null(start_year) & is.null(end_year)) {
+    date_range <- c(str_c(start_year, "-01-01"), str_c(end_year, "-12-31"))
+  } else {
+    date_range <- NULL
   }
   outfile <- str_c(outdir, "gbif-", date, ".rds")
   outfile_full <- str_c(outdir, "gbif-full-", date, ".rds")
 
+  if (!is.null(postfix)) {
+    outfile <- str_c(outdir, "gbif-", postfix, "-", date, ".rds")
+    outfile_full <- str_c(outdir, "gbif-full-", postfix, "-", date, ".rds")
+  }
   cl <- makeCluster(num_cores, outfile = "")
   registerDoSNOW(cl)
 
@@ -33,8 +46,12 @@ down_gbif <- function(species_table, sf_cfp, num_cores, outdir, date) {
     ) %dopar% {
       sp <- species_table$query_name[i]
       res <- spocc::occ(
-        query = sp, from = "gbif", has_coords = TRUE, limit = 1e6,
+        query = sp,
+        from = "gbif",
+        has_coords = TRUE,
+        limit = 1e6,
         geometry = st_bbox(sf_cfp),
+        date = date_range,
         gbifopts = list(
           # occ_options(from = "gbif", where = "console")
           hasGeospatialIssue = FALSE

@@ -2,7 +2,8 @@ calc_individual_trait <- function(dat_occ, dat_clim,
                                   occ_source = "gbif",
                                   clim_source = "chelsa",
                                   outdir = "alldata/intermediate/climate-niche/",
-                                  allbioclim = F) {
+                                  allbioclim = F,
+                                  postfix = "") {
   occ_sf <- dat_occ[[occ_source]] %>%
     rename(
       species = consolidatedName,
@@ -38,6 +39,10 @@ calc_individual_trait <- function(dat_occ, dat_clim,
     outfile <- str_c(outdir, occ_source, "-", clim_source, "_full.rds")
   } else {
     outfile <- str_c(outdir, occ_source, "-", clim_source, ".rds")
+  }
+
+  if (!is.null(postfix)) {
+    outfile <- str_c(outdir, occ_source, "-", clim_source,"-", postfix,".rds")
   }
 
   write_rds(dat_clim_occ, outfile)
