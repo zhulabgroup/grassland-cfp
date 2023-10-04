@@ -156,7 +156,7 @@ After spatial thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_
 
 ```{r}
 dat_niche_thin <- calc_species_niche(dat_trait_thin, add_dummy = T)
-gg_niche_thin <- plot_niche_thin(dat_niche, dat_niche_thin)
+gg_niche_thin <- plot_niche_subset(dat_niche, dat_niche_thin)
 gg_niche_thin
 ```
 
@@ -172,8 +172,30 @@ After climate thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_
 
 ```{r}
 dat_niche_thin_clim <- calc_species_niche(dat_trait_thin_clim, add_dummy = T)
-gg_niche_thin_clim <- plot_niche_thin(dat_niche, dat_niche_thin_clim)
+gg_niche_thin_clim <- plot_niche_subset(dat_niche, dat_niche_thin_clim)
 gg_niche_thin_clim
+```
+
+Get early GBIF data from 1961 to 1990.
+```{r, eval=F}
+spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
+path_occ_early <- down_biogeography(species_table = spp_tbl, start_year = 1961, end_year = 1990, postfix = "early", gbif_only = T) # needs parallel computation
+dat_occ_early <- read_biogeography(path_occ_early, gbif_only = T)
+```
+
+Calculate and summarize species climate niches from early GBIF data.
+
+```{r, eval = F}
+dat_clim <- read_climate()
+path_trait_early <- calc_individual_trait(dat_occ_early, dat_clim, occ_source = "gbif", clim_source = "chelsa", postfix = "early")
+dat_trait_early <- read_individual_trait(path_trait = path_trait_early)
+```
+We obtained `r nrow(dat_trait_early)` records of `r dat_trait_early %>% pull(species) %>% unique() %>% length()` species from early GBIF data, compared to `r nrow(dat_trait)` total records.
+
+```{r}
+dat_niche_early <- calc_species_niche(dat_trait_early, add_dummy = T)
+gg_niche_early <- plot_niche_subset(dat_niche, dat_niche_early, type = "early")
+gg_niche_early
 ```
 
 Output figures and R data files.
@@ -190,7 +212,8 @@ save_figure(out = list(
   niche_stat_tmp = gg_niche_stat_tmp,
   niche_stat_ppt = gg_niche_stat_ppt,
   niche_thin = gg_niche_thin
-  niche_thin_clim = gg_niche_thin_clim
+  niche_thin_clim = gg_niche_thin_clim,
+  niche_early = gg_niche_early
 ))
 save_rda(out = list(dat_occ, dat_trait, dat_niche))
 ```
