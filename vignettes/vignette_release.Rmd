@@ -36,9 +36,11 @@ dat_trait
 ```
 
 Calculate species niche and plot
-```{r}
+```{r, eval = F}
 dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
+```
 
+```{r}
 gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
 gg_individual_trait_species_niche_warm <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Stipa pulchra")
 gg_individual_trait_species_niche_cool
@@ -78,16 +80,22 @@ df_index_change_exp %>% knitr::kable()
 ```
 
 Analysis of species contributing to CTI CPI change
-```{r}
+```{r, eval = F}
 dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
+```
+
+```{r}
 gg_species_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
 gg_species_gainloss$obs$circle_detail
 gg_species_gainloss$exp$circle_detail
 ```
 
 Synthesize coupled CTI CPI change
-```{r}
+```{r, eval = F}
 dat_shift <- calc_community_shift(dat_index = dat_index)
+```
+
+```{r}
 gg_community_shift <- plot_community_shift(dat_shift, dat_niche)
 gg_community_shift$obs
 gg_community_shift$exp
