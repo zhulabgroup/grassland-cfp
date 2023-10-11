@@ -52,6 +52,7 @@ dat_rank <- calc_rank_abundance(dat_community = dat_community)
 
 dat_evenness <- calc_evenness(dat_community = dat_community)
 df_evenness_summ <- test_evenness_change(dat_evenness = dat_evenness)
+df_evenness_summ
 
 gg_rank_abundance <- plot_rank_abundance(dat_rank = dat_rank, df_evenness_summ = df_evenness_summ)
 gg_rank_abundance$obs
@@ -87,5 +88,10 @@ save_figure(out = list(
   rank_abund_exp = gg_rank_abundance$exp,
   community_shift = gg_community_shift$combined
 ))
+
+save_table(out = list(
+  gainloss = dat_gainloss %>% tidy_table_gainloss()
+))
+
 save_rda(out = list(dat_gainloss, dat_shift))
 ```

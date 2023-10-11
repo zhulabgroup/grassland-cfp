@@ -215,5 +215,10 @@ save_figure(out = list(
   niche_thin_clim = gg_niche_thin_clim,
   niche_early = gg_niche_early
 ))
+
+save_table(out = list(
+  niche = dat_niche %>% tidy_table_niche()
+))
+
 save_rda(out = list(dat_occ, dat_trait, dat_niche))
 ```

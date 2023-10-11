@@ -11,18 +11,18 @@ plot_rank_abundance_obs <- function(dat_rank_obs, df_evenness_summ_obs) {
   obs_rank_gg <- ggplot(dat_rank_obs) +
     geom_line(aes(x = rank, y = median, col = year, group = year), alpha = 1) +
     # geom_ribbon(aes(x = rank, ymin = lower, ymax = upper, fill = year, group = year), alpha = 0.25) +
-    geom_text(
-      data = df_evenness_summ_obs,
-      aes(
-        label = str_c("beta[J]", " == ", estimate %>% signif(3)),
-        x = Inf, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5,
-      hjust = 1.2
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = df_evenness_summ_obs,
+    #   aes(
+    #     label = str_c("beta[J]", " == ", estimate %>% signif(3)),
+    #     x = Inf, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5,
+    #   hjust = 1.2
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(. ~ site) +
     scale_color_viridis_c() +
     scale_fill_viridis_c() +

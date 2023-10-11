@@ -305,9 +305,9 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
-      vjust = 3
+      vjust = 2
     ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -326,7 +326,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         label = phase,
         x = startyear - 0.25, # y = cti_max
       ),
-      y = 16.8, # manually label phase text
+      y = 17, # manually label phase text
       # parse = TRUE,
       hjust = 0,
     ) +
@@ -437,9 +437,9 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
-      vjust = 3
+      vjust = 2
     ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -586,9 +586,9 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
-      vjust = 3
+      vjust = 2
     ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -730,9 +730,9 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
-      vjust = 3
+      vjust = 2
     ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",

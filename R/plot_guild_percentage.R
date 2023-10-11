@@ -95,16 +95,16 @@ plot_guild_site <- function(data, site_name,
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    geom_text(
-      data = . %>% distinct(group, .keep_all = T),
-      aes(
-        label = paste("beta", " == ", beta),
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      x = -Inf, y = Inf,
-      vjust = 1.5, hjust = -0.2
-    ) +
+    # geom_text(
+    #   data = . %>% distinct(group, .keep_all = T),
+    #   aes(
+    #     label = paste("beta", " == ", beta),
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   x = -Inf, y = Inf,
+    #   vjust = 1.5, hjust = -0.2
+    # ) +
     scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~group,
       ncol = 1, scales = "free_y",
@@ -230,21 +230,21 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         grass_perc = "% Grasses"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(
-        label = str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5
-    ) +
+    # geom_text(
+    #   data = change_tbl,
+    #   aes(
+    #     label = str_c("delta", " == ", delta),
+    #     x = (start + end) / 2, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5
+    # ) +
     scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
-      vjust = 3
+      vjust = 2
     ) +
     scale_y_continuous(
       labels = function(x) {
@@ -252,7 +252,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       },
       limits = c(0, 1.3),
       breaks = c(0, 0.5, 1),
-      expand = expansion(mult = 0.4)
+      expand = expansion(mult = 0.15)
     ) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -268,11 +268,11 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
           )
         ),
       aes(
-        label = name,
+        label = phase,
         x = startyear - 0.25,
       ),
-      y = 2, # manually label phase text
-      parse = TRUE,
+      y = 1.6, # manually label phase text
+      # parse = TRUE,
       hjust = 0,
     ) +
     coord_cartesian(clip = "off") +
