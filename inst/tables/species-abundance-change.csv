@@ -1,0 +1,1435 @@
+dataset,site,year,species,change,complete_change,temperature_optima,precipitation_optima
+observation,angelo,NA,Acmispon parviflorus,increase,NA,13.850000000000023,969
+observation,angelo,NA,Acmispon wrangelianus,no clear change,NA,14.950000000000045,592.6
+observation,angelo,NA,Aira caryophyllea,decrease,NA,13.550000000000011,888.75
+observation,angelo,NA,Aphanes occidentalis,no clear change,NA,15.250000000000057,559.9000000000001
+observation,angelo,NA,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+observation,angelo,NA,Briza minor,no clear change,NA,14.350000000000023,783.7
+observation,angelo,NA,Brodiaea elegans,no clear change,established,14.050000000000011,929.7
+observation,angelo,NA,Bromus diandrus,increase,NA,16.150000000000034,491.45000000000005
+observation,angelo,NA,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+observation,angelo,NA,Bromus tectorum,decrease,NA,12.450000000000045,536.55
+observation,angelo,NA,Castilleja attenuata,no clear change,NA,15.350000000000023,728.4000000000001
+observation,angelo,NA,Cerastium glomeratum,no clear change,NA,15.450000000000045,606.6
+observation,angelo,NA,Clarkia purpurea,increase,NA,14.750000000000057,573.2
+observation,angelo,NA,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+observation,angelo,NA,Croton setiger,no clear change,established,16.450000000000045,487.75
+observation,angelo,NA,Cynosurus echinatus,decrease,extirpated,13.550000000000011,944.3000000000001
+observation,angelo,NA,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+observation,angelo,NA,Daucus pusillus,increase,established,16.250000000000057,435.3
+observation,angelo,NA,Dipterostemon capitatus,no clear change,NA,15.450000000000045,534.4
+observation,angelo,NA,Epilobium brachycarpum,decrease,extirpated,13.650000000000034,653.6
+observation,angelo,NA,Erodium cicutarium,increase,NA,15.950000000000045,494.30000000000007
+observation,angelo,NA,Eschscholzia californica,increase,NA,14.450000000000045,589.6
+observation,angelo,NA,Festuca myuros,no clear change,NA,15.850000000000023,506.3
+observation,angelo,NA,Galium parisiense,no clear change,NA,15.400000000000034,629.8000000000001
+observation,angelo,NA,Geranium dissectum,no clear change,extirpated,14.350000000000023,685.4000000000001
+observation,angelo,NA,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+observation,angelo,NA,Hypochaeris glabra,increase,NA,16.150000000000034,484.70000000000005
+observation,angelo,NA,Leptosiphon bicolor,no clear change,NA,14.950000000000045,820.3000000000001
+observation,angelo,NA,Lupinus bicolor,increase,NA,15.450000000000045,530.7
+observation,angelo,NA,Madia gracilis,decrease,NA,13.850000000000023,758
+observation,angelo,NA,Plagiobothrys nothofulvus,increase,NA,15.350000000000023,610.7
+observation,angelo,NA,Rumex acetosella,increase,NA,13.050000000000011,856.5
+observation,angelo,NA,Sanicula bipinnatifida,increase,NA,14.150000000000034,757.7
+observation,angelo,NA,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+observation,angelo,NA,Trichostema lanceolatum,no clear change,NA,16.250000000000057,519.1
+observation,carrizo,NA,Acmispon wrangelianus,no clear change,NA,14.950000000000045,592.6
+observation,carrizo,NA,Allium peninsulare,no clear change,NA,16.55000000000001,455.15000000000003
+observation,carrizo,NA,Amsinckia menziesii,no clear change,NA,16.450000000000045,459.85
+observation,carrizo,NA,Amsinckia tessellata,no clear change,NA,15.550000000000011,365.6
+observation,carrizo,NA,Astragalus didymocarpus,no clear change,NA,16.450000000000045,354.8
+observation,carrizo,NA,Astragalus lentiginosus,no clear change,NA,12.150000000000034,433.20000000000005
+observation,carrizo,NA,Astragalus oxyphysus,increase,NA,16.750000000000057,265.7
+observation,carrizo,NA,Bromus hordeaceus,no clear change,extirpated,15.550000000000011,543.25
+observation,carrizo,NA,Bromus madritensis,decrease,NA,16.450000000000045,434.8
+observation,carrizo,NA,Calandrinia menziesii,no clear change,NA,14.950000000000045,573.1500000000001
+observation,carrizo,NA,Camissonia campestris,no clear change,NA,15.650000000000034,358.30000000000007
+observation,carrizo,NA,Capsella bursa-pastoris,no clear change,NA,16.250000000000057,523.1
+observation,carrizo,NA,Castilleja brevistyla,no clear change,established,16.750000000000057,273.9
+observation,carrizo,NA,Castilleja exserta,no clear change,NA,15.350000000000023,482.70000000000005
+observation,carrizo,NA,Castilleja lineariloba,no clear change,established,16.250000000000057,956.3000000000001
+observation,carrizo,NA,Caulanthus lasiophyllus,no clear change,NA,15.550000000000011,438.1
+observation,carrizo,NA,Chaenactis glabriuscula,decrease,NA,16.450000000000045,412.20000000000005
+observation,carrizo,NA,Chorizanthe uniaristata,no clear change,NA,15.050000000000011,368.6
+observation,carrizo,NA,Chorizanthe watsonii,no clear change,extirpated,12.450000000000045,436.3
+observation,carrizo,NA,Crassula connata,increase,NA,16.55000000000001,411.3
+observation,carrizo,NA,Croton setiger,no clear change,NA,16.450000000000045,487.75
+observation,carrizo,NA,Descurainia pinnata,no clear change,extirpated,15.650000000000034,411.6
+observation,carrizo,NA,Descurainia sophia,no clear change,established,13.750000000000057,456.20000000000005
+observation,carrizo,NA,Dipterostemon capitatus,no clear change,NA,15.450000000000045,534.4
+observation,carrizo,NA,Eriogonum gracillimum,no clear change,NA,16.450000000000045,312.20000000000005
+observation,carrizo,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,carrizo,NA,Euphorbia ocellata,no clear change,established,16.750000000000057,618.7
+observation,carrizo,NA,Euphorbia polycarpa,no clear change,NA,16.750000000000057,339.70000000000005
+observation,carrizo,NA,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+observation,carrizo,NA,Festuca microstachys,no clear change,NA,15.050000000000011,574.1
+observation,carrizo,NA,Festuca myuros,decrease,NA,15.850000000000023,506.3
+observation,carrizo,NA,Gilia tricolor,no clear change,NA,15.650000000000034,730.2
+observation,carrizo,NA,Herniaria hirsuta,no clear change,NA,16.150000000000034,423.5
+observation,carrizo,NA,Hollisteria lanata,no clear change,NA,16.750000000000057,284.7
+observation,carrizo,NA,Hordeum murinum,increase,NA,16.350000000000023,480.3
+observation,carrizo,NA,Lactuca serriola,no clear change,extirpated,16.650000000000034,477.8
+observation,carrizo,NA,Lastarriaea coriacea,no clear change,NA,16.650000000000034,404.70000000000005
+observation,carrizo,NA,Lasthenia glabrata,no clear change,established,16.950000000000045,362.90000000000003
+observation,carrizo,NA,Lasthenia gracilis,no clear change,NA,16.05000000000001,377.20000000000005
+observation,carrizo,NA,Lasthenia minor,no clear change,NA,16.05000000000001,428.70000000000005
+observation,carrizo,NA,Lepidium dictyotum,no clear change,NA,17.250000000000057,332.40000000000003
+observation,carrizo,NA,Lepidium nitidum,no clear change,NA,16.150000000000034,507.90000000000003
+observation,carrizo,NA,Leptosiphon liniflorus,decrease,NA,15.050000000000011,467.90000000000003
+observation,carrizo,NA,Leptosiphon parviflorus,no clear change,NA,13.750000000000057,588.6
+observation,carrizo,NA,Lupinus bicolor,no clear change,established,15.450000000000045,530.7
+observation,carrizo,NA,Lupinus microcarpus,no clear change,NA,15.250000000000057,518.7
+observation,carrizo,NA,Malacothrix coulteri,increase,NA,16.750000000000057,266.90000000000003
+observation,carrizo,NA,Microseris douglasii,no clear change,NA,15.850000000000023,420
+observation,carrizo,NA,Microseris elegans,increase,NA,16.150000000000034,409.20000000000005
+observation,carrizo,NA,Microsteris gracilis,decrease,extirpated,12.750000000000057,691.5
+observation,carrizo,NA,Minuartia pusilla,no clear change,established,NA,NA
+observation,carrizo,NA,Monolopia congdonii,no clear change,established,17.450000000000045,229.3
+observation,carrizo,NA,Monolopia lanceolata,decrease,extirpated,16.250000000000057,292.8
+observation,carrizo,NA,Muilla maritima,no clear change,extirpated,14.850000000000023,489.5
+observation,carrizo,NA,Pectocarya penicillata,no clear change,NA,15.950000000000045,411.1
+observation,carrizo,NA,Phacelia ciliata,no clear change,extirpated,16.350000000000023,311.45000000000005
+observation,carrizo,NA,Plagiobothrys canescens,no clear change,NA,16.450000000000045,406.6
+observation,carrizo,NA,Plantago erecta,no clear change,extirpated,15.550000000000011,528.1
+observation,carrizo,NA,Platystemon californicus,no clear change,NA,14.150000000000034,565.3000000000001
+observation,carrizo,NA,Poa secunda,decrease,NA,13.150000000000034,627.5500000000001
+observation,carrizo,NA,Salsola tragus,no clear change,established,16.55000000000001,431.1
+observation,carrizo,NA,Salvia carduacea,no clear change,NA,16.950000000000045,339.70000000000005
+observation,carrizo,NA,Schismus arabicus,increase,NA,15.750000000000057,349.20000000000005
+observation,carrizo,NA,Sisymbrium altissimum,no clear change,established,14.050000000000011,495.40000000000003
+observation,carrizo,NA,Sisymbrium irio,no clear change,established,16.950000000000045,339.1
+observation,carrizo,NA,Stellaria media,no clear change,extirpated,14.550000000000011,619.8000000000001
+observation,carrizo,NA,Stephanomeria exigua,no clear change,NA,15.950000000000045,439.70000000000005
+observation,carrizo,NA,Stephanomeria pauciflora,no clear change,NA,15.950000000000045,379.6
+observation,carrizo,NA,Tetrapteron palmeri,no clear change,extirpated,14.30000000000004,390.30000000000007
+observation,carrizo,NA,Thysanocarpus laciniatus,no clear change,extirpated,15.550000000000011,465.20000000000005
+observation,carrizo,NA,Trichostema lanceolatum,no clear change,NA,16.250000000000057,519.1
+observation,carrizo,NA,Trifolium albopurpureum,no clear change,extirpated,14.550000000000011,548.6
+observation,carrizo,NA,Trifolium depauperatum,no clear change,established,15.250000000000057,658.6
+observation,carrizo,NA,Trifolium gracilentum,no clear change,NA,15.150000000000034,464.8
+observation,carrizo,NA,Tropidocarpum gracile,no clear change,NA,16.250000000000057,379.70000000000005
+observation,carrizo,NA,Uropappus lindleyi,decrease,extirpated,15.350000000000023,487.25
+observation,elkhorn,NA,Aira caryophyllea,decrease,extirpated,13.550000000000011,888.75
+observation,elkhorn,NA,Avena barbata,increase,NA,16.150000000000034,480.70000000000005
+observation,elkhorn,NA,Brachypodium distachyon,increase,established,16.350000000000023,496.90000000000003
+observation,elkhorn,NA,Briza maxima,no clear change,extirpated,13.250000000000057,832.5
+observation,elkhorn,NA,Briza minor,no clear change,established,14.350000000000023,783.7
+observation,elkhorn,NA,Bromus diandrus,increase,NA,16.150000000000034,491.45000000000005
+observation,elkhorn,NA,Bromus hordeaceus,decrease,extirpated,15.550000000000011,543.25
+observation,elkhorn,NA,Carduus pycnocephalus,increase,established,15.050000000000011,582.5
+observation,elkhorn,NA,Cerastium glomeratum,no clear change,established,15.450000000000045,606.6
+observation,elkhorn,NA,Convolvulus arvensis,no clear change,established,15.150000000000034,552.1
+observation,elkhorn,NA,Cynosurus echinatus,no clear change,NA,13.550000000000011,944.3000000000001
+observation,elkhorn,NA,Danthonia californica,decrease,extirpated,12.450000000000045,1107.8
+observation,elkhorn,NA,Erodium botrys,increase,NA,15.050000000000011,571.7
+observation,elkhorn,NA,Erodium moschatum,no clear change,extirpated,16.250000000000057,529.7
+observation,elkhorn,NA,Festuca myuros,decrease,NA,15.850000000000023,506.3
+observation,elkhorn,NA,Festuca perennis,decrease,NA,15.950000000000045,541.1500000000001
+observation,elkhorn,NA,Geranium dissectum,decrease,NA,14.350000000000023,685.4000000000001
+observation,elkhorn,NA,Holcus lanatus,no clear change,extirpated,12.950000000000045,984.1
+observation,elkhorn,NA,Hypochaeris glabra,increase,established,16.150000000000034,484.70000000000005
+observation,elkhorn,NA,Hypochaeris radicata,no clear change,NA,13.250000000000057,794.9000000000001
+observation,elkhorn,NA,Isolepis carinata,no clear change,NA,13.750000000000057,915.5
+observation,elkhorn,NA,Juncus bufonius,no clear change,extirpated,15.350000000000023,526.3000000000001
+observation,elkhorn,NA,Juncus occidentalis,decrease,extirpated,13.450000000000045,908.6
+observation,elkhorn,NA,Juncus phaeocephalus,no clear change,NA,14.350000000000023,571.95
+observation,elkhorn,NA,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+observation,elkhorn,NA,Phalaris aquatica,no clear change,NA,14.450000000000045,588.9
+observation,elkhorn,NA,Plantago lanceolata,decrease,NA,14.050000000000011,704.3000000000001
+observation,elkhorn,NA,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+observation,elkhorn,NA,Silybum marianum,no clear change,NA,15.550000000000011,535.4
+observation,elkhorn,NA,Sonchus asper,no clear change,established,16.350000000000023,476.5
+observation,elkhorn,NA,Sonchus oleraceus,no clear change,established,16.650000000000034,421.20000000000005
+observation,elkhorn,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,elkhorn,NA,Taraxia ovata,no clear change,extirpated,13.450000000000045,803.1
+observation,elkhorn,NA,Trifolium angustifolium,decrease,extirpated,13.150000000000034,735.95
+observation,elkhorn,NA,Trifolium dubium,decrease,extirpated,13.850000000000023,888.7
+observation,elkhorn,NA,Trifolium subterraneum,decrease,extirpated,13.950000000000045,858.7
+observation,elkhorn,NA,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+observation,jasper,NA,Acmispon wrangelianus,no clear change,NA,14.950000000000045,592.6
+observation,jasper,NA,Agoseris heterophylla,no clear change,NA,14.050000000000011,695.35
+observation,jasper,NA,Astragalus gambelianus,increase,NA,15.250000000000057,572.7
+observation,jasper,NA,Brodiaea elegans,no clear change,NA,14.050000000000011,929.7
+observation,jasper,NA,Bromus berteroanus,decrease,extirpated,16.100000000000023,363.3
+observation,jasper,NA,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+observation,jasper,NA,Calandrinia menziesii,increase,NA,14.950000000000045,573.1500000000001
+observation,jasper,NA,Calycadenia multiglandulosa,decrease,NA,13.250000000000057,1029.3
+observation,jasper,NA,Castilleja densiflora,no clear change,NA,13.950000000000045,746.4000000000001
+observation,jasper,NA,Chlorogalum pomeridianum,decrease,NA,13.950000000000045,757.1
+observation,jasper,NA,Crassula connata,increase,NA,16.55000000000001,411.3
+observation,jasper,NA,Elymus multisetus,decrease,NA,13.650000000000034,685.9000000000001
+observation,jasper,NA,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+observation,jasper,NA,Eschscholzia californica,no clear change,NA,14.450000000000045,589.6
+observation,jasper,NA,Festuca microstachys,no clear change,NA,15.050000000000011,574.1
+observation,jasper,NA,Festuca perennis,increase,established,15.950000000000045,541.1500000000001
+observation,jasper,NA,Gilia clivorum,increase,NA,14.050000000000011,577.9000000000001
+observation,jasper,NA,Hemizonia congesta,increase,NA,13.950000000000045,806.3000000000001
+observation,jasper,NA,Hesperevax sparsiflora,increase,NA,13.950000000000045,665.5
+observation,jasper,NA,Lasthenia californica,decrease,NA,14.450000000000045,690.6
+observation,jasper,NA,Layia platyglossa,increase,NA,14.350000000000023,521.5
+observation,jasper,NA,Lepidium nitidum,no clear change,NA,16.150000000000034,507.90000000000003
+observation,jasper,NA,Leptosiphon parviflorus,decrease,extirpated,13.750000000000057,588.6
+observation,jasper,NA,Lomatium utriculatum,decrease,extirpated,14.750000000000057,676.1500000000001
+observation,jasper,NA,Melica californica,no clear change,extirpated,14.950000000000045,766.7
+observation,jasper,NA,Micropus californicus,increase,NA,14.450000000000045,744.1
+observation,jasper,NA,Microseris douglasii,increase,NA,15.850000000000023,420
+observation,jasper,NA,Minuartia douglasii,no clear change,extirpated,13.850000000000023,694.7
+observation,jasper,NA,Plagiobothrys nothofulvus,no clear change,established,15.350000000000023,610.7
+observation,jasper,NA,Plantago erecta,decrease,NA,15.550000000000011,528.1
+observation,jasper,NA,Poa secunda,decrease,NA,13.150000000000034,627.5500000000001
+observation,jasper,NA,Stipa pulchra,increase,NA,15.250000000000057,549.2
+observation,mclann,NA,Achillea millefolium,no clear change,NA,13.350000000000023,740.7
+observation,mclann,NA,Achyrachaena mollis,decrease,NA,14.550000000000011,595.25
+observation,mclann,NA,Acmispon brachycarpus,no clear change,NA,14.550000000000011,839
+observation,mclann,NA,Acmispon parviflorus,no clear change,NA,13.850000000000023,969
+observation,mclann,NA,Acmispon wrangelianus,no clear change,NA,14.950000000000045,592.6
+observation,mclann,NA,Aegilops triuncialis,no clear change,established,15.950000000000045,826.7
+observation,mclann,NA,Agoseris grandiflora,decrease,NA,13.450000000000045,642.05
+observation,mclann,NA,Agoseris heterophylla,decrease,NA,14.050000000000011,695.35
+observation,mclann,NA,Aira caryophyllea,decrease,NA,13.550000000000011,888.75
+observation,mclann,NA,Allium amplectens,no clear change,established,14.550000000000011,998.95
+observation,mclann,NA,Allium fimbriatum,no clear change,established,15.250000000000057,444.5
+observation,mclann,NA,Allium serra,no clear change,NA,14.250000000000057,548.2
+observation,mclann,NA,Allophyllum gilioides,increase,NA,12.650000000000034,556.9
+observation,mclann,NA,Amsinckia menziesii,no clear change,NA,16.450000000000045,459.85
+observation,mclann,NA,Ancistrocarphus filagineus,no clear change,extirpated,15.150000000000034,470.6
+observation,mclann,NA,Aphanes occidentalis,no clear change,NA,15.250000000000057,559.9000000000001
+observation,mclann,NA,Astragalus breweri,no clear change,NA,14.950000000000045,1064.65
+observation,mclann,NA,Astragalus gambelianus,no clear change,NA,15.250000000000057,572.7
+observation,mclann,NA,Astragalus rattanii,no clear change,established,15.250000000000057,905.5
+observation,mclann,NA,Athysanus pusillus,no clear change,NA,15.250000000000057,569
+observation,mclann,NA,Avena fatua,increase,NA,16.350000000000023,506.6
+observation,mclann,NA,Bellardia trixago,no clear change,established,13.750000000000057,693
+observation,mclann,NA,Brassica nigra,no clear change,NA,16.650000000000034,409.3
+observation,mclann,NA,Briza minor,no clear change,NA,14.350000000000023,783.7
+observation,mclann,NA,Brodiaea elegans,no clear change,NA,14.050000000000011,929.7
+observation,mclann,NA,Bromus diandrus,increase,NA,16.150000000000034,491.45000000000005
+observation,mclann,NA,Bromus hordeaceus,decrease,NA,15.550000000000011,543.25
+observation,mclann,NA,Bromus laevipes,no clear change,NA,13.850000000000023,960.8000000000001
+observation,mclann,NA,Bromus madritensis,no clear change,NA,16.450000000000045,434.8
+observation,mclann,NA,Bromus tectorum,no clear change,extirpated,12.450000000000045,536.55
+observation,mclann,NA,Calandrinia menziesii,no clear change,NA,14.950000000000045,573.1500000000001
+observation,mclann,NA,Calochortus luteus,increase,NA,13.950000000000045,803.6
+observation,mclann,NA,Calochortus superbus,increase,NA,15.550000000000011,990
+observation,mclann,NA,Capsella bursa-pastoris,no clear change,established,16.250000000000057,523.1
+observation,mclann,NA,Cardamine oligosperma,no clear change,NA,14.550000000000011,803.1000000000001
+observation,mclann,NA,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+observation,mclann,NA,Castilleja attenuata,increase,NA,15.350000000000023,728.4000000000001
+observation,mclann,NA,Castilleja densiflora,no clear change,NA,13.950000000000045,746.4000000000001
+observation,mclann,NA,Castilleja rubicundula,no clear change,extirpated,13.650000000000034,818.6
+observation,mclann,NA,Centaurea melitensis,no clear change,NA,16.55000000000001,445.70000000000005
+observation,mclann,NA,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+observation,mclann,NA,Cerastium fontanum,no clear change,extirpated,13.150000000000034,622.9000000000001
+observation,mclann,NA,Cerastium glomeratum,no clear change,NA,15.450000000000045,606.6
+observation,mclann,NA,Cercocarpus betuloides,no clear change,established,14.450000000000045,532.7
+observation,mclann,NA,Chlorogalum pomeridianum,no clear change,NA,13.950000000000045,757.1
+observation,mclann,NA,Chorizanthe membranacea,no clear change,extirpated,13.950000000000045,596.3
+observation,mclann,NA,Clarkia purpurea,no clear change,NA,14.750000000000057,573.2
+observation,mclann,NA,Claytonia parviflora,no clear change,NA,14.350000000000023,619.8000000000001
+observation,mclann,NA,Collinsia sparsiflora,no clear change,NA,14.650000000000034,893.4000000000001
+observation,mclann,NA,Crassula connata,no clear change,NA,16.55000000000001,411.3
+observation,mclann,NA,Croton setiger,no clear change,NA,16.450000000000045,487.75
+observation,mclann,NA,Cryptantha hispidula,no clear change,NA,15.550000000000011,925.6
+observation,mclann,NA,Cuscuta californica,no clear change,NA,16.55000000000001,444.70000000000005
+observation,mclann,NA,Cynosurus echinatus,no clear change,NA,13.550000000000011,944.3000000000001
+observation,mclann,NA,Dactylis glomerata,increase,NA,13.150000000000034,884.1500000000001
+observation,mclann,NA,Daucus pusillus,no clear change,NA,16.250000000000057,435.3
+observation,mclann,NA,Delphinium hesperium,no clear change,extirpated,14.750000000000057,799.5
+observation,mclann,NA,Delphinium variegatum,no clear change,NA,14.950000000000045,806.3000000000001
+observation,mclann,NA,Diplacus douglasii,no clear change,established,13.900000000000034,924.4000000000001
+observation,mclann,NA,Dipterostemon capitatus,decrease,NA,15.450000000000045,534.4
+observation,mclann,NA,Elymus caput-medusae,decrease,NA,14.250000000000057,774.4000000000001
+observation,mclann,NA,Elymus elymoides,increase,NA,8.150000000000034,794.4000000000001
+observation,mclann,NA,Elymus glaucus,no clear change,extirpated,13.050000000000011,696.9000000000001
+observation,mclann,NA,Elytrigia repens,increase,NA,13.950000000000045,638.1
+observation,mclann,NA,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+observation,mclann,NA,Eriophyllum lanatum,no clear change,NA,12.450000000000045,1122.8
+observation,mclann,NA,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+observation,mclann,NA,Erodium brachycarpum,increase,NA,16.350000000000023,447.20000000000005
+observation,mclann,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,mclann,NA,Eschscholzia californica,no clear change,established,14.450000000000045,589.6
+observation,mclann,NA,Euphorbia crenulata,decrease,NA,13.250000000000057,1076.45
+observation,mclann,NA,Festuca bromoides,no clear change,extirpated,14.650000000000034,613.1
+observation,mclann,NA,Festuca microstachys,no clear change,NA,15.050000000000011,574.1
+observation,mclann,NA,Festuca myuros,no clear change,NA,15.850000000000023,506.3
+observation,mclann,NA,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+observation,mclann,NA,Galium aparine,no clear change,NA,14.650000000000034,591.3000000000001
+observation,mclann,NA,Galium murale,no clear change,NA,15.550000000000011,673.9000000000001
+observation,mclann,NA,Galium porrigens,no clear change,extirpated,14.550000000000011,612.5
+observation,mclann,NA,Gastridium phleoides,no clear change,NA,15.850000000000023,535.5500000000001
+observation,mclann,NA,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+observation,mclann,NA,Geranium molle,no clear change,NA,14.250000000000057,785.9000000000001
+observation,mclann,NA,Gilia tricolor,no clear change,NA,15.650000000000034,730.2
+observation,mclann,NA,Githopsis specularioides,no clear change,NA,13.750000000000057,1089.7
+observation,mclann,NA,Grindelia camporum,no clear change,NA,16.350000000000023,476.40000000000003
+observation,mclann,NA,Helianthus exilis,no clear change,extirpated,15.350000000000023,897
+observation,mclann,NA,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+observation,mclann,NA,Hesperevax sparsiflora,no clear change,NA,13.950000000000045,665.5
+observation,mclann,NA,Holocarpha virgata,increase,NA,16.150000000000034,573.6
+observation,mclann,NA,Holodiscus discolor,no clear change,extirpated,12.650000000000034,946.4000000000001
+observation,mclann,NA,Hordeum marinum,no clear change,NA,16.05000000000001,562.3000000000001
+observation,mclann,NA,Hordeum murinum,no clear change,extirpated,16.350000000000023,480.3
+observation,mclann,NA,Hypochaeris glabra,increase,NA,16.150000000000034,484.70000000000005
+observation,mclann,NA,Hypochaeris radicata,no clear change,extirpated,13.250000000000057,794.9000000000001
+observation,mclann,NA,Juncus bufonius,no clear change,extirpated,15.350000000000023,526.3000000000001
+observation,mclann,NA,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+observation,mclann,NA,Lasthenia californica,no clear change,NA,14.450000000000045,690.6
+observation,mclann,NA,Lathyrus vestitus,no clear change,NA,15.050000000000011,528.4
+observation,mclann,NA,Lepidium nitidum,no clear change,NA,16.150000000000034,507.90000000000003
+observation,mclann,NA,Leptosiphon bicolor,no clear change,NA,14.950000000000045,820.3000000000001
+observation,mclann,NA,Leptosiphon ciliatus,no clear change,NA,9.750000000000057,1085.15
+observation,mclann,NA,Lithophragma heterophyllum,no clear change,NA,13.850000000000023,829.4000000000001
+observation,mclann,NA,Logfia gallica,increase,NA,16.05000000000001,468.55
+observation,mclann,NA,Lomatium dasycarpum,no clear change,NA,14.150000000000034,729.45
+observation,mclann,NA,Lomatium marginatum,no clear change,NA,15.650000000000034,937
+observation,mclann,NA,Lomatium utriculatum,decrease,NA,14.750000000000057,676.1500000000001
+observation,mclann,NA,Lupinus albifrons,no clear change,NA,13.950000000000045,644.6
+observation,mclann,NA,Lupinus bicolor,no clear change,NA,15.450000000000045,530.7
+observation,mclann,NA,Lupinus microcarpus,no clear change,NA,15.250000000000057,518.7
+observation,mclann,NA,Lupinus succulentus,no clear change,established,16.55000000000001,432.40000000000003
+observation,mclann,NA,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+observation,mclann,NA,Madia elegans,no clear change,established,13.250000000000057,826.5
+observation,mclann,NA,Madia exigua,no clear change,NA,13.650000000000034,850.9000000000001
+observation,mclann,NA,Madia gracilis,no clear change,NA,13.850000000000023,758
+observation,mclann,NA,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+observation,mclann,NA,Melica californica,no clear change,NA,14.950000000000045,766.7
+observation,mclann,NA,Melilotus indica,no clear change,extirpated,NA,NA
+observation,mclann,NA,Micropus californicus,no clear change,NA,14.450000000000045,744.1
+observation,mclann,NA,Microseris douglasii,decrease,extirpated,15.850000000000023,420
+observation,mclann,NA,Microsteris gracilis,decrease,NA,12.750000000000057,691.5
+observation,mclann,NA,Navarretia jepsonii,no clear change,extirpated,15.950000000000045,869.5
+observation,mclann,NA,Navarretia pubescens,no clear change,NA,15.550000000000011,701.1
+observation,mclann,NA,Navarretia tagetina,no clear change,established,16.55000000000001,876.9000000000001
+observation,mclann,NA,Nemophila heterophylla,no clear change,extirpated,14.350000000000023,935.7
+observation,mclann,NA,Nemophila menziesii,no clear change,NA,14.350000000000023,596.05
+observation,mclann,NA,Nemophila pedunculata,no clear change,established,13.850000000000023,652.2
+observation,mclann,NA,Pectocarya pusilla,decrease,NA,14.550000000000011,959.5
+observation,mclann,NA,Perideridia kelloggii,no clear change,NA,13.750000000000057,852.5
+observation,mclann,NA,Phacelia imbricata,no clear change,extirpated,13.850000000000023,561.1
+observation,mclann,NA,Phalaris paradoxa,decrease,NA,16.55000000000001,484.20000000000005
+observation,mclann,NA,Plagiobothrys nothofulvus,no clear change,NA,15.350000000000023,610.7
+observation,mclann,NA,Plantago erecta,no clear change,NA,15.550000000000011,528.1
+observation,mclann,NA,Plectritis ciliosa,no clear change,NA,14.950000000000045,670.5
+observation,mclann,NA,Poa annua,no clear change,NA,16.250000000000057,543.9
+observation,mclann,NA,Poa bulbosa,no clear change,NA,13.750000000000057,785.35
+observation,mclann,NA,Poa secunda,no clear change,NA,13.150000000000034,627.5500000000001
+observation,mclann,NA,Polypogon monspeliensis,no clear change,extirpated,16.350000000000023,455.90000000000003
+observation,mclann,NA,Primula hendersonii,increase,NA,13.850000000000023,884.5
+observation,mclann,NA,Pseudognaphalium californicum,no clear change,NA,16.350000000000023,460.25
+observation,mclann,NA,Quercus douglasii,no clear change,NA,15.150000000000034,654.1
+observation,mclann,NA,Quercus durata,decrease,extirpated,14.250000000000057,806.3000000000001
+observation,mclann,NA,Quercus lobata,no clear change,extirpated,15.350000000000023,562.6
+observation,mclann,NA,Ranunculus californicus,increase,established,13.750000000000057,691.9000000000001
+observation,mclann,NA,Ranunculus occidentalis,no clear change,NA,13.450000000000045,1100.2
+observation,mclann,NA,Rigiopappus leptocladus,no clear change,NA,13.950000000000045,773.4000000000001
+observation,mclann,NA,Salvia columbariae,no clear change,NA,15.950000000000045,456.20000000000005
+observation,mclann,NA,Sanicula bipinnata,no clear change,NA,15.150000000000034,600.5
+observation,mclann,NA,Sanicula bipinnatifida,no clear change,NA,14.150000000000034,757.7
+observation,mclann,NA,Sanicula crassicaulis,decrease,NA,14.050000000000011,742.1
+observation,mclann,NA,Senecio vulgaris,no clear change,NA,16.150000000000034,539.5
+observation,mclann,NA,Sidalcea diploscypha,decrease,NA,14.150000000000034,813.6
+observation,mclann,NA,Silene gallica,no clear change,NA,15.550000000000011,517.3
+observation,mclann,NA,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+observation,mclann,NA,Stellaria media,no clear change,NA,14.550000000000011,619.8000000000001
+observation,mclann,NA,Stellaria nitens,decrease,NA,14.850000000000023,574.7
+observation,mclann,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,mclann,NA,Tetrapteron graciliflorum,no clear change,NA,14.950000000000045,503.5
+observation,mclann,NA,Thysanocarpus curvipes,no clear change,NA,15.250000000000057,600.5
+observation,mclann,NA,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+observation,mclann,NA,Torilis nodosa,no clear change,NA,15.550000000000011,560.8000000000001
+observation,mclann,NA,Toxicoscordion fremontii,no clear change,NA,13.750000000000057,791.5
+observation,mclann,NA,Tragopogon dubius,no clear change,extirpated,11.150000000000034,759
+observation,mclann,NA,Trifolium albopurpureum,no clear change,NA,14.550000000000011,548.6
+observation,mclann,NA,Trifolium bifidum,no clear change,NA,14.250000000000057,805.7
+observation,mclann,NA,Trifolium ciliolatum,no clear change,extirpated,15.000000000000028,596.6
+observation,mclann,NA,Trifolium depauperatum,no clear change,NA,15.250000000000057,658.6
+observation,mclann,NA,Trifolium dubium,no clear change,extirpated,13.850000000000023,888.7
+observation,mclann,NA,Trifolium fucatum,no clear change,NA,14.050000000000011,813.1
+observation,mclann,NA,Trifolium gracilentum,no clear change,NA,15.150000000000034,464.8
+observation,mclann,NA,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+observation,mclann,NA,Trifolium microcephalum,no clear change,NA,14.550000000000011,602.3000000000001
+observation,mclann,NA,Trifolium microdon,no clear change,NA,13.750000000000057,762.3000000000001
+observation,mclann,NA,Trifolium variegatum,no clear change,established,14.450000000000045,780.3000000000001
+observation,mclann,NA,Trifolium willdenovii,no clear change,NA,14.550000000000011,600.3000000000001
+observation,mclann,NA,Triphysaria eriantha,increase,NA,16.05000000000001,771.1
+observation,mclann,NA,Triteleia laxa,no clear change,NA,14.050000000000011,780.3000000000001
+observation,mclann,NA,Uropappus lindleyi,no clear change,NA,15.350000000000023,487.25
+observation,mclann,NA,Velezia rigida,no clear change,NA,15.850000000000023,872.9000000000001
+observation,mclann,NA,Vicia villosa,increase,NA,15.150000000000034,605.8000000000001
+observation,mclann,NA,Wyethia glabra,no clear change,NA,13.850000000000023,864.9000000000001
+observation,mclann,NA,Zeltnera trichanta,no clear change,extirpated,15.850000000000023,848.3000000000001
+observation,mclserp,NA,Achyrachaena mollis,no clear change,NA,14.550000000000011,595.25
+observation,mclserp,NA,Acmispon americanus,increase,NA,14.950000000000045,597.2
+observation,mclserp,NA,Acmispon brachycarpus,no clear change,NA,14.550000000000011,839
+observation,mclserp,NA,Acmispon parviflorus,decrease,NA,13.850000000000023,969
+observation,mclserp,NA,Acmispon wrangelianus,no clear change,NA,14.950000000000045,592.6
+observation,mclserp,NA,Adenostoma fasciculatum,no clear change,NA,15.450000000000045,495.40000000000003
+observation,mclserp,NA,Aegilops triuncialis,no clear change,NA,15.950000000000045,826.7
+observation,mclserp,NA,Agoseris grandiflora,no clear change,NA,13.450000000000045,642.05
+observation,mclserp,NA,Agoseris heterophylla,no clear change,NA,14.050000000000011,695.35
+observation,mclserp,NA,Aira caryophyllea,no clear change,extirpated,13.550000000000011,888.75
+observation,mclserp,NA,Allium amplectens,no clear change,established,14.550000000000011,998.95
+observation,mclserp,NA,Allium falcifolium,no clear change,NA,12.150000000000034,1165.5
+observation,mclserp,NA,Allium fimbriatum,no clear change,NA,15.250000000000057,444.5
+observation,mclserp,NA,Allium serra,no clear change,NA,14.250000000000057,548.2
+observation,mclserp,NA,Amsinckia menziesii,decrease,NA,16.450000000000045,459.85
+observation,mclserp,NA,Ancistrocarphus filagineus,increase,NA,15.150000000000034,470.6
+observation,mclserp,NA,Antirrhinum vexillocalyculatum,no clear change,established,14.950000000000045,990.9000000000001
+observation,mclserp,NA,Aphanes occidentalis,no clear change,NA,15.250000000000057,559.9000000000001
+observation,mclserp,NA,Apocynum cannabinum,no clear change,NA,15.350000000000023,562.85
+observation,mclserp,NA,Asclepias eriocarpa,no clear change,established,14.650000000000034,524.3000000000001
+observation,mclserp,NA,Asclepias fascicularis,no clear change,NA,15.450000000000045,499.70000000000005
+observation,mclserp,NA,Astragalus breweri,no clear change,NA,14.950000000000045,1064.65
+observation,mclserp,NA,Astragalus gambelianus,no clear change,NA,15.250000000000057,572.7
+observation,mclserp,NA,Astragalus rattanii,no clear change,NA,15.250000000000057,905.5
+observation,mclserp,NA,Athysanus pusillus,no clear change,NA,15.250000000000057,569
+observation,mclserp,NA,Avena fatua,increase,NA,16.350000000000023,506.6
+observation,mclserp,NA,Bellardia trixago,no clear change,NA,13.750000000000057,693
+observation,mclserp,NA,Brodiaea elegans,no clear change,NA,14.050000000000011,929.7
+observation,mclserp,NA,Bromus carinatus,no clear change,extirpated,13.550000000000011,614.4000000000001
+observation,mclserp,NA,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+observation,mclserp,NA,Bromus hordeaceus,decrease,NA,15.550000000000011,543.25
+observation,mclserp,NA,Bromus japonicus,no clear change,established,11.850000000000023,1017.6
+observation,mclserp,NA,Bromus madritensis,no clear change,NA,16.450000000000045,434.8
+observation,mclserp,NA,Calandrinia menziesii,no clear change,NA,14.950000000000045,573.1500000000001
+observation,mclserp,NA,Calochortus luteus,no clear change,NA,13.950000000000045,803.6
+observation,mclserp,NA,Calochortus superbus,no clear change,NA,15.550000000000011,990
+observation,mclserp,NA,Calochortus vestae,no clear change,established,14.550000000000011,1122.8
+observation,mclserp,NA,Calycadenia pauciflora,no clear change,NA,15.650000000000034,898.7
+observation,mclserp,NA,Cardamine oligosperma,no clear change,NA,14.550000000000011,803.1000000000001
+observation,mclserp,NA,Carduus pycnocephalus,no clear change,extirpated,15.050000000000011,582.5
+observation,mclserp,NA,Castilleja attenuata,increase,NA,15.350000000000023,728.4000000000001
+observation,mclserp,NA,Castilleja rubicundula,no clear change,NA,13.650000000000034,818.6
+observation,mclserp,NA,Centaurea melitensis,no clear change,NA,16.55000000000001,445.70000000000005
+observation,mclserp,NA,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+observation,mclserp,NA,Cerastium glomeratum,no clear change,NA,15.450000000000045,606.6
+observation,mclserp,NA,Cercocarpus betuloides,no clear change,NA,14.450000000000045,532.7
+observation,mclserp,NA,Chaenactis glabriuscula,no clear change,NA,16.450000000000045,412.20000000000005
+observation,mclserp,NA,Chlorogalum pomeridianum,no clear change,NA,13.950000000000045,757.1
+observation,mclserp,NA,Chorizanthe membranacea,no clear change,NA,13.950000000000045,596.3
+observation,mclserp,NA,Chorizanthe polygonoides,no clear change,NA,16.450000000000045,383.90000000000003
+observation,mclserp,NA,Clarkia gracilis,no clear change,NA,13.750000000000057,1078.5
+observation,mclserp,NA,Clarkia purpurea,increase,NA,14.750000000000057,573.2
+observation,mclserp,NA,Claytonia exigua,no clear change,extirpated,13.350000000000023,906.5500000000001
+observation,mclserp,NA,Claytonia parviflora,no clear change,extirpated,14.350000000000023,619.8000000000001
+observation,mclserp,NA,Collinsia sparsiflora,no clear change,NA,14.650000000000034,893.4000000000001
+observation,mclserp,NA,Crassula connata,no clear change,extirpated,16.55000000000001,411.3
+observation,mclserp,NA,Croton setiger,no clear change,NA,16.450000000000045,487.75
+observation,mclserp,NA,Cryptantha hispidula,no clear change,NA,15.550000000000011,925.6
+observation,mclserp,NA,Cuscuta californica,no clear change,NA,16.55000000000001,444.70000000000005
+observation,mclserp,NA,Cynosurus echinatus,decrease,extirpated,13.550000000000011,944.3000000000001
+observation,mclserp,NA,Daucus pusillus,no clear change,NA,16.250000000000057,435.3
+observation,mclserp,NA,Delphinium hesperium,no clear change,NA,14.750000000000057,799.5
+observation,mclserp,NA,Delphinium variegatum,no clear change,NA,14.950000000000045,806.3000000000001
+observation,mclserp,NA,Diplacus douglasii,no clear change,NA,13.900000000000034,924.4000000000001
+observation,mclserp,NA,Dipterostemon capitatus,decrease,NA,15.450000000000045,534.4
+observation,mclserp,NA,Elymus caput-medusae,decrease,NA,14.250000000000057,774.4000000000001
+observation,mclserp,NA,Elymus elymoides,increase,NA,8.150000000000034,794.4000000000001
+observation,mclserp,NA,Epilobium brachycarpum,decrease,NA,13.650000000000034,653.6
+observation,mclserp,NA,Eriodictyon californicum,no clear change,established,13.650000000000034,893.4000000000001
+observation,mclserp,NA,Eriogonum covilleanum,no clear change,extirpated,15.050000000000011,394.20000000000005
+observation,mclserp,NA,Eriogonum nudum,no clear change,NA,11.950000000000045,881.25
+observation,mclserp,NA,Eriogonum vimineum,no clear change,NA,12.950000000000045,937.3000000000001
+observation,mclserp,NA,Eriophyllum lanatum,increase,NA,12.450000000000045,1122.8
+observation,mclserp,NA,Erodium brachycarpum,no clear change,NA,16.350000000000023,447.20000000000005
+observation,mclserp,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,mclserp,NA,Erythranthe guttata,no clear change,NA,14.250000000000057,654.4000000000001
+observation,mclserp,NA,Eschscholzia californica,no clear change,NA,14.450000000000045,589.6
+observation,mclserp,NA,Euphorbia crenulata,no clear change,NA,13.250000000000057,1076.45
+observation,mclserp,NA,Festuca bromoides,no clear change,extirpated,14.650000000000034,613.1
+observation,mclserp,NA,Festuca microstachys,no clear change,NA,15.050000000000011,574.1
+observation,mclserp,NA,Festuca myuros,decrease,NA,15.850000000000023,506.3
+observation,mclserp,NA,Festuca octoflora,no clear change,extirpated,15.550000000000011,430.20000000000005
+observation,mclserp,NA,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+observation,mclserp,NA,Galium aparine,no clear change,established,14.650000000000034,591.3000000000001
+observation,mclserp,NA,Galium murale,no clear change,NA,15.550000000000011,673.9000000000001
+observation,mclserp,NA,Gastridium phleoides,no clear change,NA,15.850000000000023,535.5500000000001
+observation,mclserp,NA,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+observation,mclserp,NA,Gilia capitata,no clear change,NA,14.350000000000023,704.45
+observation,mclserp,NA,Gilia tricolor,no clear change,NA,15.650000000000034,730.2
+observation,mclserp,NA,Githopsis specularioides,increase,NA,13.750000000000057,1089.7
+observation,mclserp,NA,Grindelia camporum,no clear change,NA,16.350000000000023,476.40000000000003
+observation,mclserp,NA,Helianthella californica,no clear change,extirpated,13.050000000000011,1174.3
+observation,mclserp,NA,Helianthus exilis,no clear change,NA,15.350000000000023,897
+observation,mclserp,NA,Hemizonia congesta,increase,NA,13.950000000000045,806.3000000000001
+observation,mclserp,NA,Hesperolinon californicum,no clear change,NA,15.650000000000034,881.5
+observation,mclserp,NA,Hesperolinon disjunctum,increase,NA,15.200000000000045,884.25
+observation,mclserp,NA,Hesperolinon micranthum,no clear change,NA,14.450000000000045,730.3000000000001
+observation,mclserp,NA,Holocarpha virgata,no clear change,NA,16.150000000000034,573.6
+observation,mclserp,NA,Hordeum brachyantherum,increase,NA,13.950000000000045,648.45
+observation,mclserp,NA,Hordeum depressum,no clear change,extirpated,17.150000000000034,361.20000000000005
+observation,mclserp,NA,Hordeum marinum,decrease,extirpated,16.05000000000001,562.3000000000001
+observation,mclserp,NA,Hypochaeris glabra,increase,NA,16.150000000000034,484.70000000000005
+observation,mclserp,NA,Hypochaeris radicata,decrease,extirpated,13.250000000000057,794.9000000000001
+observation,mclserp,NA,Iris douglasiana,no clear change,extirpated,12.850000000000023,907
+observation,mclserp,NA,Lactuca serriola,decrease,NA,16.650000000000034,477.8
+observation,mclserp,NA,Lagophylla minor,increase,NA,15.150000000000034,925.3000000000001
+observation,mclserp,NA,Lasthenia californica,no clear change,NA,14.450000000000045,690.6
+observation,mclserp,NA,Layia septentrionalis,no clear change,NA,15.450000000000045,948
+observation,mclserp,NA,Lepidium nitidum,no clear change,NA,16.150000000000034,507.90000000000003
+observation,mclserp,NA,Leptosiphon bicolor,no clear change,NA,14.950000000000045,820.3000000000001
+observation,mclserp,NA,Leptosiphon jepsonii,no clear change,NA,14.550000000000011,1040.5500000000002
+observation,mclserp,NA,Leptosiphon latisectus,decrease,extirpated,13.850000000000023,980.1500000000001
+observation,mclserp,NA,Lessingia ramulosa,no clear change,NA,14.950000000000045,965.1
+observation,mclserp,NA,Logfia filaginoides,no clear change,NA,15.950000000000045,439.35
+observation,mclserp,NA,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+observation,mclserp,NA,Lomatium dasycarpum,increase,NA,14.150000000000034,729.45
+observation,mclserp,NA,Lomatium macrocarpum,no clear change,extirpated,11.250000000000057,1362.15
+observation,mclserp,NA,Lomatium marginatum,decrease,NA,15.650000000000034,937
+observation,mclserp,NA,Lomatium utriculatum,no clear change,NA,14.750000000000057,676.1500000000001
+observation,mclserp,NA,Lupinus bicolor,increase,NA,15.450000000000045,530.7
+observation,mclserp,NA,Lupinus microcarpus,no clear change,NA,15.250000000000057,518.7
+observation,mclserp,NA,Lupinus succulentus,no clear change,NA,16.55000000000001,432.40000000000003
+observation,mclserp,NA,Lysimachia arvensis,increase,NA,14.950000000000045,570.1
+observation,mclserp,NA,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+observation,mclserp,NA,Melica californica,no clear change,NA,14.950000000000045,766.7
+observation,mclserp,NA,Melica imperfecta,no clear change,established,15.750000000000057,449.1
+observation,mclserp,NA,Melilotus indica,no clear change,NA,NA,NA
+observation,mclserp,NA,Micropus californicus,increase,NA,14.450000000000045,744.1
+observation,mclserp,NA,Microseris douglasii,no clear change,NA,15.850000000000023,420
+observation,mclserp,NA,Microsteris gracilis,no clear change,NA,12.750000000000057,691.5
+observation,mclserp,NA,Minuartia californica,increase,NA,15.350000000000023,887.8000000000001
+observation,mclserp,NA,Minuartia douglasii,increase,NA,13.850000000000023,694.7
+observation,mclserp,NA,Navarretia jepsonii,increase,NA,15.950000000000045,869.5
+observation,mclserp,NA,Navarretia pubescens,no clear change,NA,15.550000000000011,701.1
+observation,mclserp,NA,Nemophila heterophylla,decrease,NA,14.350000000000023,935.7
+observation,mclserp,NA,Nemophila menziesii,no clear change,NA,14.350000000000023,596.05
+observation,mclserp,NA,Nemophila pedunculata,no clear change,extirpated,13.850000000000023,652.2
+observation,mclserp,NA,Pectocarya pusilla,no clear change,NA,14.550000000000011,959.5
+observation,mclserp,NA,Perideridia kelloggii,no clear change,NA,13.750000000000057,852.5
+observation,mclserp,NA,Phalaris paradoxa,no clear change,extirpated,16.55000000000001,484.20000000000005
+observation,mclserp,NA,Pinus sabiniana,no clear change,extirpated,14.750000000000057,665.9000000000001
+observation,mclserp,NA,Plagiobothrys nothofulvus,decrease,NA,15.350000000000023,610.7
+observation,mclserp,NA,Plantago erecta,no clear change,NA,15.550000000000011,528.1
+observation,mclserp,NA,Plectritis ciliosa,no clear change,NA,14.950000000000045,670.5
+observation,mclserp,NA,Poa secunda,no clear change,NA,13.150000000000034,627.5500000000001
+observation,mclserp,NA,Polypogon monspeliensis,no clear change,extirpated,16.350000000000023,455.90000000000003
+observation,mclserp,NA,Primula hendersonii,no clear change,extirpated,13.850000000000023,884.5
+observation,mclserp,NA,Quercus durata,no clear change,NA,14.250000000000057,806.3000000000001
+observation,mclserp,NA,Ranunculus californicus,no clear change,established,13.750000000000057,691.9000000000001
+observation,mclserp,NA,Ranunculus occidentalis,no clear change,NA,13.450000000000045,1100.2
+observation,mclserp,NA,Rigiopappus leptocladus,increase,NA,13.950000000000045,773.4000000000001
+observation,mclserp,NA,Rumex crispus,no clear change,extirpated,16.350000000000023,509.1
+observation,mclserp,NA,Sagina apetala,no clear change,established,15.550000000000011,615.4000000000001
+observation,mclserp,NA,Sanicula bipinnata,no clear change,NA,15.150000000000034,600.5
+observation,mclserp,NA,Sanicula bipinnatifida,no clear change,NA,14.150000000000034,757.7
+observation,mclserp,NA,Sanicula crassicaulis,no clear change,extirpated,14.050000000000011,742.1
+observation,mclserp,NA,Scutellaria siphocampyloides,decrease,NA,12.050000000000011,590.3000000000001
+observation,mclserp,NA,Senecio eurycephalus,no clear change,NA,15.05000000000004,1188.2
+observation,mclserp,NA,Senecio vulgaris,no clear change,NA,16.150000000000034,539.5
+observation,mclserp,NA,Sidalcea diploscypha,increase,NA,14.150000000000034,813.6
+observation,mclserp,NA,Silene gallica,decrease,NA,15.550000000000011,517.3
+observation,mclserp,NA,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+observation,mclserp,NA,Stellaria media,no clear change,extirpated,14.550000000000011,619.8000000000001
+observation,mclserp,NA,Stellaria nitens,no clear change,NA,14.850000000000023,574.7
+observation,mclserp,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,mclserp,NA,Taraxia ovata,no clear change,established,13.450000000000045,803.1
+observation,mclserp,NA,Tetrapteron graciliflorum,no clear change,NA,14.950000000000045,503.5
+observation,mclserp,NA,Thermopsis macrophylla,no clear change,established,12.050000000000011,742
+observation,mclserp,NA,Thysanocarpus curvipes,no clear change,NA,15.250000000000057,600.5
+observation,mclserp,NA,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+observation,mclserp,NA,Torilis nodosa,no clear change,extirpated,15.550000000000011,560.8000000000001
+observation,mclserp,NA,Toxicoscordion fremontii,no clear change,NA,13.750000000000057,791.5
+observation,mclserp,NA,Trichostema laxum,no clear change,established,14.250000000000057,1103.2
+observation,mclserp,NA,Trifolium albopurpureum,increase,NA,14.550000000000011,548.6
+observation,mclserp,NA,Trifolium bifidum,no clear change,NA,14.250000000000057,805.7
+observation,mclserp,NA,Trifolium ciliolatum,no clear change,extirpated,15.000000000000028,596.6
+observation,mclserp,NA,Trifolium depauperatum,no clear change,NA,15.250000000000057,658.6
+observation,mclserp,NA,Trifolium dubium,no clear change,extirpated,13.850000000000023,888.7
+observation,mclserp,NA,Trifolium fucatum,increase,NA,14.050000000000011,813.1
+observation,mclserp,NA,Trifolium gracilentum,increase,NA,15.150000000000034,464.8
+observation,mclserp,NA,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+observation,mclserp,NA,Trifolium microcephalum,decrease,NA,14.550000000000011,602.3000000000001
+observation,mclserp,NA,Trifolium microdon,no clear change,NA,13.750000000000057,762.3000000000001
+observation,mclserp,NA,Trifolium variegatum,no clear change,extirpated,14.450000000000045,780.3000000000001
+observation,mclserp,NA,Trifolium willdenovii,no clear change,NA,14.550000000000011,600.3000000000001
+observation,mclserp,NA,Triphysaria eriantha,no clear change,NA,16.05000000000001,771.1
+observation,mclserp,NA,Triteleia hyacinthina,no clear change,NA,14.150000000000034,917.7
+observation,mclserp,NA,Triteleia laxa,no clear change,NA,14.050000000000011,780.3000000000001
+observation,mclserp,NA,Uropappus lindleyi,decrease,NA,15.350000000000023,487.25
+observation,mclserp,NA,Velezia rigida,increase,established,15.850000000000023,872.9000000000001
+observation,mclserp,NA,Vicia villosa,no clear change,NA,15.150000000000034,605.8000000000001
+observation,mclserp,NA,Viola douglasii,no clear change,NA,14.550000000000011,860.6
+observation,mclserp,NA,Wyethia glabra,no clear change,NA,13.850000000000023,864.9000000000001
+observation,mclserp,NA,Zeltnera trichanta,decrease,NA,15.850000000000023,848.3000000000001
+observation,morganterritory,NA,Achillea millefolium,decrease,extirpated,13.350000000000023,740.7
+observation,morganterritory,NA,Acmispon wrangelianus,no clear change,extirpated,14.950000000000045,592.6
+observation,morganterritory,NA,Amsinckia menziesii,no clear change,NA,16.450000000000045,459.85
+observation,morganterritory,NA,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+observation,morganterritory,NA,Avena fatua,decrease,NA,16.350000000000023,506.6
+observation,morganterritory,NA,Bellardia trixago,increase,NA,13.750000000000057,693
+observation,morganterritory,NA,Brachypodium distachyon,no clear change,NA,16.350000000000023,496.90000000000003
+observation,morganterritory,NA,Briza minor,no clear change,extirpated,14.350000000000023,783.7
+observation,morganterritory,NA,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+observation,morganterritory,NA,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+observation,morganterritory,NA,Bromus madritensis,no clear change,NA,16.450000000000045,434.8
+observation,morganterritory,NA,Bromus sterilis,decrease,extirpated,15.550000000000011,620.7
+observation,morganterritory,NA,Calystegia purpurata,no clear change,extirpated,13.250000000000057,780.3000000000001
+observation,morganterritory,NA,Calystegia subacaulis,no clear change,NA,13.850000000000023,619.8000000000001
+observation,morganterritory,NA,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+observation,morganterritory,NA,Centaurea solstitialis,increase,established,14.150000000000034,695.75
+observation,morganterritory,NA,Chlorogalum pomeridianum,no clear change,NA,13.950000000000045,757.1
+observation,morganterritory,NA,Clarkia affinis,no clear change,established,14.550000000000011,574.6
+observation,morganterritory,NA,Clarkia purpurea,no clear change,established,14.750000000000057,573.2
+observation,morganterritory,NA,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+observation,morganterritory,NA,Crepis vesicaria,no clear change,established,13.850000000000023,780.3000000000001
+observation,morganterritory,NA,Croton setiger,no clear change,extirpated,16.450000000000045,487.75
+observation,morganterritory,NA,Elymus caput-medusae,no clear change,established,14.250000000000057,774.4000000000001
+observation,morganterritory,NA,Elymus triticoides,no clear change,NA,14.550000000000011,490.70000000000005
+observation,morganterritory,NA,Epilobium brachycarpum,no clear change,established,13.650000000000034,653.6
+observation,morganterritory,NA,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+observation,morganterritory,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,morganterritory,NA,Erodium moschatum,decrease,extirpated,16.250000000000057,529.7
+observation,morganterritory,NA,Eschscholzia californica,no clear change,established,14.450000000000045,589.6
+observation,morganterritory,NA,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+observation,morganterritory,NA,Festuca myuros,no clear change,extirpated,15.850000000000023,506.3
+observation,morganterritory,NA,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+observation,morganterritory,NA,Galium parisiense,no clear change,extirpated,15.400000000000034,629.8000000000001
+observation,morganterritory,NA,Geranium dissectum,decrease,NA,14.350000000000023,685.4000000000001
+observation,morganterritory,NA,Helminthotheca echioides,no clear change,NA,15.050000000000011,531
+observation,morganterritory,NA,Hordeum marinum,no clear change,NA,16.05000000000001,562.3000000000001
+observation,morganterritory,NA,Hordeum murinum,no clear change,NA,16.350000000000023,480.3
+observation,morganterritory,NA,Hypochaeris glabra,no clear change,established,16.150000000000034,484.70000000000005
+observation,morganterritory,NA,Hypochaeris radicata,no clear change,NA,13.250000000000057,794.9000000000001
+observation,morganterritory,NA,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+observation,morganterritory,NA,Lupinus bicolor,no clear change,extirpated,15.450000000000045,530.7
+observation,morganterritory,NA,Lupinus succulentus,no clear change,NA,16.55000000000001,432.40000000000003
+observation,morganterritory,NA,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+observation,morganterritory,NA,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+observation,morganterritory,NA,Phalaris paradoxa,no clear change,NA,16.55000000000001,484.20000000000005
+observation,morganterritory,NA,Sanicula bipinnatifida,no clear change,NA,14.150000000000034,757.7
+observation,morganterritory,NA,Scandix pecten-veneris,no clear change,NA,14.150000000000034,793.85
+observation,morganterritory,NA,Sherardia arvensis,decrease,NA,14.150000000000034,780.5500000000001
+observation,morganterritory,NA,Silene gallica,no clear change,established,15.550000000000011,517.3
+observation,morganterritory,NA,Silybum marianum,no clear change,NA,15.550000000000011,535.4
+observation,morganterritory,NA,Sinapis arvensis,no clear change,NA,16.650000000000034,521.3000000000001
+observation,morganterritory,NA,Sisymbrium officinale,no clear change,established,16.650000000000034,343.20000000000005
+observation,morganterritory,NA,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+observation,morganterritory,NA,Sonchus asper,no clear change,established,16.350000000000023,476.5
+observation,morganterritory,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,morganterritory,NA,Torilis nodosa,no clear change,NA,15.550000000000011,560.8000000000001
+observation,morganterritory,NA,Trifolium bifidum,no clear change,extirpated,14.250000000000057,805.7
+observation,morganterritory,NA,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+observation,morganterritory,NA,Triteleia laxa,decrease,NA,14.050000000000011,780.3000000000001
+observation,morganterritory,NA,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+observation,morganterritory,NA,Vicia villosa,no clear change,NA,15.150000000000034,605.8000000000001
+observation,pleasantonridge,NA,Achillea millefolium,no clear change,NA,13.350000000000023,740.7
+observation,pleasantonridge,NA,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+observation,pleasantonridge,NA,Brachypodium distachyon,no clear change,NA,16.350000000000023,496.90000000000003
+observation,pleasantonridge,NA,Briza minor,no clear change,established,14.350000000000023,783.7
+observation,pleasantonridge,NA,Bromus carinatus,no clear change,NA,13.550000000000011,614.4000000000001
+observation,pleasantonridge,NA,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+observation,pleasantonridge,NA,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+observation,pleasantonridge,NA,Bromus madritensis,no clear change,NA,16.450000000000045,434.8
+observation,pleasantonridge,NA,Calystegia subacaulis,no clear change,NA,13.850000000000023,619.8000000000001
+observation,pleasantonridge,NA,Carduus pycnocephalus,decrease,NA,15.050000000000011,582.5
+observation,pleasantonridge,NA,Centaurea solstitialis,no clear change,extirpated,14.150000000000034,695.75
+observation,pleasantonridge,NA,Cerastium glomeratum,no clear change,extirpated,15.450000000000045,606.6
+observation,pleasantonridge,NA,Cirsium vulgare,no clear change,NA,13.350000000000023,750.7
+observation,pleasantonridge,NA,Convolvulus arvensis,no clear change,extirpated,15.150000000000034,552.1
+observation,pleasantonridge,NA,Crepis vesicaria,increase,NA,13.850000000000023,780.3000000000001
+observation,pleasantonridge,NA,Croton setiger,no clear change,established,16.450000000000045,487.75
+observation,pleasantonridge,NA,Daucus pusillus,no clear change,established,16.250000000000057,435.3
+observation,pleasantonridge,NA,Elymus caput-medusae,no clear change,established,14.250000000000057,774.4000000000001
+observation,pleasantonridge,NA,Elymus glaucus,no clear change,extirpated,13.050000000000011,696.9000000000001
+observation,pleasantonridge,NA,Elymus triticoides,no clear change,NA,14.550000000000011,490.70000000000005
+observation,pleasantonridge,NA,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+observation,pleasantonridge,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,pleasantonridge,NA,Erodium moschatum,no clear change,established,16.250000000000057,529.7
+observation,pleasantonridge,NA,Eschscholzia californica,no clear change,established,14.450000000000045,589.6
+observation,pleasantonridge,NA,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+observation,pleasantonridge,NA,Festuca microstachys,no clear change,established,15.050000000000011,574.1
+observation,pleasantonridge,NA,Festuca myuros,no clear change,NA,15.850000000000023,506.3
+observation,pleasantonridge,NA,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+observation,pleasantonridge,NA,Galium murale,no clear change,NA,15.550000000000011,673.9000000000001
+observation,pleasantonridge,NA,Geranium dissectum,decrease,NA,14.350000000000023,685.4000000000001
+observation,pleasantonridge,NA,Geranium molle,no clear change,NA,14.250000000000057,785.9000000000001
+observation,pleasantonridge,NA,Hordeum marinum,no clear change,NA,16.05000000000001,562.3000000000001
+observation,pleasantonridge,NA,Hordeum murinum,no clear change,NA,16.350000000000023,480.3
+observation,pleasantonridge,NA,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+observation,pleasantonridge,NA,Hypochaeris radicata,no clear change,NA,13.250000000000057,794.9000000000001
+observation,pleasantonridge,NA,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+observation,pleasantonridge,NA,Lactuca serriola,no clear change,extirpated,16.650000000000034,477.8
+observation,pleasantonridge,NA,Lagophylla ramosissima,no clear change,NA,14.150000000000034,565.85
+observation,pleasantonridge,NA,Leptosiphon acicularis,no clear change,established,15.150000000000034,1035.1000000000001
+observation,pleasantonridge,NA,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+observation,pleasantonridge,NA,Lysimachia arvensis,no clear change,extirpated,14.950000000000045,570.1
+observation,pleasantonridge,NA,Madia gracilis,no clear change,NA,13.850000000000023,758
+observation,pleasantonridge,NA,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+observation,pleasantonridge,NA,Melilotus indica,no clear change,extirpated,NA,NA
+observation,pleasantonridge,NA,Mentha pulegium,no clear change,extirpated,13.850000000000023,960
+observation,pleasantonridge,NA,Polypogon monspeliensis,no clear change,extirpated,16.350000000000023,455.90000000000003
+observation,pleasantonridge,NA,Ranunculus californicus,no clear change,NA,13.750000000000057,691.9000000000001
+observation,pleasantonridge,NA,Ranunculus muricatus,no clear change,established,14.450000000000045,783.9000000000001
+observation,pleasantonridge,NA,Rumex acetosella,decrease,NA,13.050000000000011,856.5
+observation,pleasantonridge,NA,Rumex pulcher,no clear change,established,15.550000000000011,573.8000000000001
+observation,pleasantonridge,NA,Selaginella bigelovii,no clear change,established,16.250000000000057,433.90000000000003
+observation,pleasantonridge,NA,Sherardia arvensis,decrease,NA,14.150000000000034,780.5500000000001
+observation,pleasantonridge,NA,Silybum marianum,no clear change,extirpated,15.550000000000011,535.4
+observation,pleasantonridge,NA,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+observation,pleasantonridge,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,pleasantonridge,NA,Torilis nodosa,no clear change,extirpated,15.550000000000011,560.8000000000001
+observation,pleasantonridge,NA,Trifolium angustifolium,no clear change,extirpated,13.150000000000034,735.95
+observation,pleasantonridge,NA,Trifolium barbigerum,no clear change,extirpated,13.450000000000045,747.7
+observation,pleasantonridge,NA,Trifolium bifidum,no clear change,extirpated,14.250000000000057,805.7
+observation,pleasantonridge,NA,Trifolium campestre,no clear change,extirpated,13.550000000000011,762.3000000000001
+observation,pleasantonridge,NA,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+observation,pleasantonridge,NA,Trifolium glomeratum,no clear change,NA,14.150000000000034,799.6
+observation,pleasantonridge,NA,Trifolium gracilentum,no clear change,NA,15.150000000000034,464.8
+observation,pleasantonridge,NA,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+observation,pleasantonridge,NA,Trifolium oliganthum,no clear change,NA,14.250000000000057,822.6
+observation,pleasantonridge,NA,Trifolium pratense,no clear change,established,11.550000000000011,1414.4
+observation,pleasantonridge,NA,Trifolium subterraneum,no clear change,NA,13.950000000000045,858.7
+observation,pleasantonridge,NA,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+observation,sunol,NA,Achillea millefolium,no clear change,NA,13.350000000000023,740.7
+observation,sunol,NA,Achyrachaena mollis,no clear change,extirpated,14.550000000000011,595.25
+observation,sunol,NA,Acmispon wrangelianus,no clear change,NA,14.950000000000045,592.6
+observation,sunol,NA,Aira caryophyllea,decrease,NA,13.550000000000011,888.75
+observation,sunol,NA,Amsinckia menziesii,no clear change,NA,16.450000000000045,459.85
+observation,sunol,NA,Bellardia trixago,no clear change,NA,13.750000000000057,693
+observation,sunol,NA,Brachypodium distachyon,no clear change,NA,16.350000000000023,496.90000000000003
+observation,sunol,NA,Brassica nigra,no clear change,NA,16.650000000000034,409.3
+observation,sunol,NA,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+observation,sunol,NA,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+observation,sunol,NA,Bromus madritensis,increase,NA,16.450000000000045,434.8
+observation,sunol,NA,Bromus sterilis,no clear change,extirpated,15.550000000000011,620.7
+observation,sunol,NA,Calystegia subacaulis,no clear change,extirpated,13.850000000000023,619.8000000000001
+observation,sunol,NA,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+observation,sunol,NA,Carduus tenuiflorus,no clear change,established,14.850000000000023,522.2
+observation,sunol,NA,Chlorogalum pomeridianum,no clear change,NA,13.950000000000045,757.1
+observation,sunol,NA,Clarkia purpurea,decrease,NA,14.750000000000057,573.2
+observation,sunol,NA,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+observation,sunol,NA,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+observation,sunol,NA,Croton setiger,no clear change,extirpated,16.450000000000045,487.75
+observation,sunol,NA,Cynosurus echinatus,no clear change,extirpated,13.550000000000011,944.3000000000001
+observation,sunol,NA,Dipterostemon capitatus,no clear change,NA,15.450000000000045,534.4
+observation,sunol,NA,Elymus caput-medusae,no clear change,NA,14.250000000000057,774.4000000000001
+observation,sunol,NA,Elymus multisetus,no clear change,NA,13.650000000000034,685.9000000000001
+observation,sunol,NA,Epilobium brachycarpum,no clear change,extirpated,13.650000000000034,653.6
+observation,sunol,NA,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+observation,sunol,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,sunol,NA,Erodium moschatum,no clear change,established,16.250000000000057,529.7
+observation,sunol,NA,Eschscholzia californica,no clear change,NA,14.450000000000045,589.6
+observation,sunol,NA,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+observation,sunol,NA,Festuca microstachys,no clear change,NA,15.050000000000011,574.1
+observation,sunol,NA,Festuca myuros,decrease,NA,15.850000000000023,506.3
+observation,sunol,NA,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+observation,sunol,NA,Galium murale,no clear change,established,15.550000000000011,673.9000000000001
+observation,sunol,NA,Geranium dissectum,decrease,NA,14.350000000000023,685.4000000000001
+observation,sunol,NA,Geranium molle,no clear change,NA,14.250000000000057,785.9000000000001
+observation,sunol,NA,Hesperevax sparsiflora,no clear change,NA,13.950000000000045,665.5
+observation,sunol,NA,Holocarpha heermannii,no clear change,NA,14.450000000000045,549.7
+observation,sunol,NA,Hordeum marinum,no clear change,NA,16.05000000000001,562.3000000000001
+observation,sunol,NA,Hordeum murinum,decrease,extirpated,16.350000000000023,480.3
+observation,sunol,NA,Hypochaeris glabra,increase,NA,16.150000000000034,484.70000000000005
+observation,sunol,NA,Juncus bufonius,no clear change,extirpated,15.350000000000023,526.3000000000001
+observation,sunol,NA,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+observation,sunol,NA,Lagophylla ramosissima,no clear change,NA,14.150000000000034,565.85
+observation,sunol,NA,Lepidium nitidum,no clear change,extirpated,16.150000000000034,507.90000000000003
+observation,sunol,NA,Leptosiphon bicolor,decrease,extirpated,14.950000000000045,820.3000000000001
+observation,sunol,NA,Leptosiphon parviflorus,no clear change,extirpated,13.750000000000057,588.6
+observation,sunol,NA,Logfia filaginoides,no clear change,established,15.950000000000045,439.35
+observation,sunol,NA,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+observation,sunol,NA,Lupinus bicolor,no clear change,NA,15.450000000000045,530.7
+observation,sunol,NA,Lupinus formosus,no clear change,NA,13.950000000000045,568.3000000000001
+observation,sunol,NA,Lupinus nanus,no clear change,extirpated,14.750000000000057,721.2
+observation,sunol,NA,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+observation,sunol,NA,Madia gracilis,no clear change,extirpated,13.850000000000023,758
+observation,sunol,NA,Marah fabacea,no clear change,established,13.750000000000057,704.6
+observation,sunol,NA,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+observation,sunol,NA,Melica californica,no clear change,NA,14.950000000000045,766.7
+observation,sunol,NA,Melilotus indica,no clear change,extirpated,NA,NA
+observation,sunol,NA,Micropus californicus,no clear change,NA,14.450000000000045,744.1
+observation,sunol,NA,Phalaris paradoxa,no clear change,extirpated,16.55000000000001,484.20000000000005
+observation,sunol,NA,Plagiobothrys nothofulvus,no clear change,established,15.350000000000023,610.7
+observation,sunol,NA,Plantago erecta,no clear change,extirpated,15.550000000000011,528.1
+observation,sunol,NA,Poa secunda,no clear change,extirpated,13.150000000000034,627.5500000000001
+observation,sunol,NA,Ranunculus californicus,no clear change,NA,13.750000000000057,691.9000000000001
+observation,sunol,NA,Sanicula bipinnata,no clear change,NA,15.150000000000034,600.5
+observation,sunol,NA,Sanicula bipinnatifida,no clear change,extirpated,14.150000000000034,757.7
+observation,sunol,NA,Sherardia arvensis,no clear change,NA,14.150000000000034,780.5500000000001
+observation,sunol,NA,Sidalcea malviflora,no clear change,NA,13.150000000000034,746.4000000000001
+observation,sunol,NA,Silene gallica,no clear change,NA,15.550000000000011,517.3
+observation,sunol,NA,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+observation,sunol,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,sunol,NA,Torilis arvensis,no clear change,extirpated,15.150000000000034,721.1
+observation,sunol,NA,Torilis nodosa,no clear change,NA,15.550000000000011,560.8000000000001
+observation,sunol,NA,Trifolium bifidum,no clear change,extirpated,14.250000000000057,805.7
+observation,sunol,NA,Trifolium campestre,decrease,extirpated,13.550000000000011,762.3000000000001
+observation,sunol,NA,Trifolium ciliolatum,no clear change,extirpated,15.000000000000028,596.6
+observation,sunol,NA,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+observation,sunol,NA,Trifolium glomeratum,no clear change,NA,14.150000000000034,799.6
+observation,sunol,NA,Trifolium gracilentum,no clear change,NA,15.150000000000034,464.8
+observation,sunol,NA,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+observation,sunol,NA,Trifolium microcephalum,no clear change,extirpated,14.550000000000011,602.3000000000001
+observation,sunol,NA,Trifolium microdon,no clear change,extirpated,13.750000000000057,762.3000000000001
+observation,sunol,NA,Trifolium subterraneum,no clear change,NA,13.950000000000045,858.7
+observation,sunol,NA,Trifolium willdenovii,no clear change,NA,14.550000000000011,600.3000000000001
+observation,sunol,NA,Triteleia laxa,increase,established,14.050000000000011,780.3000000000001
+observation,sunol,NA,Vicia americana,no clear change,NA,12.750000000000057,748
+observation,sunol,NA,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+observation,sunol,NA,Vicia villosa,no clear change,NA,15.150000000000034,605.8000000000001
+observation,sunol,NA,Viola pedunculata,no clear change,NA,14.550000000000011,522.3000000000001
+observation,sunol,NA,Wyethia angustifolia,no clear change,established,13.550000000000011,865.9000000000001
+observation,swanton,NA,Avena barbata,no clear change,established,16.150000000000034,480.70000000000005
+observation,swanton,NA,Bromus carinatus,no clear change,NA,13.550000000000011,614.4000000000001
+observation,swanton,NA,Bromus diandrus,increase,NA,16.150000000000034,491.45000000000005
+observation,swanton,NA,Carduus pycnocephalus,increase,established,15.050000000000011,582.5
+observation,swanton,NA,Cerastium glomeratum,no clear change,extirpated,15.450000000000045,606.6
+observation,swanton,NA,Cirsium vulgare,increase,established,13.350000000000023,750.7
+observation,swanton,NA,Cynosurus echinatus,no clear change,established,13.550000000000011,944.3000000000001
+observation,swanton,NA,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+observation,swanton,NA,Erodium cicutarium,no clear change,extirpated,15.950000000000045,494.30000000000007
+observation,swanton,NA,Erodium moschatum,decrease,extirpated,16.250000000000057,529.7
+observation,swanton,NA,Eschscholzia californica,no clear change,established,14.450000000000045,589.6
+observation,swanton,NA,Festuca myuros,no clear change,NA,15.850000000000023,506.3
+observation,swanton,NA,Festuca perennis,decrease,NA,15.950000000000045,541.1500000000001
+observation,swanton,NA,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+observation,swanton,NA,Hordeum brachyantherum,no clear change,extirpated,13.950000000000045,648.45
+observation,swanton,NA,Hordeum murinum,no clear change,extirpated,16.350000000000023,480.3
+observation,swanton,NA,Hypochaeris radicata,no clear change,NA,13.250000000000057,794.9000000000001
+observation,swanton,NA,Juncus bufonius,no clear change,extirpated,15.350000000000023,526.3000000000001
+observation,swanton,NA,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+observation,swanton,NA,Plantago lanceolata,no clear change,NA,14.050000000000011,704.3000000000001
+observation,swanton,NA,Rumex acetosella,increase,NA,13.050000000000011,856.5
+observation,swanton,NA,Rumex crispus,no clear change,established,16.350000000000023,509.1
+observation,swanton,NA,Rumex pulcher,no clear change,NA,15.550000000000011,573.8000000000001
+observation,swanton,NA,Silybum marianum,no clear change,established,15.550000000000011,535.4
+observation,swanton,NA,Sonchus asper,increase,established,16.350000000000023,476.5
+observation,swanton,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,swanton,NA,Trifolium angustifolium,no clear change,NA,13.150000000000034,735.95
+observation,swanton,NA,Trifolium dubium,no clear change,extirpated,13.850000000000023,888.7
+observation,swanton,NA,Trifolium subterraneum,decrease,NA,13.950000000000045,858.7
+observation,swanton,NA,Vicia sativa,no clear change,established,14.250000000000057,722.25
+observation,ucsc,NA,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+observation,ucsc,NA,Avena barbata,increase,NA,16.150000000000034,480.70000000000005
+observation,ucsc,NA,Brachypodium distachyon,increase,NA,16.350000000000023,496.90000000000003
+observation,ucsc,NA,Briza maxima,no clear change,extirpated,13.250000000000057,832.5
+observation,ucsc,NA,Bromus diandrus,increase,NA,16.150000000000034,491.45000000000005
+observation,ucsc,NA,Bromus hordeaceus,decrease,extirpated,15.550000000000011,543.25
+observation,ucsc,NA,Epilobium ciliatum,no clear change,NA,13.150000000000034,677.9000000000001
+observation,ucsc,NA,Erodium botrys,increase,NA,15.050000000000011,571.7
+observation,ucsc,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,ucsc,NA,Erodium moschatum,no clear change,NA,16.250000000000057,529.7
+observation,ucsc,NA,Eschscholzia californica,decrease,NA,14.450000000000045,589.6
+observation,ucsc,NA,Festuca myuros,decrease,NA,15.850000000000023,506.3
+observation,ucsc,NA,Festuca perennis,decrease,NA,15.950000000000045,541.1500000000001
+observation,ucsc,NA,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+observation,ucsc,NA,Hirschfeldia incana,no clear change,extirpated,16.650000000000034,432.70000000000005
+observation,ucsc,NA,Hypochaeris radicata,decrease,extirpated,13.250000000000057,794.9000000000001
+observation,ucsc,NA,Lysimachia arvensis,no clear change,extirpated,14.950000000000045,570.1
+observation,ucsc,NA,Plantago lanceolata,decrease,NA,14.050000000000011,704.3000000000001
+observation,ucsc,NA,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+observation,ucsc,NA,Stipa pulchra,no clear change,extirpated,15.250000000000057,549.2
+observation,ucsc,NA,Trifolium angustifolium,no clear change,established,13.150000000000034,735.95
+observation,vascocaves,NA,Achillea millefolium,no clear change,NA,13.350000000000023,740.7
+observation,vascocaves,NA,Achyrachaena mollis,no clear change,NA,14.550000000000011,595.25
+observation,vascocaves,NA,Acmispon wrangelianus,no clear change,established,14.950000000000045,592.6
+observation,vascocaves,NA,Amsinckia menziesii,no clear change,NA,16.450000000000045,459.85
+observation,vascocaves,NA,Aphanes occidentalis,decrease,extirpated,15.250000000000057,559.9000000000001
+observation,vascocaves,NA,Brassica nigra,no clear change,NA,16.650000000000034,409.3
+observation,vascocaves,NA,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+observation,vascocaves,NA,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+observation,vascocaves,NA,Bromus madritensis,increase,NA,16.450000000000045,434.8
+observation,vascocaves,NA,Bromus sterilis,decrease,extirpated,15.550000000000011,620.7
+observation,vascocaves,NA,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+observation,vascocaves,NA,Castilleja exserta,no clear change,NA,15.350000000000023,482.70000000000005
+observation,vascocaves,NA,Centaurea melitensis,no clear change,established,16.55000000000001,445.70000000000005
+observation,vascocaves,NA,Centaurea solstitialis,no clear change,extirpated,14.150000000000034,695.75
+observation,vascocaves,NA,Cerastium glomeratum,no clear change,extirpated,15.450000000000045,606.6
+observation,vascocaves,NA,Chlorogalum pomeridianum,no clear change,NA,13.950000000000045,757.1
+observation,vascocaves,NA,Crassula connata,no clear change,extirpated,16.55000000000001,411.3
+observation,vascocaves,NA,Croton setiger,no clear change,extirpated,16.450000000000045,487.75
+observation,vascocaves,NA,Dipterostemon capitatus,no clear change,extirpated,15.450000000000045,534.4
+observation,vascocaves,NA,Elymus triticoides,no clear change,NA,14.550000000000011,490.70000000000005
+observation,vascocaves,NA,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+observation,vascocaves,NA,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+observation,vascocaves,NA,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+observation,vascocaves,NA,Erodium moschatum,decrease,NA,16.250000000000057,529.7
+observation,vascocaves,NA,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+observation,vascocaves,NA,Festuca myuros,no clear change,NA,15.850000000000023,506.3
+observation,vascocaves,NA,Festuca perennis,decrease,NA,15.950000000000045,541.1500000000001
+observation,vascocaves,NA,Galium aparine,decrease,extirpated,14.650000000000034,591.3000000000001
+observation,vascocaves,NA,Galium parisiense,no clear change,extirpated,15.400000000000034,629.8000000000001
+observation,vascocaves,NA,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+observation,vascocaves,NA,Grindelia camporum,no clear change,established,16.350000000000023,476.40000000000003
+observation,vascocaves,NA,Hesperevax sparsiflora,no clear change,extirpated,13.950000000000045,665.5
+observation,vascocaves,NA,Hirschfeldia incana,no clear change,NA,16.650000000000034,432.70000000000005
+observation,vascocaves,NA,Hordeum marinum,no clear change,NA,16.05000000000001,562.3000000000001
+observation,vascocaves,NA,Hordeum murinum,decrease,NA,16.350000000000023,480.3
+observation,vascocaves,NA,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+observation,vascocaves,NA,Hypochaeris radicata,no clear change,extirpated,13.250000000000057,794.9000000000001
+observation,vascocaves,NA,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+observation,vascocaves,NA,Leptosiphon bicolor,no clear change,established,14.950000000000045,820.3000000000001
+observation,vascocaves,NA,Lupinus bicolor,no clear change,NA,15.450000000000045,530.7
+observation,vascocaves,NA,Lupinus microcarpus,no clear change,NA,15.250000000000057,518.7
+observation,vascocaves,NA,Marah fabacea,no clear change,NA,13.750000000000057,704.6
+observation,vascocaves,NA,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+observation,vascocaves,NA,Melica californica,no clear change,extirpated,14.950000000000045,766.7
+observation,vascocaves,NA,Microseris douglasii,no clear change,extirpated,15.850000000000023,420
+observation,vascocaves,NA,Plagiobothrys canescens,no clear change,established,16.450000000000045,406.6
+observation,vascocaves,NA,Plagiobothrys nothofulvus,no clear change,extirpated,15.350000000000023,610.7
+observation,vascocaves,NA,Ranunculus californicus,no clear change,NA,13.750000000000057,691.9000000000001
+observation,vascocaves,NA,Sanicula bipinnata,no clear change,NA,15.150000000000034,600.5
+observation,vascocaves,NA,Sanicula bipinnatifida,no clear change,extirpated,14.150000000000034,757.7
+observation,vascocaves,NA,Sherardia arvensis,no clear change,NA,14.150000000000034,780.5500000000001
+observation,vascocaves,NA,Silybum marianum,no clear change,extirpated,15.550000000000011,535.4
+observation,vascocaves,NA,Stellaria media,no clear change,extirpated,14.550000000000011,619.8000000000001
+observation,vascocaves,NA,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+observation,vascocaves,NA,Torilis arvensis,no clear change,extirpated,15.150000000000034,721.1
+observation,vascocaves,NA,Torilis nodosa,no clear change,NA,15.550000000000011,560.8000000000001
+observation,vascocaves,NA,Trifolium fragiferum,no clear change,established,15.450000000000045,547.6
+observation,vascocaves,NA,Trifolium gracilentum,no clear change,established,15.150000000000034,464.8
+observation,vascocaves,NA,Trifolium hirtum,no clear change,extirpated,14.550000000000011,701.1
+observation,vascocaves,NA,Trifolium oliganthum,no clear change,NA,14.250000000000057,822.6
+observation,vascocaves,NA,Trifolium willdenovii,no clear change,NA,14.550000000000011,600.3000000000001
+observation,vascocaves,NA,Triphysaria pusilla,no clear change,extirpated,13.750000000000057,782.25
+observation,vascocaves,NA,Triteleia laxa,no clear change,NA,14.050000000000011,780.3000000000001
+experiment,NA,1998,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,1998,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,1998,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,1998,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,1998,Brachypodium distachyon,no clear change,NA,16.350000000000023,496.90000000000003
+experiment,NA,1998,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,1998,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,1998,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,1998,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,1998,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,1998,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,1998,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,1998,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,1998,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,1998,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,1998,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,1998,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,1998,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,1998,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,1998,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,1998,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,1998,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+experiment,NA,1998,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,1999,Aira caryophyllea,no clear change,established,13.550000000000011,888.75
+experiment,NA,1999,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,1999,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,1999,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,1999,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,1999,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,1999,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,1999,Crepis vesicaria,decrease,NA,13.850000000000023,780.3000000000001
+experiment,NA,1999,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,1999,Dipsacus sativus,no clear change,NA,14.050000000000011,687.7
+experiment,NA,1999,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,1999,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,1999,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,1999,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+experiment,NA,1999,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,1999,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,1999,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,1999,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2000,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2000,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2000,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2000,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2000,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2000,Centaurea solstitialis,no clear change,established,14.150000000000034,695.75
+experiment,NA,2000,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2000,Crepis vesicaria,decrease,NA,13.850000000000023,780.3000000000001
+experiment,NA,2000,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2000,Dipsacus sativus,no clear change,NA,14.050000000000011,687.7
+experiment,NA,2000,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2000,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2000,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2000,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2000,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2000,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2000,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2000,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2000,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2001,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2001,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2001,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2001,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2001,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2001,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2001,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2001,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2001,Dipsacus sativus,no clear change,NA,14.050000000000011,687.7
+experiment,NA,2001,Elymus glaucus,no clear change,NA,13.050000000000011,696.9000000000001
+experiment,NA,2001,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2001,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2001,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2001,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2001,Phalaris aquatica,no clear change,established,14.450000000000045,588.9
+experiment,NA,2001,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2001,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2001,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2001,Taraxia ovata,no clear change,established,13.450000000000045,803.1
+experiment,NA,2001,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2002,Avena barbata,increase,NA,16.150000000000034,480.70000000000005
+experiment,NA,2002,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2002,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2002,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2002,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2002,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2002,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2002,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2002,Dipsacus sativus,no clear change,NA,14.050000000000011,687.7
+experiment,NA,2002,Elymus glaucus,no clear change,established,13.050000000000011,696.9000000000001
+experiment,NA,2002,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2002,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2002,Festuca bromoides,increase,NA,14.650000000000034,613.1
+experiment,NA,2002,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2002,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2002,Lactuca serriola,no clear change,established,16.650000000000034,477.8
+experiment,NA,2002,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2002,Phalaris aquatica,no clear change,established,14.450000000000045,588.9
+experiment,NA,2002,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2002,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2002,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2002,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2002,Taraxia ovata,no clear change,established,13.450000000000045,803.1
+experiment,NA,2002,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2002,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2003,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2003,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2003,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2003,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2003,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2003,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2003,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2003,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2003,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2003,Dipsacus sativus,no clear change,NA,14.050000000000011,687.7
+experiment,NA,2003,Elymus glaucus,no clear change,established,13.050000000000011,696.9000000000001
+experiment,NA,2003,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2003,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2003,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2003,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2003,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2003,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2003,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2003,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2003,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2003,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2003,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2003,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2003,Taraxia ovata,no clear change,established,13.450000000000045,803.1
+experiment,NA,2003,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+experiment,NA,2003,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2004,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2004,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2004,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2004,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2004,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2004,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2004,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2004,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+experiment,NA,2004,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2004,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2004,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2004,Dipsacus sativus,no clear change,established,14.050000000000011,687.7
+experiment,NA,2004,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2004,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2004,Festuca perennis,decrease,NA,15.950000000000045,541.1500000000001
+experiment,NA,2004,Gastridium phleoides,no clear change,NA,15.850000000000023,535.5500000000001
+experiment,NA,2004,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2004,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2004,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2004,Lythrum hyssopifolia,no clear change,NA,16.150000000000034,523.8000000000001
+experiment,NA,2004,Phalaris aquatica,no clear change,established,14.450000000000045,588.9
+experiment,NA,2004,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2004,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2004,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2004,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2004,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+experiment,NA,2004,Vicia sativa,increase,NA,14.250000000000057,722.25
+experiment,NA,2004,Vicia tetrasperma,no clear change,NA,13.200000000000045,796.4000000000001
+experiment,NA,2005,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2005,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2005,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2005,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2005,Baccharis pilularis,no clear change,established,14.250000000000057,600.5
+experiment,NA,2005,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2005,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2005,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2005,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2005,Crepis vesicaria,increase,NA,13.850000000000023,780.3000000000001
+experiment,NA,2005,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2005,Dipsacus sativus,no clear change,NA,14.050000000000011,687.7
+experiment,NA,2005,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2005,Erigeron canadensis,no clear change,NA,16.450000000000045,477.6
+experiment,NA,2005,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2005,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+experiment,NA,2005,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2005,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2005,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2005,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2005,Lythrum hyssopifolia,no clear change,NA,16.150000000000034,523.8000000000001
+experiment,NA,2005,Medicago polymorpha,no clear change,NA,16.250000000000057,509.95000000000005
+experiment,NA,2005,Phalaris aquatica,no clear change,established,14.450000000000045,588.9
+experiment,NA,2005,Pistacia atlantica,no clear change,established,16.750000000000057,529.4
+experiment,NA,2005,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2005,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2005,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2005,Sonchus asper,no clear change,established,16.350000000000023,476.5
+experiment,NA,2005,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2005,Taraxia ovata,no clear change,established,13.450000000000045,803.1
+experiment,NA,2005,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+experiment,NA,2005,Toxicodendron diversilobum,no clear change,NA,14.450000000000045,626.8000000000001
+experiment,NA,2005,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2006,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2006,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2006,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2006,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2006,Brachypodium distachyon,no clear change,established,16.350000000000023,496.90000000000003
+experiment,NA,2006,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2006,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2006,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2006,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2006,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2006,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2006,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2006,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2006,Erigeron canadensis,no clear change,NA,16.450000000000045,477.6
+experiment,NA,2006,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2006,Festuca bromoides,increase,NA,14.650000000000034,613.1
+experiment,NA,2006,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2006,Gastridium phleoides,no clear change,NA,15.850000000000023,535.5500000000001
+experiment,NA,2006,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2006,Hemizonia congesta,increase,NA,13.950000000000045,806.3000000000001
+experiment,NA,2006,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2006,Kickxia spuria,no clear change,established,15.350000000000023,611.25
+experiment,NA,2006,Lactuca serriola,increase,NA,16.650000000000034,477.8
+experiment,NA,2006,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+experiment,NA,2006,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2006,Lythrum hyssopifolia,no clear change,NA,16.150000000000034,523.8000000000001
+experiment,NA,2006,Pistacia atlantica,no clear change,NA,16.750000000000057,529.4
+experiment,NA,2006,Quercus lobata,no clear change,NA,15.350000000000023,562.6
+experiment,NA,2006,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2006,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2006,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2006,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2006,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2006,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2006,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2006,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2006,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2006,Vicia tetrasperma,no clear change,established,13.200000000000045,796.4000000000001
+experiment,NA,2007,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2007,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2007,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2007,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2007,Brachypodium distachyon,no clear change,established,16.350000000000023,496.90000000000003
+experiment,NA,2007,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2007,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2007,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2007,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2007,Carduus pycnocephalus,no clear change,established,15.050000000000011,582.5
+experiment,NA,2007,Centaurea solstitialis,no clear change,established,14.150000000000034,695.75
+experiment,NA,2007,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2007,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2007,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2007,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2007,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2007,Festuca bromoides,increase,NA,14.650000000000034,613.1
+experiment,NA,2007,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2007,Gastridium phleoides,no clear change,NA,15.850000000000023,535.5500000000001
+experiment,NA,2007,Geranium dissectum,increase,NA,14.350000000000023,685.4000000000001
+experiment,NA,2007,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2007,Kickxia spuria,no clear change,established,15.350000000000023,611.25
+experiment,NA,2007,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2007,Logfia gallica,no clear change,established,16.05000000000001,468.55
+experiment,NA,2007,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2007,Lythrum hyssopifolia,no clear change,established,16.150000000000034,523.8000000000001
+experiment,NA,2007,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2007,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2007,Sonchus asper,no clear change,established,16.350000000000023,476.5
+experiment,NA,2007,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2007,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2007,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2007,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2007,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+experiment,NA,2007,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2008,Acmispon americanus,no clear change,established,14.950000000000045,597.2
+experiment,NA,2008,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2008,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2008,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2008,Brachypodium distachyon,no clear change,established,16.350000000000023,496.90000000000003
+experiment,NA,2008,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2008,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2008,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2008,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2008,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2008,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2008,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2008,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2008,Elymus glaucus,no clear change,NA,13.050000000000011,696.9000000000001
+experiment,NA,2008,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2008,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2008,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+experiment,NA,2008,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2008,Gastridium phleoides,no clear change,established,15.850000000000023,535.5500000000001
+experiment,NA,2008,Geranium dissectum,increase,NA,14.350000000000023,685.4000000000001
+experiment,NA,2008,Helminthotheca echioides,no clear change,NA,15.050000000000011,531
+experiment,NA,2008,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2008,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2008,Kickxia spuria,no clear change,NA,15.350000000000023,611.25
+experiment,NA,2008,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2008,Logfia gallica,no clear change,established,16.05000000000001,468.55
+experiment,NA,2008,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2008,Pistacia atlantica,no clear change,NA,16.750000000000057,529.4
+experiment,NA,2008,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2008,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2008,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2008,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2008,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2008,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2008,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2008,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2009,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2009,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2009,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2009,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2009,Brachypodium distachyon,decrease,NA,16.350000000000023,496.90000000000003
+experiment,NA,2009,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2009,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2009,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2009,Bromus hordeaceus,no clear change,NA,15.550000000000011,543.25
+experiment,NA,2009,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2009,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+experiment,NA,2009,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2009,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2009,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2009,Elymus glaucus,no clear change,established,13.050000000000011,696.9000000000001
+experiment,NA,2009,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2009,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2009,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+experiment,NA,2009,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2009,Gastridium phleoides,no clear change,NA,15.850000000000023,535.5500000000001
+experiment,NA,2009,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2009,Helminthotheca echioides,no clear change,NA,15.050000000000011,531
+experiment,NA,2009,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2009,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2009,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2009,Logfia gallica,no clear change,established,16.05000000000001,468.55
+experiment,NA,2009,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2009,Lythrum hyssopifolia,no clear change,NA,16.150000000000034,523.8000000000001
+experiment,NA,2009,Pistacia atlantica,no clear change,NA,16.750000000000057,529.4
+experiment,NA,2009,Rumex crispus,no clear change,NA,16.350000000000023,509.1
+experiment,NA,2009,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2009,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2009,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2009,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2009,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2009,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2009,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+experiment,NA,2009,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2009,Vicia tetrasperma,no clear change,established,13.200000000000045,796.4000000000001
+experiment,NA,2010,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2010,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2010,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2010,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2010,Baccharis pilularis,no clear change,NA,14.250000000000057,600.5
+experiment,NA,2010,Brachypodium distachyon,no clear change,NA,16.350000000000023,496.90000000000003
+experiment,NA,2010,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2010,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2010,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2010,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2010,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2010,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+experiment,NA,2010,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2010,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2010,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2010,Elymus glaucus,decrease,NA,13.050000000000011,696.9000000000001
+experiment,NA,2010,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2010,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2010,Festuca bromoides,increase,NA,14.650000000000034,613.1
+experiment,NA,2010,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2010,Gastridium phleoides,decrease,NA,15.850000000000023,535.5500000000001
+experiment,NA,2010,Genista monspessulana,no clear change,NA,13.150000000000034,680.9000000000001
+experiment,NA,2010,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2010,Helminthotheca echioides,no clear change,NA,15.050000000000011,531
+experiment,NA,2010,Hemizonia congesta,increase,NA,13.950000000000045,806.3000000000001
+experiment,NA,2010,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+experiment,NA,2010,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2010,Kickxia spuria,no clear change,NA,15.350000000000023,611.25
+experiment,NA,2010,Lactuca serriola,increase,NA,16.650000000000034,477.8
+experiment,NA,2010,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+experiment,NA,2010,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2010,Lythrum hyssopifolia,no clear change,NA,16.150000000000034,523.8000000000001
+experiment,NA,2010,Madia gracilis,no clear change,established,13.850000000000023,758
+experiment,NA,2010,Pistacia atlantica,no clear change,NA,16.750000000000057,529.4
+experiment,NA,2010,Quercus agrifolia,no clear change,NA,14.950000000000045,532.1
+experiment,NA,2010,Rumex acetosella,no clear change,NA,13.050000000000011,856.5
+experiment,NA,2010,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2010,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2010,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2010,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2010,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2010,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2010,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2010,Trifolium hirtum,no clear change,NA,14.550000000000011,701.1
+experiment,NA,2010,Urospermum picroides,no clear change,established,15.750000000000057,613.75
+experiment,NA,2010,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2010,Vicia tetrasperma,no clear change,NA,13.200000000000045,796.4000000000001
+experiment,NA,2011,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2011,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2011,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2011,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2011,Baccharis pilularis,no clear change,NA,14.250000000000057,600.5
+experiment,NA,2011,Brachypodium distachyon,decrease,NA,16.350000000000023,496.90000000000003
+experiment,NA,2011,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2011,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2011,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2011,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2011,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2011,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+experiment,NA,2011,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2011,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2011,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2011,Elymus glaucus,no clear change,NA,13.050000000000011,696.9000000000001
+experiment,NA,2011,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2011,Erigeron canadensis,decrease,established,16.450000000000045,477.6
+experiment,NA,2011,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2011,Festuca bromoides,increase,NA,14.650000000000034,613.1
+experiment,NA,2011,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2011,Gastridium phleoides,decrease,NA,15.850000000000023,535.5500000000001
+experiment,NA,2011,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2011,Helminthotheca echioides,no clear change,NA,15.050000000000011,531
+experiment,NA,2011,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2011,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+experiment,NA,2011,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2011,Kickxia spuria,no clear change,NA,15.350000000000023,611.25
+experiment,NA,2011,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2011,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+experiment,NA,2011,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2011,Lythrum hyssopifolia,no clear change,NA,16.150000000000034,523.8000000000001
+experiment,NA,2011,Quercus agrifolia,no clear change,established,14.950000000000045,532.1
+experiment,NA,2011,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2011,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2011,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2011,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2011,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2011,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2011,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2011,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2011,Zeltnera davyi,no clear change,NA,13.650000000000034,553.2
+experiment,NA,2012,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2012,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2012,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2012,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2012,Brachypodium distachyon,decrease,NA,16.350000000000023,496.90000000000003
+experiment,NA,2012,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2012,Briza minor,increase,NA,14.350000000000023,783.7
+experiment,NA,2012,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2012,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2012,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2012,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+experiment,NA,2012,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2012,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2012,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2012,Elymus glaucus,no clear change,NA,13.050000000000011,696.9000000000001
+experiment,NA,2012,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2012,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2012,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+experiment,NA,2012,Festuca bromoides,increase,NA,14.650000000000034,613.1
+experiment,NA,2012,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2012,Gastridium phleoides,decrease,NA,15.850000000000023,535.5500000000001
+experiment,NA,2012,Genista monspessulana,no clear change,established,13.150000000000034,680.9000000000001
+experiment,NA,2012,Geranium dissectum,increase,NA,14.350000000000023,685.4000000000001
+experiment,NA,2012,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2012,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+experiment,NA,2012,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2012,Kickxia spuria,no clear change,established,15.350000000000023,611.25
+experiment,NA,2012,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2012,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+experiment,NA,2012,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2012,Lythrum hyssopifolia,decrease,NA,16.150000000000034,523.8000000000001
+experiment,NA,2012,Pseudognaphalium californicum,no clear change,established,16.350000000000023,460.25
+experiment,NA,2012,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2012,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2012,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2012,Stipa pulchra,decrease,NA,15.250000000000057,549.2
+experiment,NA,2012,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2012,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+experiment,NA,2012,Trifolium dubium,increase,NA,13.850000000000023,888.7
+experiment,NA,2012,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2013,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2013,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2013,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2013,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2013,Brachypodium distachyon,decrease,NA,16.350000000000023,496.90000000000003
+experiment,NA,2013,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2013,Briza minor,increase,NA,14.350000000000023,783.7
+experiment,NA,2013,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2013,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2013,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2013,Centaurea solstitialis,no clear change,established,14.150000000000034,695.75
+experiment,NA,2013,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2013,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2013,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2013,Elymus glaucus,no clear change,NA,13.050000000000011,696.9000000000001
+experiment,NA,2013,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2013,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2013,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+experiment,NA,2013,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2013,Gastridium phleoides,no clear change,established,15.850000000000023,535.5500000000001
+experiment,NA,2013,Geranium dissectum,no clear change,NA,14.350000000000023,685.4000000000001
+experiment,NA,2013,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2013,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+experiment,NA,2013,Juncus bufonius,no clear change,NA,15.350000000000023,526.3000000000001
+experiment,NA,2013,Kickxia spuria,no clear change,established,15.350000000000023,611.25
+experiment,NA,2013,Lactuca serriola,no clear change,NA,16.650000000000034,477.8
+experiment,NA,2013,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+experiment,NA,2013,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2013,Pseudognaphalium californicum,no clear change,NA,16.350000000000023,460.25
+experiment,NA,2013,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2013,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2013,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2013,Taraxia ovata,no clear change,established,13.450000000000045,803.1
+experiment,NA,2013,Torilis arvensis,no clear change,NA,15.150000000000034,721.1
+experiment,NA,2013,Trifolium dubium,no clear change,NA,13.850000000000023,888.7
+experiment,NA,2013,Trifolium hirtum,no clear change,established,14.550000000000011,701.1
+experiment,NA,2013,Urospermum picroides,no clear change,established,15.750000000000057,613.75
+experiment,NA,2013,Vicia sativa,no clear change,NA,14.250000000000057,722.25
+experiment,NA,2014,Acmispon americanus,no clear change,NA,14.950000000000045,597.2
+experiment,NA,2014,Aira caryophyllea,no clear change,NA,13.550000000000011,888.75
+experiment,NA,2014,Avena barbata,no clear change,NA,16.150000000000034,480.70000000000005
+experiment,NA,2014,Avena fatua,no clear change,NA,16.350000000000023,506.6
+experiment,NA,2014,Brachypodium distachyon,decrease,NA,16.350000000000023,496.90000000000003
+experiment,NA,2014,Briza maxima,no clear change,NA,13.250000000000057,832.5
+experiment,NA,2014,Briza minor,no clear change,NA,14.350000000000023,783.7
+experiment,NA,2014,Bromus diandrus,no clear change,NA,16.150000000000034,491.45000000000005
+experiment,NA,2014,Bromus hordeaceus,increase,NA,15.550000000000011,543.25
+experiment,NA,2014,Carduus pycnocephalus,no clear change,NA,15.050000000000011,582.5
+experiment,NA,2014,Centaurea solstitialis,no clear change,NA,14.150000000000034,695.75
+experiment,NA,2014,Convolvulus arvensis,no clear change,NA,15.150000000000034,552.1
+experiment,NA,2014,Crepis vesicaria,no clear change,NA,13.850000000000023,780.3000000000001
+experiment,NA,2014,Danthonia californica,no clear change,NA,12.450000000000045,1107.8
+experiment,NA,2014,Elymus glaucus,no clear change,NA,13.050000000000011,696.9000000000001
+experiment,NA,2014,Epilobium brachycarpum,no clear change,NA,13.650000000000034,653.6
+experiment,NA,2014,Erigeron canadensis,no clear change,NA,16.450000000000045,477.6
+experiment,NA,2014,Erodium botrys,no clear change,NA,15.050000000000011,571.7
+experiment,NA,2014,Erodium cicutarium,no clear change,NA,15.950000000000045,494.30000000000007
+experiment,NA,2014,Festuca bromoides,no clear change,NA,14.650000000000034,613.1
+experiment,NA,2014,Festuca perennis,no clear change,NA,15.950000000000045,541.1500000000001
+experiment,NA,2014,Geranium dissectum,increase,NA,14.350000000000023,685.4000000000001
+experiment,NA,2014,Helminthotheca echioides,no clear change,NA,15.050000000000011,531
+experiment,NA,2014,Hemizonia congesta,no clear change,NA,13.950000000000045,806.3000000000001
+experiment,NA,2014,Hypochaeris glabra,no clear change,NA,16.150000000000034,484.70000000000005
+experiment,NA,2014,Juncus bufonius,no clear change,established,15.350000000000023,526.3000000000001
+experiment,NA,2014,Lactuca serriola,increase,NA,16.650000000000034,477.8
+experiment,NA,2014,Logfia gallica,no clear change,NA,16.05000000000001,468.55
+experiment,NA,2014,Lysimachia arvensis,no clear change,NA,14.950000000000045,570.1
+experiment,NA,2014,Lythrum hyssopifolia,no clear change,established,16.150000000000034,523.8000000000001
+experiment,NA,2014,Medicago polymorpha,no clear change,established,16.250000000000057,509.95000000000005
+experiment,NA,2014,Rumex crispus,no clear change,established,16.350000000000023,509.1
+experiment,NA,2014,Sisyrinchium bellum,no clear change,NA,14.050000000000011,671.2
+experiment,NA,2014,Sonchus asper,no clear change,NA,16.350000000000023,476.5
+experiment,NA,2014,Stipa pulchra,no clear change,NA,15.250000000000057,549.2
+experiment,NA,2014,Taraxia ovata,no clear change,NA,13.450000000000045,803.1
+experiment,NA,2014,Torilis arvensis,increase,NA,15.150000000000034,721.1
+experiment,NA,2014,Trifolium dubium,increase,NA,13.850000000000023,888.7
+experiment,NA,2014,Trifolium hirtum,no clear change,established,14.550000000000011,701.1
+experiment,NA,2014,Vicia sativa,no clear change,NA,14.250000000000057,722.25

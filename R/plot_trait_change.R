@@ -153,23 +153,23 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ppt = "Annual precipitation\n(AP, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(
-        label = str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      vjust = 1.5
-    ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl,
+    #   aes(
+    #     label = str_c("delta", " == ", delta),
+    #     x = (start + end) / 2, y = Inf,
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
-      vjust = 3
+      vjust = 2
     ) +
-    scale_y_continuous(expand = expansion(mult = .4)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.25, 0.25))) +
     labs(
       x = NULL, # "Year",
@@ -184,11 +184,11 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
           )
         ),
       aes(
-        label = name,
+        label = phase,
         x = startyear - 0.125, # y = cti_max
       ),
-      y = 20, # manually label phase text
-      parse = TRUE,
+      y = 18.2, # manually label phase text
+      # parse = TRUE,
       hjust = 0,
     ) +
     coord_cartesian(clip = "off") +
@@ -284,16 +284,16 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    geom_text(
-      data = df_weight %>% distinct(var, .keep_all = T),
-      aes(
-        label = paste("beta", " == ", beta),
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
-      ),
-      parse = T,
-      x = -Inf, y = Inf,
-      vjust = 1.5, hjust = -0.2
-    ) +
+    # geom_text(
+    #   data = df_weight %>% distinct(var, .keep_all = T),
+    #   aes(
+    #     label = paste("beta", " == ", beta),
+    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   x = -Inf, y = Inf,
+    #   vjust = 1.5, hjust = -0.2
+    # ) +
     scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~var,
       ncol = 1, scales = "free_y",
