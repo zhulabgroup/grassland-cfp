@@ -1,5 +1,6 @@
 tidy_table_niche <- function(dat_niche) {
   dat_niche_tidy <- dat_niche %>%
+    mutate_at(vars(-species, -occ_n), ~ signif(., digits = 3)) %>%
     select(
       "Species" = species,
       "n" = occ_n,
@@ -24,6 +25,7 @@ tidy_table_gainloss <- function(dat_gainloss) {
     dat_gainloss$exp %>%
       mutate(dataset = "experiment")
   ) %>%
+    mutate_at(vars(tmp, ppt), ~ signif(., digits = 3)) %>%
     select(dataset, site, year, species, change, complete_change,
       temperature_optima = tmp,
       precipitation_optima = ppt
