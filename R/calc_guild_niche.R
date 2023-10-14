@@ -39,7 +39,6 @@ calc_guild_niche <- function(dat_community, dat_niche) {
     )) %>%
     inner_join(
       dat_niche %>%
-        filter(occ_n > 100 | is.na(occ_n)) %>%
         select(species,
           tmp = tmp_occ_median,
           ppt = ppt_occ_median

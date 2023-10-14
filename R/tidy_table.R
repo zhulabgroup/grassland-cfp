@@ -1,5 +1,6 @@
 tidy_table_niche <- function(dat_niche) {
   dat_niche_tidy <- dat_niche %>%
+    filter(!is.na(occ_n)) %>%
     mutate_at(vars(-species, -occ_n), ~ signif(., digits = 3)) %>%
     select(
       "Species" = species,
@@ -16,7 +17,6 @@ tidy_table_niche <- function(dat_niche) {
 
   return(dat_niche_tidy)
 }
-
 
 tidy_table_gainloss <- function(dat_gainloss) {
   dat_gainloss_tidy <- bind_rows(

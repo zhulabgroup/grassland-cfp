@@ -145,7 +145,7 @@ test_trait_change_data_obs <- function(dat_community, dat_niche, trait, siteoi =
     group_by(site, plot, year) %>%
     mutate(weight = abund / sum(abund)) %>% # convert all abundance (absolute or relative) to percentage, such that all plots get equal weight later in lme
     ungroup() %>%
-    left_join(
+    inner_join(
       dat_niche %>%
         select(species, value = !!sym(str_c(trait, "_occ_median"))),
       by = "species"
@@ -232,7 +232,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, trait, exp, trt
     group_by(trt, plot, year) %>%
     mutate(weight = abund / sum(abund)) %>% # convert all abundance (absolute or relative) to percentage, such that all plots get equal weight later in lme
     ungroup() %>%
-    left_join(
+    inner_join(
       dat_niche %>%
         select(species, value = !!sym(str_c(trait, "_occ_median"))),
       by = "species"

@@ -14,16 +14,17 @@ tidy_taxonomy_consolidate <- function(dat_community,
 
   # combine
   spp_tbl <- spp_comm_tbl %>%
+    filter(!str_detect(species, "DUMMY")) %>%
     rename("query_name" = "species") %>%
     bind_cols("consolidated_name" = as.character(NA)) %>%
     bind_rows(
       spp_consol_tbl %>%
+        filter(new_species_name %in% spp_comm_tbl$species) %>%
         rename(
           "query_name" = "old_species_name",
           "consolidated_name" = "new_species_name"
         )
     ) %>%
-    filter(!str_detect(query_name, "DUMMY")) %>%
     mutate(consolidated_name = ifelse(is.na(consolidated_name), query_name, consolidated_name)) %>%
     arrange(query_name) %>%
     distinct(query_name, consolidated_name)

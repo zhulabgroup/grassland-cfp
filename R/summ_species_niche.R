@@ -1,6 +1,7 @@
 summ_species_niche <- function(dat_niche, sp = NULL) {
   if (is.null(sp)) {
     df <- dat_niche %>%
+      filter(!is.na(occ_n)) %>%
       summarise(
         n = n(),
         tmp_min = min(tmp_occ_median),
@@ -11,6 +12,7 @@ summ_species_niche <- function(dat_niche, sp = NULL) {
   }
   if (!is.null(sp)) {
     df <- dat_niche %>%
+      filter(!is.na(occ_n)) %>%
       filter(species == sp) %>%
       select(
         n_occ = occ_n,

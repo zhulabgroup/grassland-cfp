@@ -8,7 +8,8 @@ plot_species_niche <- function(dat_niche,
       species == warm_species ~ "warm",
       TRUE ~ "other"
     )) %>%
-    filter(occ_n > 100) # no dummy species
+    filter(!is.na(occ_n)) # no dummy species
+
   sp_niche_gg <-
     ggplot(
       mapping = aes(

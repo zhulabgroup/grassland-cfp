@@ -11,5 +11,26 @@ Types of classes (example): dat, v, ras, df, gg.
 Prefix "ls" means list.
 Suffix can be used to refer to a subset on that level.
 
+Steps to generate vignettes:
+
+```R
+devtools::install(build_vignettes = F, build = F)
+```
+
+```R
+library(grassland)
+```
+
+```R
+build_vignettes_to_inst(clean = F)
+```
+
+```R
+devtools::install(build_vignettes = T, build = F)
+```
+
+```R
+browseVignettes("grassland")
+```
 
 Required packages: ***
