@@ -85,7 +85,7 @@ observation,carrizo,NA,Microseris douglasii,no clear change,NA,15.9,420
 observation,carrizo,NA,Microseris elegans,increase,NA,16.2,409
 observation,carrizo,NA,Microsteris gracilis,decrease,extirpated,12.8,692
 observation,carrizo,NA,Minuartia pusilla,no clear change,established,NA,NA
-observation,carrizo,NA,Monolopia congdonii,no clear change,established,17.5,229
+observation,carrizo,NA,Monolopia congdonii,no clear change,established,NA,NA
 observation,carrizo,NA,Monolopia lanceolata,decrease,extirpated,16.3,293
 observation,carrizo,NA,Muilla maritima,no clear change,extirpated,14.9,490
 observation,carrizo,NA,Pectocarya penicillata,no clear change,NA,16,411
@@ -102,7 +102,7 @@ observation,carrizo,NA,Sisymbrium irio,no clear change,established,17,339
 observation,carrizo,NA,Stellaria media,no clear change,extirpated,14.6,620
 observation,carrizo,NA,Stephanomeria exigua,no clear change,NA,16,440
 observation,carrizo,NA,Stephanomeria pauciflora,no clear change,NA,16,380
-observation,carrizo,NA,Tetrapteron palmeri,no clear change,extirpated,14.3,390
+observation,carrizo,NA,Tetrapteron palmeri,no clear change,extirpated,NA,NA
 observation,carrizo,NA,Thysanocarpus laciniatus,no clear change,extirpated,15.6,465
 observation,carrizo,NA,Trichostema lanceolatum,no clear change,NA,16.3,519
 observation,carrizo,NA,Trifolium albopurpureum,no clear change,extirpated,14.6,549
@@ -130,7 +130,7 @@ observation,elkhorn,NA,Geranium dissectum,decrease,NA,14.4,685
 observation,elkhorn,NA,Holcus lanatus,no clear change,extirpated,13,984
 observation,elkhorn,NA,Hypochaeris glabra,increase,established,16.2,485
 observation,elkhorn,NA,Hypochaeris radicata,no clear change,NA,13.3,795
-observation,elkhorn,NA,Isolepis carinata,no clear change,NA,13.8,916
+observation,elkhorn,NA,Isolepis carinata,no clear change,NA,NA,NA
 observation,elkhorn,NA,Juncus bufonius,no clear change,extirpated,15.4,526
 observation,elkhorn,NA,Juncus occidentalis,decrease,extirpated,13.5,909
 observation,elkhorn,NA,Juncus phaeocephalus,no clear change,NA,14.4,572
@@ -195,7 +195,7 @@ observation,mclann,NA,Allophyllum gilioides,increase,NA,12.7,557
 observation,mclann,NA,Amsinckia menziesii,no clear change,NA,16.5,460
 observation,mclann,NA,Ancistrocarphus filagineus,no clear change,extirpated,15.2,471
 observation,mclann,NA,Aphanes occidentalis,no clear change,NA,15.3,560
-observation,mclann,NA,Astragalus breweri,no clear change,NA,15,1060
+observation,mclann,NA,Astragalus breweri,no clear change,NA,NA,NA
 observation,mclann,NA,Astragalus gambelianus,no clear change,NA,15.3,573
 observation,mclann,NA,Astragalus rattanii,no clear change,established,15.3,906
 observation,mclann,NA,Athysanus pusillus,no clear change,NA,15.3,569
@@ -220,7 +220,7 @@ observation,mclann,NA,Castilleja densiflora,no clear change,NA,14,746
 observation,mclann,NA,Castilleja rubicundula,no clear change,extirpated,13.7,819
 observation,mclann,NA,Centaurea melitensis,no clear change,NA,16.6,446
 observation,mclann,NA,Centaurea solstitialis,no clear change,NA,14.2,696
-observation,mclann,NA,Cerastium fontanum,no clear change,extirpated,13.2,623
+observation,mclann,NA,Cerastium fontanum,no clear change,extirpated,NA,NA
 observation,mclann,NA,Cerastium glomeratum,no clear change,NA,15.5,607
 observation,mclann,NA,Cercocarpus betuloides,no clear change,established,14.5,533
 observation,mclann,NA,Chlorogalum pomeridianum,no clear change,NA,14,757
@@ -242,7 +242,7 @@ observation,mclann,NA,Dipterostemon capitatus,decrease,NA,15.5,534
 observation,mclann,NA,Elymus caput-medusae,decrease,NA,14.3,774
 observation,mclann,NA,Elymus elymoides,increase,NA,8.15,794
 observation,mclann,NA,Elymus glaucus,no clear change,extirpated,13.1,697
-observation,mclann,NA,Elytrigia repens,increase,NA,14,638
+observation,mclann,NA,Elytrigia repens,increase,NA,NA,NA
 observation,mclann,NA,Epilobium brachycarpum,no clear change,NA,13.7,654
 observation,mclann,NA,Eriophyllum lanatum,no clear change,NA,12.5,1120
 observation,mclann,NA,Erodium botrys,no clear change,NA,15.1,572
@@ -298,7 +298,7 @@ observation,mclann,NA,Melilotus indica,no clear change,extirpated,NA,NA
 observation,mclann,NA,Micropus californicus,no clear change,NA,14.5,744
 observation,mclann,NA,Microseris douglasii,decrease,extirpated,15.9,420
 observation,mclann,NA,Microsteris gracilis,decrease,NA,12.8,692
-observation,mclann,NA,Navarretia jepsonii,no clear change,extirpated,16,870
+observation,mclann,NA,Navarretia jepsonii,no clear change,extirpated,NA,NA
 observation,mclann,NA,Navarretia pubescens,no clear change,NA,15.6,701
 observation,mclann,NA,Navarretia tagetina,no clear change,established,16.6,877
 observation,mclann,NA,Nemophila heterophylla,no clear change,extirpated,14.4,936
@@ -358,7 +358,7 @@ observation,mclann,NA,Uropappus lindleyi,no clear change,NA,15.4,487
 observation,mclann,NA,Velezia rigida,no clear change,NA,15.9,873
 observation,mclann,NA,Vicia villosa,increase,NA,15.2,606
 observation,mclann,NA,Wyethia glabra,no clear change,NA,13.9,865
-observation,mclann,NA,Zeltnera trichanta,no clear change,extirpated,15.9,848
+observation,mclann,NA,Zeltnera trichanta,no clear change,extirpated,NA,NA
 observation,mclserp,NA,Achyrachaena mollis,no clear change,NA,14.6,595
 observation,mclserp,NA,Acmispon americanus,increase,NA,15,597
 observation,mclserp,NA,Acmispon brachycarpus,no clear change,NA,14.6,839
@@ -375,12 +375,12 @@ observation,mclserp,NA,Allium fimbriatum,no clear change,NA,15.3,444
 observation,mclserp,NA,Allium serra,no clear change,NA,14.3,548
 observation,mclserp,NA,Amsinckia menziesii,decrease,NA,16.5,460
 observation,mclserp,NA,Ancistrocarphus filagineus,increase,NA,15.2,471
-observation,mclserp,NA,Antirrhinum vexillocalyculatum,no clear change,established,15,991
+observation,mclserp,NA,Antirrhinum vexillocalyculatum,no clear change,established,NA,NA
 observation,mclserp,NA,Aphanes occidentalis,no clear change,NA,15.3,560
 observation,mclserp,NA,Apocynum cannabinum,no clear change,NA,15.4,563
 observation,mclserp,NA,Asclepias eriocarpa,no clear change,established,14.7,524
 observation,mclserp,NA,Asclepias fascicularis,no clear change,NA,15.5,500
-observation,mclserp,NA,Astragalus breweri,no clear change,NA,15,1060
+observation,mclserp,NA,Astragalus breweri,no clear change,NA,NA,NA
 observation,mclserp,NA,Astragalus gambelianus,no clear change,NA,15.3,573
 observation,mclserp,NA,Astragalus rattanii,no clear change,NA,15.3,906
 observation,mclserp,NA,Athysanus pusillus,no clear change,NA,15.3,569
@@ -390,7 +390,7 @@ observation,mclserp,NA,Brodiaea elegans,no clear change,NA,14.1,930
 observation,mclserp,NA,Bromus carinatus,no clear change,extirpated,13.6,614
 observation,mclserp,NA,Bromus diandrus,no clear change,NA,16.2,491
 observation,mclserp,NA,Bromus hordeaceus,decrease,NA,15.6,543
-observation,mclserp,NA,Bromus japonicus,no clear change,established,11.9,1020
+observation,mclserp,NA,Bromus japonicus,no clear change,established,NA,NA
 observation,mclserp,NA,Bromus madritensis,no clear change,NA,16.5,435
 observation,mclserp,NA,Calandrinia menziesii,no clear change,NA,15,573
 observation,mclserp,NA,Calochortus luteus,no clear change,NA,14,804
@@ -466,12 +466,12 @@ observation,mclserp,NA,Iris douglasiana,no clear change,extirpated,12.9,907
 observation,mclserp,NA,Lactuca serriola,decrease,NA,16.7,478
 observation,mclserp,NA,Lagophylla minor,increase,NA,15.2,925
 observation,mclserp,NA,Lasthenia californica,no clear change,NA,14.5,691
-observation,mclserp,NA,Layia septentrionalis,no clear change,NA,15.5,948
+observation,mclserp,NA,Layia septentrionalis,no clear change,NA,NA,NA
 observation,mclserp,NA,Lepidium nitidum,no clear change,NA,16.2,508
 observation,mclserp,NA,Leptosiphon bicolor,no clear change,NA,15,820
-observation,mclserp,NA,Leptosiphon jepsonii,no clear change,NA,14.6,1040
-observation,mclserp,NA,Leptosiphon latisectus,decrease,extirpated,13.9,980
-observation,mclserp,NA,Lessingia ramulosa,no clear change,NA,15,965
+observation,mclserp,NA,Leptosiphon jepsonii,no clear change,NA,NA,NA
+observation,mclserp,NA,Leptosiphon latisectus,decrease,extirpated,NA,NA
+observation,mclserp,NA,Lessingia ramulosa,no clear change,NA,NA,NA
 observation,mclserp,NA,Logfia filaginoides,no clear change,NA,16,439
 observation,mclserp,NA,Logfia gallica,no clear change,NA,16.1,469
 observation,mclserp,NA,Lomatium dasycarpum,increase,NA,14.2,729
@@ -491,7 +491,7 @@ observation,mclserp,NA,Microseris douglasii,no clear change,NA,15.9,420
 observation,mclserp,NA,Microsteris gracilis,no clear change,NA,12.8,692
 observation,mclserp,NA,Minuartia californica,increase,NA,15.4,888
 observation,mclserp,NA,Minuartia douglasii,increase,NA,13.9,695
-observation,mclserp,NA,Navarretia jepsonii,increase,NA,16,870
+observation,mclserp,NA,Navarretia jepsonii,increase,NA,NA,NA
 observation,mclserp,NA,Navarretia pubescens,no clear change,NA,15.6,701
 observation,mclserp,NA,Nemophila heterophylla,decrease,NA,14.4,936
 observation,mclserp,NA,Nemophila menziesii,no clear change,NA,14.4,596
@@ -516,7 +516,7 @@ observation,mclserp,NA,Sanicula bipinnata,no clear change,NA,15.2,600
 observation,mclserp,NA,Sanicula bipinnatifida,no clear change,NA,14.2,758
 observation,mclserp,NA,Sanicula crassicaulis,no clear change,extirpated,14.1,742
 observation,mclserp,NA,Scutellaria siphocampyloides,decrease,NA,12.1,590
-observation,mclserp,NA,Senecio eurycephalus,no clear change,NA,15.1,1190
+observation,mclserp,NA,Senecio eurycephalus,no clear change,NA,NA,NA
 observation,mclserp,NA,Senecio vulgaris,no clear change,NA,16.2,540
 observation,mclserp,NA,Sidalcea diploscypha,increase,NA,14.2,814
 observation,mclserp,NA,Silene gallica,decrease,NA,15.6,517
@@ -552,7 +552,7 @@ observation,mclserp,NA,Velezia rigida,increase,established,15.9,873
 observation,mclserp,NA,Vicia villosa,no clear change,NA,15.2,606
 observation,mclserp,NA,Viola douglasii,no clear change,NA,14.6,861
 observation,mclserp,NA,Wyethia glabra,no clear change,NA,13.9,865
-observation,mclserp,NA,Zeltnera trichanta,decrease,NA,15.9,848
+observation,mclserp,NA,Zeltnera trichanta,decrease,NA,NA,NA
 observation,morganterritory,NA,Achillea millefolium,decrease,extirpated,13.4,741
 observation,morganterritory,NA,Acmispon wrangelianus,no clear change,extirpated,15,593
 observation,morganterritory,NA,Amsinckia menziesii,no clear change,NA,16.5,460
@@ -573,7 +573,7 @@ observation,morganterritory,NA,Chlorogalum pomeridianum,no clear change,NA,14,75
 observation,morganterritory,NA,Clarkia affinis,no clear change,established,14.6,575
 observation,morganterritory,NA,Clarkia purpurea,no clear change,established,14.8,573
 observation,morganterritory,NA,Convolvulus arvensis,no clear change,NA,15.2,552
-observation,morganterritory,NA,Crepis vesicaria,no clear change,established,13.9,780
+observation,morganterritory,NA,Crepis vesicaria,no clear change,established,NA,NA
 observation,morganterritory,NA,Croton setiger,no clear change,extirpated,16.5,488
 observation,morganterritory,NA,Elymus caput-medusae,no clear change,established,14.3,774
 observation,morganterritory,NA,Elymus triticoides,no clear change,NA,14.6,491
@@ -628,7 +628,7 @@ observation,pleasantonridge,NA,Centaurea solstitialis,no clear change,extirpated
 observation,pleasantonridge,NA,Cerastium glomeratum,no clear change,extirpated,15.5,607
 observation,pleasantonridge,NA,Cirsium vulgare,no clear change,NA,13.4,751
 observation,pleasantonridge,NA,Convolvulus arvensis,no clear change,extirpated,15.2,552
-observation,pleasantonridge,NA,Crepis vesicaria,increase,NA,13.9,780
+observation,pleasantonridge,NA,Crepis vesicaria,increase,NA,NA,NA
 observation,pleasantonridge,NA,Croton setiger,no clear change,established,16.5,488
 observation,pleasantonridge,NA,Daucus pusillus,no clear change,established,16.3,435
 observation,pleasantonridge,NA,Elymus caput-medusae,no clear change,established,14.3,774
@@ -652,7 +652,7 @@ observation,pleasantonridge,NA,Hypochaeris radicata,no clear change,NA,13.3,795
 observation,pleasantonridge,NA,Juncus bufonius,no clear change,NA,15.4,526
 observation,pleasantonridge,NA,Lactuca serriola,no clear change,extirpated,16.7,478
 observation,pleasantonridge,NA,Lagophylla ramosissima,no clear change,NA,14.2,566
-observation,pleasantonridge,NA,Leptosiphon acicularis,no clear change,established,15.2,1040
+observation,pleasantonridge,NA,Leptosiphon acicularis,no clear change,established,NA,NA
 observation,pleasantonridge,NA,Logfia gallica,no clear change,NA,16.1,469
 observation,pleasantonridge,NA,Lysimachia arvensis,no clear change,extirpated,15,570
 observation,pleasantonridge,NA,Madia gracilis,no clear change,NA,13.9,758
@@ -700,7 +700,7 @@ observation,sunol,NA,Carduus tenuiflorus,no clear change,established,14.9,522
 observation,sunol,NA,Chlorogalum pomeridianum,no clear change,NA,14,757
 observation,sunol,NA,Clarkia purpurea,decrease,NA,14.8,573
 observation,sunol,NA,Convolvulus arvensis,no clear change,NA,15.2,552
-observation,sunol,NA,Crepis vesicaria,no clear change,NA,13.9,780
+observation,sunol,NA,Crepis vesicaria,no clear change,NA,NA,NA
 observation,sunol,NA,Croton setiger,no clear change,extirpated,16.5,488
 observation,sunol,NA,Cynosurus echinatus,no clear change,extirpated,13.6,944
 observation,sunol,NA,Dipterostemon capitatus,no clear change,NA,15.5,534
@@ -895,7 +895,7 @@ experiment,NA,1998,Briza minor,no clear change,NA,14.4,784
 experiment,NA,1998,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,1998,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,1998,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,1998,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,1998,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,1998,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,1998,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,1998,Erodium botrys,no clear change,NA,15.1,572
@@ -916,7 +916,7 @@ experiment,NA,1999,Briza minor,no clear change,NA,14.4,784
 experiment,NA,1999,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,1999,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,1999,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,1999,Crepis vesicaria,decrease,NA,13.9,780
+experiment,NA,1999,Crepis vesicaria,increase,NA,NA,NA
 experiment,NA,1999,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,1999,Dipsacus sativus,no clear change,NA,14.1,688
 experiment,NA,1999,Erodium botrys,no clear change,NA,15.1,572
@@ -934,7 +934,7 @@ experiment,NA,2000,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,2000,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2000,Centaurea solstitialis,no clear change,established,14.2,696
 experiment,NA,2000,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2000,Crepis vesicaria,decrease,NA,13.9,780
+experiment,NA,2000,Crepis vesicaria,increase,NA,NA,NA
 experiment,NA,2000,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2000,Dipsacus sativus,no clear change,NA,14.1,688
 experiment,NA,2000,Erodium botrys,no clear change,NA,15.1,572
@@ -952,7 +952,7 @@ experiment,NA,2001,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2001,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,2001,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2001,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2001,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2001,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2001,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2001,Dipsacus sativus,no clear change,NA,14.1,688
 experiment,NA,2001,Elymus glaucus,no clear change,NA,13.1,697
@@ -966,19 +966,19 @@ experiment,NA,2001,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2001,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2001,Taraxia ovata,no clear change,established,13.5,803
 experiment,NA,2001,Vicia sativa,no clear change,NA,14.3,722
-experiment,NA,2002,Avena barbata,increase,NA,16.2,481
+experiment,NA,2002,Avena barbata,decrease,NA,16.2,481
 experiment,NA,2002,Avena fatua,no clear change,NA,16.4,507
 experiment,NA,2002,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2002,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2002,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2002,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2002,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2002,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2002,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2002,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2002,Dipsacus sativus,no clear change,NA,14.1,688
 experiment,NA,2002,Elymus glaucus,no clear change,established,13.1,697
 experiment,NA,2002,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,2002,Erodium botrys,no clear change,NA,15.1,572
-experiment,NA,2002,Festuca bromoides,increase,NA,14.7,613
+experiment,NA,2002,Festuca bromoides,decrease,NA,14.7,613
 experiment,NA,2002,Festuca perennis,no clear change,NA,16,541
 experiment,NA,2002,Geranium dissectum,no clear change,NA,14.4,685
 experiment,NA,2002,Lactuca serriola,no clear change,established,16.7,478
@@ -989,7 +989,7 @@ experiment,NA,2002,Rumex crispus,no clear change,established,16.4,509
 experiment,NA,2002,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2002,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2002,Taraxia ovata,no clear change,established,13.5,803
-experiment,NA,2002,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2002,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2002,Vicia sativa,no clear change,NA,14.3,722
 experiment,NA,2003,Acmispon americanus,no clear change,NA,15,597
 experiment,NA,2003,Avena barbata,no clear change,NA,16.2,481
@@ -998,7 +998,7 @@ experiment,NA,2003,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2003,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,2003,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2003,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2003,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2003,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2003,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2003,Dipsacus sativus,no clear change,NA,14.1,688
 experiment,NA,2003,Elymus glaucus,no clear change,established,13.1,697
@@ -1026,12 +1026,12 @@ experiment,NA,2004,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,2004,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2004,Centaurea solstitialis,no clear change,NA,14.2,696
 experiment,NA,2004,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2004,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2004,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2004,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2004,Dipsacus sativus,no clear change,established,14.1,688
 experiment,NA,2004,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,2004,Erodium botrys,no clear change,NA,15.1,572
-experiment,NA,2004,Festuca perennis,decrease,NA,16,541
+experiment,NA,2004,Festuca perennis,increase,NA,16,541
 experiment,NA,2004,Gastridium phleoides,no clear change,NA,15.9,536
 experiment,NA,2004,Geranium dissectum,no clear change,NA,14.4,685
 experiment,NA,2004,Lactuca serriola,no clear change,NA,16.7,478
@@ -1043,7 +1043,7 @@ experiment,NA,2004,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2004,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2004,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2004,Trifolium hirtum,no clear change,NA,14.6,701
-experiment,NA,2004,Vicia sativa,increase,NA,14.3,722
+experiment,NA,2004,Vicia sativa,decrease,NA,14.3,722
 experiment,NA,2004,Vicia tetrasperma,no clear change,NA,13.2,796
 experiment,NA,2005,Acmispon americanus,no clear change,NA,15,597
 experiment,NA,2005,Aira caryophyllea,no clear change,NA,13.6,889
@@ -1054,7 +1054,7 @@ experiment,NA,2005,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2005,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,2005,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2005,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2005,Crepis vesicaria,increase,NA,13.9,780
+experiment,NA,2005,Crepis vesicaria,decrease,NA,NA,NA
 experiment,NA,2005,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2005,Dipsacus sativus,no clear change,NA,14.1,688
 experiment,NA,2005,Epilobium brachycarpum,no clear change,NA,13.7,654
@@ -1088,19 +1088,19 @@ experiment,NA,2006,Bromus diandrus,no clear change,NA,16.2,491
 experiment,NA,2006,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2006,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2006,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2006,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2006,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2006,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2006,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,2006,Erigeron canadensis,no clear change,NA,16.5,478
 experiment,NA,2006,Erodium botrys,no clear change,NA,15.1,572
-experiment,NA,2006,Festuca bromoides,increase,NA,14.7,613
+experiment,NA,2006,Festuca bromoides,decrease,NA,14.7,613
 experiment,NA,2006,Festuca perennis,no clear change,NA,16,541
 experiment,NA,2006,Gastridium phleoides,no clear change,NA,15.9,536
 experiment,NA,2006,Geranium dissectum,no clear change,NA,14.4,685
-experiment,NA,2006,Hemizonia congesta,increase,NA,14,806
+experiment,NA,2006,Hemizonia congesta,decrease,NA,14,806
 experiment,NA,2006,Juncus bufonius,no clear change,NA,15.4,526
 experiment,NA,2006,Kickxia spuria,no clear change,established,15.4,611
-experiment,NA,2006,Lactuca serriola,increase,NA,16.7,478
+experiment,NA,2006,Lactuca serriola,decrease,NA,16.7,478
 experiment,NA,2006,Logfia gallica,no clear change,NA,16.1,469
 experiment,NA,2006,Lysimachia arvensis,no clear change,NA,15,570
 experiment,NA,2006,Lythrum hyssopifolia,no clear change,NA,16.2,524
@@ -1112,7 +1112,7 @@ experiment,NA,2006,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2006,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2006,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2006,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2006,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2006,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2006,Trifolium dubium,no clear change,NA,13.9,889
 experiment,NA,2006,Vicia sativa,no clear change,NA,14.3,722
 experiment,NA,2006,Vicia tetrasperma,no clear change,established,13.2,796
@@ -1128,14 +1128,14 @@ experiment,NA,2007,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2007,Carduus pycnocephalus,no clear change,established,15.1,582
 experiment,NA,2007,Centaurea solstitialis,no clear change,established,14.2,696
 experiment,NA,2007,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2007,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2007,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2007,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2007,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,2007,Erodium botrys,no clear change,NA,15.1,572
-experiment,NA,2007,Festuca bromoides,increase,NA,14.7,613
+experiment,NA,2007,Festuca bromoides,decrease,NA,14.7,613
 experiment,NA,2007,Festuca perennis,no clear change,NA,16,541
 experiment,NA,2007,Gastridium phleoides,no clear change,NA,15.9,536
-experiment,NA,2007,Geranium dissectum,increase,NA,14.4,685
+experiment,NA,2007,Geranium dissectum,decrease,NA,14.4,685
 experiment,NA,2007,Hemizonia congesta,no clear change,NA,14,806
 experiment,NA,2007,Kickxia spuria,no clear change,established,15.4,611
 experiment,NA,2007,Lactuca serriola,no clear change,NA,16.7,478
@@ -1147,7 +1147,7 @@ experiment,NA,2007,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2007,Sonchus asper,no clear change,established,16.4,476
 experiment,NA,2007,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2007,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2007,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2007,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2007,Trifolium dubium,no clear change,NA,13.9,889
 experiment,NA,2007,Trifolium hirtum,no clear change,NA,14.6,701
 experiment,NA,2007,Vicia sativa,no clear change,NA,14.3,722
@@ -1159,10 +1159,10 @@ experiment,NA,2008,Brachypodium distachyon,no clear change,established,16.4,497
 experiment,NA,2008,Briza maxima,no clear change,NA,13.3,832
 experiment,NA,2008,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2008,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2008,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2008,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2008,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2008,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2008,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2008,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2008,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2008,Elymus glaucus,no clear change,NA,13.1,697
 experiment,NA,2008,Epilobium brachycarpum,no clear change,NA,13.7,654
@@ -1170,7 +1170,7 @@ experiment,NA,2008,Erodium botrys,no clear change,NA,15.1,572
 experiment,NA,2008,Festuca bromoides,no clear change,NA,14.7,613
 experiment,NA,2008,Festuca perennis,no clear change,NA,16,541
 experiment,NA,2008,Gastridium phleoides,no clear change,established,15.9,536
-experiment,NA,2008,Geranium dissectum,increase,NA,14.4,685
+experiment,NA,2008,Geranium dissectum,decrease,NA,14.4,685
 experiment,NA,2008,Helminthotheca echioides,no clear change,NA,15.1,531
 experiment,NA,2008,Hemizonia congesta,no clear change,NA,14,806
 experiment,NA,2008,Juncus bufonius,no clear change,NA,15.4,526
@@ -1184,14 +1184,14 @@ experiment,NA,2008,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2008,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2008,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2008,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2008,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2008,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2008,Trifolium dubium,no clear change,NA,13.9,889
 experiment,NA,2008,Vicia sativa,no clear change,NA,14.3,722
 experiment,NA,2009,Acmispon americanus,no clear change,NA,15,597
 experiment,NA,2009,Aira caryophyllea,no clear change,NA,13.6,889
 experiment,NA,2009,Avena barbata,no clear change,NA,16.2,481
 experiment,NA,2009,Avena fatua,no clear change,NA,16.4,507
-experiment,NA,2009,Brachypodium distachyon,decrease,NA,16.4,497
+experiment,NA,2009,Brachypodium distachyon,increase,NA,16.4,497
 experiment,NA,2009,Briza maxima,no clear change,NA,13.3,832
 experiment,NA,2009,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2009,Bromus diandrus,no clear change,NA,16.2,491
@@ -1199,7 +1199,7 @@ experiment,NA,2009,Bromus hordeaceus,no clear change,NA,15.6,543
 experiment,NA,2009,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2009,Centaurea solstitialis,no clear change,NA,14.2,696
 experiment,NA,2009,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2009,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2009,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2009,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2009,Elymus glaucus,no clear change,established,13.1,697
 experiment,NA,2009,Epilobium brachycarpum,no clear change,NA,13.7,654
@@ -1221,7 +1221,7 @@ experiment,NA,2009,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2009,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2009,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2009,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2009,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2009,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2009,Trifolium dubium,no clear change,NA,13.9,889
 experiment,NA,2009,Trifolium hirtum,no clear change,NA,14.6,701
 experiment,NA,2009,Vicia sativa,no clear change,NA,14.3,722
@@ -1235,26 +1235,26 @@ experiment,NA,2010,Brachypodium distachyon,no clear change,NA,16.4,497
 experiment,NA,2010,Briza maxima,no clear change,NA,13.3,832
 experiment,NA,2010,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2010,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2010,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2010,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2010,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2010,Centaurea solstitialis,no clear change,NA,14.2,696
 experiment,NA,2010,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2010,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2010,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2010,Danthonia californica,no clear change,NA,12.5,1110
-experiment,NA,2010,Elymus glaucus,decrease,NA,13.1,697
+experiment,NA,2010,Elymus glaucus,increase,NA,13.1,697
 experiment,NA,2010,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,2010,Erodium botrys,no clear change,NA,15.1,572
-experiment,NA,2010,Festuca bromoides,increase,NA,14.7,613
+experiment,NA,2010,Festuca bromoides,decrease,NA,14.7,613
 experiment,NA,2010,Festuca perennis,no clear change,NA,16,541
-experiment,NA,2010,Gastridium phleoides,decrease,NA,15.9,536
+experiment,NA,2010,Gastridium phleoides,increase,NA,15.9,536
 experiment,NA,2010,Genista monspessulana,no clear change,NA,13.2,681
 experiment,NA,2010,Geranium dissectum,no clear change,NA,14.4,685
 experiment,NA,2010,Helminthotheca echioides,no clear change,NA,15.1,531
-experiment,NA,2010,Hemizonia congesta,increase,NA,14,806
+experiment,NA,2010,Hemizonia congesta,decrease,NA,14,806
 experiment,NA,2010,Hypochaeris glabra,no clear change,NA,16.2,485
 experiment,NA,2010,Juncus bufonius,no clear change,NA,15.4,526
 experiment,NA,2010,Kickxia spuria,no clear change,NA,15.4,611
-experiment,NA,2010,Lactuca serriola,increase,NA,16.7,478
+experiment,NA,2010,Lactuca serriola,decrease,NA,16.7,478
 experiment,NA,2010,Logfia gallica,no clear change,NA,16.1,469
 experiment,NA,2010,Lysimachia arvensis,no clear change,NA,15,570
 experiment,NA,2010,Lythrum hyssopifolia,no clear change,NA,16.2,524
@@ -1267,7 +1267,7 @@ experiment,NA,2010,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2010,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2010,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2010,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2010,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2010,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2010,Trifolium dubium,no clear change,NA,13.9,889
 experiment,NA,2010,Trifolium hirtum,no clear change,NA,14.6,701
 experiment,NA,2010,Urospermum picroides,no clear change,established,15.8,614
@@ -1278,23 +1278,23 @@ experiment,NA,2011,Aira caryophyllea,no clear change,NA,13.6,889
 experiment,NA,2011,Avena barbata,no clear change,NA,16.2,481
 experiment,NA,2011,Avena fatua,no clear change,NA,16.4,507
 experiment,NA,2011,Baccharis pilularis,no clear change,NA,14.3,600
-experiment,NA,2011,Brachypodium distachyon,decrease,NA,16.4,497
+experiment,NA,2011,Brachypodium distachyon,increase,NA,16.4,497
 experiment,NA,2011,Briza maxima,no clear change,NA,13.3,832
 experiment,NA,2011,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2011,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2011,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2011,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2011,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2011,Centaurea solstitialis,no clear change,NA,14.2,696
 experiment,NA,2011,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2011,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2011,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2011,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2011,Elymus glaucus,no clear change,NA,13.1,697
 experiment,NA,2011,Epilobium brachycarpum,no clear change,NA,13.7,654
-experiment,NA,2011,Erigeron canadensis,decrease,established,16.5,478
+experiment,NA,2011,Erigeron canadensis,increase,established,16.5,478
 experiment,NA,2011,Erodium botrys,no clear change,NA,15.1,572
-experiment,NA,2011,Festuca bromoides,increase,NA,14.7,613
+experiment,NA,2011,Festuca bromoides,decrease,NA,14.7,613
 experiment,NA,2011,Festuca perennis,no clear change,NA,16,541
-experiment,NA,2011,Gastridium phleoides,decrease,NA,15.9,536
+experiment,NA,2011,Gastridium phleoides,increase,NA,15.9,536
 experiment,NA,2011,Geranium dissectum,no clear change,NA,14.4,685
 experiment,NA,2011,Helminthotheca echioides,no clear change,NA,15.1,531
 experiment,NA,2011,Hemizonia congesta,no clear change,NA,14,806
@@ -1311,7 +1311,7 @@ experiment,NA,2011,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2011,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2011,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2011,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2011,Torilis arvensis,increase,NA,15.2,721
+experiment,NA,2011,Torilis arvensis,decrease,NA,15.2,721
 experiment,NA,2011,Trifolium dubium,no clear change,NA,13.9,889
 experiment,NA,2011,Vicia sativa,no clear change,NA,14.3,722
 experiment,NA,2011,Zeltnera davyi,no clear change,NA,13.7,553
@@ -1319,25 +1319,25 @@ experiment,NA,2012,Acmispon americanus,no clear change,NA,15,597
 experiment,NA,2012,Aira caryophyllea,no clear change,NA,13.6,889
 experiment,NA,2012,Avena barbata,no clear change,NA,16.2,481
 experiment,NA,2012,Avena fatua,no clear change,NA,16.4,507
-experiment,NA,2012,Brachypodium distachyon,decrease,NA,16.4,497
+experiment,NA,2012,Brachypodium distachyon,increase,NA,16.4,497
 experiment,NA,2012,Briza maxima,no clear change,NA,13.3,832
-experiment,NA,2012,Briza minor,increase,NA,14.4,784
+experiment,NA,2012,Briza minor,decrease,NA,14.4,784
 experiment,NA,2012,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2012,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2012,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2012,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2012,Centaurea solstitialis,no clear change,NA,14.2,696
 experiment,NA,2012,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2012,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2012,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2012,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2012,Elymus glaucus,no clear change,NA,13.1,697
 experiment,NA,2012,Epilobium brachycarpum,no clear change,NA,13.7,654
 experiment,NA,2012,Erodium botrys,no clear change,NA,15.1,572
 experiment,NA,2012,Erodium cicutarium,no clear change,NA,16,494
-experiment,NA,2012,Festuca bromoides,increase,NA,14.7,613
+experiment,NA,2012,Festuca bromoides,decrease,NA,14.7,613
 experiment,NA,2012,Festuca perennis,no clear change,NA,16,541
-experiment,NA,2012,Gastridium phleoides,decrease,NA,15.9,536
+experiment,NA,2012,Gastridium phleoides,increase,NA,15.9,536
 experiment,NA,2012,Genista monspessulana,no clear change,established,13.2,681
-experiment,NA,2012,Geranium dissectum,increase,NA,14.4,685
+experiment,NA,2012,Geranium dissectum,decrease,NA,14.4,685
 experiment,NA,2012,Hemizonia congesta,no clear change,NA,14,806
 experiment,NA,2012,Hypochaeris glabra,no clear change,NA,16.2,485
 experiment,NA,2012,Juncus bufonius,no clear change,NA,15.4,526
@@ -1345,29 +1345,29 @@ experiment,NA,2012,Kickxia spuria,no clear change,established,15.4,611
 experiment,NA,2012,Lactuca serriola,no clear change,NA,16.7,478
 experiment,NA,2012,Logfia gallica,no clear change,NA,16.1,469
 experiment,NA,2012,Lysimachia arvensis,no clear change,NA,15,570
-experiment,NA,2012,Lythrum hyssopifolia,decrease,NA,16.2,524
+experiment,NA,2012,Lythrum hyssopifolia,increase,NA,16.2,524
 experiment,NA,2012,Pseudognaphalium californicum,no clear change,established,16.4,460
 experiment,NA,2012,Rumex crispus,no clear change,established,16.4,509
 experiment,NA,2012,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2012,Sonchus asper,no clear change,NA,16.4,476
-experiment,NA,2012,Stipa pulchra,decrease,NA,15.3,549
+experiment,NA,2012,Stipa pulchra,increase,NA,15.3,549
 experiment,NA,2012,Taraxia ovata,no clear change,NA,13.5,803
 experiment,NA,2012,Torilis arvensis,no clear change,NA,15.2,721
-experiment,NA,2012,Trifolium dubium,increase,NA,13.9,889
+experiment,NA,2012,Trifolium dubium,decrease,NA,13.9,889
 experiment,NA,2012,Vicia sativa,no clear change,NA,14.3,722
 experiment,NA,2013,Acmispon americanus,no clear change,NA,15,597
 experiment,NA,2013,Aira caryophyllea,no clear change,NA,13.6,889
 experiment,NA,2013,Avena barbata,no clear change,NA,16.2,481
 experiment,NA,2013,Avena fatua,no clear change,NA,16.4,507
-experiment,NA,2013,Brachypodium distachyon,decrease,NA,16.4,497
+experiment,NA,2013,Brachypodium distachyon,increase,NA,16.4,497
 experiment,NA,2013,Briza maxima,no clear change,NA,13.3,832
-experiment,NA,2013,Briza minor,increase,NA,14.4,784
+experiment,NA,2013,Briza minor,decrease,NA,14.4,784
 experiment,NA,2013,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2013,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2013,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2013,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2013,Centaurea solstitialis,no clear change,established,14.2,696
 experiment,NA,2013,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2013,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2013,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2013,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2013,Elymus glaucus,no clear change,NA,13.1,697
 experiment,NA,2013,Epilobium brachycarpum,no clear change,NA,13.7,654
@@ -1397,15 +1397,15 @@ experiment,NA,2014,Acmispon americanus,no clear change,NA,15,597
 experiment,NA,2014,Aira caryophyllea,no clear change,NA,13.6,889
 experiment,NA,2014,Avena barbata,no clear change,NA,16.2,481
 experiment,NA,2014,Avena fatua,no clear change,NA,16.4,507
-experiment,NA,2014,Brachypodium distachyon,decrease,NA,16.4,497
+experiment,NA,2014,Brachypodium distachyon,increase,NA,16.4,497
 experiment,NA,2014,Briza maxima,no clear change,NA,13.3,832
 experiment,NA,2014,Briza minor,no clear change,NA,14.4,784
 experiment,NA,2014,Bromus diandrus,no clear change,NA,16.2,491
-experiment,NA,2014,Bromus hordeaceus,increase,NA,15.6,543
+experiment,NA,2014,Bromus hordeaceus,decrease,NA,15.6,543
 experiment,NA,2014,Carduus pycnocephalus,no clear change,NA,15.1,582
 experiment,NA,2014,Centaurea solstitialis,no clear change,NA,14.2,696
 experiment,NA,2014,Convolvulus arvensis,no clear change,NA,15.2,552
-experiment,NA,2014,Crepis vesicaria,no clear change,NA,13.9,780
+experiment,NA,2014,Crepis vesicaria,no clear change,NA,NA,NA
 experiment,NA,2014,Danthonia californica,no clear change,NA,12.5,1110
 experiment,NA,2014,Elymus glaucus,no clear change,NA,13.1,697
 experiment,NA,2014,Epilobium brachycarpum,no clear change,NA,13.7,654
@@ -1414,12 +1414,12 @@ experiment,NA,2014,Erodium botrys,no clear change,NA,15.1,572
 experiment,NA,2014,Erodium cicutarium,no clear change,NA,16,494
 experiment,NA,2014,Festuca bromoides,no clear change,NA,14.7,613
 experiment,NA,2014,Festuca perennis,no clear change,NA,16,541
-experiment,NA,2014,Geranium dissectum,increase,NA,14.4,685
+experiment,NA,2014,Geranium dissectum,decrease,NA,14.4,685
 experiment,NA,2014,Helminthotheca echioides,no clear change,NA,15.1,531
 experiment,NA,2014,Hemizonia congesta,no clear change,NA,14,806
 experiment,NA,2014,Hypochaeris glabra,no clear change,NA,16.2,485
 experiment,NA,2014,Juncus bufonius,no clear change,established,15.4,526
-experiment,NA,2014,Lactuca serriola,increase,NA,16.7,478
+experiment,NA,2014,Lactuca serriola,decrease,NA,16.7,478
 experiment,NA,2014,Logfia gallica,no clear change,NA,16.1,469
 experiment,NA,2014,Lysimachia arvensis,no clear change,NA,15,570
 experiment,NA,2014,Lythrum hyssopifolia,no clear change,established,16.2,524
@@ -1429,7 +1429,7 @@ experiment,NA,2014,Sisyrinchium bellum,no clear change,NA,14.1,671
 experiment,NA,2014,Sonchus asper,no clear change,NA,16.4,476
 experiment,NA,2014,Stipa pulchra,no clear change,NA,15.3,549
 experiment,NA,2014,Taraxia ovata,no clear change,NA,13.5,803
-experiment,NA,2014,Torilis arvensis,increase,NA,15.2,721
-experiment,NA,2014,Trifolium dubium,increase,NA,13.9,889
+experiment,NA,2014,Torilis arvensis,decrease,NA,15.2,721
+experiment,NA,2014,Trifolium dubium,decrease,NA,13.9,889
 experiment,NA,2014,Trifolium hirtum,no clear change,established,14.6,701
 experiment,NA,2014,Vicia sativa,no clear change,NA,14.3,722

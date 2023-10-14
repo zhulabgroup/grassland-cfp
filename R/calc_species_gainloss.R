@@ -81,11 +81,12 @@ calc_species_gainloss_obs <- function(com_obs, dat_niche) {
     obs_gainloss_tbl_list[[siteoi]] <- df_trend %>%
       left_join(df_dominance, by = "species") %>%
       left_join(df_complete, by = "species") %>%
-      left_join(dat_niche %>% select(
-        species,
-        tmp = tmp_occ_median,
-        ppt = ppt_occ_median
-      ), by = "species") %>%
+      left_join(dat_niche %>%
+        select(
+          species,
+          tmp = tmp_occ_median,
+          ppt = ppt_occ_median
+        ), by = "species") %>%
       mutate(site = siteoi)
 
     print(siteoi)
@@ -174,11 +175,12 @@ calc_species_gainloss_exp <- function(com_exp, dat_niche) {
     exp_gainloss_tbl_list[[yearoi %>% as.character()]] <- df_trend %>%
       left_join(df_dominance, by = "species") %>%
       left_join(df_complete, by = "species") %>%
-      left_join(dat_niche %>% select(
-        species,
-        tmp = tmp_occ_median,
-        ppt = ppt_occ_median
-      ), by = "species") %>%
+      left_join(dat_niche %>%
+        select(
+          species,
+          tmp = tmp_occ_median,
+          ppt = ppt_occ_median
+        ), by = "species") %>%
       mutate(year = yearoi)
 
     print(yearoi)

@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, cache = F}
+```{r setup, cache = F, message = F}
 library(grassland)
 theme_set(ggthemes::theme_few())
 ```
@@ -35,6 +35,10 @@ dat_trait_cwd <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", c
 
 ```{r}
 dat_trait_cwd <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-terraclim.rds")
+```
+
+Plot relationship in niche space.
+```{r}
 gg_trait_cwd <- plot_trait_cwd(dat_trait_cwd)
 gg_trait_cwd
 test_trait_cwd_cor(dat_trait_cwd)

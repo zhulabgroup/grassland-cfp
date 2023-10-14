@@ -2,7 +2,7 @@ plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, d
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 
   sp_vec <- dat_niche %>%
-    filter(occ_n > 100) %>% # no dummy species
+    filter(!is.na(occ_n)) %>% # no dummy species
     pull(species)
 
   niche_gg <- vector(mode = "list")

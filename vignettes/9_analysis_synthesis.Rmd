@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, cache = F}
+```{r setup, cache = F, message = F}
 library(grassland)
 theme_set(ggthemes::theme_few())
 ```
@@ -30,7 +30,7 @@ Analyze individual species contributing to CTI-CPI change.
 
 ```{r, eval=F}
 dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
-# need to output to csv
+usethis::use_data(dat_gainloss, overwrite = T)
 ```
 
 ```{r}
@@ -63,6 +63,7 @@ Due to the high correlation of species temperature and precipitation niches, CTI
 
 ```{r, eval = F}
 dat_shift <- calc_community_shift(dat_index = dat_index)
+usethis::use_data(dat_shift, overwrite = T)
 ```
 
 ```{r}
@@ -75,7 +76,7 @@ df_summ_shift_coupling <- summ_shift_coupling(dat_shift)
 df_summ_shift_coupling
 ```
 
-A community thermophilization of 0.1 °C corresponded to a xerophilization of `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` mm from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` mm from the experiment. Likewise, a community xerophilization of 10 mm corresponded to a thermophilization of `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` °C from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` °C from the experiment.
+A community thermophilization of 0.1 °C corresponded to a xerophilization of `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Observation") %>% pull(median) %>% signif(3)` mm from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cpi_to_cti") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3)` mm from the experiment. Likewise, a community xerophilization of -10 mm corresponded to a thermophilization of `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Observation") %>% pull(median) %>% signif(3) %>% abs()` °C from the observations and `r df_summ_shift_coupling %>% filter(ratio == "cti_to_cpi") %>% filter(group == "Experiment") %>% pull(median) %>% signif(3) %>% abs()` °C from the experiment.
 
 Output figures and R data files.
 
@@ -92,6 +93,4 @@ save_figure(out = list(
 save_table(out = list(
   gainloss = dat_gainloss %>% tidy_table_gainloss()
 ))
-
-save_rda(out = list(dat_gainloss, dat_shift))
 ```

@@ -527,7 +527,13 @@ geographical area.</p>
 sites.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dat_clim_site <span class="ot">&lt;-</span> <span class="fu">read_climate_site</span>()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>df_cc_site <span class="ot">&lt;-</span> <span class="fu">calc_climate_change_site</span>(<span class="at">dat_clim_site =</span> dat_clim_site)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_cc_site <span class="sc">%&gt;%</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_cc_site <span class="sc">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">estimate =</span> estimate <span class="sc">%&gt;%</span> <span class="fu">signif</span>(<span class="dv">3</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">std.error =</span> std.error <span class="sc">%&gt;%</span> <span class="fu">signif</span>(<span class="dv">3</span>),</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">p.value =</span> p.value <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">4</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
@@ -543,209 +549,209 @@ sites.</p>
 <tr class="odd">
 <td align="left">all</td>
 <td align="left">tmp</td>
-<td align="right">0.0177386</td>
-<td align="right">0.0020771</td>
-<td align="right">0.0000000</td>
+<td align="right">0.01770</td>
+<td align="right">0.00208</td>
+<td align="right">0.0000</td>
 <td align="left">***</td>
 </tr>
 <tr class="even">
 <td align="left">all</td>
 <td align="left">ppt</td>
-<td align="right">-4.2215845</td>
-<td align="right">1.0489982</td>
-<td align="right">0.0000666</td>
+<td align="right">-4.22000</td>
+<td align="right">1.05000</td>
+<td align="right">0.0001</td>
 <td align="left">***</td>
 </tr>
 <tr class="odd">
 <td align="left">angelo</td>
 <td align="left">tmp</td>
-<td align="right">0.0053096</td>
-<td align="right">0.0067221</td>
-<td align="right">0.4345073</td>
+<td align="right">0.00531</td>
+<td align="right">0.00672</td>
+<td align="right">0.4345</td>
 <td align="left">ns</td>
 </tr>
 <tr class="even">
 <td align="left">angelo</td>
 <td align="left">ppt</td>
-<td align="right">-15.1323668</td>
-<td align="right">6.9741870</td>
-<td align="right">0.0363445</td>
+<td align="right">-15.10000</td>
+<td align="right">6.97000</td>
+<td align="right">0.0363</td>
 <td align="left">*</td>
 </tr>
 <tr class="odd">
 <td align="left">carrizo</td>
 <td align="left">tmp</td>
-<td align="right">0.0245310</td>
-<td align="right">0.0077458</td>
-<td align="right">0.0030339</td>
+<td align="right">0.02450</td>
+<td align="right">0.00775</td>
+<td align="right">0.0030</td>
 <td align="left">**</td>
 </tr>
 <tr class="even">
 <td align="left">carrizo</td>
 <td align="left">ppt</td>
-<td align="right">-1.5408734</td>
-<td align="right">1.3219092</td>
-<td align="right">0.2510236</td>
+<td align="right">-1.54000</td>
+<td align="right">1.32000</td>
+<td align="right">0.2510</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">elkhorn</td>
 <td align="left">tmp</td>
-<td align="right">0.0130722</td>
-<td align="right">0.0071605</td>
-<td align="right">0.0757780</td>
-<td align="left">.</td>
+<td align="right">0.01310</td>
+<td align="right">0.00716</td>
+<td align="right">0.0758</td>
+<td align="left">ns</td>
 </tr>
 <tr class="even">
 <td align="left">elkhorn</td>
 <td align="left">ppt</td>
-<td align="right">-2.3224850</td>
-<td align="right">2.2905098</td>
-<td align="right">0.3170148</td>
+<td align="right">-2.32000</td>
+<td align="right">2.29000</td>
+<td align="right">0.3170</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">jasper</td>
 <td align="left">tmp</td>
-<td align="right">0.0151329</td>
-<td align="right">0.0075780</td>
-<td align="right">0.0530293</td>
-<td align="left">.</td>
+<td align="right">0.01510</td>
+<td align="right">0.00758</td>
+<td align="right">0.0530</td>
+<td align="left">ns</td>
 </tr>
 <tr class="even">
 <td align="left">jasper</td>
 <td align="left">ppt</td>
-<td align="right">-5.8882289</td>
-<td align="right">3.4685199</td>
-<td align="right">0.0977561</td>
-<td align="left">.</td>
+<td align="right">-5.89000</td>
+<td align="right">3.47000</td>
+<td align="right">0.0978</td>
+<td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">mclann</td>
 <td align="left">tmp</td>
-<td align="right">0.0183497</td>
-<td align="right">0.0075257</td>
-<td align="right">0.0195433</td>
+<td align="right">0.01830</td>
+<td align="right">0.00753</td>
+<td align="right">0.0195</td>
 <td align="left">*</td>
 </tr>
 <tr class="even">
 <td align="left">mclann</td>
 <td align="left">ppt</td>
-<td align="right">-4.1635159</td>
-<td align="right">4.4791337</td>
-<td align="right">0.3584790</td>
+<td align="right">-4.16000</td>
+<td align="right">4.48000</td>
+<td align="right">0.3585</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">mclserp</td>
 <td align="left">tmp</td>
-<td align="right">0.0183497</td>
-<td align="right">0.0075257</td>
-<td align="right">0.0195433</td>
+<td align="right">0.01830</td>
+<td align="right">0.00753</td>
+<td align="right">0.0195</td>
 <td align="left">*</td>
 </tr>
 <tr class="even">
 <td align="left">mclserp</td>
 <td align="left">ppt</td>
-<td align="right">-4.1635159</td>
-<td align="right">4.4791337</td>
-<td align="right">0.3584790</td>
+<td align="right">-4.16000</td>
+<td align="right">4.48000</td>
+<td align="right">0.3585</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">morganterritory</td>
 <td align="left">tmp</td>
-<td align="right">0.0243441</td>
-<td align="right">0.0064703</td>
-<td align="right">0.0005675</td>
+<td align="right">0.02430</td>
+<td align="right">0.00647</td>
+<td align="right">0.0006</td>
 <td align="left">***</td>
 </tr>
 <tr class="even">
 <td align="left">morganterritory</td>
 <td align="left">ppt</td>
-<td align="right">-0.7081013</td>
-<td align="right">2.3234359</td>
-<td align="right">0.7622083</td>
+<td align="right">-0.70800</td>
+<td align="right">2.32000</td>
+<td align="right">0.7622</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">pleasantonridge</td>
 <td align="left">tmp</td>
-<td align="right">0.0235741</td>
-<td align="right">0.0071860</td>
-<td align="right">0.0022242</td>
+<td align="right">0.02360</td>
+<td align="right">0.00719</td>
+<td align="right">0.0022</td>
 <td align="left">**</td>
 </tr>
 <tr class="even">
 <td align="left">pleasantonridge</td>
 <td align="left">ppt</td>
-<td align="right">-1.9649493</td>
-<td align="right">2.1917413</td>
-<td align="right">0.3756175</td>
+<td align="right">-1.96000</td>
+<td align="right">2.19000</td>
+<td align="right">0.3756</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">sunol</td>
 <td align="left">tmp</td>
-<td align="right">0.0260452</td>
-<td align="right">0.0077089</td>
-<td align="right">0.0016950</td>
+<td align="right">0.02600</td>
+<td align="right">0.00771</td>
+<td align="right">0.0017</td>
 <td align="left">**</td>
 </tr>
 <tr class="even">
 <td align="left">sunol</td>
 <td align="left">ppt</td>
-<td align="right">-2.5350291</td>
-<td align="right">2.3555645</td>
-<td align="right">0.2886288</td>
+<td align="right">-2.54000</td>
+<td align="right">2.36000</td>
+<td align="right">0.2886</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">swanton</td>
 <td align="left">tmp</td>
-<td align="right">0.0084631</td>
-<td align="right">0.0072860</td>
-<td align="right">0.2526592</td>
+<td align="right">0.00846</td>
+<td align="right">0.00729</td>
+<td align="right">0.2527</td>
 <td align="left">ns</td>
 </tr>
 <tr class="even">
 <td align="left">swanton</td>
 <td align="left">ppt</td>
-<td align="right">-6.1709165</td>
-<td align="right">3.7655941</td>
-<td align="right">0.1095173</td>
+<td align="right">-6.17000</td>
+<td align="right">3.77000</td>
+<td align="right">0.1095</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">ucsc</td>
 <td align="left">tmp</td>
-<td align="right">0.0079190</td>
-<td align="right">0.0064514</td>
-<td align="right">0.2271927</td>
+<td align="right">0.00792</td>
+<td align="right">0.00645</td>
+<td align="right">0.2272</td>
 <td align="left">ns</td>
 </tr>
 <tr class="even">
 <td align="left">ucsc</td>
 <td align="left">ppt</td>
-<td align="right">-5.7431445</td>
-<td align="right">3.9555091</td>
-<td align="right">0.1547266</td>
+<td align="right">-5.74000</td>
+<td align="right">3.96000</td>
+<td align="right">0.1547</td>
 <td align="left">ns</td>
 </tr>
 <tr class="odd">
 <td align="left">vascocaves</td>
 <td align="left">tmp</td>
-<td align="right">0.0277720</td>
-<td align="right">0.0066405</td>
-<td align="right">0.0001638</td>
+<td align="right">0.02780</td>
+<td align="right">0.00664</td>
+<td align="right">0.0002</td>
 <td align="left">***</td>
 </tr>
 <tr class="even">
 <td align="left">vascocaves</td>
 <td align="left">ppt</td>
-<td align="right">-0.3258874</td>
-<td align="right">2.0808536</td>
-<td align="right">0.8763795</td>
+<td align="right">-0.32600</td>
+<td align="right">2.08000</td>
+<td align="right">0.8764</td>
 <td align="left">ns</td>
 </tr>
 </tbody>
@@ -786,9 +792,10 @@ yr<sup>-1</sup>.</p>
 experienced a large variation of plot-level temperature (8.69 - 12.3 °C)
 and precipitation (240 - 1380 mm) in 2174 total plot years.</p>
 <p>Output figures and R data files.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_figure</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="at">data_avail =</span> gg_data_avail, <span class="at">site_cc =</span> gg_site_cc))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">save_extdata</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="st">&quot;alldata/input/basemap/site_info.csv&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save_figure</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="at">data_avail =</span> gg_data_avail, </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">site_cc =</span> gg_site_cc))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">save_extdata</span>(<span class="at">out =</span> <span class="fu">list</span>(<span class="st">&quot;alldata/input/basemap/site_info.csv&quot;</span>))</span></code></pre></div>
 
 
 

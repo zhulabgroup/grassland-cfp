@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, cache = F}
+```{r setup, cache = F, message = F}
 library(grassland)
 theme_set(ggthemes::theme_few())
 ```
@@ -32,27 +32,27 @@ Statistically test species climate trait (temperature or precipitation) change u
 df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
 df_trait_change_obs %>% 
   mutate(
-    estimate = estimate %>% signif(3),
-    std.error = std.error %>% signif(3),
+    estimate = estimate %>% signif(3) %>% round(6) ,
+    std.error = std.error %>% signif(3) %>% round(6),
     p.value = p.value %>% round(4)
   ) %>% 
   knitr::kable()
 df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = "exp")
 df_trait_change_exp %>% 
    mutate(
-    estimate = estimate %>% signif(3),
-    std.error = std.error %>% signif(3),
+    estimate = estimate %>% signif(3) %>% round(6),
+    std.error = std.error %>% signif(3) %>% round(6),
     p.value = p.value %>% round(4)
   ) %>% 
   knitr::kable()
 df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs")
 ```
 
-Overall, the 12 observational sites had significant increases in temperature trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant decreases in precipitation trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "ppt") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
+Overall, the 12 observational sites had significant increases in temperature trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant decreases in precipitation trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "ppt") %>% pull(estimate) %>% signif(3)` mm yr^-1^) over the years. 
 
-By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in temperature trait and significant decreases in precipitation trait over the years. Among all 12 sites, the temperature traits increases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(max) %>% signif(3)` °C yr^-1^; the precipitation trait decreases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(max) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(min) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^.
+By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in temperature trait and significant decreases in precipitation trait over the years. Among all 12 sites, the temperature traits increases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(max) %>% signif(3)` °C yr^-1^; the precipitation trait decreases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(max) %>% signif(3)` mm yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(min) %>% signif(3)` mm yr^-1^.
 
-Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant increase in temperature trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "ppt") %>% pull(estimate) %>%magrittr::multiply_by(-1)` mm.
+Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant increase in temperature trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_trait_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(trait == "ppt") %>% pull(estimate)` mm.
 
 Plot the above comparisons and tests.
 
@@ -74,6 +74,7 @@ Calculate CTI-CPI in observational and experimental communities.
 
 ```{r, eval = F}
 dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+usethis::use_data(dat_index, overwrite = T)
 ```
 
 Statistically test CTI and CPI changes using LM or LME.
@@ -98,11 +99,11 @@ df_index_change_exp  %>%
 df_summ_index_change_obs <- summ_change(df_index_change_obs, option = "obs")
 ```
 
-Overall, the 12 observational sites had significant thermophilization (increases in CTI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant xerophilization (decreases in CPI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
+Overall, the 12 observational sites had significant thermophilization (increases in CTI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant xerophilization (decreases in CPI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3)` mm yr^-1^) over the years. 
 
-By site, `r df_summ_index_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in CTI and significant decreases in CPI over the years. Among all 12 sites, the mean thermophilization rate (increasing CTI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(max) %>% signif(3)` °C yr^-1^; the mean xerophilization rate (decreasing CPI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(max) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(min) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^.
+By site, `r df_summ_index_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in CTI and significant decreases in CPI over the years. Among all 12 sites, the mean thermophilization rate (increasing CTI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(max) %>% signif(3)` °C yr^-1^; the mean xerophilization rate (decreasing CPI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(max) %>% signif(3)` mm yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(min) %>% signif(3)` mm yr^-1^.
 
-Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant thermophilization (increase in CTI) of `r df_index_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_index_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm.
+Comparing warming plots to ambient plots, pooling data from all years in each phase, no significant difference was detected in Phase I or II, whereas Phase III exhibited a significant thermophilization (increase in CTI) of `r df_index_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C and a significant decrease in precipitation trait of `r df_index_change_exp %>% filter(exp == "jrgce", grp == "Phase III") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3)` mm.
 
 Plot the above comparisons and tests.
 
@@ -122,5 +123,4 @@ save_figure(out = list(
   community_index_obs = gg_community_index_obs,
   community_index_exp = gg_community_index_exp
 ))
-save_rda(out = list(dat_index))
 ```

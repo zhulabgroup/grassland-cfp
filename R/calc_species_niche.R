@@ -75,6 +75,7 @@ calc_species_niche <- function(dat_trait, add_dummy = T) {
     #   summarize(across(-c(species:occ_n), mean))
 
     dat_niche <- dat_niche %>%
+      filter(occ_n > 100) %>% # species with many observations
       add_row(species = "Avena DUMMY", occ_n = NA, Avena_tbl) %>%
       add_row(species = "Festuca DUMMY", occ_n = NA, Festuca_tbl) %>%
       add_row(species = "Hypochaeris DUMMY", occ_n = NA, Hypochaeris_tbl)

@@ -1,8 +1,7 @@
 # calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
 calc_community_index <- function(dat_niche, dat_community) {
   # load niche estimates.
-  niche_tbl <- dat_niche %>%
-    filter(occ_n > 100 | is.na(occ_n)) # species with many observations and dummy species
+  niche_tbl <- dat_niche
 
   # observational data and CWM
   obs_tbl <- dat_community$obs %>%

@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, cache = F}
+```{r setup, cache = F, message = F}
 library(grassland)
 theme_set(ggthemes::theme_few())
 ```

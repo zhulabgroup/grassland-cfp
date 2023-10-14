@@ -1,7 +1,7 @@
 plot_niche_stat <- function(dat_niche, var) {
   gg_niche_stat <-
     dat_niche %>%
-    filter(occ_n > 100) %>%
+    filter(!is.na(occ_n)) %>%
     select(
       !!sym(str_c(var, ("_occ_mean"))),
       !!sym(str_c(var, ("_occ_median"))),

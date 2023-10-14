@@ -21,18 +21,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, cache = F}
+```{r setup, cache = F, message = F}
 library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Download biogeography (occurrence) data from four sources: BIEN, CCH, GBIF, iNat.
-
-```{r, eval=F}
+```{r}
 spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
+ls_sp <- spp_tbl %>% pull(consolidated_name) %>% unique() %>% sort()
+```
+We identified `r ls_sp %>% length()` consolidated species from the community data.
+
+Download biogeography (occurrence) data from four sources: BIEN, CCH, GBIF, iNat.
+```{r, eval=F}
 path_occ <- down_biogeography(species_table = spp_tbl) # needs parallel computation
 dat_occ_full <- read_biogeography(path_occ = path_occ, gbif_only = F)
 dat_occ <- read_biogeography(path_occ = path_occ, gbif_only = T)
+usethis::use_data(dat_occ, overwrite = T)
 ```
 
 ```{r}
@@ -43,7 +48,7 @@ gg_biogeography
 
 ```{r}
 df_summ_occ <- summ_biogeography(dat_occ = dat_occ_full)
-df_summ_occ
+df_summ_occ %>% knitr::kable()
 ```
 
 We retrieved `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_occ)` occurrence records of `r df_summ_occ %>% filter(source == "gbif") %>% pull(n_sp)` species in the CFP from the Global Biodiversity Information Facility (GBIF).
@@ -54,24 +59,19 @@ Calculate and summarize species climate niches.
 dat_clim <- read_climate()
 path_trait <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", clim_source = "chelsa")
 dat_trait <- read_individual_trait(path_trait = path_trait)
+usethis::use_data(dat_trait, overwrite = T)
+```
+
+```{r, eval = F}
+dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
+usethis::use_data(dat_niche, overwrite = T)
 ```
 
 ```{r}
-dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 df_summ_niche <- summ_species_niche(dat_niche = dat_niche)
 ```
 
-Among all the `r df_summ_niche$n` species with more than 100 GBIF records, their average temperatures ranging from `r df_summ_niche$tmp_min %>% signif(3) %>% format(big.mark = ",")` °C to `r df_summ_niche$tmp_max %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r df_summ_niche$ppt_min %>% signif(3) %>% format(big.mark = ",")` mm to `r df_summ_niche$ppt_max %>% signif(3) %>% format(big.mark = ",")` mm.
-
-Compare species niches by guilds.
-
-```{r}
-dat_guild_niche <- calc_guild_niche(dat_community, dat_niche)
-gg_guild_niche <- plot_guild_niche(dat_guild_niche = dat_guild_niche)
-gg_guild_niche
-res_guild_niche <- test_guild_niche(dat_guild_niche = dat_guild_niche)
-res_guild_niche
-```
+Filtering for species with more than 100 GBIF records, we retained occurrence `r dat_niche %>% pull(occ_n) %>% sum(na.rm = T)` records from `r dat_niche %>% nrow()` species. Their average temperatures ranging from `r df_summ_niche$tmp_min %>% signif(3) %>% format(big.mark = ",")` °C to `r df_summ_niche$tmp_max %>% signif(3) %>% format(big.mark = ",")` °C, and their average precipitations ranging from `r df_summ_niche$ppt_min %>% signif(3) %>% format(big.mark = ",")` mm to `r df_summ_niche$ppt_max %>% signif(3) %>% format(big.mark = ",")` mm.
 
 Plot and summarize two example species geographic distributions and climate niches.
 
@@ -93,6 +93,11 @@ Plot all species climate niches.
 
 ```{r, eval = F}
 path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_trait, dat_niche)
+```
+
+```{r, eval = F}
+gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 1)
+gg_niche$sp_niche
 ```
 
 ```{r}
@@ -151,14 +156,61 @@ gg_niche_stat_ppt
 Compare estimates of species climate niche by spatial thinning occurrence records.
 
 ```{r, eval = F}
-path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif) # slow
+path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "spatial", num_cores = 4) # slow
 ```
 
 ```{r}
-dat_trait_thin <- calc_trait_thin(path_occ_thin = NULL, dat_trait)
+dat_trait_thin <- calc_trait_thin(path_occ_thin = NULL, dat_trait, option = "spatial")
+```
+After spatial thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_trait_thin)` records.
+
+```{r}
 dat_niche_thin <- calc_species_niche(dat_trait_thin, add_dummy = T)
-gg_niche_thin <- plot_niche_thin(dat_niche, dat_niche_thin)
+gg_niche_thin <- plot_niche_subset(dat_niche, dat_niche_thin)
 gg_niche_thin
+```
+
+Compare estimates of species climate niche by climate thinning occurrence records.
+```{r, eval = F}
+path_occ_thin_clim <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "climate", num_cores = 4) # slow
+```
+
+```{r}
+dat_trait_thin_clim <- calc_trait_thin(path_occ_thin = NULL, dat_trait, option = "climate")
+```
+After climate thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_trait_thin_clim)` records.
+
+```{r}
+dat_niche_thin_clim <- calc_species_niche(dat_trait_thin_clim, add_dummy = T)
+gg_niche_thin_clim <- plot_niche_subset(dat_niche, dat_niche_thin_clim)
+gg_niche_thin_clim
+```
+
+Get early GBIF data from 1961 to 1990.
+```{r, eval=F}
+spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
+path_occ_early <- down_biogeography(species_table = spp_tbl, start_year = 1961, end_year = 1990, postfix = "early", gbif_only = T) # needs parallel computation
+dat_occ_early <- read_biogeography(path_occ_early, gbif_only = T)
+```
+
+Calculate and summarize species climate niches from early GBIF data.
+
+```{r, eval = F}
+dat_clim <- read_climate()
+path_trait_early <- calc_individual_trait(dat_occ_early, dat_clim, occ_source = "gbif", clim_source = "chelsa", postfix = "early")
+dat_trait_early <- read_individual_trait(path_trait = path_trait_early)
+```
+
+```{r}
+dat_trait_early <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-chelsa-early.rds")
+```
+
+We obtained `r nrow(dat_trait_early)` records of `r dat_trait_early %>% pull(species) %>% unique() %>% length()` species from early GBIF data, compared to `r nrow(dat_trait)` total records.
+
+```{r}
+dat_niche_early <- calc_species_niche(dat_trait_early, add_dummy = T)
+gg_niche_early <- plot_niche_subset(dat_niche, dat_niche_early, type = "early")
+gg_niche_early
 ```
 
 Output figures and R data files.
@@ -166,7 +218,6 @@ Output figures and R data files.
 ```{r, eval = F}
 save_figure(out = list(
   biogeography = gg_biogeography,
-  guild_niche = gg_guild_niche,
   niche = gg_niche$combined,
   niche_cool = gg_individual_trait_species_niche_cool,
   niche_warm = gg_individual_trait_species_niche_warm,
@@ -175,7 +226,12 @@ save_figure(out = list(
   bioclim_ppt = gg_bioclim_ppt,
   niche_stat_tmp = gg_niche_stat_tmp,
   niche_stat_ppt = gg_niche_stat_ppt,
-  niche_thin = gg_niche_thin
+  niche_thin = gg_niche_thin,
+  niche_thin_clim = gg_niche_thin_clim,
+  niche_early = gg_niche_early
 ))
-save_rda(out = list(dat_occ, dat_trait, dat_niche))
+
+save_table(out = list(
+  niche = dat_niche %>% tidy_table_niche()
+))
 ```

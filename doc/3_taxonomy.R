@@ -9,7 +9,7 @@ knitr::opts_chunk$set(
   fig.height = 8
 )
 
-## ----setup, cache = F---------------------------------------------------------
+## ----setup, cache = F, message = F--------------------------------------------
 library(grassland)
 theme_set(ggthemes::theme_few())
 

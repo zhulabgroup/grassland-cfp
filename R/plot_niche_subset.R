@@ -7,8 +7,10 @@ plot_niche_subset <- function(dat_niche, dat_niche_subset, type = "thin") {
 plot_niche_subset_var <- function(dat_niche, dat_niche_subset, var, type = "thin") {
   df_niche_compare <- inner_join(
     dat_niche %>%
+      filter(!is.na(occ_n)) %>%
       select(species, full = !!sym(str_c(var, "_occ_median"))),
     dat_niche_subset %>%
+      filter(!is.na(occ_n)) %>%
       select(species, subset = !!sym(str_c(var, "_occ_median"))),
     by = "species"
   )

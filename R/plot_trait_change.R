@@ -9,7 +9,6 @@ plot_trait_change <- function(option, dat_community, dat_niche) {
   return(gg_trait_change)
 }
 
-
 plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
   df_weight <- dat_community_exp %>%
     filter(site == "jrgce", year >= 1999) %>%
@@ -22,7 +21,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
     mutate(weight = abund / sum(abund)) %>% # convert all abundance (absolute or relative) to percentage, such that all plots get equal weight later in lme
     ungroup() %>%
     select(-abund) %>%
-    left_join(
+    inner_join(
       dat_niche %>%
         select(species,
           tmp = tmp_occ_median,
@@ -241,7 +240,7 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
     mutate(weight = abund / sum(abund)) %>% # convert all abundance (absolute or relative) to percentage, such that all plots get equal weight later in lme
     ungroup() %>%
     select(year, plot, species, weight) %>%
-    left_join(
+    inner_join(
       dat_niche %>%
         select(species,
           tmp = tmp_occ_median,

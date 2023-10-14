@@ -1,5 +1,4 @@
 Species,n,Temperature mean,Temperature median,Temperature lower limit (5%),Temperature upper limit (95%),Precipitation mean,Precipitation median,Precipitation lower limit (5%),Precipitation upper limit (95%)
-Acaena californica,265,13.1,13.1,12.5,14.1,763,746,479,1070
 Achillea millefolium,13246,12.7,13.4,5.45,16.8,831,741,349,1660
 Achyrachaena mollis,2456,14.9,14.6,12.9,17.9,664,595,326,1040
 Acmispon americanus,3483,14.3,15,7.55,17.5,765,597,320,1720
@@ -21,19 +20,16 @@ Allophyllum gilioides,796,12.1,12.7,6.13,16.5,612,557,317,1150
 Amsinckia menziesii,3514,15.8,16.5,13,17.9,529,460,282,1030
 Amsinckia tessellata,567,15.3,15.6,11.9,18,386,366,225,553
 Ancistrocarphus filagineus,513,15,15.2,12.1,17.2,602,471,289,1120
-Antirrhinum vexillocalyculatum,43,14.7,15,12.2,16.6,975,991,559,1430
 Aphanes occidentalis,278,15.2,15.3,12.1,17.7,659,560,310,1320
 Apocynum cannabinum,614,14.6,15.4,9.32,17.9,690,563,304,1470
 Asclepias eriocarpa,2925,14.3,14.7,10.2,17.6,563,524,305,987
 Asclepias fascicularis,5567,15.3,15.5,12,17.8,571,500,313,1090
-Astragalus breweri,68,14.5,15,11.4,16.4,1110,1060,810,1530
 Astragalus didymocarpus,712,16.1,16.5,13.8,18.1,373,355,237,552
 Astragalus gambelianus,955,15.1,15.3,12.4,17.5,663,573,303,1220
 Astragalus lentiginosus,686,12.1,12.2,1.65,18.8,459,433,196,1150
 Astragalus oxyphysus,374,16.6,16.8,14.4,18.7,297,266,205,435
 Astragalus rattanii,146,14.7,15.3,9,17.6,1070,906,636,2060
 Athysanus pusillus,941,14.8,15.3,9.45,17.8,713,569,302,1480
-Atriplex prostrata,101,16.5,16.7,14.4,18.4,470,402,270,732
 Avena barbata,2711,15.6,16.2,12.6,17.8,558,481,281,1150
 Avena fatua,2473,15.7,16.4,12.7,17.9,555,507,276,1130
 Baccharis pilularis,17577,14.6,14.3,12.5,17.3,657,600,299,1140
@@ -47,7 +43,6 @@ Bromus berteroanus,226,16,16.1,12.6,18.8,427,363,97.8,705
 Bromus carinatus,1981,12.9,13.6,6.05,17.1,783,614,309,1770
 Bromus diandrus,3134,15.6,16.2,12.3,17.9,563,491,279,1150
 Bromus hordeaceus,3108,15.2,15.6,11.6,17.7,651,543,285,1430
-Bromus japonicus,19,11.4,11.9,7.45,18,951,1020,594,1340
 Bromus laevipes,485,13.3,13.9,7.05,17,1090,961,483,2100
 Bromus madritensis,3771,15.9,16.5,12.9,17.9,497,435,262,1040
 Bromus sterilis,342,14.9,15.6,9.55,17.4,777,621,321,1890
@@ -65,7 +60,6 @@ Capsella bursa-pastoris,2635,15.7,16.3,12.9,18.2,565,523,293,1060
 Cardamine oligosperma,498,14.7,14.6,11.3,17.9,940,803,388,1890
 Carduus pycnocephalus,3967,15.2,15.1,12.8,17.5,636,582,308,1100
 Carduus tenuiflorus,367,14.9,14.9,12.7,17.3,583,522,298,1040
-Carex gynodynama,69,12.7,12.5,10.1,16.4,1210,1210,523,2070
 Castilleja attenuata,1575,15.2,15.4,11.9,18,814,728,349,1430
 Castilleja brevistyla,102,17,16.8,15.7,19.6,290,274,171,439
 Castilleja densiflora,2555,14.5,14,12.6,17,669,746,296,1070
@@ -75,7 +69,6 @@ Castilleja rubicundula,704,13.9,13.7,12.4,16.3,907,819,529,1380
 Caulanthus lasiophyllus,1172,15.4,15.6,12.8,17.8,491,438,234,1010
 Centaurea melitensis,4616,16,16.6,13.1,17.6,489,446,281,927
 Centaurea solstitialis,5286,14,14.2,10.4,17.3,751,696,396,1270
-Cerastium fontanum,38,12,13.2,5.76,17.3,837,623,383,1540
 Cerastium glomeratum,1085,15.1,15.5,11.5,17.7,731,607,301,1580
 Cercocarpus betuloides,4503,14.4,14.5,11.4,17.2,627,533,339,1240
 Chaenactis glabriuscula,3196,15.8,16.5,12.1,17.6,451,412,267,875
@@ -94,7 +87,6 @@ Collinsia heterophylla,4567,14.8,14.7,12.7,17.1,648,572,327,1130
 Collinsia sparsiflora,993,14.6,14.7,11.6,17.4,886,893,499,1330
 Convolvulus arvensis,3267,15.2,15.2,12.3,17.8,631,552,306,1230
 Crassula connata,2071,16,16.6,13.1,18.1,489,411,264,1040
-Crepis vesicaria,74,13.7,13.9,12.5,14.6,779,780,471,1340
 Croton setiger,5628,15.8,16.5,12.6,17.8,573,488,300,1140
 Cryptantha hispidula,129,15.2,15.6,13,16.6,959,926,799,1350
 Cuscuta californica,1977,15.3,16.6,7.13,17.7,562,445,290,1630
@@ -114,7 +106,6 @@ Elymus elymoides,2075,8.4,8.15,1.05,15.8,967,794,382,1980
 Elymus glaucus,3715,12.5,13.1,5.75,17,949,697,343,2180
 Elymus multisetus,834,13.3,13.7,7.75,17.2,874,686,336,2010
 Elymus triticoides,1209,13.9,14.6,7.65,18.1,531,491,304,992
-Elytrigia repens,25,13.9,14,8.55,17.5,788,638,430,2130
 Epilobium brachycarpum,1721,13.1,13.7,7.05,17.5,821,654,363,1890
 Epilobium ciliatum,3104,12.4,13.2,5.35,17.4,872,678,317,2030
 Erigeron canadensis,1803,15.4,16.5,10.8,17.9,572,478,280,1320
@@ -129,7 +120,6 @@ Erodium brachycarpum,709,16.1,16.4,13.6,17.9,548,447,280,1180
 Erodium cicutarium,7894,15.4,16,12.4,17.9,570,494,276,1100
 Erodium moschatum,3521,15.7,16.3,13.1,17.9,556,530,291,959
 Eryngium armatum,290,13.5,13.1,12.5,16.3,827,841,439,1230
-Erythranthe androsacea,40,12.4,12.8,8.65,15.9,529,494,420,802
 Erythranthe guttata,5729,13.6,14.3,6.45,17.5,807,654,326,1760
 Eschscholzia californica,24829,14.8,14.5,12.6,17.5,642,590,308,1100
 Euphorbia crenulata,300,13.1,13.3,7.75,16.9,1170,1080,385,2080
@@ -177,7 +167,6 @@ Hosackia gracilis,677,12.7,12.7,11.5,14.4,1020,1000,573,1460
 Hypochaeris glabra,1974,15.6,16.2,12.8,17.5,579,485,291,1150
 Hypochaeris radicata,1183,13.6,13.3,11.5,16.8,911,795,472,1830
 Iris douglasiana,3366,12.8,12.9,11.5,14,985,907,585,1830
-Isolepis carinata,64,14,13.8,12.2,16.9,914,916,439,1480
 Juncus bufonius,2171,14.5,15.4,7.55,17.8,660,526,292,1660
 Juncus occidentalis,403,12.6,13.5,6.05,17.1,1100,909,474,2040
 Juncus phaeocephalus,364,14.2,14.4,11.6,17.3,648,572,337,1120
@@ -192,17 +181,12 @@ Lasthenia gracilis,1941,15.8,16.1,13.2,17.9,426,377,258,788
 Lasthenia minor,111,15.7,16.1,12.7,19.5,474,429,184,981
 Lathyrus vestitus,8683,14.9,15.1,12.2,17.1,598,528,313,1110
 Layia platyglossa,4009,14.8,14.4,12.8,17.4,574,522,272,959
-Layia septentrionalis,74,15.6,15.5,13.6,17.3,967,948,743,1270
 Lepidium dictyotum,457,17.1,17.3,14.9,19,357,332,186,602
 Lepidium nitidum,3316,15.7,16.2,13.1,18,568,508,269,1160
-Leptosiphon acicularis,34,15.2,15.2,12.8,17.7,1050,1040,557,1600
 Leptosiphon bicolor,1019,14.8,15,11.5,17.6,862,820,322,1590
 Leptosiphon ciliatus,1888,10.1,9.75,4.09,17.1,1060,1090,467,1660
-Leptosiphon jepsonii,14,15,14.6,14.5,16.2,1020,1040,837,1120
-Leptosiphon latisectus,56,13.7,13.9,10.5,16.4,1290,980,724,2420
 Leptosiphon liniflorus,759,15,15.1,12,17.8,497,468,245,831
 Leptosiphon parviflorus,1505,13.9,13.8,11.8,16.6,663,589,350,1090
-Lessingia ramulosa,83,15,15,13.4,16.7,987,965,668,1240
 Linanthus dichotomus,572,14.7,14.9,10.7,17.8,649,495,259,1280
 Linum bienne,1620,13.3,13.3,11.7,15.6,961,890,663,1530
 Lithophragma heterophyllum,1776,13.6,13.9,12,16,862,829,491,1320
@@ -227,7 +211,6 @@ Madia gracilis,2495,13.3,13.9,7.45,16.7,895,758,367,1960
 Madia sativa,1431,13.5,13.4,12.2,15.6,799,745,482,1240
 Malacothrix coulteri,376,16.7,16.8,14.8,19.3,279,267,180,399
 Marah fabacea,4957,14.1,13.8,12.5,17,715,705,435,1080
-Matricaria discoidea,33,15.3,16.6,8.83,19.4,506,395,181,1130
 Medicago lupulina,1400,15.1,15.9,9.95,18.1,646,536,300,1520
 Medicago polymorpha,5320,15.7,16.3,13,17.8,560,510,282,1080
 Melica californica,797,14.6,15,10.8,17.4,857,767,340,1770
@@ -239,10 +222,8 @@ Microseris elegans,101,16,16.2,13.8,18.2,455,409,267,812
 Microsteris gracilis,1871,12,12.8,5.85,17,862,692,335,1960
 Minuartia californica,174,15,15.4,11.6,18.2,911,888,460,1410
 Minuartia douglasii,637,13.6,13.9,9.05,17.1,911,695,339,2100
-Monolopia congdonii,41,17.4,17.5,16.4,18.9,256,229,176,338
 Monolopia lanceolata,708,16.1,16.3,13.9,18,307,293,214,468
 Muilla maritima,1682,14.8,14.9,11.6,17.5,517,490,293,806
-Navarretia jepsonii,1,16,16,16,16,870,870,870,870
 Navarretia pubescens,848,15.4,15.6,12.7,18,734,701,351,1250
 Navarretia tagetina,292,16.2,16.6,12.8,18.3,891,877,549,1320
 Nemophila heterophylla,1960,14.5,14.4,12.2,17.1,949,936,520,1590
@@ -250,7 +231,6 @@ Nemophila menziesii,6324,14.5,14.4,11.7,17.3,710,596,311,1350
 Nemophila pedunculata,562,13.4,13.9,7.46,17.7,762,652,342,1440
 Oxalis pes-caprae,11241,15,14.6,12.9,17.7,579,568,276,916
 Oxalis pilosa,253,14.7,14.9,12.1,17.3,654,595,314,1140
-Panicum acuminatum,67,13.1,14.1,5.43,17.3,1180,1160,506,2060
 Pectocarya penicillata,806,15.7,16,12.9,18,430,411,275,639
 Pectocarya pusilla,213,14.6,14.6,11.5,17.8,1010,960,573,1730
 Perideridia gairdneri,157,10.6,12,3.61,15.5,1210,1070,516,2780
@@ -275,7 +255,6 @@ Polypogon monspeliensis,2981,15.6,16.4,12.4,17.9,533,456,272,1140
 Primula hendersonii,4796,13.9,13.9,11.4,16.4,920,884,500,1550
 Pseudognaphalium californicum,4912,15.6,16.4,12.7,17.5,509,460,288,935
 Pseudognaphalium canescens,132,14.9,16.1,8.46,17.5,519,470,300,961
-Pseudognaphalium luteoalbum,256,16,16.5,12.9,18.1,530,500,300,893
 Quercus agrifolia,17641,15.2,15,12.8,17.7,580,532,317,1020
 Quercus douglasii,3224,15.3,15.2,13.4,17.5,708,654,369,1210
 Quercus durata,2204,14.4,14.3,12.1,16.9,861,806,455,1410
@@ -298,10 +277,8 @@ Sanicula bipinnatifida,4018,14.4,14.2,12.4,17,793,758,354,1350
 Sanicula crassicaulis,4458,14.2,14.1,11.9,16.9,785,742,333,1430
 Scandix pecten-veneris,1040,14.4,14.2,12.7,17,825,794,489,1290
 Schismus arabicus,276,15.9,15.8,13.1,19.1,356,349,195,594
-Scorzoneroides autumnalis,1,14.4,14.4,14.4,14.4,618,618,618,618
 Scutellaria siphocampyloides,673,12.3,12.1,8.55,17.2,735,590,361,1490
 Selaginella bigelovii,2579,15.8,16.3,13.3,17.5,455,434,298,688
-Senecio eurycephalus,16,14.5,15.1,12,17.2,1180,1190,753,1660
 Senecio vulgaris,2887,15.6,16.2,12.9,18,604,540,286,1190
 Sherardia arvensis,1324,14.8,14.2,12.1,17.9,821,781,322,1500
 Sidalcea diploscypha,500,14.6,14.2,13.4,17.7,905,814,525,1380
@@ -322,7 +299,6 @@ Stephanomeria pauciflora,254,15.5,16,10.4,18.6,401,380,248,656
 Stipa pulchra,1749,15.2,15.3,12.9,17.4,601,549,279,1110
 Taraxia ovata,4023,13.5,13.5,12.5,15.1,820,803,503,1140
 Tetrapteron graciliflorum,307,14.9,15,12.7,17.5,554,504,308,986
-Tetrapteron palmeri,38,14.5,14.3,12.8,16.2,372,390,272,429
 Thermopsis macrophylla,159,12,12.1,8.25,15.5,1280,742,567,2900
 Thysanocarpus curvipes,2285,14.9,15.3,11.8,17.7,729,600,307,1400
 Thysanocarpus laciniatus,1034,15.4,15.6,13.1,17.3,479,465,275,694
@@ -372,7 +348,3 @@ Viola pedunculata,4739,14.8,14.6,12.8,17,540,522,314,844
 Wyethia angustifolia,2088,13.4,13.6,11.1,15.7,929,866,563,1520
 Wyethia glabra,923,13.9,13.9,12.6,16,871,865,521,1180
 Zeltnera davyi,287,14,13.7,12.6,15.7,604,553,395,918
-Zeltnera trichanta,13,15.9,15.9,12.9,18,840,848,480,1270
-Avena DUMMY,NA,15.7,16.3,12.6,17.8,557,494,279,1140
-Festuca DUMMY,NA,14.9,15.3,11.3,17.8,705,577,296,1570
-Hypochaeris DUMMY,NA,14.6,14.7,12.1,17.1,745,640,382,1490
