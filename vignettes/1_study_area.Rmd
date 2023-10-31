@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
   cache = T,
   comment = "#>",
   fig.width = 8,
-  fig.height = 8
+  fig.height = 8,
+  dpi = 300
 )
 ```
 
@@ -37,6 +38,7 @@ sf_cfp <- read_cfp(path_cfp = path_cfp)
 sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 sf_cfp %>% plot()
 ```
+
 Second, the CFP's grassland cover from Sentinel-2.
 
 ```{r, eval=F}
