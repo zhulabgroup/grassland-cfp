@@ -30,20 +30,20 @@ Statistically test species climate trait (temperature or precipitation) change u
 
 ```{r}
 df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
-df_trait_change_obs %>% 
+df_trait_change_obs %>%
   mutate(
-    estimate = estimate %>% signif(3) %>% round(6) ,
-    std.error = std.error %>% signif(3) %>% round(6),
-    p.value = p.value %>% round(4)
-  ) %>% 
-  knitr::kable()
-df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = "exp")
-df_trait_change_exp %>% 
-   mutate(
     estimate = estimate %>% signif(3) %>% round(6),
     std.error = std.error %>% signif(3) %>% round(6),
     p.value = p.value %>% round(4)
-  ) %>% 
+  ) %>%
+  knitr::kable()
+df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = "exp")
+df_trait_change_exp %>%
+  mutate(
+    estimate = estimate %>% signif(3) %>% round(6),
+    std.error = std.error %>% signif(3) %>% round(6),
+    p.value = p.value %>% round(4)
+  ) %>%
   knitr::kable()
 df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs")
 ```
@@ -81,16 +81,16 @@ Statistically test CTI and CPI changes using LM or LME.
 
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
-df_index_change_obs  %>% 
-   mutate(
+df_index_change_obs %>%
+  mutate(
     estimate = estimate %>% signif(3),
     std.error = std.error %>% signif(3),
     p.value = p.value %>% round(4)
-  ) %>% 
-knitr::kable()
+  ) %>%
+  knitr::kable()
 df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
-df_index_change_exp  %>% 
-   mutate(
+df_index_change_exp %>%
+  mutate(
     estimate = estimate %>% signif(3),
     std.error = std.error %>% signif(3),
     p.value = p.value %>% round(4)

@@ -28,11 +28,16 @@ theme_set(ggthemes::theme_few())
 
 ```{r}
 spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
-ls_sp <- spp_tbl %>% pull(consolidated_name) %>% unique() %>% sort()
+ls_sp <- spp_tbl %>%
+  pull(consolidated_name) %>%
+  unique() %>%
+  sort()
 ```
+
 We identified `r ls_sp %>% length()` consolidated species from the community data.
 
 Download biogeography (occurrence) data from four sources: BIEN, CCH, GBIF, iNat.
+
 ```{r, eval=F}
 path_occ <- down_biogeography(species_table = spp_tbl) # needs parallel computation
 dat_occ_full <- read_biogeography(path_occ = path_occ, gbif_only = F)
@@ -162,6 +167,7 @@ path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, opt
 ```{r}
 dat_trait_thin <- calc_trait_thin(path_occ_thin = NULL, dat_trait, option = "spatial")
 ```
+
 After spatial thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_trait_thin)` records.
 
 ```{r}
@@ -171,6 +177,7 @@ gg_niche_thin
 ```
 
 Compare estimates of species climate niche by climate thinning occurrence records.
+
 ```{r, eval = F}
 path_occ_thin_clim <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "climate", num_cores = 4) # slow
 ```
@@ -178,6 +185,7 @@ path_occ_thin_clim <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait
 ```{r}
 dat_trait_thin_clim <- calc_trait_thin(path_occ_thin = NULL, dat_trait, option = "climate")
 ```
+
 After climate thinning, `r nrow(dat_trait)` records were reduced to `r nrow(dat_trait_thin_clim)` records.
 
 ```{r}
@@ -187,6 +195,7 @@ gg_niche_thin_clim
 ```
 
 Get early GBIF data from 1961 to 1990.
+
 ```{r, eval=F}
 spp_tbl <- tidy_taxonomy_consolidate(dat_community = dat_community)
 path_occ_early <- down_biogeography(species_table = spp_tbl, start_year = 1961, end_year = 1990, postfix = "early", gbif_only = T) # needs parallel computation

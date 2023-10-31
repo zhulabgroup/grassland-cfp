@@ -25,6 +25,7 @@ theme_set(ggthemes::theme_few())
 ```
 
 Load community composition data (experimental and observational).
+
 ```{r}
 dat_community
 ```
@@ -35,7 +36,8 @@ dat_occ$gbif
 dat_trait
 ```
 
-Calculate species niche and plot
+Calculate species niche and plot.
+
 ```{r, eval = F}
 dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 ```
@@ -53,7 +55,7 @@ gg_species_niche <- plot_species_niche(dat_niche,
 gg_species_niche
 ```
 
-Calculate CTI CPI in observations and experiments and plot
+Calculate CTI CPI in observations and experiments and plot.
 
 ```{r}
 dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
@@ -63,7 +65,8 @@ gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_i
 gg_community_index_exp
 ```
 
-Statistical test of trait change using lme
+Statistical test of trait change using LME.
+
 ```{r}
 df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
 df_trait_change_obs %>% knitr::kable()
@@ -71,7 +74,8 @@ df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = 
 df_trait_change_exp %>% knitr::kable()
 ```
 
-Statistical test of index change using lm or lme
+Statistical test of index change using LM or LME.
+
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
 df_index_change_obs %>% knitr::kable()
@@ -79,7 +83,8 @@ df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
 df_index_change_exp %>% knitr::kable()
 ```
 
-Analysis of species contributing to CTI CPI change
+Analysis of species contributing to CTI CPI change.
+
 ```{r, eval = F}
 dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
 ```
@@ -90,7 +95,8 @@ gg_species_gainloss$obs$circle_detail
 gg_species_gainloss$exp$circle_detail
 ```
 
-Synthesize coupled CTI CPI change
+Synthesize coupled CTI CPI change.
+
 ```{r, eval = F}
 dat_shift <- calc_community_shift(dat_index = dat_index)
 ```

@@ -68,7 +68,7 @@ summ_site_hull <- summ_site_obs(sf_site = sf_site_obs, dat_clim = dat_clim$chels
 
 These observational sites spanned a large geographical area (`r df_summ_site_latlon$lon_max %>% signif(3) %>% abs()` - `r df_summ_site_latlon$lon_min %>% signif(3) %>% abs()` °W, `r df_summ_site_latlon$lat_min %>% signif(3) %>% abs()` - `r df_summ_site_latlon$lat_max %>% signif(3) %>% abs()` °N) and climate gradient (`r df_summ_site_clim$tmp_min %>% signif(3)`  - `r df_summ_site_clim$tmp_max %>% signif(3)` °C temperature, `r df_summ_site_clim$ppt_min %>% signif(3)` - `r df_summ_site_clim$ppt_max %>% signif(3)` mm precipitation).
 
-These observational sites spanned an approximately `r summ_site_hull %>% signif(1) %>% format(big.mark = ",")` km^2 geographical area.
+These observational sites spanned an approximately `r summ_site_hull %>% signif(1) %>% format(big.mark = ",")` km^2^ geographical area.
 
 ```{r, eval = F}
 path_climate_site_annual <- calc_climate_annual_site()
@@ -107,8 +107,10 @@ The experiment occupied ~0.75 ha within a 5-ha grassland stand and experienced a
 Output figures and R data files.
 
 ```{r, eval = F}
-save_figure(out = list(data_avail = gg_data_avail, 
-                       site_cc = gg_site_cc))
+save_figure(out = list(
+  data_avail = gg_data_avail,
+  site_cc = gg_site_cc
+))
 
 save_extdata(out = list("alldata/input/basemap/site_info.csv"))
 ```

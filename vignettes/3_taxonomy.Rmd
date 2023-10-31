@@ -35,7 +35,9 @@ f_species_tidy <- tidy_taxonomy_list(dat_community_tidy)
 Manually correct misspelling species names based on expert opinions (Josie and Justin).
 
 ```{r}
-read_csv("alldata/input/community/species/misspelling.csv") %>% head(20) %>% knitr::kable() 
+read_csv("alldata/input/community/species/misspelling.csv") %>%
+  head(20) %>%
+  knitr::kable()
 ```
 
 Rename species.
@@ -52,7 +54,9 @@ dat_community
 Manually consolidate species based on expert opinions (Josie and Justin), where old species names are later used for querying biogeography data and new species names (consolidated names) are used in this analysis.
 
 ```{r}
-read_csv("alldata/input/community/species/consolidation.csv") %>% head(20) %>% knitr::kable()
+read_csv("alldata/input/community/species/consolidation.csv") %>%
+  head(20) %>%
+  knitr::kable()
 ```
 
 Output figures and R data files.
