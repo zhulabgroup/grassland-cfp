@@ -17,6 +17,8 @@ Steps to generate vignettes:
 devtools::install(build_vignettes = F, build = F)
 ```
 
+Manually knit individual vignettes (or only the ones with changes) from project directory. Vignettes are set to be cached. Manually clear cache if needed (if changes are made outside the markdown files).
+
 ```R
 library(grassland)
 ```
