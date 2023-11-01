@@ -35,4 +35,4 @@ devtools::install(build_vignettes = T, build = F)
 browseVignettes("grassland")
 ```
 
-Required packages: ***
+Required packages are included in the [DESCRIPTION](https://github.com/zhulabgroup/grassland/blob/5dd3b55c63894f3bd72a163f3e8c948342af0f99/DESCRIPTION) file.
