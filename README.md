@@ -13,26 +13,26 @@ Suffix can be used to refer to a subset on that level.
 
 Steps to generate vignettes:
 
+1. Install the package.
+
 ```R
-devtools::install(build_vignettes = F, build = F)
+devtools::install(build_vignettes = FALSE, build = FALSE)
 ```
 
-Manually knit individual vignettes (or only the ones with changes) from project directory. Vignettes are set to be cached. Manually clear cache if needed (if changes are made outside the markdown files).
+2. Manually knit individual vignettes (or only the ones with changes) from project directory. Vignettes are set to be cached. Manually clear cache if needed (if changes are made outside the markdown files).
 
 ```R
 library(grassland)
+build_vignettes_to_inst(clean = FALSE)
+devtools::install(build_vignettes = TRUE, build = FALSE)
 ```
 
-```R
-build_vignettes_to_inst(clean = F)
-```
+3. View these vignettes using different methods.
 
 ```R
-devtools::install(build_vignettes = T, build = F)
-```
-
-```R
-browseVignettes("grassland")
+browseVignettes(package = "grassland")
+help(package = "grassland")
+vignette(package = "grassland")
 ```
 
 Required packages are included in the [DESCRIPTION](https://github.com/zhulabgroup/grassland/blob/5dd3b55c63894f3bd72a163f3e8c948342af0f99/DESCRIPTION) file.
