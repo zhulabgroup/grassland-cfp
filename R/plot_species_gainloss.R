@@ -1,5 +1,5 @@
-plot_species_gainloss <- function(dat_niche, dat_gainloss) {
-  p_obs <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche)
+plot_species_gainloss <- function(dat_niche, dat_gainloss, nrow = 3) {
+  p_obs <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = nrow)
   p_exp <- plot_species_gainloss_exp(exp_tbl = dat_gainloss$exp, dat_niche)
 
   p_combined <-
@@ -23,28 +23,33 @@ plot_species_gainloss <- function(dat_niche, dat_gainloss) {
   return(out)
 }
 
-plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
+plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow = 3) {
+  if (!is.null(onesite)) {
+    obs_tbl <- obs_tbl %>%
+      filter(site == onesite)
+  }
+
   obs_gainloss_tbl <- obs_tbl %>%
     mutate(species_sep = str_split(species, pattern = " ")) %>%
     rowwise() %>%
     mutate(species_short = str_c(str_sub(species_sep[1], 1, 3), str_sub(species_sep[2], 1, 3))) %>%
     select(-species_sep)
 
-  obs_gainloss_eg1 <- obs_gainloss_tbl %>%
-    group_by(species, change) %>%
-    summarize(n = n()) %>%
-    filter(change != "no clear change") %>%
-    group_by(change) %>%
-    arrange(desc(n)) %>%
-    slice(1)
-
-  obs_gainloss_eg2 <- obs_gainloss_tbl %>%
-    group_by(species, complete_change) %>%
-    summarize(n = n()) %>%
-    filter(!is.na(complete_change)) %>%
-    group_by(complete_change) %>%
-    arrange(desc(n)) %>%
-    slice(1)
+  # obs_gainloss_eg1 <- obs_gainloss_tbl %>%
+  #   group_by(species, change) %>%
+  #   summarize(n = n()) %>%
+  #   filter(change != "no clear change") %>%
+  #   group_by(change) %>%
+  #   arrange(desc(n)) %>%
+  #   slice(1)
+  #
+  # obs_gainloss_eg2 <- obs_gainloss_tbl %>%
+  #   group_by(species, complete_change) %>%
+  #   summarize(n = n()) %>%
+  #   filter(!is.na(complete_change)) %>%
+  #   group_by(complete_change) %>%
+  #   arrange(desc(n)) %>%
+  #   slice(1)
 
   obs_gainloss_tbl_long <- obs_gainloss_tbl %>%
     pivot_longer(cols = tmp:ppt, names_to = "variable", values_to = "value") %>%
@@ -136,7 +141,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
     ) +
     theme(axis.text = element_text(size = 8)) +
     facet_wrap(. ~ site %>% plot_site_name(with_letter = F),
-      nrow = 3
+      nrow = nrow
     ) +
     theme(strip.text = element_text(hjust = 0))
 
@@ -155,7 +160,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche) {
       parse = T
     ) +
     facet_wrap(. ~ site %>% plot_site_name(with_letter = F),
-      nrow = 3
+      nrow = nrow
     ) +
     theme(strip.text = element_text(hjust = 0))
 

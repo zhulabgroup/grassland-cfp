@@ -35,8 +35,43 @@ usethis::use_data(dat_gainloss, overwrite = T)
 ```
 
 ```{r}
+gg_gainloss_elkhorn1 <- plot_species_gainloss_obs(
+  obs_tbl = dat_gainloss$obs %>%
+    mutate(
+      change = "no clear change",
+      complete_change = NA
+    ),
+  dat_niche, onesite = "elkhorn"
+)$circle
+gg_gainloss_elkhorn2 <- plot_species_gainloss_obs(
+  obs_tbl = dat_gainloss$obs %>%
+    mutate(
+      change = if_else(change == "increase", "increase", "no clear change"),
+      complete_change = NA
+    ),
+  dat_niche, onesite = "elkhorn"
+)$circle
+gg_gainloss_elkhorn3 <- plot_species_gainloss_obs(
+  obs_tbl = dat_gainloss$obs %>%
+    mutate(
+      change = if_else(change == "increase", "increase", "no clear change"),
+      complete_change = if_else(complete_change == "new", "new", NA)
+    ),
+  dat_niche, onesite = "elkhorn"
+)$circle
+gg_gainloss_elkhorn4 <- plot_species_gainloss_obs(
+  obs_tbl = dat_gainloss$obs %>%
+    mutate(complete_change = if_else(complete_change == "new", "new", NA)),
+  dat_niche, onesite = "elkhorn"
+)$circle
+gg_gainloss_elkhorn5 <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, onesite = "elkhorn")$circle
+```
+
+```{r}
 gg_species_change <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
 gg_species_change$combined
+
+gg_species_change_obs_2row <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = 2)
 ```
 
 ```{r}
@@ -86,9 +121,22 @@ save_figure(out = list(
   species_change = gg_species_change$combined,
   species_change_obs = gg_species_change$obs$circle_detail,
   species_change_exp = gg_species_change$exp$circle_detail,
+  gainloss_elkhorn1 = gg_gainloss_elkhorn1,
+  gainloss_elkhorn2 = gg_gainloss_elkhorn2,
+  gainloss_elkhorn3 = gg_gainloss_elkhorn3,
+  gainloss_elkhorn4 = gg_gainloss_elkhorn4,
+  gainloss_elkhorn5 = gg_gainloss_elkhorn5,
+  species_change_obs_2row = gg_species_change_obs_2row$circle,
+  species_change_obs_2row_name = gg_species_change_obs_2row$circle_detail,
+  species_change_exp_small = gg_species_change$exp$circle,
+  species_change_obs_box = gg_species_change$obs$box,
+  species_change_exp_box = gg_species_change$exp$box,
   rank_abund_obs = gg_rank_abundance$obs,
   rank_abund_exp = gg_rank_abundance$exp,
-  community_shift = gg_community_shift$combined
+  community_shift = gg_community_shift$combined,
+  community_shift_pt1 = gg_community_shift$niche + gg_community_shift$compare + plot_annotation(tag_levels = "A"),
+  community_shift_pt2 = gg_community_shift$obs + plot_annotation(tag_levels = list("C")),
+  community_shift_pt3 = gg_community_shift$exp + plot_annotation(tag_levels = list("D"))
 ))
 
 save_table(out = list(

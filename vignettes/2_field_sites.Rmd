@@ -41,6 +41,8 @@ Read site information.
 
 ```{r}
 read_site_info() %>% knitr::kable()
+gg_site_map <- plot_site_map()
+gg_site_map
 ```
 
 Visualize data availability across sites.
@@ -88,7 +90,11 @@ df_cc_site %>%
   ) %>%
   knitr::kable()
 df_summ_site_cc <- summ_change(df_change = df_cc_site, option = "obs")
+df_summ_site_cc
+
 gg_site_cc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail)
+gg_site_cc
+gg_site_cc_landsc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail, layout = "landsc")
 ```
 
 Overall, the 12 observational sites had significant warming (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant drying (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "ppt") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
@@ -109,8 +115,10 @@ Output figures and R data files.
 
 ```{r, eval = F}
 save_figure(out = list(
+  site_map = gg_site_map,
   data_avail = gg_data_avail,
-  site_cc = gg_site_cc
+  site_cc = gg_site_cc,
+  site_cc_landsc = gg_site_cc_landsc
 ))
 
 save_extdata(out = list("alldata/input/basemap/site_info.csv"))

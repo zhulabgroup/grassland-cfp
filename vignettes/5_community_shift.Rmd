@@ -111,8 +111,16 @@ Plot the above comparisons and tests.
 ```{r}
 gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
 gg_community_index_obs
+gg_community_index_obs_landsc_2row <- plot_community_index(option = "obs", dat_index = dat_index, layout = "landsc", nrow = 2)
+gg_community_index_obs_landsc_3row <- plot_community_index(option = "obs", dat_index = dat_index, layout = "landsc", nrow = 3)
+
 gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index, experiment = "jrgce", treatment = "warming")
 gg_community_index_exp
+```
+
+```{r}
+gg_community_index_elkhorn <- plot_community_index(option = "obs", dat_index = dat_index, onesite = "elkhorn")
+gg_community_index_elkhorn
 ```
 
 Output figures and R data files.
@@ -122,6 +130,9 @@ save_figure(out = list(
   trait_change_obs = gg_trait_change_obs,
   trait_change_exp = gg_trait_change_exp,
   community_index_obs = gg_community_index_obs,
-  community_index_exp = gg_community_index_exp
+  community_index_exp = gg_community_index_exp,
+  community_index_obs_landsc_2row = gg_community_index_obs_landsc_2row,
+  community_index_obs_landsc_3row = gg_community_index_obs_landsc_3row,
+  community_index_elkhorn = gg_community_index_elkhorn
 ))
 ```

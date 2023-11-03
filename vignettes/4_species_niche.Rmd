@@ -229,6 +229,8 @@ Output figures and R data files.
 save_figure(out = list(
   biogeography = gg_biogeography,
   niche = gg_niche$combined,
+  niche_pt1 = gg_niche$occ_geo + gg_niche$ind_trait,
+  niche_pt2 = gg_niche$sp_niche,
   niche_cool = gg_individual_trait_species_niche_cool,
   niche_warm = gg_individual_trait_species_niche_warm,
   clim_source = gg_climate_source,
