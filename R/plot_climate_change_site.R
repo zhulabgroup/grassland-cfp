@@ -1,31 +1,40 @@
-plot_site_climate_change <- function(dat_clim_site, dat_avail) {
+plot_site_climate_change <- function(dat_clim_site, dat_avail, layout = NULL) {
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
   ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
 
   site_map_gg <- plot_site_map(sf_cfp, ras_grass)
 
-  site_clim_gg <-
-    site_map_gg +
-    plot_site_cc(dat_clim_site, dat_avail, "angelo", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
-    plot_site_cc(dat_clim_site, dat_avail, "carrizo") +
-    plot_site_cc(dat_clim_site, dat_avail, "elkhorn", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
-    plot_site_cc(dat_clim_site, dat_avail, "jasper") +
-    plot_site_cc(dat_clim_site, dat_avail, "mclann", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)") +
-    plot_site_cc(dat_clim_site, dat_avail, "mclserp") +
-    plot_site_cc(dat_clim_site, dat_avail, "morganterritory") +
-    plot_site_cc(dat_clim_site, dat_avail, "pleasantonridge") +
-    plot_site_cc(dat_clim_site, dat_avail, "sunol", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)", yr_axis = TRUE) +
-    plot_site_cc(dat_clim_site, dat_avail, "swanton", yr_axis = TRUE) +
-    plot_site_cc(dat_clim_site, dat_avail, "ucsc", yr_axis = TRUE) +
-    plot_site_cc(dat_clim_site, dat_avail, "vascocaves", yr_axis = TRUE) +
-    plot_layout(design = "
+  gg_cc_sites <- list(
+    plot_site_cc(dat_clim_site, dat_avail, "angelo", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)"),
+    plot_site_cc(dat_clim_site, dat_avail, "carrizo"),
+    plot_site_cc(dat_clim_site, dat_avail, "elkhorn", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)"),
+    plot_site_cc(dat_clim_site, dat_avail, "jasper"),
+    plot_site_cc(dat_clim_site, dat_avail, "mclann", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)"),
+    plot_site_cc(dat_clim_site, dat_avail, "mclserp"),
+    plot_site_cc(dat_clim_site, dat_avail, "morganterritory"),
+    plot_site_cc(dat_clim_site, dat_avail, "pleasantonridge"),
+    plot_site_cc(dat_clim_site, dat_avail, "sunol", tmp_lab = "Temperature (°C)", ppt_lab = "Precipitation (mm)", yr_axis = TRUE),
+    plot_site_cc(dat_clim_site, dat_avail, "swanton", yr_axis = TRUE),
+    plot_site_cc(dat_clim_site, dat_avail, "ucsc", yr_axis = TRUE),
+    plot_site_cc(dat_clim_site, dat_avail, "vascocaves", yr_axis = TRUE)
+  )
+
+  if (is.null(layout)) {
+    gg_cc <- site_map_gg +
+      gg_cc_sites +
+      plot_layout(design = "
   AABC
   AADE
   FGHI
   JKLM
 ")
+  } else if (layout == "landsc") {
+    gg_cc <-
+      wrap_plots(gg_cc_sites) +
+      plot_layout(nrow = 2)
+  }
 
-  return(site_clim_gg)
+  return(gg_cc)
 }
 
 

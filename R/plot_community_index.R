@@ -1,6 +1,6 @@
-plot_community_index <- function(option, dat_index, experiment = NULL, treatment = NULL) {
+plot_community_index <- function(option, dat_index, experiment = NULL, treatment = NULL, layout = NULL, nrow = NULL, onesite = NULL) {
   if (option == "obs") {
-    community_index_gg <- plot_community_index_obs(obs_tbl = dat_index$obs)
+    community_index_gg <- plot_community_index_obs(obs_tbl = dat_index$obs, layout = layout, nrow = nrow, onesite = onesite)
   }
   if (option == "exp") {
     community_index_gg <- plot_community_index_exp(exp_tbl = dat_index$exp, experiment = experiment, treatment = treatment)
@@ -9,11 +9,9 @@ plot_community_index <- function(option, dat_index, experiment = NULL, treatment
   return(community_index_gg)
 }
 
-plot_community_index_obs <- function(obs_tbl) {
-  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
-  ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
+plot_community_index_obs <- function(obs_tbl, layout = NULL, nrow = NULL, onesite = NULL) {
 
-  site_map_gg <- plot_site_map(sf_cfp, ras_grass)
+  site_map_gg <- plot_site_map(sf_cfp = NULL, ras_grass = NULL)
   # reshape data
   obs_idx_tbl <- obs_tbl %>%
     select(any_of(c("site", "year", "plot", "tmp_com_mean", "ppt_com_mean", "cwd_com_mean"))) %>%
@@ -32,47 +30,54 @@ plot_community_index_obs <- function(obs_tbl) {
 
   # apply plotting function, make individual panels, combine
   if (!"cwd_com_mean" %in% colnames(obs_tbl)) {
-    obs_gg <-
-      site_map_gg +
-      plot_cwm(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-      plot_cwm(obs_idx_tbl, "carrizo") +
-      plot_cwm(obs_idx_tbl, "elkhorn", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-      plot_cwm(obs_idx_tbl, "jasper") +
-      plot_cwm(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)") +
-      plot_cwm(obs_idx_tbl, "mclserp") +
-      plot_cwm(obs_idx_tbl, "morganterritory") +
-      plot_cwm(obs_idx_tbl, "pleasantonridge") +
-      plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", yr_axis = TRUE) +
-      plot_cwm(obs_idx_tbl, "swanton", yr_axis = TRUE) +
-      plot_cwm(obs_idx_tbl, "ucsc", yr_axis = TRUE) +
-      plot_cwm(obs_idx_tbl, "vascocaves", yr_axis = TRUE) +
-      plot_layout(design = "
-  AABC
-  AADE
-  FGHI
-  JKLM
-")
+    obs_gg_sites <- list(
+      plot_cwm(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"),
+      plot_cwm(obs_idx_tbl, "carrizo"),
+      plot_cwm(obs_idx_tbl, "elkhorn", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"),
+      plot_cwm(obs_idx_tbl, "jasper"),
+      plot_cwm(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)"),
+      plot_cwm(obs_idx_tbl, "mclserp"),
+      plot_cwm(obs_idx_tbl, "morganterritory"),
+      plot_cwm(obs_idx_tbl, "pleasantonridge"),
+      plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", yr_axis = TRUE),
+      plot_cwm(obs_idx_tbl, "swanton", yr_axis = TRUE),
+      plot_cwm(obs_idx_tbl, "ucsc", yr_axis = TRUE),
+      plot_cwm(obs_idx_tbl, "vascocaves", yr_axis = TRUE)
+    )
   } else {
+    obs_gg_sites <- list(
+      plot_cwm(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)"),
+      plot_cwm(obs_idx_tbl, "carrizo"),
+      plot_cwm(obs_idx_tbl, "elkhorn", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)"),
+      plot_cwm(obs_idx_tbl, "jasper"),
+      plot_cwm(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)"),
+      plot_cwm(obs_idx_tbl, "mclserp"),
+      plot_cwm(obs_idx_tbl, "morganterritory"),
+      plot_cwm(obs_idx_tbl, "pleasantonridge"),
+      plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)", yr_axis = TRUE),
+      plot_cwm(obs_idx_tbl, "swanton", yr_axis = TRUE),
+      plot_cwm(obs_idx_tbl, "ucsc", yr_axis = TRUE),
+      plot_cwm(obs_idx_tbl, "vascocaves", yr_axis = TRUE)
+    )
+  }
+  if (is.null(layout)) {
     obs_gg <-
       site_map_gg +
-      plot_cwm(obs_idx_tbl, "angelo", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)") +
-      plot_cwm(obs_idx_tbl, "carrizo") +
-      plot_cwm(obs_idx_tbl, "elkhorn", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)") +
-      plot_cwm(obs_idx_tbl, "jasper") +
-      plot_cwm(obs_idx_tbl, "mclann", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)") +
-      plot_cwm(obs_idx_tbl, "mclserp") +
-      plot_cwm(obs_idx_tbl, "morganterritory") +
-      plot_cwm(obs_idx_tbl, "pleasantonridge") +
-      plot_cwm(obs_idx_tbl, "sunol", cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)", cdi_lab = "CDI (mm)", yr_axis = TRUE) +
-      plot_cwm(obs_idx_tbl, "swanton", yr_axis = TRUE) +
-      plot_cwm(obs_idx_tbl, "ucsc", yr_axis = TRUE) +
-      plot_cwm(obs_idx_tbl, "vascocaves", yr_axis = TRUE) +
+      obs_gg_sites +
       plot_layout(design = "
-  AABC
-  AADE
-  FGHI
-  JKLM
-")
+          AABC
+          AADE
+          FGHI
+          JKLM
+        ")
+  } else if (layout == "landsc") {
+    obs_gg <-
+      wrap_plots(obs_gg_sites) +
+      plot_layout(nrow = nrow)
+  }
+
+  if (!is.null(onesite)) {
+    obs_gg <- plot_cwm(obs_idx_tbl, site_name = onesite, cti_lab = "CTI (°C)", cpi_lab = "CPI (mm)",yr_axis = TRUE)
   }
 
   return(obs_gg)

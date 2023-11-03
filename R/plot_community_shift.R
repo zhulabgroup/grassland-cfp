@@ -14,7 +14,6 @@ plot_community_shift <- function(dat_shift, dat_niche) {
   AABB
   CCCC
   CCCC
-  CCCC
   DDDD
   ")
 
