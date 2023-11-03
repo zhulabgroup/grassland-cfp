@@ -94,7 +94,7 @@ df_summ_site_cc
 
 gg_site_cc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail)
 gg_site_cc
-gg_site_cc_landsc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail, layout = "landsc")
+gg_site_cc_landsc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail, layout = "landsc", nrow = 2)
 ```
 
 Overall, the 12 observational sites had significant warming (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant drying (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "ppt") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 

@@ -57,8 +57,6 @@ Plot community CWD index in comparison to CTI and CPI.
 ```{r}
 gg_community_index_obs_cwd <- plot_community_index(option = "obs", dat_index = dat_index_cwd)
 gg_community_index_obs_cwd
-gg_community_index_obs_cwd_landsc <- plot_community_index(option = "obs", dat_index = dat_index_cwd, layout = "landsc")
-# gg_community_index_obs_cwd_landsc
 
 gg_community_index_exp_cwd <- plot_community_index(option = "exp", dat_index = dat_index_cwd, experiment = "jrgce", treatment = "warming")
 gg_community_index_exp_cwd
@@ -70,7 +68,6 @@ Output figures and R data files.
 save_figure(out = list(
   trait_cwd = gg_trait_cwd,
   community_index_obs_cwd = gg_community_index_obs_cwd,
-  community_index_obs_cwd_landsc = gg_community_index_obs_cwd_landsc,
   community_index_exp_cwd = gg_community_index_exp_cwd
 ))
 ```
