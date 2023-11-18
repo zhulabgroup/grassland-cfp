@@ -120,17 +120,23 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
         size = dominance,
         color = change
       ), alpha = 1, pch = 21, fill = NA
-    ) +
-    geom_point(
-      data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
-      aes(
-        x = tmp,
-        y = ppt,
-        size = dominance,
-        color = change,
-        fill = complete_change,
-      ), alpha = 0.75, pch = 21
-    ) +
+    )
+
+  if ( obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% nrow()>0) {
+    obs_gainloss_main_gg <- obs_gainloss_main_gg+
+      geom_point(
+        data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
+        aes(
+          x = tmp,
+          y = ppt,
+          size = dominance,
+          color = change,
+          fill = complete_change,
+        ), alpha = 0.75, pch = 21
+      )
+  }
+
+  obs_gainloss_main_gg <- obs_gainloss_main_gg +
     scale_color_manual(values = c(increase = "dark green", `no clear change` = "lightgray", decrease = "dark orange")) +
     scale_fill_manual(values = c(new = "dark green", lost = "dark orange")) +
     labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
@@ -145,24 +151,24 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
     ) +
     theme(strip.text = element_text(hjust = 0))
 
-  obs_gainloss_supp_gg <- obs_gainloss_main_gg +
-    ggrepel::geom_text_repel(
-      data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
-      aes(
-        x = tmp,
-        y = ppt,
-        color = change,
-        label = paste0("italic('", species_short, "')")
-      ),
-      size = 3.88 / 1.68,
-      alpha = 1,
-      max.overlaps = 100,
-      parse = T
-    ) +
-    facet_wrap(. ~ site %>% plot_site_name(with_letter = F),
-      nrow = nrow
-    ) +
-    theme(strip.text = element_text(hjust = 0))
+  if ( obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% nrow()>0) {
+    obs_gainloss_supp_gg <- obs_gainloss_main_gg +
+      ggrepel::geom_text_repel(
+        data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
+        aes(
+          x = tmp,
+          y = ppt,
+          color = change,
+          label = paste0("italic('", species_short, "')")
+        ),
+        size = 3.88 / 1.68,
+        alpha = 1,
+        max.overlaps = 100,
+        parse = T
+      )
+  } else {
+    obs_gainloss_supp_gg <- obs_gainloss_main_gg
+  }
 
   out <- list(
     box = obs_gainloss_summ_gg,

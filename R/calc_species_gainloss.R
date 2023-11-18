@@ -27,7 +27,7 @@ calc_species_gainloss_obs <- function(com_obs, dat_niche) {
         by = c("year", "plot")
       ) %>%
       mutate(rel_abun = abund / total) %>%
-      select(year, plot, species, abund) %>%
+      select(year, plot, species, abund) %>% # note: did not use rel_abun
       spread(key = "species", value = "abund") %>%
       mutate_if(is.numeric, ~ replace_na(., 0)) %>%
       gather(key = "species", value = "abund", -year, -plot) %>%
@@ -47,7 +47,6 @@ calc_species_gainloss_obs <- function(com_obs, dat_niche) {
         TRUE ~ "no clear change"
       )) %>%
       ungroup()
-
 
     df_dominance <- com_obs %>%
       filter(site == siteoi) %>%
@@ -118,7 +117,7 @@ calc_species_gainloss_exp <- function(com_exp, dat_niche) {
         by = c("treat_T", "plot")
       ) %>%
       mutate(rel_abun = abund / total) %>%
-      select(plot, treat_T, species, abund) %>%
+      select(plot, treat_T, species, abund) %>% # note: did not use rel_abun
       spread(key = "species", value = "abund") %>%
       mutate_if(is.numeric, ~ replace_na(., 0)) %>%
       gather(key = "species", value = "abund", -treat_T, -plot) %>%
