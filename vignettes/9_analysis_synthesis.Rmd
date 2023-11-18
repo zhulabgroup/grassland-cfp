@@ -34,7 +34,7 @@ dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche =
 usethis::use_data(dat_gainloss, overwrite = T)
 ```
 
-```{r}
+```{r, eval = F}
 gg_gainloss_elkhorn1 <- plot_species_gainloss_obs(
   obs_tbl = dat_gainloss$obs %>%
     mutate(
@@ -70,8 +70,11 @@ gg_gainloss_elkhorn5 <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, da
 ```{r}
 gg_species_change <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
 gg_species_change$combined
+```
 
+```{r, eval = F}
 gg_species_change_obs_2row <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = 2)
+path_animate_gainloss <- plot_species_gainloss_animate (dat_community, dat_gainloss, dat_niche)
 ```
 
 ```{r}

@@ -33,7 +33,8 @@ Imports:
     vegan, 
     viridis,
     parallel,
-    doSNOW
+    doSNOW,
+    gganimate
 Remotes:
     git::https://github.com/ropensci/rnaturalearthhires.git
 Suggests: 
