@@ -1,17 +1,17 @@
 site,site_name,latitude,longitude,grass_type,data_method
-angelo,Angelo Coast,39 43 02.5,-123 39 11.1,Coastal prairie,Cover in 30×0.09-m2 quadrats
-carrizo,Carrizo Plain,35 11 20.6,-119 51 45.2,Valley,"9×9 point-intercepts in 1-m2 quadrats, first species hit"
-elkhorn,Elkhorn Slough,36 52 02.4,-121 44 27.5,Coastal prairie,5×5 point-intercepts in 0.25-m2 quadrats; each species recorded only once at each sample point
+angelo,Angelo Coast,39 43 02.5,-123 39 11.1,Coastal prairie,Cover in 30Ã—0.09-m2 quadrats
+carrizo,Carrizo Plain,35 11 20.6,-119 51 45.2,Valley,"9Ã—9 point-intercepts in 1-m2 quadrats, first species hit"
+elkhorn,Elkhorn Slough,36 52 02.4,-121 44 27.5,Coastal prairie,5Ã—5 point-intercepts in 0.25-m2 quadrats; each species recorded only once at each sample point
 jasper,Jasper Ridge,37 24 22.4,-122 14 31.8,Serpentine,Cover in 1-m2 quadrats
-jrgce,Jasper Ridge Global Change Experiment,37 24 22.4,-122 14 31.8,???,Point intercept (?)
+jrgce,Jasper Ridge Global Change Experiment,37 24 22.4,-122 14 31.8,Valley,Point intercept
 mclann,McLaughlin Annual,38 52 11.2,-122 25 15.6,Valley,Cover in 1-m2 quadrats
 mclserp,McLaughlin Serpentine,38 52 11.2,-122 25 15.6,Serpentine,Cover in 1-m2 quadrats
 morganterritory,Morgan Territory,37 49 5.92,-121 47 45.18,Valley,70 point-intercepts along four 17-m transects; tallest species only
 pleasantonridge,Pleasanton Ridge,37 36 55.47384,-121 53 4.4142,Valley,70 point-intercepts along four 17-m transects; tallest species only
-scide,IDE Arboretum,36 58 38.856,-122 03 8.136,???,???
-scide,IDE Marshall Field,37 0 57,-122 4 45,???,???
-scide,IDE Younger Lagoon,36 57 0,-122 4 0,???,???
+scide,IDE Arboretum,36 58 38.856,-122 03 8.136,Coastal prairie,Cover in 4-m2 plots
+scide,IDE Marshall Field,37 0 57,-122 4 45,Coastal prairie,Cover in 4-m2 plots
+scide,IDE Younger Lagoon,36 57 0,-122 4 0,Coastal prairie,Cover in 4-m2 plots
 sunol,Sunol,37 30 36.66,-121 49 42.78,Valley,70 point-intercepts along four 17-m transects; tallest species only
-swanton,Swanton Ranch,37 02 43.1,-122 13 16.1,Coastal prairie,5×5 point-intercepts in 0.25-m2 quadrats; each species recorded only once at each sample point
-ucsc,UC Santa Cruz,36 59 11.1,-122 03 09.2,Coastal prairie,5×5 point-intercepts in 0.25-m2 quadrats; each species recorded only once at each sample point
+swanton,Swanton Ranch,37 02 43.1,-122 13 16.1,Coastal prairie,5Ã—5 point-intercepts in 0.25-m2 quadrats; each species recorded only once at each sample point
+ucsc,UC Santa Cruz,36 59 11.1,-122 03 09.2,Coastal prairie,5Ã—5 point-intercepts in 0.25-m2 quadrats; each species recorded only once at each sample point
 vascocaves,Vasco Caves,37 48 18,-121 41 13.2,Valley,70 point-intercepts along four 17-m transects; tallest species only
