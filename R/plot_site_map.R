@@ -1,5 +1,20 @@
-# docu
-
+#' Plot Site Map
+#'
+#' This function reads and plots a map showing the grassland percentage cover,
+#' and optionally plots the sites with observed data.
+#'
+#' @param sf_cfp A simple feature object that contains the California Floristic Province data.
+#' By default, it reads the "cfp" file from the package's "extdata" directory.
+#' @param ras_grass A raster object that contains the grassland percent cover data.
+#' By default, it reads the "cfp-grassland-percent-cover.tif" file from the package's "extdata" directory.
+#' @param plotsite A boolean variable that decides whether to include sites in the plot. Default is TRUE.
+#'
+#' @return A ggplot object of the site map.
+#' @examples
+#' \dontrun{
+#' site_map <- plot_site_map()
+#' site_map
+#' }
 #' @export
 plot_site_map <- function(sf_cfp = NULL, ras_grass = NULL, plotsite = T) {
   if (is.null(sf_cfp)) {

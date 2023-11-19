@@ -1,5 +1,22 @@
-# docu
-
+#' Plot Community Index
+#'
+#' This function plots the changes in community indices including CTI and CPI over time at observational sites or under treatments in global change experiments.
+#'
+#' @param option A string to choose between two types of plots. It should be set to "obs" to plot changes over time at observational sites, or set of "exp" to plot changes under treatments in global change experiments.
+#' @param dat_index A list with calculated community indices for observations and experiments.
+#' @param experiment A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp".
+#' @param treatment A string indicating the specific treatment in the experiment to plot for. Only valid when "option" is set to "exp".
+#' @param layout A string indicating the layout of the observational plot, either "surround" to have all panels surrounding the site map, or "landsc" to have a simple landscape layout. Only valid when "option" is set to "obs".
+#' @param nrow An integer indicating the number of rows in the observational plot. Only valid when "option" is set to "obs" and "layout" is set to "landsc".
+#' @param onesite An optional parameter specifying a specific site to be plotted.
+#'
+#' @return A ggplot2 object of community index plot.
+#' @export
+#' @examples
+#' \dontrun{
+#' plot_community_index(option = "obs", dat_index, layout = "surround")
+#' plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "warming")
+#' }
 #' @export
 plot_community_index <- function(option, dat_index, experiment = NULL, treatment = NULL, layout = "surround", nrow = NULL,
                                  onesite = NULL) {
@@ -13,7 +30,6 @@ plot_community_index <- function(option, dat_index, experiment = NULL, treatment
   return(community_index_gg)
 }
 
-#' @export
 plot_community_index_obs <- function(obs_tbl, layout = "surround", nrow = NULL, onesite = NULL) {
   site_map_gg <- plot_site_map(sf_cfp = NULL, ras_grass = NULL)
   # reshape data
@@ -202,7 +218,6 @@ plot_site_name <- function(name, with_letter = F) {
   return(label)
 }
 
-#' @export
 plot_community_index_exp <- function(exp_tbl, experiment = "jrgce", treatment = "warming") {
   if (experiment == "jrgce") {
     p <- plot_community_index_jrgce(exp_tbl, treatment)

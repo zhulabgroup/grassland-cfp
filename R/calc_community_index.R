@@ -1,7 +1,19 @@
-# docu
-
+#' Calculate Community Index
+#'
+#' This function calculates community indices including CTI and CPI, by taking the community weighted mean of species climate niches.
+#'
+#' @param dat_niche A data frame that contains the species climate niche.
+#' @param dat_community A list containing community data from observations and experiments.
+#'
+#' @return A list with calculated community indices for observations and experiments.
+#'
+#' @examples
+#' \dontrun{
+#' dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+#' dat_index$obs
+#' dat_index$exp
+#' }
 #' @export
-# calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
 calc_community_index <- function(dat_niche, dat_community) {
   # load niche estimates.
   niche_tbl <- dat_niche
@@ -9,14 +21,14 @@ calc_community_index <- function(dat_niche, dat_community) {
   # observational data and CWM
   obs_tbl <- dat_community$obs %>%
     inner_join(niche_tbl, by = "species") %>%
-    group_by(site, year, plot) %>% # w/o treatment for obs
+    group_by(site, year, plot) %>%
     calc_community_weighted_mean() %>%
     ungroup()
 
   # experimental data and CWM
   exp_tbl <- dat_community$exp %>%
     inner_join(niche_tbl, by = "species") %>%
-    group_by(site, year, plot, treat) %>% # w/ treatment for exp
+    group_by(site, year, plot, treat) %>%
     calc_community_weighted_mean() %>%
     ungroup()
 
@@ -28,8 +40,6 @@ calc_community_index <- function(dat_niche, dat_community) {
   return(out)
 }
 
-#' @export
-# define summarize CWM function
 calc_community_weighted_mean <- function(.) {
   if (!"cwd_occ_median" %in% colnames(.)) {
     df <- summarize(.,

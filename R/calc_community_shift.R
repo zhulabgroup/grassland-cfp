@@ -1,5 +1,14 @@
-# docu
-
+#' Calculate Community Shift
+#'
+#' This function calculates community shift from community indices CTI and CPI.
+#'
+#' @param dat_index A list containing community indices CTI and CPI in observations and experiments.
+#'
+#' @return A list with calculated community shifts in observations and experiments.
+#' @examples
+#' \dontrun{
+#' dat_shift <- calc_community_shift(dat_index = dat_index)
+#' }
 #' @export
 calc_community_shift <- function(dat_index) {
   dat_shift_obs <- calc_community_shift_obs(obs_tbl = dat_index$obs)
@@ -13,7 +22,6 @@ calc_community_shift <- function(dat_index) {
   return(out)
 }
 
-#' @export
 calc_community_shift_obs <- function(obs_tbl) {
   # reshape data
   obs_idx_tbl <- obs_tbl %>%
@@ -97,7 +105,6 @@ calc_community_shift_obs <- function(obs_tbl) {
     ) %>%
     left_join(df_obs_test, by = "site")
 
-
   out <- list(
     sum_coarse = df_obs_sum_coarse,
     sum_fine = df_obs_sum_fine,
@@ -106,7 +113,6 @@ calc_community_shift_obs <- function(obs_tbl) {
   return(out)
 }
 
-#' @export
 calc_community_shift_exp <- function(exp_tbl) {
   jrgce_tbl <- exp_tbl %>%
     filter(site == "jrgce", year >= 1999) %>%

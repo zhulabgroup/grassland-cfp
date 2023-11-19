@@ -1,5 +1,18 @@
-# docu
-
+#' Plot Species Niche Estimated from Individual Traits (One Specific Species)
+#'
+#' This function plots the distribution of a species and its individuals in the geographical and climate space.
+#'
+#' @param dat_occ A data frame that contains species occurrence data.
+#' @param dat_trait A data frame that contains climatic conditions associated with individuals (i.e., traits in the climate niche space).
+#' @param sf_cfp A simple feature object that contains the California Floristic Province data.
+#' By default, it reads the "cfp" file from the package's "extdata" directory.
+#' @param sp A string that represents a specific species of focus (defaulted to "Danthonia californica").
+#'
+#' @return A combined ggplot2 object that shows the distributions of individuals in the geographical and climate space, leafing to the estimation of species climate niche.
+#' @examples
+#' \dontrun{
+#' p_individual_trait_species_niche_ind_sp <- plot_individual_trait_species_niche_ind_sp(dat_occ = dat_occ, dat_trait = dat_trait, sp = "Danthonia californica")
+#' }
 #' @export
 plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sf_cfp = NULL, sp = "Danthonia californica") {
   if (is.null(sf_cfp)) {
@@ -72,8 +85,25 @@ plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sf_cf
   return(out)
 }
 
+#' Plot Species Niche Estimated from Individual Traits (All Species)
+#'
+#' This function plots the distribution of all species and their individuals in the geographical and climate space.
+#' Blue and red colors highlight two species associated with cool and warm conditions, respectively.
+#'
+#' @param dat_occ A data frame that contains species occurrence data.
+#' @param dat_trait A data frame that contains climatic conditions associated with individuals (i.e., traits in the climate niche space).
+#' @param dat_niche A data frame that contains the species climate niche.
+#' @param cool_species A string representing a species associated with cool conditions (defaulted to "Danthonia californica").
+#' @param warm_species A string representing a species associated with warm conditions (defaulted to "Stipa pulchra").
+#' @param frac A numeric value that represents the fraction of the data to be used in plotting. The default value is 1 which means all data will be used. Warning: A value of 1 will make the figure very slow to render.
+#'
+#' @return A list of ggplot2 objects of distribution of individuals in the geographical space, distribution of individuals in the climate niche, climate niche of all species, and a combined plot.
+#' @examples
+#' \dontrun{
+#' p_individual_trait_species_niche_all <- plot_individual_trait_species_niche_all(dat_occ = dat_occ, dat_trait = dat_trait, dat_niche = dat_niche, frac = 0.01)
+#' }
 #' @export
-plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_niche, # sf_cfp,
+plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_niche,
                                                     cool_species = "Danthonia californica",
                                                     warm_species = "Stipa pulchra",
                                                     frac = 1) {

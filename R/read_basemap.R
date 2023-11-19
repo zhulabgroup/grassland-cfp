@@ -1,10 +1,4 @@
-# docu
-
-#' @export
-read_cfp <- function(path_cfp = NULL, indir = "alldata/input/basemap/cfp/") {
-  if (is.null(path_cfp)) {
-    path_cfp <- list.files(indir, pattern = ".shp$", full.names = T)
-  }
+read_cfp <- function(path_cfp = system.file("extdata", "cfp", package = "grassland")) {
   sf_cfp <- st_read(path_cfp, quiet = TRUE) %>%
     filter(
       NAME == "California Floristic Province",
@@ -15,11 +9,7 @@ read_cfp <- function(path_cfp = NULL, indir = "alldata/input/basemap/cfp/") {
   return(sf_cfp)
 }
 
-#' @export
-read_grasscover <- function(path_grass = NULL, indir = "alldata/input/basemap/grass/") {
-  if (is.null(path_grass)) {
-    path_grass <- list.files(indir, pattern = ".tif", full.names = T)
-  }
+read_grasscover <- function(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland")) {
   ras_grass <- terra::rast(path_grass)
   return(ras_grass)
 }

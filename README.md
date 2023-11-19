@@ -23,6 +23,10 @@ browseVignettes(package = "grassland")
 
 Then, click on the HTML link of the vignette to open it in your browser.
 
+## Additional files
+You can find pre-loaded intermediate data files in the data/ folder.
+You can find main and supplementary display items in the inst/figures/ and inst/tables/ folders.
+
 If you run into any issues or have questions, feel free to open an issue on this GitHub repository. 
 
 Thank you for using _grassland_!
