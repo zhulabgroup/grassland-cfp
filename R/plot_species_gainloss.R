@@ -1,3 +1,20 @@
+#' Plot Species Abundance Change
+#'
+#' This function generates plots of species abundance change (gain and loss) in communities over time or under warming treatments.
+#'
+#' @param dat_niche A data frame that contains the species climate niche.
+#' @param dat_gainloss A list containing species abundance change in observations and experiments.
+#' @param nrow Numeric determining the number of rows for the layout in the observation plot. Default is 3.
+#'
+#' @return A list of ggplot objects for the species abundance change at observational sites, in the experiment, and a combined plots.
+#'
+#' @examples
+#' \dontrun{
+#' p_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
+#' p_gainloss$obs
+#' p_gainloss$exp
+#' p_gainloss$combined
+#' }
 #' @export
 plot_species_gainloss <- function(dat_niche, dat_gainloss, nrow = 3) {
   p_obs <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = nrow)
@@ -24,7 +41,6 @@ plot_species_gainloss <- function(dat_niche, dat_gainloss, nrow = 3) {
   return(out)
 }
 
-#' @export
 plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow = 3) {
   if (!is.null(onesite)) {
     obs_tbl <- obs_tbl %>%
@@ -36,22 +52,6 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
     rowwise() %>%
     mutate(species_short = str_c(str_sub(species_sep[1], 1, 3), str_sub(species_sep[2], 1, 3))) %>%
     select(-species_sep)
-
-  # obs_gainloss_eg1 <- obs_gainloss_tbl %>%
-  #   group_by(species, change) %>%
-  #   summarize(n = n()) %>%
-  #   filter(change != "no clear change") %>%
-  #   group_by(change) %>%
-  #   arrange(desc(n)) %>%
-  #   slice(1)
-  #
-  # obs_gainloss_eg2 <- obs_gainloss_tbl %>%
-  #   group_by(species, complete_change) %>%
-  #   summarize(n = n()) %>%
-  #   filter(!is.na(complete_change)) %>%
-  #   group_by(complete_change) %>%
-  #   arrange(desc(n)) %>%
-  #   slice(1)
 
   obs_gainloss_tbl_long <- obs_gainloss_tbl %>%
     pivot_longer(cols = tmp:ppt, names_to = "variable", values_to = "value") %>%
@@ -80,7 +80,6 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
       comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
       size = 3
     ) + # Add pairwise comparisons p-value
-    # ggpubr::stat_compare_means() +    # Add global p-value
     facet_wrap(. ~ variable,
       ncol = 1,
       scales = "free_y",
@@ -181,7 +180,6 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
   return(out)
 }
 
-#' @export
 plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
   exp_gainloss_tbl <- exp_tbl %>%
     mutate(change = factor(change, levels = c("increase", "decrease", "no clear change"))) %>%
@@ -251,7 +249,6 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
       comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
       size = 3
     ) + # Add pairwise comparisons p-value
-    # ggpubr::stat_compare_means() +    # Add global p-value
     facet_wrap(. ~ variable,
       ncol = 1,
       scales = "free_y",

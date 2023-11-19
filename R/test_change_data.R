@@ -1,4 +1,3 @@
-#' @export
 test_index_change_data <- function(dat_index, index, grouping, option) {
   if (option == "obs") {
     return(test_index_change_data_obs(dat_index$obs, index,
@@ -119,15 +118,14 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
   return(dat_lme)
 }
 
-#' @export
-test_trait_change_data <- function(dat_community, dat_niche, trait, grouping, option) {
+test_optima_change_data <- function(dat_community, dat_niche, optima, grouping, option) {
   if (option == "obs") {
-    return(test_trait_change_data_obs(dat_community$obs, dat_niche, trait,
+    return(test_optima_change_data_obs(dat_community$obs, dat_niche, optima,
       siteoi = grouping$site
     ))
   }
   if (option == "exp") {
-    return(test_trait_change_data_exp(dat_community$exp, dat_niche, trait,
+    return(test_optima_change_data_exp(dat_community$exp, dat_niche, optima,
       exp = grouping$exp,
       trt = grouping$trt,
       grp = grouping$grp
@@ -135,7 +133,7 @@ test_trait_change_data <- function(dat_community, dat_niche, trait, grouping, op
   }
 }
 
-test_trait_change_data_obs <- function(dat_community, dat_niche, trait, siteoi = "all") {
+test_optima_change_data_obs <- function(dat_community, dat_niche, optima, siteoi = "all") {
   if (siteoi == "all") {
     siteoi <- dat_community %>%
       pull(site) %>%
@@ -149,14 +147,14 @@ test_trait_change_data_obs <- function(dat_community, dat_niche, trait, siteoi =
     ungroup() %>%
     inner_join(
       dat_niche %>%
-        select(species, value = !!sym(str_c(trait, "_occ_median"))),
+        select(species, value = !!sym(str_c(optima, "_occ_median"))),
       by = "species"
     )
 
   return(dat_lme)
 }
 
-test_trait_change_data_exp <- function(dat_community, dat_niche, trait, exp, trt, grp) {
+test_optima_change_data_exp <- function(dat_community, dat_niche, optima, exp, trt, grp) {
   if (exp == "jrgce") {
     if (trt == "Warming") {
       dat_exp <- dat_community %>%
@@ -237,7 +235,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, trait, exp, trt
     ungroup() %>%
     inner_join(
       dat_niche %>%
-        select(species, value = !!sym(str_c(trait, "_occ_median"))),
+        select(species, value = !!sym(str_c(optima, "_occ_median"))),
       by = "species"
     )
 

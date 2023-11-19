@@ -1,4 +1,3 @@
-#' @export
 test_index_change_comb <- function(dat_index, option, response = "index", levels = c("cti", "cpi")) {
   if (option == "obs") {
     return(test_change_comb_obs(dat_index$obs, response = response, levels = levels))
@@ -8,8 +7,7 @@ test_index_change_comb <- function(dat_index, option, response = "index", levels
   }
 }
 
-#' @export
-test_trait_change_comb <- function(dat_community, option, response = "trait", levels = c("tmp", "ppt")) {
+test_optima_change_comb <- function(dat_community, option, response = "optima", levels = c("tmp", "ppt")) {
   if (option == "obs") {
     return(test_change_comb_obs(dat_community$obs, response = response, levels = levels))
   }
@@ -18,7 +16,7 @@ test_trait_change_comb <- function(dat_community, option, response = "trait", le
   }
 }
 
-test_change_comb_obs <- function(dat, response = "trait", levels = c("tmp", "ppt")) {
+test_change_comb_obs <- function(dat, response = "optima", levels = c("tmp", "ppt")) {
   df_change_obs <- expand_grid(
     site = dat %>% pull(site) %>% unique() %>% c("all"),
     response = levels
@@ -34,7 +32,7 @@ test_change_comb_obs <- function(dat, response = "trait", levels = c("tmp", "ppt
   return(df_change_obs)
 }
 
-test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt")) {
+test_change_comb_exp <- function(dat, response = "optima", levels = c("tmp", "ppt")) {
   ls_exp <- dat %>%
     rowwise() %>%
     mutate(site = str_split(site, "_", simplify = T)[1]) %>%

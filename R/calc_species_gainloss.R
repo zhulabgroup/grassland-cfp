@@ -1,3 +1,16 @@
+#' Calculate Species Abundance Change
+#'
+#'  This function calculates species abundance change (gain and loss) in communities over time or under warming treatments.
+#'
+#' @param dat_community A list containing community data from observations and experiments.
+#' @param dat_niche A data frame that contains the species climate niche.
+#'
+#' @return A list with calculated species abundance change in observations and experiments.
+#' @export
+#' @examples
+#' \dontrun{
+#' dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
+#' }
 #' @export
 calc_species_gainloss <- function(dat_community, dat_niche) {
   dat_gainloss_obs <- calc_species_gainloss_obs(com_obs = dat_community$obs, dat_niche)
@@ -11,7 +24,6 @@ calc_species_gainloss <- function(dat_community, dat_niche) {
   return(dat_gainloss)
 }
 
-#' @export
 calc_species_gainloss_obs <- function(com_obs, dat_niche) {
   site_list <- read_site_info() %>%
     filter(!site %in% c("jrgce", "scide")) %>%
@@ -98,7 +110,6 @@ calc_species_gainloss_obs <- function(com_obs, dat_niche) {
   return(obs_gainloss_tbl)
 }
 
-#' @export
 calc_species_gainloss_exp <- function(com_exp, dat_niche) {
   plot_treat <- com_exp %>%
     filter(site == "jrgce") %>%

@@ -1,11 +1,20 @@
+#' Import Site Information
+#'
+#' This function imports site information data and optionally subsets it to only observational sites.
+#'
+#' @param subset A character value that suggests if a subset of the data is needed.
+#' If `subset` equals "obs", the function returns information of only observational sites.
+#'
+#' @return A spatial tibble (sf object) with site information.
+#' @examples
+#' \dontrun{
+#' site_info <- read_site_info()
+#' site_info <- read_site_info(subset = "obs")
+#' }
 #' @export
-read_site_info <- function(path = NULL, subset = NULL) {
-  if (is.null(path)) {
-    # path <- "alldata/input/basemap/site_info.csv"
-    path <- system.file("extdata", "site_info.csv", package = "grassland")
-  }
+read_site_info <- function(subset = NULL) {
+  path <- system.file("extdata", "site_info.csv", package = "grassland")
 
-  # site info data
   site_sf <- read_csv(path) %>%
     mutate(data_method = str_replace(data_method, "\xd7", "\u00D7")) %>% # print multiple sign in unicode
     mutate(
@@ -24,7 +33,6 @@ read_site_info <- function(path = NULL, subset = NULL) {
   return(site_sf)
 }
 
-#' @export
 read_site_name <- function() {
   site_vec <- c(
     angelo = "Angelo Coast",
@@ -44,11 +52,4 @@ read_site_name <- function() {
     scide = "Santa Cruz\nInternational Drought Experiment"
   )
   return(site_vec)
-}
-
-#' @export
-read_jrgce_env <- function(path = "alldata/input/climate/Environment.csv") {
-  env_df <- read_csv(path) %>%
-    filter(yr != 1998)
-  return(env_df)
 }

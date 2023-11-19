@@ -1,4 +1,3 @@
-#' @export
 plot_individual_distribution <- function(data_occ,
                                          cool_species = "Danthonia californica",
                                          warm_species = "Stipa pulchra",
@@ -54,7 +53,6 @@ plot_individual_distribution <- function(data_occ,
   return(occ_geog_gg)
 }
 
-#' @export
 plot_individual_trait <- function(dat_trait,
                                   cool_species = "Danthonia californica",
                                   warm_species = "Stipa pulchra",

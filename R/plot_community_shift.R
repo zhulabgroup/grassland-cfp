@@ -1,3 +1,15 @@
+#' Plot Community Shift
+#'
+#' This function creates plots showing community shifts measured by CTI and CPI in the climate niche space across observational sites and in the JRGCE warming experiment.
+#'
+#' @param dat_shift A list that contains community shift data.
+#' @param dat_niche A data frame containing species climate niche.
+#'
+#' @return A list containing ggplot objects of different plots, including community shifts across observational sites, community shifts in the JRGCE warming experiment, comparison of community shifts between observations and experiments, communities in the climate niche space, and a combined plot.
+#' @examples
+#' \dontrun{
+#' p_community_shift <- plot_community_shift(dat_shift, dat_niche)
+#' }
 #' @export
 plot_community_shift <- function(dat_shift, dat_niche) {
   p_obs <- plot_community_shift_obs(obs_tbl = dat_shift$obs)
@@ -29,7 +41,6 @@ plot_community_shift <- function(dat_shift, dat_niche) {
   return(out)
 }
 
-#' @export
 plot_community_shift_obs <- function(obs_tbl) {
   p_obs <- ggplot() +
     geom_point(
@@ -48,8 +59,7 @@ plot_community_shift_obs <- function(obs_tbl) {
     ) +
     scale_alpha_manual(values = c("sig" = 1, "ns" = 0.5)) +
     scale_color_viridis_c(
-      option = "magma",
-      # , trans = "reverse", direction = -1
+      option = "magma"
     ) +
     xlab("CTI (°C)") +
     ylab("CPI (mm)") +
@@ -65,9 +75,7 @@ plot_community_shift_obs <- function(obs_tbl) {
   return(p_obs)
 }
 
-#' @export
 plot_community_shift_exp <- function(exp_tbl) {
-  # warming phrases: +80 W m^-2 (years 2-5), to +100 W m^-2 (years 6-12), to +250 W m^-2 (years 13-17)
   warm_tbl <- read_warm_treatment()
 
   p_exp <- ggplot() +
@@ -96,10 +104,8 @@ plot_community_shift_exp <- function(exp_tbl) {
     ) +
     scale_alpha_manual(values = c("sig" = 1, "ns" = 0.25)) +
     facet_wrap(. ~ phase,
-      nrow = 1 # ,
-      # labeller = warm_vec %>% as_labeller(label_parsed)
+      nrow = 1
     ) +
-    # ggtitle(warm_vec[1])+
     xlab("CTI (°C)") +
     ylab("CPI (mm)") +
     labs(
@@ -115,7 +121,6 @@ plot_community_shift_exp <- function(exp_tbl) {
   return(p_exp)
 }
 
-#' @export
 plot_community_shift_compare <- function(dat_shift) {
   ## compare exp and obs
   df_all_shift <- bind_rows(
@@ -123,7 +128,6 @@ plot_community_shift_compare <- function(dat_shift) {
       select(site, CTI0 = CTI_start, CTI1 = CTI_end, CPI0 = CPI_start, CPI1 = CPI_end, significance) %>%
       mutate(group = "observation"),
     dat_shift$exp$shift %>%
-      # filter(phase == "Phase III") %>%
       mutate(site = paste(site, year, sep = "_")) %>%
       select(site, CTI0 = CTI_, CTI1 = CTIT, CPI0 = CPI_, CPI1 = CPIT, significance) %>%
       mutate(group = "experiment")
@@ -183,7 +187,6 @@ plot_community_shift_compare <- function(dat_shift) {
   return(p_compare)
 }
 
-#' @export
 plot_community_in_niche_space <- function(dat_shift, dat_niche) {
   df_all_sum <- bind_rows(
     dat_shift$obs$sum_coarse %>% mutate(group = "observation"),

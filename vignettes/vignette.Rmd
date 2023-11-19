@@ -1,0 +1,152 @@
+---
+title: "Vignette"
+output: rmarkdown::html_vignette
+fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  dpi = 300,
+  cache = F,
+  comment = "#>",
+  warning = F,
+  message = F,
+  out.width = "100%",
+  fig.align = "left"
+)
+```
+
+```{r setup}
+library(grassland)
+theme_set(ggthemes::theme_few())
+```
+
+## Load data
+Load community composition data (experimental and observational).
+
+```{r, eval = F}
+dat_community
+```
+
+Load GBIF occurrence data and associated climate data (from CHELSA).
+
+```{r, eval = F}
+dat_occ$gbif
+dat_trait
+```
+
+## Estimates of species climate niches
+
+Calculate species niche.
+
+```{r, eval = F}
+dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
+```
+
+Plot the niche of an individual species.
+```{r, fig.cap="__Figure 1.__ Example species _Danthonia californica _distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (_n_) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions, as well as a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution.", fig.width = 8, fig.height=8 * .618}
+gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
+gg_individual_trait_species_niche_cool
+```
+
+Plot the niche of all species.
+```{r, fig.cap="__Figure 2.__ Grassland species occur along geographic and climatic gradients to estimate niches. Estimated climate optima from the medians of temperature and precipitation for each species (gray), highlighting the two species (blue and red).", fig.width= 5.5, fig.height= 5.5}
+gg_species_niche <- plot_species_niche(dat_niche,
+  cool_species = "Danthonia californica",
+  warm_species = "Stipa pulchra"
+)
+gg_species_niche
+```
+
+## Observational and experimental evidence of community shifts
+Calculate CTI CPI in observations and experiments.
+```{r, eval = F}
+dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+```
+
+Plot changes in CTI and CPI.
+```{r, fig.cap="__Figure 3.__ Grassland community shifts from long-term observations. Consistent with climate warming and drying, grassland communities shift dominance to species associated with warmer (increasing CTI) and drier (decreasing CPI) locations in 12 long-term observational sites across the California Floristic Province (red trend lines by linear regression, significant slopes by _t_-test, _p_ $\\leq$ 0.05). The map shows the geographical distribution of the 12 sites with grassland percent cover (green) from Sentinel-2 10 m land use/land cover time series data.", fig.width=11, fig.height= 11 * 1.5}
+gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
+gg_community_index_obs
+```
+
+```{r, fig.cap="__Figure 4.__ Grassland community shifts from a long-term experiment. Warming treatment causes communities to shift dominance to species associated with warmer (CTI) and drier (CPI) locations in the Jasper Ridge Global Change Experiment (72 ambient plots in black, 64 warming plots in red, effect in each year estimated with linear regression, _t_-test, ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001). The orange background shades denote phase I (+80 W m^-2^ heating) in 1999-2002, phase II (+100 W m^-2^ heating) in 2003-2009, and phase III (+250 W m^-2^ heating) in 2010-2014.", fig.width=10, fig.height=6.18}
+gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index, experiment = "jrgce", treatment = "warming")
+gg_community_index_exp
+```
+
+Statistical test of index change on the community level.
+
+```{r}
+df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
+df_index_change_obs %>% knitr::kable(
+  caption = "__Table 1.__ Trends of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) across observational sites, reporting the linear regression slope estimate, standard error, _p_-value, and significance level from _t_-test (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
+  table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
+)
+df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
+df_index_change_exp %>% knitr::kable(
+  caption = "__Table 2.__ Comparison of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) in the Jasper Ridge Global Change Experiment (JRGCE), pooling data from all years in each phase, reporting the average difference in the metric between warming and ambient plots, _p_-value, and significance level from linear mixed-effects models with a random intercept for each year (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
+  table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
+)
+```
+
+Statistical test of optima change on the species level.
+```{r}
+df_optima_change_obs <- test_optima_change_all(dat_community, dat_niche, option = "obs")
+df_optima_change_obs %>% knitr::kable(
+  caption = "__Table 3.__ Trends of species' temperature optima (T, °C) and precipitation optima (P, mm) across observational sites, reporting the linear regression slope estimate, standard error, _p_-value, and significance level from _t_-test (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
+  table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
+)
+df_optima_change_exp <- test_optima_change_all(dat_community, dat_niche, option = "exp")
+df_optima_change_exp %>% knitr::kable(
+  caption = "__Table 4.__ Comparison of species' temperature optima (T, °C) and precipitation optima (P, mm) in the Jasper Ridge Global Change Experiment (JRGCE), pooling data from all years in each phase, reporting the average difference in the metric between warming and ambient plots, _p_-value, and significance level from linear mixed-effects models with a random intercept for each year (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
+  table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
+)
+```
+
+## Analysis and synthesis of community shifts
+Analyze species contributing to CTI CPI change.
+
+```{r, eval = F}
+dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
+```
+
+```{r}
+gg_species_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
+```
+
+```{r, fig.cap="__Figure 5.__ Changes in species abundance during grassland community compositional shifts at the observational sites. Climate niches of species with a significant increase in abundance over time (green circle), with a significant decrease in abundance over time (orange circle), established (green-filled circle), extirpated (orange-filled circle), and all other species present at each observational site (gray circle) (_t_-test, _p_ $\\gt$ 0.05). The size of the circles is proportional to the species' dominance in the community, showing no clear pattern of either a few dominant species or many rare species driving the community compositional shift. Abbreviated names of species recruited and extirpated were labeled.", fig.width=10, fig.height=8}
+gg_species_gainloss$obs$circle_detail
+```
+
+```{r, fig.cap="__Figure 6.__ Changes in species abundance during grassland community compositional shifts in experiments. Climate niches of species with a significant increase in abundance under warming (green circle), with a significant decrease in abundance under warming (orange circle), and all other species present in each year of three phases of the Jasper Ridge Global Change Experiment (gray) (_t_-test, _p_ $\\gt$ 0.05). The size of the circles is proportional to the species' dominance in the community, showing no clear pattern of either a few dominant species or many rare species driving the community compositional shift. Abbreviated names of species significantly increased or decreased in abundance were labeled.", fig.width=12, fig.height=8}
+gg_species_gainloss$exp$circle_detail
+```
+
+Synthesize coupled CTI CPI change.
+
+```{r, eval = F}
+dat_shift <- calc_community_shift(dat_index = dat_index)
+```
+
+```{r}
+gg_community_shift <- plot_community_shift(dat_shift, dat_niche)
+```
+
+```{r, fig.cap="__Figure 7.__ Communities shift significantly in eight out of 12 observational sites. Arrows point from the start to the end of the sampling period.", fig.width=10, fig.height=10 * .5}
+gg_community_shift$obs
+```
+
+```{r, fig.cap="__Figure 8.__ Communities shift significantly in phase III warming of the experiment. Arrows point from ambient to warming treatments.", fig.width=8, fig.height=8 * .5}
+gg_community_shift$exp
+```
+
+```{r, fig.cap="__Figure 9.__ Communities shift in a consistent direction in the climate space in the observations (blue) and experiment (orange).", fig.width=6, fig.height=6}
+gg_community_shift$compare
+```

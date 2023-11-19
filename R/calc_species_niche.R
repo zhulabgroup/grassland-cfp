@@ -1,3 +1,19 @@
+#' Calculate Species Niche
+#'
+#' This function calculates a range of statistics to characterize species climate niche,
+#' such as mean, standard deviation, median, and quantiles for the temperature, precipitation, and vapor pressure deficit.
+#' Optionally, this function can also calculate these statistics for the climatic water deficit (cwd) if provided in the data.
+#'
+#' @param dat_trait A data frame that contains climatic conditions associated with individuals (i.e., traits in the climate niche space).
+#' @param add_dummy A logical argument that determines whether to add dummy species to the output.
+#' If `TRUE`, it adds `Avena DUMMY`, `Festuca DUMMY` and `Hypochaeris DUMMY` to the species niche data frame,
+#' with their niche values calculated as the average of specific species within their respective genera. Default is `TRUE`.
+#'
+#' @return A data frame with species as rows and calculated niche statistics as columns.
+#' @examples
+#' \dontrun{
+#' species_niche <- calc_species_niche(dat_trait, add_dummy = TRUE)
+#' }
 #' @export
 calc_species_niche <- function(dat_trait, add_dummy = T) {
   dat_niche <- dat_trait %>%
@@ -11,11 +27,11 @@ calc_species_niche <- function(dat_trait, add_dummy = T) {
       tmp_occ_q05 = quantile(tmp, .05, na.rm = TRUE),
       tmp_occ_q25 = quantile(tmp, .25, na.rm = TRUE),
       tmp_occ_q75 = quantile(tmp, .75, na.rm = TRUE),
-      tmp_occ_q95 = quantile(tmp, .95, na.rm = TRUE), # hot limit, suggested by Susan Harrison
+      tmp_occ_q95 = quantile(tmp, .95, na.rm = TRUE),
       ppt_occ_mean = mean(ppt, na.rm = TRUE),
       ppt_occ_sd = sd(ppt, na.rm = TRUE),
       ppt_occ_median = median(ppt, na.rm = TRUE),
-      ppt_occ_q05 = quantile(ppt, .05, na.rm = TRUE), # dry limit, suggested by Susan Harrison
+      ppt_occ_q05 = quantile(ppt, .05, na.rm = TRUE),
       ppt_occ_q25 = quantile(ppt, .25, na.rm = TRUE),
       ppt_occ_q75 = quantile(ppt, .75, na.rm = TRUE),
       ppt_occ_q95 = quantile(ppt, .95, na.rm = TRUE),
@@ -67,13 +83,6 @@ calc_species_niche <- function(dat_trait, add_dummy = T) {
         "Hypochaeris radicata"
       )) %>%
       summarize(across(-c(species:occ_n), mean))
-
-    # Raphanus_tbl <- dat_niche %>%
-    #   filter(species %in% c(
-    #     "Raphanus sativus",
-    #     "Raphanus raphanistrum" # this species doesn't exist from GBIF download, so no need to add dummy
-    #   )) %>%
-    #   summarize(across(-c(species:occ_n), mean))
 
     dat_niche <- dat_niche %>%
       filter(occ_n > 100) %>% # species with many observations
