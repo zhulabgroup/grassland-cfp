@@ -1,7 +1,7 @@
 Package: grassland
 Type: Package
 Title: Grassland analysis
-Version: 0.1.0
+Version: 1.0.0
 Author: Kai Zhu, Yiluan Song, Josie Lesage
 Maintainer: Yiluan Song <songyl@umich.edu>
 Description: Analysis for manuscript "Rapid shifts in grassland communities driven by climate change"
