@@ -1,3 +1,4 @@
+#' @export
 calc_individual_trait <- function(dat_occ, dat_clim,
                                   occ_source = "gbif",
                                   clim_source = "chelsa",
@@ -42,7 +43,7 @@ calc_individual_trait <- function(dat_occ, dat_clim,
   }
 
   if (!is.null(postfix)) {
-    outfile <- str_c(outdir, occ_source, "-", clim_source,"-", postfix,".rds")
+    outfile <- str_c(outdir, occ_source, "-", clim_source, "-", postfix, ".rds")
   }
 
   write_rds(dat_clim_occ, outfile)

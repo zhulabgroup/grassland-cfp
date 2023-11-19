@@ -1,3 +1,4 @@
+#' @export
 tidy_table_niche <- function(dat_niche) {
   dat_niche_tidy <- dat_niche %>%
     filter(!is.na(occ_n)) %>%
@@ -18,6 +19,7 @@ tidy_table_niche <- function(dat_niche) {
   return(dat_niche_tidy)
 }
 
+#' @export
 tidy_table_gainloss <- function(dat_gainloss) {
   dat_gainloss_tidy <- bind_rows(
     dat_gainloss$obs %>%

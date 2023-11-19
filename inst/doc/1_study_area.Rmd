@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
   cache = T,
   comment = "#>",
   fig.width = 8,
-  fig.height = 8
+  fig.height = 8,
+  dpi = 300
 )
 ```
 
@@ -37,6 +38,7 @@ sf_cfp <- read_cfp(path_cfp = path_cfp)
 sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 sf_cfp %>% plot()
 ```
+
 Second, the CFP's grassland cover from Sentinel-2.
 
 ```{r, eval=F}
@@ -46,7 +48,8 @@ ras_grass <- read_grasscover(path_grass = path_grass)
 
 ```{r}
 ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
-ras_grass %>% terra::plot()
+gg_grass_map <- plot_site_map(sf_cfp = sf_cfp, ras_grass = ras_grass, plotsite = F)
+gg_grass_map
 ```
 
 ```{r}
@@ -80,7 +83,8 @@ Calculate climate change in CFP.
 
 ```{r, eval = F}
 path_climate_monthly <- down_climate_monthly()
-path_climate_change_cfp <- calc_climate_change_cfp(path = path_climate_monthly)
+path_climate_annual_cfp <- calc_climate_annual_cfp(indir = path_climate_monthly)
+path_climate_change_cfp <- calc_climate_change_cfp(indir = path_climate_annual_cfp)
 ```
 
 ```{r}
@@ -99,6 +103,9 @@ gg_cfp_cc
 Output figures and R data files.
 
 ```{r, eval = F}
-save_figure(out = list(cfp_cc = gg_cfp_cc))
+save_figure(out = list(
+  grass_map = gg_grass_map,
+  cfp_cc = gg_cfp_cc
+))
 save_extdata(out = list(path_cfp, path_grass))
 ```

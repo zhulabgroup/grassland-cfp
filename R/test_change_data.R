@@ -1,4 +1,4 @@
-
+#' @export
 test_index_change_data <- function(dat_index, index, grouping, option) {
   if (option == "obs") {
     return(test_index_change_data_obs(dat_index$obs, index,
@@ -13,6 +13,7 @@ test_index_change_data <- function(dat_index, index, grouping, option) {
     ))
   }
 }
+
 test_index_change_data_obs <- function(dat_index, index, siteoi = "all") {
   var <- case_when(
     index == "cti" ~ "tmp",
@@ -118,6 +119,7 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
   return(dat_lme)
 }
 
+#' @export
 test_trait_change_data <- function(dat_community, dat_niche, trait, grouping, option) {
   if (option == "obs") {
     return(test_trait_change_data_obs(dat_community$obs, dat_niche, trait,
@@ -153,6 +155,7 @@ test_trait_change_data_obs <- function(dat_community, dat_niche, trait, siteoi =
 
   return(dat_lme)
 }
+
 test_trait_change_data_exp <- function(dat_community, dat_niche, trait, exp, trt, grp) {
   if (exp == "jrgce") {
     if (trt == "Warming") {

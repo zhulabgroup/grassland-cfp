@@ -1,4 +1,5 @@
-plot_site_map <- function( sf_cfp = NULL, ras_grass = NULL, plotsite = T) {
+#' @export
+plot_site_map <- function(sf_cfp = NULL, ras_grass = NULL, plotsite = T) {
   if (is.null(sf_cfp)) {
     sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
   }
@@ -20,7 +21,8 @@ plot_site_map <- function( sf_cfp = NULL, ras_grass = NULL, plotsite = T) {
       data = rnaturalearth::ne_states(
         country = c("Mexico", "United States of America"),
         returnclass = "sf"
-      ),
+      ) %>%
+        sf::st_transform(sf::st_crs(sf_cfp)$proj4string),
       fill = NA,
       color = alpha("black", .1)
     ) +
@@ -44,30 +46,36 @@ plot_site_map <- function( sf_cfp = NULL, ras_grass = NULL, plotsite = T) {
     ) +
     guides(alpha = guide_legend(reverse = TRUE))
 
-if (plotsite) {
-  # read site data
-  site_sf <- read_site_info(subset = "obs") %>%
-    arrange(site) %>%
-    add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
+  if (plotsite) {
+    # read site data
+    site_sf <- read_site_info(subset = "obs") %>%
+      arrange(site) %>%
+      add_column(lab = c(LETTERS[1:4], "E/F", LETTERS[7:12]))
 
-  site_map_gg <- site_map_gg+
-    geom_sf(data = site_sf, color = "black") +
-    ggrepel::geom_label_repel(
-      data = site_sf,
-      mapping = aes(
-        label = lab, # name,
-        geometry = geometry
-      ),
-      stat = "sf_coordinates",
-      size = 3,
-      color = "black",
-      fill = NA,
-      min.segment.length = 0,
-      max.overlaps = Inf,
-      label.padding = unit(.25, "lines"),
-      label.size = NA
-    )
-
-}
+    site_map_gg <- site_map_gg +
+      geom_point(
+        data = site_sf,
+        mapping = aes(
+          geometry = geometry
+        ),
+        stat = "sf_coordinates",
+        color = "black"
+      ) +
+      ggrepel::geom_label_repel(
+        data = site_sf,
+        mapping = aes(
+          label = lab, # name,
+          geometry = geometry
+        ),
+        stat = "sf_coordinates",
+        size = 3,
+        color = "black",
+        fill = NA,
+        min.segment.length = 0,
+        max.overlaps = Inf,
+        label.padding = unit(.25, "lines"),
+        label.size = NA
+      )
+  }
   return(site_map_gg)
 }

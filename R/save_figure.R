@@ -1,3 +1,4 @@
+#' @export
 save_figure <- function(out, dir = "alldata/output/figures/") {
   for (i in 1:length(out)) {
     gg_name <- names(out)[i]

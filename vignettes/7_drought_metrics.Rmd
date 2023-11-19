@@ -27,6 +27,8 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
+## Calculate CWD
+
 Extract individual trait niche using TerraClim data where CWD data are available.
 
 ```{r, eval = F}
@@ -38,12 +40,20 @@ dat_trait_cwd <- calc_individual_trait(dat_occ, dat_clim, occ_source = "gbif", c
 dat_trait_cwd <- read_individual_trait(path_trait = "alldata/intermediate/climate-niche/gbif-terraclim.rds")
 ```
 
+## Relationtionship between CWD and other climate variables
+
 Plot relationship in niche space.
 ```{r}
 gg_trait_cwd <- plot_trait_cwd(dat_trait_cwd)
 gg_trait_cwd
 test_trait_cwd_cor(dat_trait_cwd)
 ```
+
+Species occurrence in climate space of mean annual temperature (°C), annual precipitation (mm), and annual climate water deficit (mm) retrieved from the TerraClimate data (gray). Each point corresponds to a GBIF occurrence location. We highlight two example species _Danthonia californica_ associated with cooler and wetter locations (blue) and _Stipa pulchra_ associated with warmer and drier locations (red).
+
+We found that across GBIF occurrence locations, P and CWD were highly correlated. Both variables were correlated with mean annual temperature (T), with CWD more strongly correlated to T compared to P's correlation to T.
+
+## Analyze community shift with CWD
 
 Calculate species niche and community index.
 
@@ -61,6 +71,7 @@ gg_community_index_obs_cwd
 gg_community_index_exp_cwd <- plot_community_index(option = "exp", dat_index = dat_index_cwd, experiment = "jrgce", treatment = "warming")
 gg_community_index_exp_cwd
 ```
+Consistent with climate warming and drying, grassland communities shift dominance to species associated with warmer (increasing CTI) and drier (decreasing CPI and increasing CDI) locations in 12 long-term observational sites across the California Floristic Province. In the Jasper Ridge Global Change Experiment, warming treatment caused communities to shift dominance to species associated with warmer (CTI) and drier (CPI and CDI) locations. Therefore, the additional drought metric CWD offered qualitatively similar insights from using precipitation.
 
 Output figures and R data files.
 

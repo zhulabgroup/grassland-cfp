@@ -1,7 +1,24 @@
-# need to separate into two functions calculating annual metrics andchange respectively
-calc_climate_change_cfp <- function(indir = "alldata/input/climate/monthly/",
+#' @export
+calc_climate_change_cfp <- function(indir = "alldata/intermediate/background/cfp_annual/",
                                     v_param = c("tas", "pr", "vpd"),
-                                    outdir = "alldata/intermediate/background/cfp_annual") {
+                                    outdir = "alldata/intermediate/background/cfp_trend/") {
+  for (param in v_param) {
+    annual_allyears <- raster::stack(str_c(outdir, indir, ".nc"))
+
+    pacman::p_load(raster)
+    trend <- VoCC::tempTrend(annual_allyears, th = 10)
+    pacman::p_unload(raster)
+
+    raster::writeRaster(trend, str_c(outdir, param, "_trend.nc"), format = "CDF")
+  }
+
+  return(outdir)
+}
+
+#' @export
+calc_climate_annual_cfp <- function(indir = "alldata/input/climate/monthly/",
+                                    v_param = c("tas", "pr", "vpd"),
+                                    outdir = "alldata/intermediate/background/cfp_annual/") {
   # read cfp data
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 
@@ -30,11 +47,6 @@ calc_climate_change_cfp <- function(indir = "alldata/input/climate/monthly/",
     }
     annual_allyears <- raster::stack(annual_list)
     raster::writeRaster(annual_allyears, str_c(outdir, param, ".nc"), format = "CDF")
-
-    pacman::p_load(raster)
-    trend <- VoCC::tempTrend(annual_allyears, th = 10)
-    pacman::p_unload(raster)
-    raster::writeRaster(trend, str_c(outdir, param, "_trend.nc"), format = "CDF")
   }
 
   return(outdir)

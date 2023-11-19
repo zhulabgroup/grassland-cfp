@@ -1,3 +1,4 @@
+#' @export
 plot_biogeography <- function(dat_occ) {
   dat_occ_all <- bind_rows(dat_occ) %>%
     mutate(dataset = factor(dataset,

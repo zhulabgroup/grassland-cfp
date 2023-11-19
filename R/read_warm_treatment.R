@@ -1,3 +1,4 @@
+#' @export
 read_warm_treatment <- function() {
   warm_tbl <- tribble(
     ~tag, ~phase, ~name, ~start, ~end, ~startyear,

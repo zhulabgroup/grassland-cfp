@@ -1,3 +1,4 @@
+#' @export
 plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, dat_niche, outfile = "alldata/output/figures/species-climate-niche.pdf") {
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 
@@ -18,6 +19,7 @@ plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, d
   return(outfile)
 }
 
+#' @export
 plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sf_cfp = NULL, sp = "Danthonia californica") {
   if (is.null(sf_cfp)) {
     sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
@@ -89,6 +91,7 @@ plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sf_cf
   return(out)
 }
 
+#' @export
 plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_niche, # sf_cfp,
                                                     cool_species = "Danthonia californica",
                                                     warm_species = "Stipa pulchra",

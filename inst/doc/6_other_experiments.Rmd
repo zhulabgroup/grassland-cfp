@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
   cache = T,
   comment = "#>",
   fig.width = 8,
-  fig.height = 8
+  fig.height = 8,
+  dpi = 300
 )
 ```
 
@@ -26,26 +27,29 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Compare CTI-CPI from the Jasper Ridge Global Change Experiment watering treatment.
+## Jasper Ridge Global Change Experiment watering treatment
 
 ```{r}
 gg_community_index_exp_jrgce_water <- plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "watering")
 gg_community_index_exp_jrgce_water
 ```
+Watering treatment in the Jasper Ridge Global Change Experiment generally decreased CTI (°C) and increased CPI (mm) over all years, although effects were not significant in most individual years.
 
-Compare CTI-CPI from the McLaughlin Water Experiment.
+## McLaughlin Water Experiment.
 
 ```{r}
 gg_community_index_exp_mclexp <- plot_community_index(option = "exp", dat_index, experiment = "mclexp")
 gg_community_index_exp_mclexp
 ```
+Watering treatment in the McLaughlin Water Experiment generally decreased CTI (°C) and increased CPI (mm) in both (A) serpentine and (B) non-serpentine sites over all years, while drought treatments generally increased CTI (°C) and decreased CPI (mm) in (C) the serpentine site over all years. Effects were not significant in most individual years.
 
-Compare CTI-CPI from the Santa Cruz International Drought Experiment.
+## Santa Cruz International Drought Experiment.
 
 ```{r}
 gg_community_index_exp_scide <- plot_community_index(option = "exp", dat_index, experiment = "scide")
 gg_community_index_exp_scide
 ```
+Drought treatment at three sites, (A) Arboretum, (B) Marshall Field, and (C) Younger Lagoon, in the Santa Cruz International Drought Experiment generally increased CTI (°C) and decreased CPI (mm) over all years. Effects were not significant in most individual years.
 
 Output figures and R data files.
 

@@ -1,3 +1,4 @@
+#' @export
 plot_species_gainloss_animate <- function(dat_community, dat_gainloss, dat_niche, outdir = "alldata/output/figures/animation/") {
   p_obs <- plot_species_gainloss_animate_obs(dat_comm = dat_community$obs, dat_gl = dat_gainloss$obs, dat_niche, nrow = 3, outdir = outdir)
 
@@ -18,6 +19,7 @@ plot_species_gainloss_animate <- function(dat_community, dat_gainloss, dat_niche
   return(out)
 }
 
+#' @export
 plot_species_gainloss_animate_obs <- function(dat_comm, dat_gl, dat_niche, nrow = 3, outdir = "alldata/output/figures/", onesite = NULL) {
   if (!is.null(onesite)) {
     dat_comm <- dat_comm %>%
@@ -128,6 +130,7 @@ plot_species_gainloss_animate_obs <- function(dat_comm, dat_gl, dat_niche, nrow 
   return(f)
 }
 
+#' @export
 plot_species_gainloss_animate_exp <- function(dat_comm, dat_gl, dat_niche, outdir = "alldata/output/figures/") {
   dat_rel_abun <- dat_comm %>%
     filter(site == "jrgce") %>%

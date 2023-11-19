@@ -1,3 +1,4 @@
+#' @export
 plot_climate_source <- function(dat_trait_chelsa, dat_trait_prism, dat_trait_terraclim) {
   clim_comp_tbl <- bind_rows(
     dat_trait_chelsa %>% mutate(source = "CHELSA"),

@@ -1,3 +1,4 @@
+#' @export
 down_climate_monthly <- function(outdir = "alldata/input/climate/monthly/") {
   # download CHELSA monthly data
   # extract at site locations

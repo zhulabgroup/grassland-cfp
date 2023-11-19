@@ -1,3 +1,4 @@
+#' @export
 # calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
 calc_community_index <- function(dat_niche, dat_community) {
   # load niche estimates.
@@ -25,7 +26,7 @@ calc_community_index <- function(dat_niche, dat_community) {
   return(out)
 }
 
-
+#' @export
 # define summarize CWM function
 calc_community_weighted_mean <- function(.) {
   if (!"cwd_occ_median" %in% colnames(.)) {

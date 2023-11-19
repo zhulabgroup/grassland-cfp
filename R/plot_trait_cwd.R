@@ -1,3 +1,4 @@
+#' @export
 plot_trait_cwd <- function(dat_trait_cwd,
                            cool_species = "Danthonia californica",
                            warm_species = "Stipa pulchra") {

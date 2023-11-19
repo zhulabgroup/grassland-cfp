@@ -1,3 +1,4 @@
+#' @export
 calc_climate_change_site <- function(dat_clim_site) {
   df_cc_site_all <- dat_clim_site %>%
     select(site, year, tmp, ppt) %>%
@@ -25,7 +26,6 @@ calc_climate_change_site <- function(dat_clim_site) {
     mutate(
       site = "all"
     )
-
 
   df_cc_site_ind <- dat_clim_site %>%
     select(site, year, tmp, ppt) %>%
@@ -55,6 +55,7 @@ calc_climate_change_site <- function(dat_clim_site) {
   return(df_cc_site)
 }
 
+#' @export
 calc_climate_annual_site <- function(indir = "alldata/input/climate/monthly/",
                                      v_param = c("tas", "pr", "vpd"),
                                      outdir = "alldata/intermediate/background/") {

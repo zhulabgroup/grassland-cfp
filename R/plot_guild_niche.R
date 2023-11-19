@@ -1,3 +1,4 @@
+#' @export
 plot_guild_niche <- function(dat_guild_niche) {
   gg_guild_niche <-
     plot_guild_niche_group(dat_guild_niche, "Origin", "Set1") +

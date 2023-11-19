@@ -1,3 +1,4 @@
+#' @export
 read_individual_trait <- function(path_trait = NULL,
                                   occ_source = "gbif",
                                   clim_source = "chelsa",

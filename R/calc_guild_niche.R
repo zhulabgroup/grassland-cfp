@@ -1,3 +1,4 @@
+#' @export
 calc_guild_niche <- function(dat_community, dat_niche) {
   df <- bind_rows(
     dat_community$obs %>%

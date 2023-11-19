@@ -1,3 +1,4 @@
+#' @export
 test_guild_niche <- function(dat_guild_niche) {
   ls_res <- vector(mode = "list")
   for (grp in dat_guild_niche$group %>% unique()) {

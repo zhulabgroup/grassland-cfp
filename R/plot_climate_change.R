@@ -1,4 +1,5 @@
-plot_climate_change_cfp <- function(indir = "alldata/intermediate/background/cfp_annual/") {
+#' @export
+plot_climate_change_cfp <- function(indir = "alldata/intermediate/background/cfp_trend/") {
   gg_cfp_cc <-
     plot_cfp_cc_param(indir = indir, param = "tas") +
     plot_cfp_cc_param(indir = indir, param = "pr") +

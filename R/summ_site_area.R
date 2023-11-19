@@ -1,3 +1,4 @@
+#' @export
 # get observational sites geographical and climatic space
 summ_site_obs <- function(sf_site, dat_clim, type) {
   if (type == "latlon") {

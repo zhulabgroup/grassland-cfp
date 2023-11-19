@@ -1,3 +1,4 @@
+#' @export
 summ_data_avail <- function(dat_community, type, subset = NULL) {
   df_data_avail <- bind_rows(
     dat_community$exp %>%
@@ -35,7 +36,6 @@ summ_data_avail <- function(dat_community, type, subset = NULL) {
         filter(str_detect(sitename, "Experiment"))
     }
   }
-
 
   return(df_data_avail)
 }

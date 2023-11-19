@@ -1,3 +1,4 @@
+#' @export
 plot_trait_change <- function(option, dat_community, dat_niche) {
   if (option == "obs") {
     gg_trait_change <- plot_trait_change_obs(dat_community_obs = dat_community$obs, dat_niche)
@@ -9,6 +10,7 @@ plot_trait_change <- function(option, dat_community, dat_niche) {
   return(gg_trait_change)
 }
 
+#' @export
 plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
   df_weight <- dat_community_exp %>%
     filter(site == "jrgce", year >= 1999) %>%
@@ -201,6 +203,7 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
   return(exp_gg)
 }
 
+#' @export
 plot_trait_change_obs <- function(dat_community_obs, dat_niche) {
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
   ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
@@ -322,6 +325,7 @@ plot_trait <- function(dat_community_obs, dat_niche, site_name, tmp_lab = "", pp
   }
 }
 
+#' @export
 tidy_stack_weighted_data <- function(df_weight) {
   df_stack <- df_weight %>%
     mutate(repeat_count = (weight * 1000) %>% round()) %>%

@@ -1,3 +1,4 @@
+#' @export
 read_community <- function(version = c("final", "tidy")) {
   if (version == "tidy") {
     indir <- "alldata/intermediate/observation-experiment/tidy-community/"

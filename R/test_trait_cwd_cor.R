@@ -1,3 +1,4 @@
+#' @export
 test_trait_cwd_cor <- function(dat_trait_cwd) {
   out <- list(
     cwd_ppt = cor.test(~ cwd + ppt, data = dat_trait_cwd),

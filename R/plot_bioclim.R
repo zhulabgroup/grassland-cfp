@@ -1,3 +1,4 @@
+#' @export
 plot_bioclim <- function(dat_trait_bioclim, var) {
   if (var == "tmp") {
     dat_trait_bioclim_sub <- dat_trait_bioclim %>%
@@ -42,8 +43,10 @@ plot_bioclim <- function(dat_trait_bioclim, var) {
   return(gg_bioclim)
 }
 
+#' @export
 ggally_hexbin <- function(data, mapping, ...) {
   p <- ggplot(data = data, mapping = mapping) +
     geom_hex(...)
-  p
+
+  return(p)
 }

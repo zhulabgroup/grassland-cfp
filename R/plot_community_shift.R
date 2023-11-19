@@ -1,3 +1,4 @@
+#' @export
 plot_community_shift <- function(dat_shift, dat_niche) {
   p_obs <- plot_community_shift_obs(obs_tbl = dat_shift$obs)
   p_exp <- plot_community_shift_exp(exp_tbl = dat_shift$exp)
@@ -28,6 +29,7 @@ plot_community_shift <- function(dat_shift, dat_niche) {
   return(out)
 }
 
+#' @export
 plot_community_shift_obs <- function(obs_tbl) {
   p_obs <- ggplot() +
     geom_point(
@@ -63,6 +65,7 @@ plot_community_shift_obs <- function(obs_tbl) {
   return(p_obs)
 }
 
+#' @export
 plot_community_shift_exp <- function(exp_tbl) {
   # warming phrases: +80 W m^-2 (years 2-5), to +100 W m^-2 (years 6-12), to +250 W m^-2 (years 13-17)
   warm_tbl <- read_warm_treatment()
@@ -112,6 +115,7 @@ plot_community_shift_exp <- function(exp_tbl) {
   return(p_exp)
 }
 
+#' @export
 plot_community_shift_compare <- function(dat_shift) {
   ## compare exp and obs
   df_all_shift <- bind_rows(
@@ -179,6 +183,7 @@ plot_community_shift_compare <- function(dat_shift) {
   return(p_compare)
 }
 
+#' @export
 plot_community_in_niche_space <- function(dat_shift, dat_niche) {
   df_all_sum <- bind_rows(
     dat_shift$obs$sum_coarse %>% mutate(group = "observation"),
@@ -215,7 +220,6 @@ plot_community_in_niche_space <- function(dat_shift, dat_niche) {
   return(p_niche)
 }
 
-
 plot_add_rect <- function(p_big, p_small, col = "orange", x_adj = 0.025, y_adj = 0.05, label = "D") {
   p_rect <- p_big +
     geom_rect(
@@ -239,4 +243,6 @@ plot_add_rect <- function(p_big, p_small, col = "orange", x_adj = 0.025, y_adj =
       vjust = 0,
       color = col
     )
+
+  return(p_rect)
 }

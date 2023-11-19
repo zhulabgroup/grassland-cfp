@@ -83,7 +83,8 @@ Calculate climate change in CFP.
 
 ```{r, eval = F}
 path_climate_monthly <- down_climate_monthly()
-path_climate_change_cfp <- calc_climate_change_cfp(path = path_climate_monthly)
+path_climate_annual_cfp <- calc_climate_annual_cfp(indir = path_climate_monthly)
+path_climate_change_cfp <- calc_climate_change_cfp(indir = path_climate_annual_cfp)
 ```
 
 ```{r}

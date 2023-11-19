@@ -1,3 +1,4 @@
+#' @export
 read_climate <- function(path_clim = NULL, indir = "alldata/input/climate/") {
   if (is.null(path_clim)) {
     path_clim <- list(
@@ -6,6 +7,7 @@ read_climate <- function(path_clim = NULL, indir = "alldata/input/climate/") {
       terraclim = str_c(indir, "terraclim/")
     )
   }
+
   # chelsa
   chelsa_ras <- terra::rast(c(
     str_c(path_clim$chelsa, "bio1.tif"),
@@ -66,5 +68,6 @@ read_climate <- function(path_clim = NULL, indir = "alldata/input/climate/") {
     prism = prism_ras,
     terraclim = terraclim_ras
   )
+
   return(out)
 }

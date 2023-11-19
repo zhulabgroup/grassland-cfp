@@ -1,3 +1,4 @@
+#' @export
 down_biogeography <- function(species_table, num_cores = 22, outdir = "alldata/input/biogeography/", date = NULL, start_year = NULL, end_year = NULL, gbif_only = F, postfox = "") {
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
 

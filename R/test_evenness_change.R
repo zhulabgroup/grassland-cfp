@@ -1,3 +1,4 @@
+#' @export
 test_evenness_change <- function(dat_evenness) {
   out <- list(
     obs = test_evenness_change_obs(dat_evenness_obs = dat_evenness$obs),
@@ -6,6 +7,7 @@ test_evenness_change <- function(dat_evenness) {
   return(out)
 }
 
+#' @export
 test_evenness_change_obs <- function(dat_evenness_obs) {
   df <- dat_evenness_obs %>%
     group_by(site) %>%
@@ -27,6 +29,7 @@ test_evenness_change_obs <- function(dat_evenness_obs) {
   return(df)
 }
 
+#' @export
 test_evenness_change_exp <- function(dat_evenness_exp) {
   df <- ggpubr::compare_means(
     formula = even ~ treat_T,
