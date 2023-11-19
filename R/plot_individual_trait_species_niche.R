@@ -1,23 +1,4 @@
-#' @export
-plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, dat_niche, outfile = "alldata/output/figures/species-climate-niche.pdf") {
-  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
-
-  sp_vec <- dat_niche %>%
-    filter(!is.na(occ_n)) %>% # no dummy species
-    pull(species)
-
-  niche_gg <- vector(mode = "list")
-  for (sp in sp_vec) {
-    niche_gg[[sp]] <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sf_cfp, sp = sp) # no need to print(); will slow down
-  }
-
-  # runtime ~= 4 min
-  pdf(outfile, width = 8, height = 8 * .618)
-  print(niche_gg)
-  dev.off()
-
-  return(outfile)
-}
+# docu
 
 #' @export
 plot_individual_trait_species_niche_ind_sp <- function(dat_occ, dat_trait, sf_cfp = NULL, sp = "Danthonia californica") {

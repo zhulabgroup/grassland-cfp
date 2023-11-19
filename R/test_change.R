@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 test_index_change_all <- function(dat_index, option) {
   df_index_change_exp <- test_index_change_comb(dat_index, option) %>%

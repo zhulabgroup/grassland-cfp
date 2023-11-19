@@ -1,3 +1,5 @@
+#docu
+
 #' @export
 plot_species_gainloss <- function(dat_niche, dat_gainloss, nrow = 3) {
   p_obs <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = nrow)

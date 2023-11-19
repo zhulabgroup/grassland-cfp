@@ -1,4 +1,3 @@
-#' @export
 test_index_change_comb <- function(dat_index, option, response = "index", levels = c("cti", "cpi")) {
   if (option == "obs") {
     return(test_change_comb_obs(dat_index$obs, response = response, levels = levels))
@@ -8,7 +7,6 @@ test_index_change_comb <- function(dat_index, option, response = "index", levels
   }
 }
 
-#' @export
 test_trait_change_comb <- function(dat_community, option, response = "trait", levels = c("tmp", "ppt")) {
   if (option == "obs") {
     return(test_change_comb_obs(dat_community$obs, response = response, levels = levels))

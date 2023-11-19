@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 read_cfp <- function(path_cfp = NULL, indir = "alldata/input/basemap/cfp/") {
   if (is.null(path_cfp)) {

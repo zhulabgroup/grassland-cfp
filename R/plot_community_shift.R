@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 plot_community_shift <- function(dat_shift, dat_niche) {
   p_obs <- plot_community_shift_obs(obs_tbl = dat_shift$obs)

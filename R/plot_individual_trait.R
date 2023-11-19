@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 plot_individual_distribution <- function(data_occ,
                                          cool_species = "Danthonia californica",

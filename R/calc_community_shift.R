@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 calc_community_shift <- function(dat_index) {
   dat_shift_obs <- calc_community_shift_obs(obs_tbl = dat_index$obs)

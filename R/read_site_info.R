@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 read_site_info <- function(path = NULL, subset = NULL) {
   if (is.null(path)) {
@@ -24,7 +26,6 @@ read_site_info <- function(path = NULL, subset = NULL) {
   return(site_sf)
 }
 
-#' @export
 read_site_name <- function() {
   site_vec <- c(
     angelo = "Angelo Coast",

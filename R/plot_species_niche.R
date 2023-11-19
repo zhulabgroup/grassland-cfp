@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 plot_species_niche <- function(dat_niche,
                                cool_species = "Danthonia californica", # Michael: important native species in California

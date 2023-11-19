@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 plot_site_map <- function(sf_cfp = NULL, ras_grass = NULL, plotsite = T) {
   if (is.null(sf_cfp)) {

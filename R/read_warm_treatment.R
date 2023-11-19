@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 read_warm_treatment <- function() {
   warm_tbl <- tribble(

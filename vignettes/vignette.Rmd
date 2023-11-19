@@ -1,9 +1,9 @@
 ---
-title: "Vignette_release"
+title: "Vignette"
 output: rmarkdown::html_vignette
 fig_caption: yes
 vignette: >
-  %\VignetteIndexEntry{Vignette_release}
+  %\VignetteIndexEntry{Vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,7 +13,7 @@ knitr::opts_knit$set(root.dir = here::here()) # knit from project directory
 knitr::opts_chunk$set(
   collapse = TRUE,
   dpi = 300,
-  cache = T,
+  cache = F,
   comment = "#>",
   warning = F,
   message = F,
@@ -30,7 +30,7 @@ theme_set(ggthemes::theme_few())
 ## Load data
 Load community composition data (experimental and observational).
 
-```{r, eval=F}
+```{r, eval = F}
 dat_community
 ```
 

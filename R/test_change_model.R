@@ -1,4 +1,3 @@
-#' @export
 test_index_change_model <- function(dat_model, option) {
   # if (index == "cpi") {
   #   dat_model <- dat_model %>%
@@ -35,7 +34,6 @@ test_index_change_model <- function(dat_model, option) {
   return(res)
 }
 
-#' @export
 test_trait_change_model <- function(dat_model, option) {
   # if (trait == "ppt") {
   #   dat_model <- dat_model %>%

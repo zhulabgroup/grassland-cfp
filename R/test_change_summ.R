@@ -1,4 +1,3 @@
-#' @export
 test_change_summ <- function(model) {
   df_summ <- data.frame(
     estimate = model$summary$coefficients[2, 1],

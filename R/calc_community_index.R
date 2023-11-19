@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 # calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
 calc_community_index <- function(dat_niche, dat_community) {

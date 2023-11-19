@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 calc_species_gainloss <- function(dat_community, dat_niche) {
   dat_gainloss_obs <- calc_species_gainloss_obs(com_obs = dat_community$obs, dat_niche)

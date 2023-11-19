@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 calc_species_niche <- function(dat_trait, add_dummy = T) {
   dat_niche <- dat_trait %>%

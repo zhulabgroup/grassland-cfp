@@ -1,3 +1,5 @@
+# docu
+
 #' @export
 plot_community_index <- function(option, dat_index, experiment = NULL, treatment = NULL, layout = "surround", nrow = NULL,
                                  onesite = NULL) {
