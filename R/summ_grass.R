@@ -1,3 +1,4 @@
+#' @export
 summ_grass <- function(ras_grass) {
   percent <- ras_grass %>%
     terra::as.data.frame(xy = T) %>%

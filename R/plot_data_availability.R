@@ -1,3 +1,4 @@
+#' @export
 plot_data_availability <- function(df_data_avail) {
   gg_data_avail <- ggplot() +
     geom_segment(

@@ -1,3 +1,4 @@
+#' @export
 summ_biogeography <- function(dat_occ) {
   v_source <- names(dat_occ)
 

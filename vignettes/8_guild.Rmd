@@ -27,7 +27,11 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Compare species niches by guilds.
+In the main analysis, we characterized community composition in the climate space. Previous studies often use species guilds, such as examining changes in grass and forb dominance, and have yielded inconsistent observations and experimental results. For comparison, we examined community compositional shifts characterized by species guilds. We used three common classifications for species guilds: their origin (native vs. non-native), life history (annual vs. perennial), or functional groups (grass vs. forb).
+
+## Compare species niches by guild
+
+We first compared the climate niches of species of different guilds using permutational multivariate analysis of variance (PERMANOVA).
 
 ```{r}
 dat_guild_niche <- calc_guild_niche(dat_community, dat_niche)
@@ -36,6 +40,11 @@ gg_guild_niche
 res_guild_niche <- test_guild_niche(dat_guild_niche = dat_guild_niche)
 res_guild_niche
 ```
+Comparison of species climate niches of different species guilds in terms of (A) origin, (B) life history, and (C) functional group. Red Gaussian ellipses show the 95% confidence interval of the climate niche of each species guild. The climate niches are not significantly different when comparing species of different origins or species of different functional groups (permutational multivariate analysis of variance, PERMANOVA, p > 0.05) but were significantly different when comparing species with different life histories (p d 0.001), with annual species associated with hotter and drier locations compared to perennial species.
+
+## Analyze community shift with guild
+
+Similar to the analysis of changes in CTI and CPI, we then examined the relative abundance of species of specific guilds at the 12 observational sites and the JRGCE warming experiment, by fitting linear regressions with the percentages of natives, annuals, and grasses as response variables and year as the predictor.
 
 Plot guild percentage change over time from observational and experimental data.
 
@@ -45,6 +54,7 @@ gg_guild_percentage_obs
 gg_guild_percentage_exp <- plot_guild_percentage(option = "exp", dat_community = dat_community)
 gg_guild_percentage_exp
 ```
+Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province and in the Jasper Ridge Global Change Experiment.
 
 Output figures and R data files.
 

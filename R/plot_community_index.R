@@ -1,4 +1,6 @@
-plot_community_index <- function(option, dat_index, experiment = NULL, treatment = NULL, layout = "surround", nrow = NULL, onesite = NULL) {
+#' @export
+plot_community_index <- function(option, dat_index, experiment = NULL, treatment = NULL, layout = "surround", nrow = NULL,
+                                 onesite = NULL) {
   if (option == "obs") {
     community_index_gg <- plot_community_index_obs(obs_tbl = dat_index$obs, layout = layout, nrow = nrow, onesite = onesite)
   }
@@ -9,6 +11,7 @@ plot_community_index <- function(option, dat_index, experiment = NULL, treatment
   return(community_index_gg)
 }
 
+#' @export
 plot_community_index_obs <- function(obs_tbl, layout = "surround", nrow = NULL, onesite = NULL) {
   site_map_gg <- plot_site_map(sf_cfp = NULL, ras_grass = NULL)
   # reshape data
@@ -117,7 +120,6 @@ plot_community_index_obs <- function(obs_tbl, layout = "surround", nrow = NULL, 
   return(obs_gg)
 }
 
-# define plotting function
 plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
   site_lab <- plot_site_name(site_name, with_letter = T)
@@ -198,7 +200,7 @@ plot_site_name <- function(name, with_letter = F) {
   return(label)
 }
 
-
+#' @export
 plot_community_index_exp <- function(exp_tbl, experiment = "jrgce", treatment = "warming") {
   if (experiment == "jrgce") {
     p <- plot_community_index_jrgce(exp_tbl, treatment)

@@ -1,3 +1,4 @@
+#' @export
 plot_guild_percentage <- function(option, dat_community) {
   if (option == "obs") {
     gg_guild_percentage <- plot_guild_percentage_obs(dat_community_obs = dat_community$obs)
@@ -9,6 +10,7 @@ plot_guild_percentage <- function(option, dat_community) {
   return(gg_guild_percentage)
 }
 
+#' @export
 plot_guild_percentage_obs <- function(dat_community_obs) {
   obs_guild_tbl <- dat_community_obs %>%
     mutate(
@@ -54,6 +56,7 @@ plot_guild_percentage_obs <- function(dat_community_obs) {
   return(obs_guild_gg)
 }
 
+#' @export
 plot_guild_site <- function(data, site_name,
                             native_lab = "", annual_lab = "", grass_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data

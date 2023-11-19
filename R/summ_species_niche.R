@@ -1,3 +1,4 @@
+#' @export
 summ_species_niche <- function(dat_niche, sp = NULL) {
   if (is.null(sp)) {
     df <- dat_niche %>%

@@ -27,8 +27,9 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Analyze individual species contributing to CTI-CPI change.
+# Analyze individual species contributing to CTI-CPI change
 
+Calculate the trend in abundance of species over time at the observational sites or under warming treatment in the experiment.
 ```{r, eval=F}
 dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
 usethis::use_data(dat_gainloss, overwrite = T)
@@ -67,6 +68,7 @@ gg_gainloss_elkhorn4 <- plot_species_gainloss_obs(
 gg_gainloss_elkhorn5 <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, onesite = "elkhorn")$circle
 ```
 
+Visualize the change in abundance in the climate niche space.
 ```{r}
 gg_species_change <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
 gg_species_change$combined
@@ -74,7 +76,7 @@ gg_species_change$combined
 
 ```{r, eval = F}
 gg_species_change_obs_2row <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = 2)
-path_animate_gainloss <- plot_species_gainloss_animate (dat_community, dat_gainloss, dat_niche)
+path_animate_gainloss <- plot_species_gainloss_animate(dat_community, dat_gainloss, dat_niche)
 ```
 
 ```{r}
@@ -84,6 +86,7 @@ df_summ_species_change_exp <- summ_species_change(dat_gainloss, option = "exp")
 
 Across the observations, species gained in communities by significantly increasing abundance over time (e.g., _`r df_summ_species_change_obs %>% filter(change == "increase") %>% pull(species)`_) or recruitment (appeared only after the 5th yr, e.g., _`r df_summ_species_change_obs %>% filter(change == "new") %>% pull(species)`_); in contrast, species lost from communities by significantly decreasing abundance over time (e.g., _`r df_summ_species_change_obs %>% filter(change == "decrease") %>% pull(species)`_) or extirpation (disappeared in the last 5 yr, e.g., _`r df_summ_species_change_obs %>% filter(change == "lost") %>% pull(species)`_). In the experiment, species did not experience complete turnover, but some gained by being more abundant (e.g., _`r df_summ_species_change_exp %>% filter(change == "increase") %>% pull(species)`_), while some lost by being less abundant (e.g., _`r df_summ_species_change_exp %>% filter(change == "decrease") %>% pull(species)`_) in warming compared to ambient plots.
 
+## Rank abundance and evenness
 Compare species rank abundance in observational communities over years and experimental communities across treatments. Test for difference in evenness in observational and experimental communities.
 
 ```{r}
@@ -98,7 +101,9 @@ gg_rank_abundance$obs
 gg_rank_abundance$exp
 ```
 
-Due to the high correlation of species temperature and precipitation niches, CTI and CPI shifts at the community level appear highly coupled. Synthesize the coupled CTI-CPI shifts, both visually and numerically.
+There were no consistent changes in the evenness of communities.
+
+## Synthesize community shifts in observation and experiments
 
 ```{r, eval = F}
 dat_shift <- calc_community_shift(dat_index = dat_index)
@@ -109,6 +114,7 @@ usethis::use_data(dat_shift, overwrite = T)
 gg_community_shift <- plot_community_shift(dat_shift, dat_niche)
 gg_community_shift$combined
 ```
+Due to the high correlation of species temperature and precipitation niches, CTI and CPI shifts at the community level appear highly coupled.
 
 ```{r}
 df_summ_shift_coupling <- summ_shift_coupling(dat_shift)

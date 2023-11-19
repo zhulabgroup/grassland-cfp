@@ -1,3 +1,4 @@
+#' @export
 plot_species_gainloss <- function(dat_niche, dat_gainloss, nrow = 3) {
   p_obs <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = nrow)
   p_exp <- plot_species_gainloss_exp(exp_tbl = dat_gainloss$exp, dat_niche)
@@ -23,6 +24,7 @@ plot_species_gainloss <- function(dat_niche, dat_gainloss, nrow = 3) {
   return(out)
 }
 
+#' @export
 plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow = 3) {
   if (!is.null(onesite)) {
     obs_tbl <- obs_tbl %>%
@@ -122,8 +124,8 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
       ), alpha = 1, pch = 21, fill = NA
     )
 
-  if ( obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% nrow()>0) {
-    obs_gainloss_main_gg <- obs_gainloss_main_gg+
+  if (obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% nrow() > 0) {
+    obs_gainloss_main_gg <- obs_gainloss_main_gg +
       geom_point(
         data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
         aes(
@@ -151,7 +153,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
     ) +
     theme(strip.text = element_text(hjust = 0))
 
-  if ( obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% nrow()>0) {
+  if (obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)) %>% nrow() > 0) {
     obs_gainloss_supp_gg <- obs_gainloss_main_gg +
       ggrepel::geom_text_repel(
         data = obs_gainloss_tbl %>% filter(change == "increase" | change == "decrease") %>% filter(!is.na(complete_change)),
@@ -179,6 +181,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
   return(out)
 }
 
+#' @export
 plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
   exp_gainloss_tbl <- exp_tbl %>%
     mutate(change = factor(change, levels = c("increase", "decrease", "no clear change"))) %>%

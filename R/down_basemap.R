@@ -1,5 +1,4 @@
-# basemap -----------------------------------------------------------------
-
+#' @export
 down_cfp <- function(sf_cfp, outdir = "alldata/input/basemap/cfp/") {
   # Biodiversity Hotspots (version 2016.1)
   # Michael Hoffman;  Kellee Koenig; Gill Bunting;  Jennifer Costanza;  Williams, Kristen J.
@@ -17,6 +16,7 @@ down_cfp <- function(sf_cfp, outdir = "alldata/input/basemap/cfp/") {
   return(outdir)
 }
 
+#' @export
 down_grasscover <- function(sf_cfp, outdir = "alldata/input/basemap/grass/") {
   # MCD12Q1 MODIS/Terra+Aqua Land Cover Type Yearly L3 Global 500m SIN Grid V006
   # Friedl, M., Sulla-Menashe, D.

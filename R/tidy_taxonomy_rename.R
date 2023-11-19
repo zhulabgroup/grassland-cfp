@@ -1,3 +1,4 @@
+#' @export
 tidy_taxonomy_rename <- function(path_community_tidy = "alldata/intermediate/observation-experiment/tidy-community/",
                                  path_community_final = "alldata/intermediate/observation-experiment/final-community/",
                                  misspelling_file = "alldata/input/community/species/misspelling.csv") {

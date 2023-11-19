@@ -1,3 +1,4 @@
+#' @export
 read_biogeography <- function(path_occ = NULL, indir = "alldata/input/biogeography/", gbif_only = F) {
   if (is.null(path_occ)) {
     path_occ <- list(

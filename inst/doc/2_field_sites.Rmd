@@ -17,7 +17,8 @@ knitr::opts_chunk$set(
   cache = T,
   comment = "#>",
   fig.width = 8,
-  fig.height = 8
+  fig.height = 8,
+  dpi = 300
 )
 ```
 
@@ -40,6 +41,8 @@ Read site information.
 
 ```{r}
 read_site_info() %>% knitr::kable()
+gg_site_map <- plot_site_map()
+gg_site_map
 ```
 
 Visualize data availability across sites.
@@ -68,7 +71,7 @@ summ_site_hull <- summ_site_obs(sf_site = sf_site_obs, dat_clim = dat_clim$chels
 
 These observational sites spanned a large geographical area (`r df_summ_site_latlon$lon_max %>% signif(3) %>% abs()` - `r df_summ_site_latlon$lon_min %>% signif(3) %>% abs()` °W, `r df_summ_site_latlon$lat_min %>% signif(3) %>% abs()` - `r df_summ_site_latlon$lat_max %>% signif(3) %>% abs()` °N) and climate gradient (`r df_summ_site_clim$tmp_min %>% signif(3)`  - `r df_summ_site_clim$tmp_max %>% signif(3)` °C temperature, `r df_summ_site_clim$ppt_min %>% signif(3)` - `r df_summ_site_clim$ppt_max %>% signif(3)` mm precipitation).
 
-These observational sites spanned an approximately `r summ_site_hull %>% signif(1) %>% format(big.mark = ",")` km^2 geographical area.
+These observational sites spanned an approximately `r summ_site_hull %>% signif(1) %>% format(big.mark = ",")` km^2^ geographical area.
 
 ```{r, eval = F}
 path_climate_site_annual <- calc_climate_annual_site()
@@ -87,7 +90,11 @@ df_cc_site %>%
   ) %>%
   knitr::kable()
 df_summ_site_cc <- summ_change(df_change = df_cc_site, option = "obs")
+df_summ_site_cc
+
 gg_site_cc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail)
+gg_site_cc
+gg_site_cc_landsc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail, layout = "landsc", nrow = 2)
 ```
 
 Overall, the 12 observational sites had significant warming (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant drying (`r df_cc_site %>% filter(site == "all") %>% filter(clim_var == "ppt") %>% pull(estimate) %>% signif(3) %>% magrittr::multiply_by(-1)` mm yr^-1^) over the years. 
@@ -107,8 +114,12 @@ The experiment occupied ~0.75 ha within a 5-ha grassland stand and experienced a
 Output figures and R data files.
 
 ```{r, eval = F}
-save_figure(out = list(data_avail = gg_data_avail, 
-                       site_cc = gg_site_cc))
+save_figure(out = list(
+  site_map = gg_site_map,
+  data_avail = gg_data_avail,
+  site_cc = gg_site_cc,
+  site_cc_landsc = gg_site_cc_landsc
+))
 
 save_extdata(out = list("alldata/input/basemap/site_info.csv"))
 ```

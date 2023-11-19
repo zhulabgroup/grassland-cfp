@@ -1,3 +1,4 @@
+#' @export
 calc_evenness <- function(dat_community) {
   out <- list(
     obs = calc_evenness_obs(dat_community$obs),
@@ -6,6 +7,7 @@ calc_evenness <- function(dat_community) {
   return(out)
 }
 
+#' @export
 calc_evenness_obs <- function(dat_community_obs) {
   df_obs_even <- dat_community_obs %>%
     filter(guild != "DUMMY") %>%
@@ -32,6 +34,8 @@ calc_evenness_obs <- function(dat_community_obs) {
 
   return(df_obs_even)
 }
+
+#' @export
 calc_evenness_exp <- function(dat_community_exp) {
   plot_treat <- dat_community_exp %>%
     filter(site == "jrgce") %>%

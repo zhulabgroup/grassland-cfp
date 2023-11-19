@@ -1,3 +1,4 @@
+#' @export
 tidy_taxonomy_consolidate <- function(dat_community,
                                       consolidation_file = "alldata/input/community/species/consolidation.csv") {
   # species list from all experimental and observational data

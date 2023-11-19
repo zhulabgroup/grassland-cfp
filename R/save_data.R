@@ -1,3 +1,4 @@
+#' @export
 save_extdata <- function(out, dir = NULL) {
   if (is.null(dir)) {
     dir <- ""

@@ -1,3 +1,4 @@
+#' @export
 plot_site_climate_change <- function(dat_clim_site, dat_avail, layout = "surround", nrow = NULL) {
   sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
   ras_grass <- read_grasscover(path_grass = system.file("extdata", "cfp-grassland-percent-cover.tif", package = "grassland"))
@@ -56,9 +57,7 @@ plot_site_climate_change <- function(dat_clim_site, dat_avail, layout = "surroun
   return(gg_cc)
 }
 
-
-
-# define plotting function
+#' @export
 plot_site_cc <- function(data, dat_avail, site_name,
                          tmp_lab = "", ppt_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data

@@ -1,3 +1,4 @@
+#' @export
 summ_species_change <- function(dat_gainloss, option) {
   if (option == "obs") {
     obs_gainloss_eg1 <- dat_gainloss$obs %>%

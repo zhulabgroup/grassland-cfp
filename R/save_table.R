@@ -1,3 +1,4 @@
+#' @export
 save_table <- function(out, dir = "alldata/output/tables/") {
   for (i in 1:length(out)) {
     tbl_name <- names(out)[i]
@@ -7,7 +8,6 @@ save_table <- function(out, dir = "alldata/output/tables/") {
     file.copy(from = filename, to = str_c("inst/tables/"), recursive = T)
   }
 }
-
 
 save_table_param <- function(tbl_name) {
   if (tbl_name == "niche") {

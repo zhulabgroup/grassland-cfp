@@ -1,3 +1,4 @@
+#' @export
 plot_rank_abundance <- function(dat_rank, df_evenness_summ) {
   out <- list(
     obs = plot_rank_abundance_obs(dat_rank_obs = dat_rank$obs, df_evenness_summ_obs = df_evenness_summ$obs),
@@ -7,6 +8,7 @@ plot_rank_abundance <- function(dat_rank, df_evenness_summ) {
   return(out)
 }
 
+#' @export
 plot_rank_abundance_obs <- function(dat_rank_obs, df_evenness_summ_obs) {
   obs_rank_gg <- ggplot(dat_rank_obs) +
     geom_line(aes(x = rank, y = median, col = year, group = year), alpha = 1) +
@@ -49,6 +51,7 @@ plot_rank_abundance_obs <- function(dat_rank_obs, df_evenness_summ_obs) {
   return(obs_rank_gg)
 }
 
+#' @export
 plot_rank_abundance_exp <- function(dat_rank_exp) {
   exp_rank_gg <- ggplot(dat_rank_exp) +
     geom_line(aes(x = rank, y = median, col = treat_T, group = treat_T), alpha = 1) +

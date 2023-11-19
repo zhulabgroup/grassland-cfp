@@ -1,3 +1,4 @@
+#' @export
 summ_shift_coupling <- function(dat_shift, ratio) {
   df_all_shift <- bind_rows(
     dat_shift$obs$shift %>%

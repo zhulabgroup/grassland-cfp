@@ -1,3 +1,4 @@
+#' @export
 tidy_community_data <- function(indir = "alldata/input/community/raw/",
                                 outdir = "alldata/intermediate/observation-experiment/tidy-community/") {
   # experimental sites

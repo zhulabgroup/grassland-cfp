@@ -1,5 +1,4 @@
-
-# climate -----------------------------------------------------------------
+#' @export
 down_climate <- function(outdir = "input/climate/") {
   path_chelsa <- down_chelsa(outdir)
   path_prism <- down_prism(outdir)

@@ -27,7 +27,26 @@ library(grassland)
 theme_set(ggthemes::theme_few())
 ```
 
-Statistically test species climate trait (temperature or precipitation) change using weighted LM or LME.
+# Trait change on the species level
+
+In the species-level approach, we assigned Species Niche Centroids (SNC) estimated above to the observational and experimental community composition data. We quantified changes in the overall species temperature and precipitation optima (i.e., SNC) using weighted models. A weighted model for species optima, with species relative abundance as weights, is conceptually similar to a model for the optima of all individuals in a community, assuming individuals of the same species share the same optima. Higher overall temperature optima suggest that species associated with warmer locations are more prevalent and abundant in the community; likewise, lower overall precipitation optima suggest that species associated with drier locations are more prevalent and abundant in the community.
+
+For the observational communities, we compared temperature and precipitation optima across years. We fitted weighted linear regressions with optima as the response variable, year as the predictor, and species' relative abundance as weights. The optima change over the years was summarized by the weighted linear regression slopes and tested for significance using the t-test. For the experimental communities, we compared optima between ambient and warming treatments each year using weighted linear regressions with optima as the response variable, treatment as the predictor, and species' relative abundance as weights.
+
+For community $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, temperature optima as $T_j$, and precipitation optima as $P_j$. For community $i$, across all the species $j = 1, ..., J$, the species-level model for the observational data is
+$$
+T_j = \alpha+\beta t_i + \epsilon_{ij},\epsilon_{ij} \sim N(0,  \frac{\sigma^2}{A_{ij}}),
+$$
+
+where $t_i$ is the time of observation (yr), $\beta$ is the estimated rate of change (°C yr^-1^). A similar model applies to $P_j$. 
+
+A similar model applies to Pj. The species-level model for the experimental data is
+$$
+T_j = \alpha+\delta x_i + \epsilon_{ij},\epsilon_{ij} \sim N(0,  \frac{\sigma^2}{A_{ij}}),
+$$
+where $x_i$ is the experimental treatment (0 = control group, 1 = treatment group),´$\delta$ is the estimated treatment effect (°C). A similar model applies to $P_j$. 
+
+To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept for each site or year, respectively.
 
 ```{r}
 df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
@@ -46,10 +65,14 @@ df_trait_change_exp %>%
     p.value = p.value %>% round(4)
   ) %>%
   knitr::kable()
-df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs")
 ```
 
 Overall, the 12 observational sites had significant increases in temperature trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant decreases in precipitation trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "ppt") %>% pull(estimate) %>% signif(3)` mm yr^-1^) over the years. 
+
+```{r}
+df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs")
+df_summ_trait_change_obs
+```
 
 By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in temperature trait and significant decreases in precipitation trait over the years. Among all 12 sites, the temperature traits increases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(max) %>% signif(3)` °C yr^-1^; the precipitation trait decreases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(max) %>% signif(3)` mm yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(min) %>% signif(3)` mm yr^-1^.
 
@@ -63,6 +86,8 @@ gg_trait_change_obs
 gg_trait_change_exp <- plot_trait_change(option = "exp", dat_community, dat_niche)
 gg_trait_change_exp
 ```
+
+# Index change on the community level
 
 Scaling up from the individual species to the community, we can calculate Community Temperature Index (CTI) and Community Precipitation Index (CPI). CTI (or CPI) are species temperature (or precipitaion) weighted by their relative abundance in any community. For location $i$, species $j$, denote species abundance (point intercept or percent cover) as $A_{ij}$, and species temperature and precipitaion niche as $T_j$ and $P_j$. The CTI and CPI are defined as follows.
 
@@ -78,7 +103,21 @@ dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_com
 usethis::use_data(dat_index, overwrite = T)
 ```
 
-Statistically test CTI and CPI changes using LM or LME.
+For the observational communities, we compared CTI and CPI across years. We fitted linear regressions with CTI or CPI as the response variable and year as the predictor. The CTI or CPI change over the years was summarized by the linear regression slopes and tested for significance using the t-test. The slopes quantify the rate of thermophilization and xerophilization. The linear regression model is
+$$
+\mathrm{CTI}_i = \alpha+\beta t_i + \epsilon_i,\epsilon_i \sim N(0, \sigma^2),
+$$
+
+where $t_i$ is the time of observation (yr), $\beta$ is the estimated rate of change (°C yr^-1^). A similar model applies to $\mathrm{CPI}_i$.
+
+For the experimental communities, we compared CTI and CPI between ambient and warming treatments each year using linear regressions with CTI or CPI as the response variable and treatment as the predictor (Fig. 3). The linear regression model is
+$$
+\mathrm{CTI}_i = \alpha+\delta x_i + \epsilon_i,\epsilon_i \sim N(0, \sigma^2),
+$$
+
+where $x_i$ is the experimental treatment (0 = control group, 1 = treatment group),´$\delta$ is the estimated treatment effect (°C). A similar model applies to $\mathrm{CPI}_i$. 
+
+To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept for each site or year, respectively. 
 
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
@@ -97,10 +136,14 @@ df_index_change_exp %>%
     p.value = p.value %>% round(4)
   ) %>%
   knitr::kable()
-df_summ_index_change_obs <- summ_change(df_index_change_obs, option = "obs")
 ```
 
 Overall, the 12 observational sites had significant thermophilization (increases in CTI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant xerophilization (decreases in CPI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3)` mm yr^-1^) over the years. 
+
+```{r}
+df_summ_index_change_obs <- summ_change(df_index_change_obs, option = "obs")
+df_summ_index_change_obs
+```
 
 By site, `r df_summ_index_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in CTI and significant decreases in CPI over the years. Among all 12 sites, the mean thermophilization rate (increasing CTI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(max) %>% signif(3)` °C yr^-1^; the mean xerophilization rate (decreasing CPI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(max) %>% signif(3)` mm yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(min) %>% signif(3)` mm yr^-1^.
 
@@ -120,7 +163,6 @@ gg_community_index_exp
 
 ```{r}
 gg_community_index_elkhorn <- plot_community_index(option = "obs", dat_index = dat_index, onesite = "elkhorn")
-gg_community_index_elkhorn
 ```
 
 Output figures and R data files.

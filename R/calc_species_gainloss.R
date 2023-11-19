@@ -1,3 +1,4 @@
+#' @export
 calc_species_gainloss <- function(dat_community, dat_niche) {
   dat_gainloss_obs <- calc_species_gainloss_obs(com_obs = dat_community$obs, dat_niche)
   dat_gainloss_exp <- calc_species_gainloss_exp(com_exp = dat_community$exp, dat_niche)
@@ -10,6 +11,7 @@ calc_species_gainloss <- function(dat_community, dat_niche) {
   return(dat_gainloss)
 }
 
+#' @export
 calc_species_gainloss_obs <- function(com_obs, dat_niche) {
   site_list <- read_site_info() %>%
     filter(!site %in% c("jrgce", "scide")) %>%
@@ -96,6 +98,7 @@ calc_species_gainloss_obs <- function(com_obs, dat_niche) {
   return(obs_gainloss_tbl)
 }
 
+#' @export
 calc_species_gainloss_exp <- function(com_exp, dat_niche) {
   plot_treat <- com_exp %>%
     filter(site == "jrgce") %>%

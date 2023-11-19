@@ -1,3 +1,4 @@
+#' @export
 calc_rank_abundance <- function(dat_community) {
   out <- list(
     obs = calc_rank_abundance_obs(dat_community$obs),
@@ -6,6 +7,7 @@ calc_rank_abundance <- function(dat_community) {
   return(out)
 }
 
+#' @export
 calc_rank_abundance_obs <- function(dat_community_obs) {
   df_obs_rank <- dat_community_obs %>%
     filter(guild != "DUMMY") %>%
@@ -30,6 +32,7 @@ calc_rank_abundance_obs <- function(dat_community_obs) {
   return(df_obs_rank)
 }
 
+#' @export
 calc_rank_abundance_exp <- function(dat_community_exp) {
   plot_treat <- dat_community_exp %>%
     filter(site == "jrgce") %>%

@@ -1,3 +1,4 @@
+#' @export
 read_climate_site <- function(path = "alldata/intermediate/background/site-annual.rds") {
   df <- read_rds(path) %>%
     filter(site %in% c(

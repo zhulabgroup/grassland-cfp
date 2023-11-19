@@ -1,3 +1,4 @@
+#' @export
 calc_community_shift <- function(dat_index) {
   dat_shift_obs <- calc_community_shift_obs(obs_tbl = dat_index$obs)
   dat_shift_exp <- calc_community_shift_exp(exp_tbl = dat_index$exp)
@@ -10,6 +11,7 @@ calc_community_shift <- function(dat_index) {
   return(out)
 }
 
+#' @export
 calc_community_shift_obs <- function(obs_tbl) {
   # reshape data
   obs_idx_tbl <- obs_tbl %>%
@@ -102,6 +104,7 @@ calc_community_shift_obs <- function(obs_tbl) {
   return(out)
 }
 
+#' @export
 calc_community_shift_exp <- function(exp_tbl) {
   jrgce_tbl <- exp_tbl %>%
     filter(site == "jrgce", year >= 1999) %>%
