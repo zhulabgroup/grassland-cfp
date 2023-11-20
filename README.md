@@ -14,7 +14,7 @@ devtools::install_github("zhulabgroup/grassland", build_vignettes = TRUE)
 ```
 
 ## Vignettes
-To reproduce the analysis, you can read the package vignette. It is like long form documentation or usage guides for the package.
+To reproduce the analysis, you can read the package vignette. It is like a long form documentation or usage guide for the package.
 
 After installation, you can view the vignette using:
 ```R
@@ -24,7 +24,10 @@ browseVignettes(package = "grassland")
 Then, click on the HTML link of the vignette to open it in your browser.
 
 ## Additional files
-Some functions are available but not directly demonstrated in the vignette. Please explore the help files.
+Some functions are available but not directly demonstrated in the vignette. Please explore the help files:
+```R
+help(package = grassland)
+```
 
 You can find pre-loaded intermediate data files in the data/ folder.
 
