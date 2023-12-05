@@ -77,7 +77,6 @@ calc_community_shift_obs <- function(obs_tbl) {
     ) %>%
     mutate(significance = case_when(
       CTI <= 0.05 & CPI <= 0.05 ~ "sig",
-      # CTI > 0.05 & CPI > 0.05 ~ "?",
       TRUE ~ "ns"
     )) %>%
     select(-CTI, -CPI)
@@ -191,7 +190,6 @@ calc_community_shift_exp <- function(exp_tbl) {
     ) %>%
     mutate(significance = case_when(
       CTI <= 0.05 & CPI <= 0.05 ~ "sig",
-      # CTI > 0.05 & CPI > 0.05 ~ "?",
       TRUE ~ "ns"
     )) %>%
     select(-CTI, -CPI)

@@ -168,17 +168,6 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    # geom_text(
-    #   data = . %>% distinct(com_idx_name, .keep_all = T),
-    #   aes(
-    #     label = paste("beta", " == ", beta),
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   x = -Inf, y = Inf,
-    #   vjust = 1.5, hjust = -0.2
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~com_idx_name,
       ncol = 1, scales = "free_y",
       strip.position = "left",
@@ -247,8 +236,6 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
   jrgce_tbl <- exp_tbl %>%
     filter(site == "jrgce", year >= 1999) %>%
     mutate(treat_T = str_sub(treat, start = 1L, end = 1L)) %>%
-    # mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
-    # filter(subgrp == "___") %>%
     select(any_of(c("site", "year", "plot", "treat_T", "tmp_com_mean", "ppt_com_mean", "cwd_com_mean"))) %>%
     gather(key = "com_idx_name", value = "com_idx_value", -site, -year, -plot, -treat_T) %>%
     mutate(com_idx_name = factor(com_idx_name,
@@ -349,17 +336,6 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         CDI = "Community Drought Index\n(CDI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
@@ -385,7 +361,6 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         x = startyear - 0.25, # y = cti_max
       ),
       y = 17, # manually label phase text
-      # parse = TRUE,
       hjust = 0,
     ) +
     coord_cartesian(clip = "off") +
@@ -481,17 +456,6 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
@@ -630,17 +594,6 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),
@@ -774,17 +727,6 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
       data = change_tbl_year,
       aes(x = grp, y = Inf, label = sig),

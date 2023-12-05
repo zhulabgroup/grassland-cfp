@@ -45,7 +45,6 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
         filter(site == exp, year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 1L, end = 1L)) %>%
         mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
-        # filter(subgrp == "___") %>%
         mutate(phase = case_when(
           year <= 2002 ~ "Phase I",
           year >= 2010 ~ "Phase III",
@@ -62,7 +61,6 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
           str_sub(treat, start = 1L, end = 1L),
           str_sub(treat, start = 3L, end = 4L)
         )) %>%
-        # filter(subgrp == "___") %>%
         select(trt, subgrp, year, plot, value)
     }
   }
@@ -161,7 +159,6 @@ test_optima_change_data_exp <- function(dat_community, dat_niche, optima, exp, t
         filter(site == exp, year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 1L, end = 1L)) %>%
         mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
-        # filter(subgrp == "___") %>%
         mutate(phase = case_when(
           year <= 2002 ~ "Phase I",
           year >= 2010 ~ "Phase III",
@@ -178,7 +175,6 @@ test_optima_change_data_exp <- function(dat_community, dat_niche, optima, exp, t
           str_sub(treat, start = 1L, end = 1L),
           str_sub(treat, start = 3L, end = 4L)
         )) %>%
-        # filter(subgrp == "___") %>%
         select(trt, subgrp, year, plot, species, abund)
     }
   }

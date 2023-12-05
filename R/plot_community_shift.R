@@ -122,7 +122,7 @@ plot_community_shift_exp <- function(exp_tbl) {
 }
 
 plot_community_shift_compare <- function(dat_shift) {
-  ## compare exp and obs
+  # compare exp and obs
   df_all_shift <- bind_rows(
     dat_shift$obs$shift %>%
       select(site, CTI0 = CTI_start, CTI1 = CTI_end, CPI0 = CPI_start, CPI1 = CPI_end, significance) %>%
