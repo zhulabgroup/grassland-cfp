@@ -50,7 +50,7 @@ dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 ```
 
 Plot the niche of an individual species.
-```{r, fig.cap="__Figure 1.__ Example species _Danthonia californica _distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (_n_) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions, as well as a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution.", fig.width = 8, fig.height=8 * .618}
+```{r, fig.cap="__Figure 1.__ Example species _Danthonia californica_ distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (_n_) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions, as well as a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution.", fig.width = 8, fig.height=8 * .618}
 gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
 gg_individual_trait_species_niche_cool
 ```
