@@ -19,8 +19,8 @@ This function calculates community indices including CTI and CPI, by taking the 
 }
 \examples{
 \dontrun{
- dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
- dat_index$obs
- dat_index$exp
+dat_index <- calc_community_index(dat_niche = dat_niche, dat_community = dat_community)
+dat_index$obs
+dat_index$exp
 }
 }

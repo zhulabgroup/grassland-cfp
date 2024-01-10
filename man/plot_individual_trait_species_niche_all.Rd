@@ -35,6 +35,6 @@ Blue and red colors highlight two species associated with cool and warm conditio
 }
 \examples{
 \dontrun{
-   p_individual_trait_species_niche_all <- plot_individual_trait_species_niche_all(dat_occ = dat_occ, dat_trait = dat_trait, dat_niche = dat_niche, frac = 0.01)
+p_individual_trait_species_niche_all <- plot_individual_trait_species_niche_all(dat_occ = dat_occ, dat_trait = dat_trait, dat_niche = dat_niche, frac = 0.01)
 }
 }

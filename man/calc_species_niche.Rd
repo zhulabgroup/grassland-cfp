@@ -23,6 +23,6 @@ Optionally, this function can also calculate these statistics for the climatic w
 }
 \examples{
 \dontrun{
-  species_niche <- calc_species_niche(dat_trait, add_dummy = TRUE)
+species_niche <- calc_species_niche(dat_trait, add_dummy = TRUE)
 }
 }

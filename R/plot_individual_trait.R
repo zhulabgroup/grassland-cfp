@@ -67,13 +67,15 @@ plot_individual_trait <- function(dat_trait,
       tmp > quantile(tmp, .0001), tmp < quantile(tmp, .9999), # remove extreme climate points for plotting
       ppt > quantile(ppt, .0001), ppt < quantile(ppt, .9999)
     )
+
   trait_tbl <- bind_rows(
     trait_tbl %>%
-      filter(species == "other") %>%
+      filter(species_type == "other") %>%
       sample_frac(frac),
     trait_tbl %>%
-      filter(species != "other")
+      filter(species_type != "other")
   )
+
   ind_trait_gg <-
     ggplot(
       data = trait_tbl,

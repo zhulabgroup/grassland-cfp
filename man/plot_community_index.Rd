@@ -19,9 +19,9 @@ plot_community_index(
 
 \item{dat_index}{A list with calculated community indices for observations and experiments.}
 
-\item{experiment}{A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp".}
+\item{experiment}{A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp". Options are "jrgce" for the Jasper Ridge Global Change Experiment, "mclexp" for the McLaughlin Water Experiment, and "scide" for the Santa Cruz International Drought Experiment.}
 
-\item{treatment}{A string indicating the specific treatment in the experiment to plot for. Only valid when "option" is set to "exp".}
+\item{treatment}{A string indicating the specific treatment in the experiment to plot for. Only valid when "option" is set to "exp" and "experiment" is set tp "jrgce". Options are "warming" or "watering".}
 
 \item{layout}{A string indicating the layout of the observational plot, either "surround" to have all panels surrounding the site map, or "landsc" to have a simple landscape layout. Only valid when "option" is set to "obs".}
 
@@ -37,7 +37,7 @@ This function plots the changes in community indices including CTI and CPI over 
 }
 \examples{
 \dontrun{
-  plot_community_index(option = "obs", dat_index, layout = "surround")
-  plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "warming")
+plot_community_index(option = "obs", dat_index, layout = "surround")
+plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "warming")
 }
 }

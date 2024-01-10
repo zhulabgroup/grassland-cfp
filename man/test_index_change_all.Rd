@@ -19,9 +19,9 @@ This function statistically tests changes in community indices across all availa
 }
 \examples{
 \dontrun{
-  df_index_change_obs <- test_index_change_all(dat_index = dat_index, option = "obs")
-  df_index_change_obs
-  df_index_change_exp <- test_index_change_all(dat_index = dat_index, option = "exp")
-  df_index_change_exp
+df_index_change_obs <- test_index_change_all(dat_index = dat_index, option = "obs")
+df_index_change_obs
+df_index_change_exp <- test_index_change_all(dat_index = dat_index, option = "exp")
+df_index_change_exp
 }
 }

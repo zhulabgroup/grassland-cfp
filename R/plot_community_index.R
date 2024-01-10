@@ -4,8 +4,8 @@
 #'
 #' @param option A string to choose between two types of plots. It should be set to "obs" to plot changes over time at observational sites, or set of "exp" to plot changes under treatments in global change experiments.
 #' @param dat_index A list with calculated community indices for observations and experiments.
-#' @param experiment A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp".
-#' @param treatment A string indicating the specific treatment in the experiment to plot for. Only valid when "option" is set to "exp".
+#' @param experiment A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp". Options are "jrgce" for the Jasper Ridge Global Change Experiment, "mclexp" for the McLaughlin Water Experiment, and "scide" for the Santa Cruz International Drought Experiment.
+#' @param treatment A string indicating the specific treatment in the experiment to plot for. Only valid when "option" is set to "exp" and "experiment" is set tp "jrgce". Options are "warming" or "watering".
 #' @param layout A string indicating the layout of the observational plot, either "surround" to have all panels surrounding the site map, or "landsc" to have a simple landscape layout. Only valid when "option" is set to "obs".
 #' @param nrow An integer indicating the number of rows in the observational plot. Only valid when "option" is set to "obs" and "layout" is set to "landsc".
 #' @param onesite An optional parameter specifying a specific site to be plotted.

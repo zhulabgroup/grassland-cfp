@@ -19,6 +19,6 @@ This function creates plots showing community shifts measured by CTI and CPI in 
 }
 \examples{
 \dontrun{
-  p_community_shift <- plot_community_shift(dat_shift, dat_niche)
+p_community_shift <- plot_community_shift(dat_shift, dat_niche)
 }
 }

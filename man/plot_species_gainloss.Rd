@@ -21,9 +21,9 @@ This function generates plots of species abundance change (gain and loss) in com
 }
 \examples{
 \dontrun{
- p_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
- p_gainloss$obs
- p_gainloss$exp
- p_gainloss$combined
+p_gainloss <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss = dat_gainloss)
+p_gainloss$obs
+p_gainloss$exp
+p_gainloss$combined
 }
 }

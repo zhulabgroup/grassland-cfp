@@ -19,6 +19,6 @@ This function calculates species abundance change (gain and loss) in communities
 }
 \examples{
 \dontrun{
-  dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
+dat_gainloss <- calc_species_gainloss(dat_community = dat_community, dat_niche = dat_niche)
 }
 }

@@ -29,6 +29,6 @@ This function plots the distribution of a species and its individuals in the geo
 }
 \examples{
 \dontrun{
-  p_individual_trait_species_niche_ind_sp <- plot_individual_trait_species_niche_ind_sp(dat_occ = dat_occ, dat_trait = dat_trait, sp = "Danthonia californica")
+p_individual_trait_species_niche_ind_sp <- plot_individual_trait_species_niche_ind_sp(dat_occ = dat_occ, dat_trait = dat_trait, sp = "Danthonia californica")
 }
 }
