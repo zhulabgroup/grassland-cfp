@@ -71,10 +71,10 @@ plot_individual_trait <- function(dat_trait,
     )
   trait_tbl <- bind_rows(
     trait_tbl %>%
-      filter(species == "other") %>%
+      filter(species_type == "other") %>%
       sample_frac(frac),
     trait_tbl %>%
-      filter(species != "other")
+      filter(species_type != "other")
   )
   ind_trait_gg <-
     ggplot(
