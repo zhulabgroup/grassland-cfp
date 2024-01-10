@@ -1,49 +1,28 @@
 #' @export
 calc_species_niche <- function(dat_trait, add_dummy = T) {
   dat_niche <- dat_trait %>%
-    select(key, species, tmp, ppt, vpd) %>%
-    group_by(species) %>%
-    summarize(
+    select(key, species, any_of(c("tmp", "ppt", "vpd", "cwd"))) %>%
+    gather(key = "var", value = "value", -key, -species) %>%
+    group_by(species, var) %>%
+    summarise(
       occ_n = n(),
-      tmp_occ_mean = mean(tmp, na.rm = TRUE),
-      tmp_occ_sd = sd(tmp, na.rm = TRUE),
-      tmp_occ_median = median(tmp, na.rm = TRUE),
-      tmp_occ_q05 = quantile(tmp, .05, na.rm = TRUE),
-      tmp_occ_q25 = quantile(tmp, .25, na.rm = TRUE),
-      tmp_occ_q75 = quantile(tmp, .75, na.rm = TRUE),
-      tmp_occ_q95 = quantile(tmp, .95, na.rm = TRUE), # hot limit, suggested by Susan Harrison
-      ppt_occ_mean = mean(ppt, na.rm = TRUE),
-      ppt_occ_sd = sd(ppt, na.rm = TRUE),
-      ppt_occ_median = median(ppt, na.rm = TRUE),
-      ppt_occ_q05 = quantile(ppt, .05, na.rm = TRUE), # dry limit, suggested by Susan Harrison
-      ppt_occ_q25 = quantile(ppt, .25, na.rm = TRUE),
-      ppt_occ_q75 = quantile(ppt, .75, na.rm = TRUE),
-      ppt_occ_q95 = quantile(ppt, .95, na.rm = TRUE),
-      vpd_occ_mean = mean(vpd, na.rm = TRUE),
-      vpd_occ_sd = sd(vpd, na.rm = TRUE),
-      vpd_occ_median = median(vpd, na.rm = TRUE),
-      vpd_occ_q05 = quantile(vpd, .05, na.rm = TRUE),
-      vpd_occ_q25 = quantile(vpd, .25, na.rm = TRUE),
-      vpd_occ_q75 = quantile(vpd, .75, na.rm = TRUE),
-      vpd_occ_q95 = quantile(vpd, .95, na.rm = TRUE)
-    )
-
-  if ("cwd" %in% colnames(dat_trait)) {
-    dat_niche_cwd <- dat_trait %>%
-      select(key, species, cwd) %>%
-      group_by(species) %>%
-      summarize(
-        cwd_occ_mean = mean(cwd, na.rm = TRUE),
-        cwd_occ_sd = sd(cwd, na.rm = TRUE),
-        cwd_occ_median = median(cwd, na.rm = TRUE),
-        cwd_occ_q05 = quantile(cwd, .05, na.rm = TRUE),
-        cwd_occ_q25 = quantile(cwd, .25, na.rm = TRUE),
-        cwd_occ_q75 = quantile(cwd, .75, na.rm = TRUE),
-        cwd_occ_q95 = quantile(cwd, .95, na.rm = TRUE)
-      )
-
-    dat_niche <- left_join(dat_niche, dat_niche_cwd, by = "species")
-  }
+      mean = mean(value, na.rm = TRUE),
+      sd = sd(value, na.rm = TRUE),
+      median = median(value, na.rm = TRUE),
+      q05 = quantile(value, .05, na.rm = TRUE, names = F),
+      q25 = quantile(value, .25, na.rm = TRUE, names = F),
+      q75 = quantile(value, .75, na.rm = TRUE, names = F),
+      q95 = quantile(value, .95, na.rm = TRUE, names = F)
+    ) %>%
+    ungroup() %>%
+    gather(key = "stats", value = "value", -species, -var, -occ_n) %>%
+    mutate(var = factor(var, levels = c("tmp", "ppt", "vpd", "cwd"))) %>%
+    mutate(stats = factor(stats, levels = c("mean", "sd", "median", "q05", "q25", "q75", "q95"))) %>%
+    arrange(var, stats) %>%
+    mutate(var = str_c(var, "_occ_", stats)) %>%
+    select(-stats) %>%
+    mutate(var = factor(var, levels = unique(var))) %>%
+    spread(key = "var", value = "value")
 
   if (add_dummy) {
     # add genus-only species as dummy and set their niche as average
