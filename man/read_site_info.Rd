@@ -18,7 +18,7 @@ This function imports site information data and optionally subsets it to only ob
 }
 \examples{
 \dontrun{
-  site_info <- read_site_info()
-  site_info <- read_site_info(subset = "obs")
+site_info <- read_site_info()
+site_info <- read_site_info(subset = "obs")
 }
 }

@@ -17,6 +17,6 @@ This function calculates community shift from community indices CTI and CPI.
 }
 \examples{
 \dontrun{
- dat_shift <- calc_community_shift(dat_index = dat_index)
+dat_shift <- calc_community_shift(dat_index = dat_index)
 }
 }

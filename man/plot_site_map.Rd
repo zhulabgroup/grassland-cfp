@@ -24,7 +24,7 @@ and optionally plots the sites with observed data.
 }
 \examples{
 \dontrun{
-  site_map <- plot_site_map()
-  site_map
+site_map <- plot_site_map()
+site_map
 }
 }

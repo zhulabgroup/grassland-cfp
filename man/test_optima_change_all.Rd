@@ -21,9 +21,9 @@ This function statistically tests changes in species optima across all available
 }
 \examples{
 \dontrun{
-  df_optima_change_obs <- test_optima_change_all(dat_community = dat_community, dat_niche = dat_niche, option = "obs")
-  df_optima_change_obs
-  df_optima_change_exp <- test_optima_change_all(dat_community = dat_community, dat_niche = dat_niche, option = "exp")
-  df_optima_change_exp
+df_optima_change_obs <- test_optima_change_all(dat_community = dat_community, dat_niche = dat_niche, option = "obs")
+df_optima_change_obs
+df_optima_change_exp <- test_optima_change_all(dat_community = dat_community, dat_niche = dat_niche, option = "exp")
+df_optima_change_exp
 }
 }

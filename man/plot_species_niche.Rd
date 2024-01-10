@@ -26,7 +26,7 @@ Blue and red colors highlight two species associated with cool and warm conditio
 }
 \examples{
 \dontrun{
-  p_niche <- plot_species_niche(dat_niche = my_data)
-  p_niche <- plot_species_niche(dat_niche = my_data, cool_species = "Cool Species", warm_species = "Warm Species")
+p_niche <- plot_species_niche(dat_niche = my_data)
+p_niche <- plot_species_niche(dat_niche = my_data, cool_species = "Cool Species", warm_species = "Warm Species")
 }
 }

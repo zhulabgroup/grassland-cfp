@@ -23,6 +23,6 @@ The warming manipulations consist of three phases with different treatments.
 }
 \examples{
 \dontrun{
-  treatments <- read_warm_treatment()
+treatments <- read_warm_treatment()
 }
 }
