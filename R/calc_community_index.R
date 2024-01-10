@@ -1,19 +1,16 @@
 #' @export
 # calculate CWM (community weighted mean, or sd, etc.) like CTI and CPI
 calc_community_index <- function(dat_niche, dat_community) {
-  # load niche estimates.
-  niche_tbl <- dat_niche
-
   # observational data and CWM
   obs_tbl <- dat_community$obs %>%
-    inner_join(niche_tbl, by = "species") %>%
+    inner_join(dat_niche, by = "species") %>%
     group_by(site, year, plot) %>% # w/o treatment for obs
     calc_community_weighted_mean() %>%
     ungroup()
 
   # experimental data and CWM
   exp_tbl <- dat_community$exp %>%
-    inner_join(niche_tbl, by = "species") %>%
+    inner_join(dat_niche, by = "species") %>%
     group_by(site, year, plot, treat) %>% # w/ treatment for exp
     calc_community_weighted_mean() %>%
     ungroup()
@@ -28,40 +25,45 @@ calc_community_index <- function(dat_niche, dat_community) {
 
 #' @export
 # define summarize CWM function
-calc_community_weighted_mean <- function(.) {
-  if (!"cwd_occ_median" %in% colnames(.)) {
-    df <- summarize(.,
-      tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
-      tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
-      ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
-      ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
-      vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
-      vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2
-    ) %>%
-      mutate(
-        tmp_com_sd = sqrt(tmp_com_var),
-        ppt_com_sd = sqrt(ppt_com_var),
-        vpd_com_sd = sqrt(vpd_com_var)
-      )
-  }
+calc_community_weighted_mean <- function(df) {
+  df_mean <- select(df, -guild, -abund_type, -occ_n) %>%
+    gather(key = "var", value = "value", -species, -abund, -group_vars(.)) %>%
+    filter(str_detect(var, "_occ_median")) %>%
+    group_by(var, .add = TRUE) %>%
+    summarise(value = sum(abund * value) / sum(abund)) %>%
+    ungroup() %>%
+    mutate(var = str_remove(var, "_occ_median")) %>%
+    mutate(var = factor(var, levels = c("tmp", "ppt", "vpd", "cwd"))) %>%
+    arrange(var) %>%
+    mutate(var = str_c(var, "_com_mean")) %>%
+    mutate(var = factor(var, levels = unique(var))) %>%
+    spread(key = "var", value = "value")
 
-  if ("cwd_occ_median" %in% colnames(.)) {
-    df <- summarize(.,
-      tmp_com_mean = sum(abund * tmp_occ_median) / sum(abund),
-      tmp_com_var = sum(abund * tmp_occ_median^2) / sum(abund) - tmp_com_mean^2,
-      ppt_com_mean = sum(abund * ppt_occ_median) / sum(abund),
-      ppt_com_var = sum(abund * ppt_occ_median^2) / sum(abund) - ppt_com_mean^2,
-      vpd_com_mean = sum(abund * vpd_occ_median) / sum(abund),
-      vpd_com_var = sum(abund * vpd_occ_median^2) / sum(abund) - vpd_com_mean^2,
-      cwd_com_mean = sum(abund * cwd_occ_median) / sum(abund),
-      cwd_com_var = sum(abund * cwd_occ_median^2) / sum(abund) - cwd_com_mean^2
-    ) %>%
-      mutate(
-        tmp_com_sd = sqrt(tmp_com_var),
-        ppt_com_sd = sqrt(ppt_com_var),
-        vpd_com_sd = sqrt(vpd_com_var),
-        cwd_com_sd = sqrt(cwd_com_var)
-      )
-  }
-  return(df)
+  df_var <- select(df, -guild, -abund_type, -occ_n) %>%
+    gather(key = "var", value = "value", -species, -abund, -group_vars(df)) %>%
+    filter(str_detect(var, "_occ_median")) %>%
+    group_by(var, .add = TRUE) %>%
+    summarise(value1 = sum(abund * value^2) / sum(abund)) %>%
+    ungroup() %>%
+    mutate(var = str_remove(var, "_occ_median")) %>%
+    mutate(var = factor(var, levels = c("tmp", "ppt", "vpd", "cwd"))) %>%
+    arrange(var) %>%
+    left_join(df_mean %>%
+      gather(key = "var", value = "value", -group_vars(df)) %>%
+      mutate(var = str_remove(var, "_com_mean")) %>%
+      mutate(value2 = value^2) %>%
+      select(-value)) %>%
+    mutate(value = value1 - value2) %>%
+    select(-value1, -value2) %>%
+    mutate(var = str_c(var, "_com_var")) %>%
+    bind_rows(mutate(.,
+      value = sqrt(value),
+      var = str_replace(var, "_var", "_sd")
+    )) %>%
+    mutate(var = factor(var, levels = unique(var))) %>%
+    spread(key = "var", value = "value")
+
+  df_all <- left_join(df_mean, df_var, by = group_vars(df))
+
+  return(df_all)
 }
