@@ -7,7 +7,7 @@ test_index_change_model <- function(dat_model, option) {
 
   if (option == "obs") {
     if (dat_model %>% pull(site) %>% unique() %>% length() > 1) {
-      model <- lmerTest::lmer(value ~ year + (1 | site),
+      model <- lmerTest::lmer(value ~ year + (1 | site) + (-1 + year | site),
         data = dat_model
       )
     } else {
@@ -19,9 +19,15 @@ test_index_change_model <- function(dat_model, option) {
 
   if (option == "exp") {
     if (dat_model %>% pull(year) %>% unique() %>% length() > 1) {
-      model <- lmerTest::lmer(value ~ trt + (1 | year),
-        data = dat_model
-      )
+      if (dat_model %>% pull(subgrp) %>% unique() %>% length() > 1) {
+        model <- lmerTest::lmer(value ~ trt * subgrp + (1 | year),
+          data = dat_model
+        )
+      } else {
+        model <- lmerTest::lmer(value ~ trt + (1 | year),
+          data = dat_model
+        )
+      }
     } else {
       model <- lm(value ~ trt,
         data = dat_model

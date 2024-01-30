@@ -16,7 +16,7 @@ calc_trait_thin <- function(path_occ_thin = NULL, dat_trait, option = "spatial")
 }
 
 #' @export
-cal_thin_occ <- function(dat_occ, dat_trait, outdir = "alldata/intermediate/climate-niche/", option = "spatial", num_cores = 2) {
+calc_thin_occ <- function(dat_occ, dat_trait, outdir = "alldata/intermediate/climate-niche/", option = "spatial", num_cores = 2) {
   cl <- makeCluster(num_cores, outfile = "")
   registerDoSNOW(cl)
 

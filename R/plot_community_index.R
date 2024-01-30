@@ -240,7 +240,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     ))
 
   change_tbl <- jrgce_tbl %>%
-    mutate(grp = case_when(
+    mutate(subgrp = case_when(
       year <= 2002 ~ "Phase I",
       year >= 2010 ~ "Phase III",
       TRUE ~ "Phase II"
@@ -249,10 +249,12 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       trt = treat_T,
       value = com_idx_value
     ) %>%
-    group_by(grp, com_idx_name) %>%
+    group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -262,14 +264,14 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       com_idx_name == "CDI" ~ "mm",
     )) %>%
     mutate(start = case_when(
-      grp == "Phase I" ~ 1999,
-      grp == "Phase II" ~ 2003,
-      grp == "Phase III" ~ 2010
+      subgrp == "Phase I" ~ 1999,
+      subgrp == "Phase II" ~ 2003,
+      subgrp == "Phase III" ~ 2010
     )) %>%
     mutate(end = case_when(
-      grp == "Phase I" ~ 2002,
-      grp == "Phase II" ~ 2009,
-      grp == "Phase III" ~ 2014
+      subgrp == "Phase I" ~ 2002,
+      subgrp == "Phase II" ~ 2009,
+      subgrp == "Phase III" ~ 2014
     )) %>%
     left_join(
       jrgce_tbl %>%
@@ -291,8 +293,10 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     ) %>%
     group_by(grp, com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -398,10 +402,13 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
       trt = treat_P,
       value = com_idx_value
     ) %>%
+    mutate(subgrp = NA) %>%
     group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -433,8 +440,10 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     ) %>%
     group_by(grp, com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -508,6 +517,7 @@ plot_community_index_mclexp <- function(exp_tbl) {
       levels = c("tmp_com_mean", "ppt_com_mean"),
       labels = c("CTI", "CPI")
     ))
+
   mclexp_gg <-
     plot_mclexp(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") +
     plot_mclexp(mclexp_tbl, l_tag = "B", trt_tag = "Watering", s_tag = "Non-serpentine soil") +
@@ -545,12 +555,15 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
   change_tbl <- mclexp_tbl %>%
     rename(
       trt = treat,
-      value = com_idx_value
+      value = com_idx_value,
+      subgrp = soil
     ) %>%
     group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -582,8 +595,10 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     ) %>%
     group_by(grp, com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -689,12 +704,15 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
   change_tbl <- scide_tbl %>%
     rename(
       trt = treat,
-      value = com_idx_value
+      value = com_idx_value,
+      subgrp = site
     ) %>%
     group_by(com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -726,8 +744,10 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     ) %>%
     group_by(grp, com_idx_name) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
