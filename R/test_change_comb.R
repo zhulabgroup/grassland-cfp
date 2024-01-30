@@ -45,36 +45,36 @@ test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt
   for (exp in ls_exp) {
     if (exp == "jrgce") {
       for (trt in c("Warming", "Watering")) {
-        if (trt == "Warming") {
-          v_grp <- c("Phase I", "Phase II", "Phase III")
-          for (grp in v_grp) {
-            ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-          }
-        }
-        if (trt == "Watering") {
-          ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt, grp = NA)
-        }
+        #   if (trt == "Warming") {
+        #     v_grp <- c("Phase I", "Phase II", "Phase III")
+        #     for (grp in v_grp) {
+        #       ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+        #     }
+        #   }
+        #   if (trt == "Watering") {
+        ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt)
+        #   }
       }
     }
     if (exp == "mclexp") {
       for (trt in c("Watering", "Drought")) {
-        if (trt == "Watering") {
-          v_grp <- c("Serpentine", "Non-serpentine")
-          for (grp in v_grp) {
-            ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-          }
-        }
-        if (trt == "Drought") {
-          grp <- "Serpentine"
-          ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt, grp)
-        }
+        # if (trt == "Watering") {
+        #   v_grp <- c("Serpentine", "Non-serpentine")
+        #   for (grp in v_grp) {
+        #     ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+        #   }
+        # }
+        # if (trt == "Drought") {
+        #   grp <- "Serpentine"
+        ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt)
+        # }
       }
     }
     if (exp == "scide") {
       trt <- "Drought"
-      for (grp in c("Arboretum", "Marshall Field", "Younger Lagoon")) {
-        ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-      }
+      # for (grp in c("Arboretum", "Marshall Field", "Younger Lagoon")) {
+      ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt)
+      # }
     }
     if (!exp %in% c("jrgce", "mclexp", "scide")) {
       message(str_c("Experiment ", exp, " not recognized."))
@@ -91,7 +91,7 @@ test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt
     )) %>%
     mutate(response = factor(response, levels = levels)) %>%
     mutate(trt = factor(trt, levels = c("Warming", "Watering", "Drought"))) %>%
-    mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
+    # mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
     select(exp, trt, grp, response, everything()) %>%
     arrange(exp, trt, grp, response) %>%
     rowwise() %>%

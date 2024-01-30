@@ -8,8 +8,7 @@ test_index_change_data <- function(dat_index, index, grouping, option) {
   if (option == "exp") {
     return(test_index_change_data_exp(dat_index$exp, index,
       exp = grouping$exp,
-      trt = grouping$trt,
-      grp = grouping$grp
+      trt = grouping$trt
     ))
   }
 }
@@ -45,25 +44,26 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
       dat_exp <- dat_index %>%
         filter(site == exp, year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 1L, end = 1L)) %>%
-        mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
+        # mutate(subgrp = str_sub(treat, start = 2L, end = 4L)) %>%
         # filter(subgrp == "___") %>%
-        mutate(phase = case_when(
+        mutate(subgrp = case_when(
           year <= 2002 ~ "Phase I",
           year >= 2010 ~ "Phase III",
           TRUE ~ "Phase II",
         )) %>%
-        filter(phase == grp) %>%
+        # filter(phase == grp) %>%
         select(trt, subgrp, year, plot, value)
     }
     if (trt == "Watering") {
       dat_exp <- dat_index %>%
         filter(site == "jrgce", year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 2L, end = 2L)) %>%
-        mutate(subgrp = str_c(
-          str_sub(treat, start = 1L, end = 1L),
-          str_sub(treat, start = 3L, end = 4L)
-        )) %>%
+        # mutate(subgrp = str_c(
+        #   str_sub(treat, start = 1L, end = 1L),
+        #   str_sub(treat, start = 3L, end = 4L)
+        # )) %>%
         # filter(subgrp == "___") %>%
+        mutate(subgrp = NA) %>%
         select(trt, subgrp, year, plot, value)
     }
   }
@@ -71,12 +71,10 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
     dat_exp <- dat_index %>%
       filter(site == exp, year > 2015) %>%
       separate(treat, c("treat", "soil"), sep = 2) %>%
-      mutate(soil = case_when(
+      mutate(subgrp = case_when(
         soil == "S" ~ "Serpentine",
         soil == "N" ~ "Non-serpentine"
-      )) %>%
-      filter(soil == grp)
-
+      ))
 
     if (trt == "Watering") {
       dat_exp <- dat_exp %>%
@@ -86,7 +84,7 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
         )) %>%
         mutate(trt = factor(treat_W, levels = c("_", "P"))) %>%
         drop_na(trt) %>%
-        select(trt, year, plot, value)
+        select(trt, subgrp, year, plot, value)
     }
 
     if (trt == "Drought") {
@@ -97,21 +95,20 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
         )) %>%
         mutate(trt = factor(treat_D, levels = c("_", "D"))) %>%
         drop_na(trt) %>%
-        select(trt, year, plot, value)
+        select(trt, subgrp, year, plot, value)
     }
   }
   if (exp == "scide") {
     dat_exp <- dat_index %>%
       filter(str_detect(site, "scide")) %>%
       mutate(site = str_replace(site, "scide_", "")) %>%
-      mutate(site = case_when(
+      mutate(subgrp = case_when(
         site == "arboretum" ~ "Arboretum",
         site == "marshallfield" ~ "Marshall Field",
         site == "ylr" ~ "Younger Lagoon"
       )) %>%
-      filter(site == grp) %>%
       mutate(trt = factor(treat, levels = c("_", "D"))) %>%
-      select(trt, year, plot, value)
+      select(trt, subgrp, year, plot, value)
   }
 
   dat_lme <- dat_exp

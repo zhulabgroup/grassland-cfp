@@ -48,11 +48,14 @@ calc_community_weighted_mean <- function(df) {
     mutate(var = str_remove(var, "_occ_median")) %>%
     mutate(var = factor(var, levels = c("tmp", "ppt", "vpd", "cwd"))) %>%
     arrange(var) %>%
-    left_join(df_mean %>%
-      gather(key = "var", value = "value", -group_vars(df)) %>%
-      mutate(var = str_remove(var, "_com_mean")) %>%
-      mutate(value2 = value^2) %>%
-      select(-value)) %>%
+    left_join(
+      df_mean %>%
+        gather(key = "var", value = "value", -group_vars(df)) %>%
+        mutate(var = str_remove(var, "_com_mean")) %>%
+        mutate(value2 = value^2) %>%
+        select(-value),
+      by = c(group_vars(df), "var")
+    ) %>%
     mutate(value = value1 - value2) %>%
     select(-value1, -value2) %>%
     mutate(var = str_c(var, "_com_var")) %>%

@@ -162,7 +162,7 @@ gg_niche_stat_ppt
 Compare estimates of species climate niche by spatial thinning occurrence records.
 
 ```{r, eval = F}
-path_occ_thin <- cal_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "spatial", num_cores = 4) # slow
+path_occ_thin <- calc_thin_occ(dat_occ = dat_occ$gbif, dat_trait = dat_trait, option = "spatial", num_cores = 4) # slow
 ```
 
 ```{r}
