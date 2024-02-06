@@ -92,10 +92,10 @@ test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt
     mutate(response = factor(response, levels = levels)) %>%
     mutate(trt = factor(trt, levels = c("Warming", "Watering", "Drought"))) %>%
     # mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
-    select(exp, trt, grp, response, everything()) %>%
-    arrange(exp, trt, grp, response) %>%
+    select(exp, trt, response, everything()) %>%
+    arrange(exp, trt, response) %>%
     rowwise() %>%
-    mutate(grouping = list(tibble(exp, trt, grp))) %>%
+    mutate(grouping = list(tibble(exp, trt))) %>%
     select(response, grouping)
 
   colnames(df_change_exp) <- c(response, "grouping")

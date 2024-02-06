@@ -7,12 +7,12 @@ test_index_change_model <- function(dat_model, option) {
 
   if (option == "obs") {
     if (dat_model %>% pull(site) %>% unique() %>% length() > 1) {
-      model <- lmerTest::lmer(value ~ year + (1 | site) + (-1 + year | site),
-        data = dat_model
+      model <- lmerTest::lmer(value ~ year + (1 + year | siteplot),
+        data = dat_model %>% mutate(siteplot = str_c(site, plot, sep = "_"))
       )
     } else {
-      model <- lm(value ~ year,
-        data = dat_model
+      model <- lmerTest::lmer(value ~ year + (1 + year | siteplot),
+        data = dat_model %>% mutate(siteplot = str_c(site, plot, sep = "_"))
       )
     }
   }

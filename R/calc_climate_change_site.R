@@ -9,7 +9,7 @@ calc_climate_change_site <- function(dat_clim_site) {
     group_by(clim_var) %>%
     nest() %>%
     mutate(
-      map(data, ~ lmerTest::lmer(clim_val ~ year + (1 | site), data = .)) %>%
+      map(data, ~ lmerTest::lmer(clim_val ~ year + (1 + year | site), data = .)) %>%
         map_df(~ summary(.) %>%
           coefficients() %>%
           data.frame() %>%
