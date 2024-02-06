@@ -19,11 +19,15 @@ test_change_summ <- function(model, dat_model, option) {
         select(-term)
 
       df_summ <- data.frame(
-        subgrp = dat_model %>% pull(subgrp) %>% unique(),
+        subgrp = dat_model %>% pull(subgrp) %>% unique() %>% sort(na.last = T),
         estimate = df_term[, 1],
         std.error = df_term[, 2],
         p.value = df_term[, ncol(df_term)] # good for both lm and lme
       ) %>%
+        mutate(p.value = p.value * dat_model %>%
+          pull(subgrp) %>%
+          unique() %>%
+          length()) %>% # bonferroni correction
         mutate(sig = gtools::stars.pval(p.value)) %>%
         mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns"))
     } else {
