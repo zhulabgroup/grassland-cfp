@@ -18,7 +18,7 @@ test_trait_change_comb <- function(dat_community, option, response = "trait", le
   }
 }
 
-test_change_comb_obs <- function(dat, response = "trait", levels = c("tmp", "ppt")) {
+test_change_comb_obs <- function(dat, response = "index", levels = c("cti", "cpi")) {
   df_change_obs <- expand_grid(
     site = dat %>% pull(site) %>% unique() %>% c("all"),
     response = levels
@@ -27,14 +27,15 @@ test_change_comb_obs <- function(dat, response = "trait", levels = c("tmp", "ppt
     arrange(site, response) %>%
     rowwise() %>%
     mutate(grouping = list(tibble(site))) %>%
-    select(response, grouping)
+    mutate(n_comparison = 12) %>%
+    select(response, grouping, n_comparison)
 
-  colnames(df_change_obs) <- c(response, "grouping")
+  colnames(df_change_obs) <- c(response, "grouping", "n_comparison")
 
   return(df_change_obs)
 }
 
-test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt")) {
+test_change_comb_exp <- function(dat, response = "index", levels = c("cti", "cpi")) {
   ls_exp <- dat %>%
     rowwise() %>%
     mutate(site = str_split(site, "_", simplify = T)[1]) %>%
@@ -45,36 +46,37 @@ test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt
   for (exp in ls_exp) {
     if (exp == "jrgce") {
       for (trt in c("Warming", "Watering")) {
-        #   if (trt == "Warming") {
-        #     v_grp <- c("Phase I", "Phase II", "Phase III")
-        #     for (grp in v_grp) {
-        #       ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-        #     }
-        #   }
-        #   if (trt == "Watering") {
-        ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt)
-        #   }
+          if (trt == "Warming") {
+            v_grp <- c("Phase I", "Phase II", "Phase III")
+            for (grp in v_grp) {
+              ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+            }
+          }
+          if (trt == "Watering") {
+            grp <- ""
+        ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+          }
       }
     }
     if (exp == "mclexp") {
       for (trt in c("Watering", "Drought")) {
-        # if (trt == "Watering") {
-        #   v_grp <- c("Serpentine", "Non-serpentine")
-        #   for (grp in v_grp) {
-        #     ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-        #   }
-        # }
-        # if (trt == "Drought") {
-        #   grp <- "Serpentine"
-        ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt)
-        # }
+        if (trt == "Watering") {
+          v_grp <- c("Serpentine", "Non-serpentine")
+          for (grp in v_grp) {
+            ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+          }
+        }
+        if (trt == "Drought") {
+          grp <- "Serpentine"
+        ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+        }
       }
     }
     if (exp == "scide") {
       trt <- "Drought"
-      # for (grp in c("Arboretum", "Marshall Field", "Younger Lagoon")) {
-      ls_df_change_exp_comb[[str_c(exp, " ", trt)]] <- data.frame(exp, trt)
-      # }
+      for (grp in c("Arboretum", "Marshall Field", "Younger Lagoon")) {
+      ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+      }
     }
     if (!exp %in% c("jrgce", "mclexp", "scide")) {
       message(str_c("Experiment ", exp, " not recognized."))
@@ -91,14 +93,18 @@ test_change_comb_exp <- function(dat, response = "trait", levels = c("tmp", "ppt
     )) %>%
     mutate(response = factor(response, levels = levels)) %>%
     mutate(trt = factor(trt, levels = c("Warming", "Watering", "Drought"))) %>%
-    # mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
-    select(exp, trt, response, everything()) %>%
-    arrange(exp, trt, response) %>%
+    mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "","Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
+    select(exp, trt, grp, response, everything()) %>%
+    arrange(exp, trt, grp, response) %>%
     rowwise() %>%
-    mutate(grouping = list(tibble(exp, trt))) %>%
-    select(response, grouping)
+    mutate(grouping = list(tibble(exp, trt, grp))) %>%
+    mutate(n_comparison = case_when(exp=="jrgce"&trt=="Warming"~3,
+                               exp =="mclexp"&trt=="Watering"~2,
+                               exp =="scide"&trt=="Drought"~3,
+                               TRUE~1)) %>%
+    select(response, grouping, n_comparison)
 
-  colnames(df_change_exp) <- c(response, "grouping")
+  colnames(df_change_exp) <- c(response, "grouping", "n_comparison")
 
   return(df_change_exp)
 }

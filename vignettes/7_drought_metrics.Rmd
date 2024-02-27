@@ -65,11 +65,9 @@ dat_index_cwd <- calc_community_index(dat_niche = dat_niche_cwd, dat_community =
 Plot community CWD index in comparison to CTI and CPI.
 
 ```{r}
-gg_community_index_obs_cwd <- plot_community_index(option = "obs", dat_index = dat_index_cwd)
-gg_community_index_obs_cwd
+(gg_community_index_obs_cwd <- plot_community_index(option = "obs", dat_index = dat_index_cwd))
 
-gg_community_index_exp_cwd <- plot_community_index(option = "exp", dat_index = dat_index_cwd, experiment = "jrgce", treatment = "warming")
-gg_community_index_exp_cwd
+(gg_community_index_exp_cwd <- plot_community_index(option = "exp", dat_index = dat_index_cwd, experiment = "jrgce", treatment = "warming"))
 ```
 Consistent with climate warming and drying, grassland communities shift dominance to species associated with warmer (increasing CTI) and drier (decreasing CPI and increasing CDI) locations in 12 long-term observational sites across the California Floristic Province. In the Jasper Ridge Global Change Experiment, warming treatment caused communities to shift dominance to species associated with warmer (CTI) and drier (CPI and CDI) locations. Therefore, the additional drought metric CWD offered qualitatively similar insights from using precipitation.
 

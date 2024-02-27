@@ -166,7 +166,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     ungroup()
 
   change_tbl <- exp_guild_tbl %>%
-    mutate(grp = case_when(
+    mutate(phase = case_when(
       year <= 2002 ~ "Phase I",
       year >= 2010 ~ "Phase III",
       TRUE ~ "Phase II"
@@ -175,39 +175,41 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       trt = treat_T,
       value = value
     ) %>%
-    group_by(grp, group) %>%
+    group_by(phase, group) %>%
     nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
+    rowwise() %>%
+    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+      test_change_summ(dat_model = data, option = "exp")) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
     mutate(unit = "%") %>%
     mutate(start = case_when(
-      grp == "Phase I" ~ 1999,
-      grp == "Phase II" ~ 2003,
-      grp == "Phase III" ~ 2010
+      phase == "Phase I" ~ 1999,
+      phase == "Phase II" ~ 2003,
+      phase == "Phase III" ~ 2010
     )) %>%
     mutate(end = case_when(
-      grp == "Phase I" ~ 2002,
-      grp == "Phase II" ~ 2009,
-      grp == "Phase III" ~ 2014
+      phase == "Phase I" ~ 2002,
+      phase == "Phase II" ~ 2009,
+      phase == "Phase III" ~ 2014
     )) %>%
-    mutate(max = 1.3)
+    mutate(max = 1.2)
 
-  change_tbl_year <- exp_guild_tbl %>%
-    mutate(grp = year) %>%
-    rename(
-      trt = treat_T,
-      value = value
-    ) %>%
-    group_by(grp, group) %>%
-    nest() %>%
-    mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
-    select(-data) %>%
-    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
-    mutate(max = 1.1)
+  # change_tbl_year <- exp_guild_tbl %>%
+  #   mutate(grp = year) %>%
+  #   rename(
+  #     trt = treat_T,
+  #     value = value
+  #   ) %>%
+  #   group_by(grp, group) %>%
+  #   nest() %>%
+  #   mutate(test_index_change_model(dat_model = data[[1]], option = "exp") %>%
+  #     test_change_summ()) %>%
+  #   select(-data) %>%
+  #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+  #   mutate(max = 1.1)
 
   warm_tbl <- read_warm_treatment()
 
@@ -233,29 +235,33 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         grass_perc = "% Grasses"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
-      data = change_tbl_year,
-      aes(x = grp, y = Inf, label = sig),
-      vjust = 2
+      data = change_tbl,
+      aes(
+        label = sig, #str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf#,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = F,
+      vjust = 1.5
     ) +
+    geom_segment(
+      data = change_tbl,
+      aes(x = start, xend = end, y = max, yend = max      )
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl_year,
+    #   aes(x = grp, y = Inf, label = sig),
+    #   vjust = 2
+    # ) +
     scale_y_continuous(
       labels = function(x) {
         trans <- x * 100
       },
       limits = c(0, 1.3),
       breaks = c(0, 0.5, 1),
-      expand = expansion(mult = 0.15)
+      expand = expansion(mult = 0.05)
     ) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
@@ -274,7 +280,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         label = phase,
         x = startyear - 0.25,
       ),
-      y = 1.6, # manually label phase text
+      y = 1.45, # manually label phase text
       # parse = TRUE,
       hjust = 0,
     ) +

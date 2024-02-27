@@ -219,6 +219,13 @@ save_figure_param <- function(gg_name) {
     filename <- "fig-supp-exp-scide.png"
   }
 
+  if (gg_name == "effect_size") {
+    type <- "supp"
+    width <- 8
+    height <- 6
+    filename <- "fig-supp-effect-size.png"
+  }
+
   if (gg_name == "guild_niche") {
     type <- "supp"
     width <- 12

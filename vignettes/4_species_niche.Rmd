@@ -68,6 +68,36 @@ dat_trait <- read_individual_trait(path_trait = path_trait)
 usethis::use_data(dat_trait, overwrite = T)
 ```
 
+Dummy species?
+```{r}
+bind_rows(
+  dat_community$obs %>%
+    filter(str_detect(species, "DUMMY")) %>%
+    group_by(site, species) %>%
+    summarise(abund = sum(abund), .groups = "drop") %>%
+    left_join(
+      dat_community$obs %>%
+        group_by(site) %>%
+        summarise(abund_total = sum(abund), .groups = "drop"),
+      by = "site"
+    ) %>%
+    mutate(percentage = abund %>% `/`(abund_total) %>% `*`(100) %>% round() %>% str_c("%")) %>%
+    select(-abund, -abund_total),
+  dat_community$exp %>%
+    filter(str_detect(species, "DUMMY")) %>%
+    group_by(site, species) %>%
+    summarise(abund = sum(abund), .groups = "drop") %>%
+    left_join(
+      dat_community$exp %>%
+        group_by(site) %>%
+        summarise(abund_total = sum(abund), .groups = "drop"),
+      by = "site"
+    ) %>%
+    mutate(percentage = abund %>% `/`(abund_total) %>% `*`(100) %>% round() %>% str_c("%")) %>%
+    select(-abund, -abund_total)
+)
+```
+
 ```{r, eval = F}
 dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 usethis::use_data(dat_niche, overwrite = T)
