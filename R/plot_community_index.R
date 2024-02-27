@@ -253,7 +253,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     nest() %>%
     rowwise() %>%
     mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
+      test_change_summ()) %>%
     unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
@@ -295,7 +295,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
   #   nest() %>%
   #   rowwise() %>%
   #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #     test_change_summ()) %>%
   #   unnest(summary) %>%
   #   select(-data) %>%
   #   mutate(delta = estimate %>% signif(3)) %>%
@@ -338,7 +338,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     ) +
     geom_segment(
       data = change_tbl,
-      aes( x = start, xend = end, y = max, yend = max )
+      aes(x = start, xend = end, y = max, yend = max)
     ) +
     geom_text(
       data = change_tbl,
@@ -411,7 +411,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     nest() %>%
     rowwise() %>%
     mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
+      test_change_summ()) %>%
     unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
@@ -446,7 +446,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
   #   nest() %>%
   #   rowwise() %>%
   #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #     test_change_summ()) %>%
   #   unnest(summary) %>%
   #   select(-data) %>%
   #   mutate(delta = estimate %>% signif(3)) %>%
@@ -480,8 +480,8 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     geom_text(
       data = change_tbl,
       aes(
-        label = sig, #str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf#,
+        label = sig, # str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
       parse = F,
@@ -489,7 +489,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     ) +
     geom_segment(
       data = change_tbl,
-      aes(x = start, xend = end, y = max, yend = max      )
+      aes(x = start, xend = end, y = max, yend = max)
     ) +
     # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
@@ -570,7 +570,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     nest() %>%
     rowwise() %>%
     mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
+      test_change_summ()) %>%
     unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
@@ -605,7 +605,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
   #   nest() %>%
   #   rowwise() %>%
   #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #     test_change_summ()) %>%
   #   unnest(summary) %>%
   #   select(-data) %>%
   #   mutate(delta = estimate %>% signif(3)) %>%
@@ -640,7 +640,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
       data = change_tbl,
       aes(
         label = sig, # str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf#,
+        x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
       parse = F,
@@ -648,7 +648,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     ) +
     geom_segment(
       data = change_tbl,
-      aes(x = start, xend = end, y = max, yend = max      )
+      aes(x = start, xend = end, y = max, yend = max)
     ) +
     # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
@@ -723,7 +723,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     nest() %>%
     rowwise() %>%
     mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
+      test_change_summ()) %>%
     unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
@@ -758,7 +758,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
   #   nest() %>%
   #   rowwise() %>%
   #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #     test_change_summ()) %>%
   #   unnest(summary) %>%
   #   select(-data) %>%
   #   mutate(delta = estimate %>% signif(3)) %>%
@@ -792,8 +792,8 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     geom_text(
       data = change_tbl,
       aes(
-        label = sig, #str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf#,
+        label = sig, # str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
       parse = F,
@@ -801,7 +801,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     ) +
     geom_segment(
       data = change_tbl,
-      aes(x = start, xend = end, y = max, yend = max      )
+      aes(x = start, xend = end, y = max, yend = max)
     ) +
     # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
