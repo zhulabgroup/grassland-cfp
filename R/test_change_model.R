@@ -1,9 +1,5 @@
 #' @export
 test_index_change_model <- function(dat_model, option) {
-  # if (index == "cpi") {
-  #   dat_model <- dat_model %>%
-  #     mutate(value = rank(value))
-  # }
 
   if (option == "obs") {
     if (dat_model %>% pull(site) %>% unique() %>% length() > 1) {
@@ -29,18 +25,12 @@ test_index_change_model <- function(dat_model, option) {
     }
   }
 
-  # sample <- sample(residuals(model), 1000,prob =dat_model %>% drop_na() %>% pull(weight) )
-  # shapiro.test(sample)
   res <- list(model = model, summary = summary(model))
   return(res)
 }
 
 #' @export
 test_trait_change_model <- function(dat_model, option) {
-  # if (trait == "ppt") {
-  #   dat_model <- dat_model %>%
-  #     mutate(value = rank(value))
-  # }
 
   if (option == "obs") {
     if (dat_model %>% pull(site) %>% unique() %>% length() > 1) {
@@ -70,8 +60,6 @@ test_trait_change_model <- function(dat_model, option) {
     }
   }
 
-  # sample <- sample(residuals(model), 1000,prob =dat_model %>% drop_na() %>% pull(weight) )
-  # shapiro.test(sample)
   res <- list(model = model, summary = summary(model))
   return(res)
 }

@@ -29,12 +29,7 @@ test_index_change_data_obs <- function(dat_index, index, siteoi = "all") {
   }
   dat_lme <- dat_index %>%
     filter(site %in% siteoi) %>%
-    mutate(year = year - 1983
-      #        (dat_index %>%
-      # pull(year) %>%
-      # range() %>%
-      # mean())
-      )
+    mutate(year = year - 1983)
 
   return(dat_lme)
 }
@@ -149,7 +144,8 @@ test_trait_change_data_obs <- function(dat_community, dat_niche, trait, siteoi =
       dat_niche %>%
         select(species, value = !!sym(str_c(trait, "_occ_median"))),
       by = "species"
-    )
+    ) %>%
+    mutate(year = year - 1983)
 
   return(dat_lme)
 }
