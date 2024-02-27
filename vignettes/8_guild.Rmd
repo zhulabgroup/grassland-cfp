@@ -49,10 +49,9 @@ Similar to the analysis of changes in CTI and CPI, we then examined the relative
 Plot guild percentage change over time from observational and experimental data.
 
 ```{r}
-gg_guild_percentage_obs <- plot_guild_percentage(option = "obs", dat_community = dat_community)
-gg_guild_percentage_obs
-gg_guild_percentage_exp <- plot_guild_percentage(option = "exp", dat_community = dat_community)
-gg_guild_percentage_exp
+(gg_guild_percentage_obs <- plot_guild_percentage(option = "obs", dat_community = dat_community))
+
+(gg_guild_percentage_exp <- plot_guild_percentage(option = "exp", dat_community = dat_community))
 ```
 Grassland communities had inconsistent compositional changes in species origin (measured by the percentage of natives), life history (measured by the percentage of annuals), and functional group (measured by the percentage of grasses) in 12 long-term observational sites across the California Floristic Province and in the Jasper Ridge Global Change Experiment.
 

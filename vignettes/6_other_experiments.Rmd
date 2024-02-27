@@ -30,26 +30,29 @@ theme_set(ggthemes::theme_few())
 ## Jasper Ridge Global Change Experiment watering treatment
 
 ```{r}
-gg_community_index_exp_jrgce_water <- plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "watering")
-gg_community_index_exp_jrgce_water
+(gg_community_index_exp_jrgce_water <- plot_community_index(option = "exp", dat_index, experiment = "jrgce", treatment = "watering"))
 ```
 Watering treatment in the Jasper Ridge Global Change Experiment generally decreased CTI (°C) and increased CPI (mm) over all years, although effects were not significant in most individual years.
 
 ## McLaughlin Water Experiment.
 
 ```{r}
-gg_community_index_exp_mclexp <- plot_community_index(option = "exp", dat_index, experiment = "mclexp")
-gg_community_index_exp_mclexp
+(gg_community_index_exp_mclexp <- plot_community_index(option = "exp", dat_index, experiment = "mclexp"))
 ```
 Watering treatment in the McLaughlin Water Experiment generally decreased CTI (°C) and increased CPI (mm) in both (A) serpentine and (B) non-serpentine sites over all years, while drought treatments generally increased CTI (°C) and decreased CPI (mm) in (C) the serpentine site over all years. Effects were not significant in most individual years.
 
 ## Santa Cruz International Drought Experiment.
 
 ```{r}
-gg_community_index_exp_scide <- plot_community_index(option = "exp", dat_index, experiment = "scide")
-gg_community_index_exp_scide
+(gg_community_index_exp_scide <- plot_community_index(option = "exp", dat_index, experiment = "scide"))
 ```
 Drought treatment at three sites, (A) Arboretum, (B) Marshall Field, and (C) Younger Lagoon, in the Santa Cruz International Drought Experiment generally increased CTI (°C) and decreased CPI (mm) over all years. Effects were not significant in most individual years.
+
+```{r}
+df_index_change_exp <- test_index_change_all(dat_index, option = "exp", bonferroni = F)
+(gg_effect_size <- plot_effect_size(df_index_change_exp))
+```
+
 
 Output figures and R data files.
 
@@ -57,6 +60,7 @@ Output figures and R data files.
 save_figure(out = list(
   community_index_exp_jrgce_water = gg_community_index_exp_jrgce_water,
   community_index_exp_mclexp = gg_community_index_exp_mclexp,
-  community_index_exp_scide = gg_community_index_exp_scide
+  community_index_exp_scide = gg_community_index_exp_scide,
+  effect_size = gg_effect_size
 ))
 ```

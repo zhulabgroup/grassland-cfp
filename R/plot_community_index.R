@@ -240,7 +240,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     ))
 
   change_tbl <- jrgce_tbl %>%
-    mutate(subgrp = case_when(
+    mutate(phase = case_when(
       year <= 2002 ~ "Phase I",
       year >= 2010 ~ "Phase III",
       TRUE ~ "Phase II"
@@ -249,7 +249,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       trt = treat_T,
       value = com_idx_value
     ) %>%
-    group_by(com_idx_name) %>%
+    group_by(com_idx_name, phase) %>%
     nest() %>%
     rowwise() %>%
     mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
@@ -264,14 +264,14 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       com_idx_name == "CDI" ~ "mm",
     )) %>%
     mutate(start = case_when(
-      subgrp == "Phase I" ~ 1999,
-      subgrp == "Phase II" ~ 2003,
-      subgrp == "Phase III" ~ 2010
+      phase == "Phase I" ~ 1999,
+      phase == "Phase II" ~ 2003,
+      phase == "Phase III" ~ 2010
     )) %>%
     mutate(end = case_when(
-      subgrp == "Phase I" ~ 2002,
-      subgrp == "Phase II" ~ 2009,
-      subgrp == "Phase III" ~ 2014
+      phase == "Phase I" ~ 2002,
+      phase == "Phase II" ~ 2009,
+      phase == "Phase III" ~ 2014
     )) %>%
     left_join(
       jrgce_tbl %>%
@@ -280,37 +280,37 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 1,
-      com_idx_name == "CPI" ~ max + 200,
-      com_idx_name == "CDI" ~ max + 200
+      com_idx_name == "CTI" ~ max + 0.1,
+      com_idx_name == "CPI" ~ max + 20,
+      com_idx_name == "CDI" ~ max + 20
     ))
 
-  change_tbl_year <- jrgce_tbl %>%
-    mutate(grp = year) %>%
-    rename(
-      trt = treat_T,
-      value = com_idx_value
-    ) %>%
-    group_by(grp, com_idx_name) %>%
-    nest() %>%
-    rowwise() %>%
-    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
-    unnest(summary) %>%
-    select(-data) %>%
-    mutate(delta = estimate %>% signif(3)) %>%
-    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
-    left_join(
-      jrgce_tbl %>%
-        group_by(com_idx_name) %>%
-        summarise(max = max(com_idx_value)),
-      by = "com_idx_name"
-    ) %>%
-    mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 0.5,
-      com_idx_name == "CPI" ~ max + 100,
-      com_idx_name == "CDI" ~ max + 100
-    ))
+  # change_tbl_year <- jrgce_tbl %>%
+  #   mutate(grp = year) %>%
+  #   rename(
+  #     trt = treat_T,
+  #     value = com_idx_value
+  #   ) %>%
+  #   group_by(grp, com_idx_name) %>%
+  #   nest() %>%
+  #   rowwise() %>%
+  #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #   unnest(summary) %>%
+  #   select(-data) %>%
+  #   mutate(delta = estimate %>% signif(3)) %>%
+  #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+  #   left_join(
+  #     jrgce_tbl %>%
+  #       group_by(com_idx_name) %>%
+  #       summarise(max = max(com_idx_value)),
+  #     by = "com_idx_name"
+  #   ) %>%
+  #   mutate(max = case_when(
+  #     com_idx_name == "CTI" ~ max + 0.1,
+  #     com_idx_name == "CPI" ~ max + 10,
+  #     com_idx_name == "CDI" ~ max + 10
+  #   ))
 
   warm_tbl <- read_warm_treatment()
 
@@ -336,23 +336,27 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         CDI = "Community Drought Index\n(CDI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
-    geom_text(
-      data = change_tbl_year,
-      aes(x = grp, y = Inf, label = sig),
-      vjust = 2
+    geom_segment(
+      data = change_tbl,
+      aes( x = start, xend = end, y = max, yend = max )
     ) +
-    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
+    geom_text(
+      data = change_tbl,
+      aes(
+        label = sig, # str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf # ,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = F,
+      vjust = 1.5
+    ) +
+    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl_year,
+    #   aes(x = grp, y = Inf, label = sig),
+    #   vjust = 2
+    # ) +
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -428,35 +432,35 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 1,
-      com_idx_name == "CPI" ~ max + 200
+      com_idx_name == "CTI" ~ max + 0.1,
+      com_idx_name == "CPI" ~ max + 20
     ))
 
-  change_tbl_year <- jrgce_tbl %>%
-    mutate(grp = year) %>%
-    rename(
-      trt = treat_P,
-      value = com_idx_value
-    ) %>%
-    group_by(grp, com_idx_name) %>%
-    nest() %>%
-    rowwise() %>%
-    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
-    unnest(summary) %>%
-    select(-data) %>%
-    mutate(delta = estimate %>% signif(3)) %>%
-    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
-    left_join(
-      jrgce_tbl %>%
-        group_by(com_idx_name) %>%
-        summarise(max = max(com_idx_value)),
-      by = "com_idx_name"
-    ) %>%
-    mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 0.5,
-      com_idx_name == "CPI" ~ max + 100
-    ))
+  # change_tbl_year <- jrgce_tbl %>%
+  #   mutate(grp = year) %>%
+  #   rename(
+  #     trt = treat_P,
+  #     value = com_idx_value
+  #   ) %>%
+  #   group_by(grp, com_idx_name) %>%
+  #   nest() %>%
+  #   rowwise() %>%
+  #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #   unnest(summary) %>%
+  #   select(-data) %>%
+  #   mutate(delta = estimate %>% signif(3)) %>%
+  #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+  #   left_join(
+  #     jrgce_tbl %>%
+  #       group_by(com_idx_name) %>%
+  #       summarise(max = max(com_idx_value)),
+  #     by = "com_idx_name"
+  #   ) %>%
+  #   mutate(max = case_when(
+  #     com_idx_name == "CTI" ~ max + 0.5,
+  #     com_idx_name == "CPI" ~ max + 100
+  #   ))
 
   exp_water_gg <-
     ggplot(jrgce_tbl) +
@@ -473,23 +477,27 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
-      data = change_tbl_year,
-      aes(x = grp, y = Inf, label = sig),
-      vjust = 2
+      data = change_tbl,
+      aes(
+        label = sig, #str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf#,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = F,
+      vjust = 1.5
     ) +
-    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
+    geom_segment(
+      data = change_tbl,
+      aes(x = start, xend = end, y = max, yend = max      )
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl_year,
+    #   aes(x = grp, y = Inf, label = sig),
+    #   vjust = 2
+    # ) +
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -583,35 +591,35 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 1,
-      com_idx_name == "CPI" ~ max + 200
+      com_idx_name == "CTI" ~ max + 0.1,
+      com_idx_name == "CPI" ~ max + 20
     ))
 
-  change_tbl_year <- mclexp_tbl %>%
-    mutate(grp = year) %>%
-    rename(
-      trt = treat,
-      value = com_idx_value
-    ) %>%
-    group_by(grp, com_idx_name) %>%
-    nest() %>%
-    rowwise() %>%
-    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
-    unnest(summary) %>%
-    select(-data) %>%
-    mutate(delta = estimate %>% signif(3)) %>%
-    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
-    left_join(
-      mclexp_tbl %>%
-        group_by(com_idx_name) %>%
-        summarise(max = max(com_idx_value)),
-      by = "com_idx_name"
-    ) %>%
-    mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 0.5,
-      com_idx_name == "CPI" ~ max + 100
-    ))
+  # change_tbl_year <- mclexp_tbl %>%
+  #   mutate(grp = year) %>%
+  #   rename(
+  #     trt = treat,
+  #     value = com_idx_value
+  #   ) %>%
+  #   group_by(grp, com_idx_name) %>%
+  #   nest() %>%
+  #   rowwise() %>%
+  #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #   unnest(summary) %>%
+  #   select(-data) %>%
+  #   mutate(delta = estimate %>% signif(3)) %>%
+  #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+  #   left_join(
+  #     mclexp_tbl %>%
+  #       group_by(com_idx_name) %>%
+  #       summarise(max = max(com_idx_value)),
+  #     by = "com_idx_name"
+  #   ) %>%
+  #   mutate(max = case_when(
+  #     com_idx_name == "CTI" ~ max + 0.5,
+  #     com_idx_name == "CPI" ~ max + 100
+  #   ))
 
   p <-
     ggplot(mclexp_tbl) +
@@ -628,23 +636,27 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
-      data = change_tbl_year,
-      aes(x = grp, y = Inf, label = sig),
-      vjust = 2
+      data = change_tbl,
+      aes(
+        label = sig, # str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf#,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = F,
+      vjust = 1.5
     ) +
-    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
+    geom_segment(
+      data = change_tbl,
+      aes(x = start, xend = end, y = max, yend = max      )
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl_year,
+    #   aes(x = grp, y = Inf, label = sig),
+    #   vjust = 2
+    # ) +
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",
@@ -732,35 +744,35 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
       by = "com_idx_name"
     ) %>%
     mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 1,
-      com_idx_name == "CPI" ~ max + 200
+      com_idx_name == "CTI" ~ max + 0.1,
+      com_idx_name == "CPI" ~ max + 20
     ))
 
-  change_tbl_year <- scide_tbl %>%
-    mutate(grp = year) %>%
-    rename(
-      trt = treat,
-      value = com_idx_value
-    ) %>%
-    group_by(grp, com_idx_name) %>%
-    nest() %>%
-    rowwise() %>%
-    mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
-    unnest(summary) %>%
-    select(-data) %>%
-    mutate(delta = estimate %>% signif(3)) %>%
-    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
-    left_join(
-      scide_tbl %>%
-        group_by(com_idx_name) %>%
-        summarise(max = max(com_idx_value)),
-      by = "com_idx_name"
-    ) %>%
-    mutate(max = case_when(
-      com_idx_name == "CTI" ~ max + 0.5,
-      com_idx_name == "CPI" ~ max + 100
-    ))
+  # change_tbl_year <- scide_tbl %>%
+  #   mutate(grp = year) %>%
+  #   rename(
+  #     trt = treat,
+  #     value = com_idx_value
+  #   ) %>%
+  #   group_by(grp, com_idx_name) %>%
+  #   nest() %>%
+  #   rowwise() %>%
+  #   mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
+  #     test_change_summ(dat_model = data, option = "exp")) %>%
+  #   unnest(summary) %>%
+  #   select(-data) %>%
+  #   mutate(delta = estimate %>% signif(3)) %>%
+  #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+  #   left_join(
+  #     scide_tbl %>%
+  #       group_by(com_idx_name) %>%
+  #       summarise(max = max(com_idx_value)),
+  #     by = "com_idx_name"
+  #   ) %>%
+  #   mutate(max = case_when(
+  #     com_idx_name == "CTI" ~ max + 0.5,
+  #     com_idx_name == "CPI" ~ max + 100
+  #   ))
 
   p <-
     ggplot(scide_tbl) +
@@ -777,23 +789,27 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     geom_text(
-      data = change_tbl_year,
-      aes(x = grp, y = Inf, label = sig),
-      vjust = 2
+      data = change_tbl,
+      aes(
+        label = sig, #str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf#,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = F,
+      vjust = 1.5
     ) +
-    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
+    geom_segment(
+      data = change_tbl,
+      aes(x = start, xend = end, y = max, yend = max      )
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl_year,
+    #   aes(x = grp, y = Inf, label = sig),
+    #   vjust = 2
+    # ) +
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
     labs(
       x = NULL, # "Year",

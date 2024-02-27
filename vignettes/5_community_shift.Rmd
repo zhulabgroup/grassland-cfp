@@ -120,7 +120,7 @@ where $x_i$ is the experimental treatment (0 = control group, 1 = treatment grou
 To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept for each site or year, respectively. 
 
 ```{r}
-df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
+df_index_change_obs <- test_index_change_all(dat_index, option = "obs", bonferroni = F)
 df_index_change_obs %>%
   mutate(
     estimate = estimate %>% signif(3),
@@ -128,7 +128,8 @@ df_index_change_obs %>%
     p.value = p.value %>% round(4)
   ) %>%
   knitr::kable()
-df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
+
+df_index_change_exp <- test_index_change_all(dat_index, option = "exp", bonferroni = F)
 df_index_change_exp %>%
   mutate(
     estimate = estimate %>% signif(3),
@@ -141,8 +142,7 @@ df_index_change_exp %>%
 Overall, the 12 observational sites had significant thermophilization (increases in CTI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cti") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant xerophilization (decreases in CPI) (`r df_index_change_obs %>% filter(site == "all") %>% filter(index == "cpi") %>% pull(estimate) %>% signif(3)` mm yr^-1^) over the years. 
 
 ```{r}
-df_summ_index_change_obs <- summ_change(df_index_change_obs, option = "obs")
-df_summ_index_change_obs
+(df_summ_index_change_obs <- summ_change(df_index_change_obs, option = "obs"))
 ```
 
 By site, `r df_summ_index_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in CTI and significant decreases in CPI over the years. Among all 12 sites, the mean thermophilization rate (increasing CTI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cti") %>% pull(max) %>% signif(3)` °C yr^-1^; the mean xerophilization rate (decreasing CPI per year) ranged from `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(max) %>% signif(3)` mm yr^-1^ to `r df_summ_index_change_obs %>% filter(index == "cpi") %>% pull(min) %>% signif(3)` mm yr^-1^.
@@ -152,13 +152,12 @@ Comparing warming plots to ambient plots, pooling data from all years in each ph
 Plot the above comparisons and tests.
 
 ```{r}
-gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index)
-gg_community_index_obs
+(gg_community_index_obs <- plot_community_index(option = "obs", dat_index = dat_index))
+
 gg_community_index_obs_landsc_2row <- plot_community_index(option = "obs", dat_index = dat_index, layout = "landsc", nrow = 2)
 gg_community_index_obs_landsc_3row <- plot_community_index(option = "obs", dat_index = dat_index, layout = "landsc", nrow = 3)
 
-gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index, experiment = "jrgce", treatment = "warming")
-gg_community_index_exp
+(gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_index, experiment = "jrgce", treatment = "warming"))
 ```
 
 ```{r}
