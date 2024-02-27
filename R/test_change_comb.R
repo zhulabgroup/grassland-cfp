@@ -7,15 +7,6 @@ test_index_change_comb <- function(dat_index, option, response = "index", levels
   }
 }
 
-test_optima_change_comb <- function(dat_community, option, response = "optima", levels = c("tmp", "ppt")) {
-  if (option == "obs") {
-    return(test_change_comb_obs(dat_community$obs, response = response, levels = levels))
-  }
-  if (option == "exp") {
-    return(test_change_comb_exp(dat_community$exp, response = response, levels = levels))
-  }
-}
-
 test_change_comb_obs <- function(dat, response = "optima", levels = c("tmp", "ppt")) {
   df_change_obs <- expand_grid(
     site = dat %>% pull(site) %>% unique() %>% c("all"),
