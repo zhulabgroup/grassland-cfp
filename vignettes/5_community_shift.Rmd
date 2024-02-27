@@ -117,7 +117,7 @@ $$
 
 where $x_i$ is the experimental treatment (0 = control group, 1 = treatment group),´$\delta$ is the estimated treatment effect (°C). A similar model applies to $\mathrm{CPI}_i$. 
 
-To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept for each site or year, respectively. 
+To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted  linear mixed-effects models with a random intercept and random intercept for each site or a random intercept for each year, respectively. 
 
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs", bonferroni = F)
