@@ -16,8 +16,9 @@
 #' @export
 test_index_change_all <- function(dat_index, option) {
   df_index_change <- test_index_change_comb(dat_index, option) %>%
-    mutate(test_index_change(dat_index, index, grouping, option)) %>%
+    mutate(summary = test_index_change(dat_index, index, grouping, option)) %>%
     select(grouping, everything()) %>%
+    unnest(summary) %>%
     unnest(grouping) %>%
     ungroup()
 

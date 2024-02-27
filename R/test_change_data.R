@@ -27,7 +27,8 @@ test_index_change_data_obs <- function(dat_index, index, siteoi = "all") {
       unique()
   }
   dat_lme <- dat_index %>%
-    filter(site %in% siteoi)
+    filter(site %in% siteoi) %>%
+    mutate(year = year - 1983)
 
   return(dat_lme)
 }
