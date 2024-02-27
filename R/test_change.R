@@ -13,8 +13,9 @@ test_index_change_all <- function(dat_index, option, bonferroni = F) {
 #' @export
 test_trait_change_all <- function(dat_community, dat_niche, option, bonferroni = F) {
   df_trait_change <- test_trait_change_comb(dat_community, option) %>%
-    mutate(test_trait_change(dat_community, dat_niche, trait, grouping,n_comparison, option, bonferroni)) %>%
+    mutate(summary = test_trait_change(dat_community, dat_niche, trait, grouping, n_comparison, option, bonferroni)) %>%
     select(grouping, everything()) %>%
+    unnest(summary) %>%
     unnest(grouping) %>%
     ungroup()
 
@@ -22,7 +23,7 @@ test_trait_change_all <- function(dat_community, dat_niche, option, bonferroni =
 }
 
 #' @export
-test_index_change <- function(dat_index, index, grouping, n_comparison, option, bonferroni= T) {
+test_index_change <- function(dat_index, index, grouping, n_comparison, option, bonferroni = F) {
   # subset data
   dat_model <- test_index_change_data(dat_index, index, grouping, option)
 
@@ -30,21 +31,21 @@ test_index_change <- function(dat_index, index, grouping, n_comparison, option, 
   model <- test_index_change_model(dat_model, option)
 
   # summarize results
-  df_model <- test_change_summ(model, dat_model,n_comparison, option, bonferroni )
+  df_model <- test_change_summ(model, n_comparison, bonferroni)
 
   return(df_model)
 }
 
 #' @export
-test_trait_change <- function(dat_community, dat_niche, trait, grouping, option) {
+test_trait_change <- function(dat_community, dat_niche, trait, grouping, n_comparison, option, bonferroni = F) {
   # subset data
   dat_model <- test_trait_change_data(dat_community, dat_niche, trait, grouping, option)
 
   # fit lme
   model <- test_trait_change_model(dat_model, option)
-  # summarize results
 
-  df_model <- test_change_summ(model)
+  # summarize results
+  df_model <- test_change_summ(model, n_comparison, bonferroni)
 
   return(df_model)
 }

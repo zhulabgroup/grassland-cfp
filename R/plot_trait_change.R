@@ -42,15 +42,17 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
   #   ungroup()
 
   change_tbl <- df_weight %>%
-    mutate(grp = case_when(
+    mutate(phase = case_when(
       year <= 2002 ~ "Phase I",
       year >= 2010 ~ "Phase III",
       TRUE ~ "Phase II"
     )) %>%
-    group_by(grp, trait) %>%
+    group_by(phase, trait) %>%
     nest() %>%
-    mutate(test_trait_change_model(dat_model = data[[1]], option = "exp") %>%
+    rowwise() %>%
+    mutate(summary = test_trait_change_model(dat_model = data, option = "exp") %>%
       test_change_summ()) %>%
+    unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
     mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
@@ -59,34 +61,15 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
       trait == "ppt" ~ "mm"
     )) %>%
     mutate(start = case_when(
-      grp == "Phase I" ~ 1999,
-      grp == "Phase II" ~ 2003,
-      grp == "Phase III" ~ 2010
+      phase == "Phase I" ~ 1999,
+      phase == "Phase II" ~ 2003,
+      phase == "Phase III" ~ 2010
     )) %>%
     mutate(end = case_when(
-      grp == "Phase I" ~ 2002,
-      grp == "Phase II" ~ 2009,
-      grp == "Phase III" ~ 2014
+      phase == "Phase I" ~ 2002,
+      phase == "Phase II" ~ 2009,
+      phase == "Phase III" ~ 2014
     )) %>%
-    left_join(
-      df_weight %>%
-        group_by(trait) %>%
-        summarise(max = max(value)),
-      by = "trait"
-    ) %>%
-    mutate(max = case_when(
-      trait == "tmp" ~ max + 1,
-      trait == "ppt" ~ max + 200
-    ))
-
-  change_tbl_year <- df_weight %>%
-    mutate(grp = year) %>%
-    group_by(grp, trait) %>%
-    nest() %>%
-    mutate(test_trait_change_model(dat_model = data[[1]], option = "exp") %>%
-      test_change_summ()) %>%
-    select(-data) %>%
-    mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
     left_join(
       df_weight %>%
         group_by(trait) %>%
@@ -97,6 +80,25 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
       trait == "tmp" ~ max + 0.5,
       trait == "ppt" ~ max + 100
     ))
+
+  # change_tbl_year <- df_weight %>%
+  #   mutate(grp = year) %>%
+  #   group_by(grp, trait) %>%
+  #   nest() %>%
+  #   mutate(test_trait_change_model(dat_model = data[[1]], option = "exp") %>%
+  #     test_change_summ()) %>%
+  #   select(-data) %>%
+  #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
+  #   left_join(
+  #     df_weight %>%
+  #       group_by(trait) %>%
+  #       summarise(max = max(value)),
+  #     by = "trait"
+  #   ) %>%
+  #   mutate(max = case_when(
+  #     trait == "tmp" ~ max + 0.5,
+  #     trait == "ppt" ~ max + 100
+  #   ))
 
   df_trt <- df_weight %>%
     distinct(year, trt, trait) %>%
@@ -154,23 +156,27 @@ plot_trait_change_exp <- function(dat_community_exp, dat_niche) {
         ppt = "Annual precipitation\n(AP, mm)"
       ))
     ) +
-    # geom_text(
-    #   data = change_tbl,
-    #   aes(
-    #     label = str_c("delta", " == ", delta),
-    #     x = (start + end) / 2, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   vjust = 1.5
-    # ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
-    geom_text(
-      data = change_tbl_year,
-      aes(x = grp, y = Inf, label = sig),
-      vjust = 2
+    geom_segment(
+      data = change_tbl,
+      aes(x = start, xend = end, y = max, yend = max)
     ) +
-    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
+    geom_text(
+      data = change_tbl,
+      aes(
+        label = sig, # str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf # ,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = F,
+      vjust = 1.5
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # geom_text(
+    #   data = change_tbl_year,
+    #   aes(x = grp, y = Inf, label = sig),
+    #   vjust = 2
+    # ) +
+    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
     scale_x_continuous(expand = expansion(mult = 0, add = c(0.25, 0.25))) +
     labs(
       x = NULL, # "Year",

@@ -46,7 +46,7 @@ T_j = \alpha+\delta x_i + \epsilon_{ij},\epsilon_{ij} \sim N(0,  \frac{\sigma^2}
 $$
 where $x_i$ is the experimental treatment (0 = control group, 1 = treatment group),´$\delta$ is the estimated treatment effect (°C). A similar model applies to $P_j$. 
 
-To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept for each site or year, respectively.
+To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept and a random slope for each site or a random intecept for each year, respectively.
 
 ```{r}
 df_trait_change_obs <- test_trait_change_all(dat_community, dat_niche, option = "obs")
@@ -57,6 +57,7 @@ df_trait_change_obs %>%
     p.value = p.value %>% round(4)
   ) %>%
   knitr::kable()
+
 df_trait_change_exp <- test_trait_change_all(dat_community, dat_niche, option = "exp")
 df_trait_change_exp %>%
   mutate(
@@ -70,8 +71,7 @@ df_trait_change_exp %>%
 Overall, the 12 observational sites had significant increases in temperature trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "tmp") %>% pull(estimate) %>% signif(3)` °C yr^-1^) and significant decreases in precipitation trait (`r df_trait_change_obs %>% filter(site == "all") %>% filter(trait == "ppt") %>% pull(estimate) %>% signif(3)` mm yr^-1^) over the years. 
 
 ```{r}
-df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs")
-df_summ_trait_change_obs
+(df_summ_trait_change_obs <- summ_change(df_trait_change_obs, option = "obs"))
 ```
 
 By site, `r df_summ_trait_change_obs %>% pull(n_sig) %>% min()` out of the 12 sites had significant increases in temperature trait and significant decreases in precipitation trait over the years. Among all 12 sites, the temperature traits increases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(min) %>% signif(3)` °C yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "tmp") %>% pull(max) %>% signif(3)` °C yr^-1^; the precipitation trait decreases at a rate ranging from `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(max) %>% signif(3)` mm yr^-1^ to `r df_summ_trait_change_obs %>% filter(trait == "ppt") %>% pull(min) %>% signif(3)` mm yr^-1^.
@@ -81,10 +81,9 @@ Comparing warming plots to ambient plots, pooling data from all years in each ph
 Plot the above comparisons and tests.
 
 ```{r}
-gg_trait_change_obs <- plot_trait_change(option = "obs", dat_community, dat_niche)
-gg_trait_change_obs
-gg_trait_change_exp <- plot_trait_change(option = "exp", dat_community, dat_niche)
-gg_trait_change_exp
+(gg_trait_change_obs <- plot_trait_change(option = "obs", dat_community, dat_niche))
+
+(gg_trait_change_exp <- plot_trait_change(option = "exp", dat_community, dat_niche))
 ```
 
 # Index change on the community level
@@ -117,7 +116,7 @@ $$
 
 where $x_i$ is the experimental treatment (0 = control group, 1 = treatment group),´$\delta$ is the estimated treatment effect (°C). A similar model applies to $\mathrm{CPI}_i$. 
 
-To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted weighted linear mixed-effects models with a random intercept for each site or year, respectively. 
+To estimate the overall trend across all observational sites or the overall effect of treatments across all years in the experiment, we further fitted  linear mixed-effects models with a random intercept and a random intercept for each site or a random intercept for each year, respectively. 
 
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs", bonferroni = F)
