@@ -80,7 +80,7 @@ gg_community_index_exp <- plot_community_index(option = "exp", dat_index = dat_i
 gg_community_index_exp
 ```
 
-Statistical test of index change on the community level.
+Statistical test of CTI and CPI change.
 
 ```{r}
 df_index_change_obs <- test_index_change_all(dat_index, option = "obs")
@@ -88,23 +88,10 @@ df_index_change_obs %>% knitr::kable(
   caption = "__Table 1.__ Trends of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) across observational sites, reporting the linear regression slope estimate, standard error, *p*-value, and significance level from *t*-test (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
   table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
 )
+
 df_index_change_exp <- test_index_change_all(dat_index, option = "exp")
 df_index_change_exp %>% knitr::kable(
   caption = "__Table 2.__ Comparison of Community Temperature Index (CTI, °C) and Community Precipitation Index (CPI, mm) in the Jasper Ridge Global Change Experiment (JRGCE), pooling data from all years in each phase, reporting the average difference in the metric between warming and ambient plots, *p*-value, and significance level from linear mixed-effects models with a random intercept for each year (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
-  table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
-)
-```
-
-Statistical test of optima change on the species level.
-```{r}
-df_optima_change_obs <- test_optima_change_all(dat_community, dat_niche, option = "obs")
-df_optima_change_obs %>% knitr::kable(
-  caption = "__Table 3.__ Trends of species' temperature optima (T, °C) and precipitation optima (P, mm) across observational sites, reporting the linear regression slope estimate, standard error, *p*-value, and significance level from *t*-test (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
-  table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
-)
-df_optima_change_exp <- test_optima_change_all(dat_community, dat_niche, option = "exp")
-df_optima_change_exp %>% knitr::kable(
-  caption = "__Table 4.__ Comparison of species' temperature optima (T, °C) and precipitation optima (P, mm) in the Jasper Ridge Global Change Experiment (JRGCE), pooling data from all years in each phase, reporting the average difference in the metric between warming and ambient plots, *p*-value, and significance level from linear mixed-effects models with a random intercept for each year (ns: *p* $\\gt$ 0.05, $*$: *p* $\\leq$ 0.05, $**$: *p* $\\leq$ 0.01, $***$: *p* $\\leq$ 0.001).",
   table.attr = 'style="margin-left: auto; margin-right: auto; text-align: left;"'
 )
 ```
