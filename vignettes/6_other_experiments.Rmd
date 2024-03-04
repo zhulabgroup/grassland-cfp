@@ -37,7 +37,7 @@ Watering treatment in the Jasper Ridge Global Change Experiment generally decrea
 ## McLaughlin Water Experiment.
 
 ```{r}
-(gg_community_index_exp_mclexp <- plot_community_index(option = "exp", dat_index, experiment = "mclexp"))
+(gg_community_index_exp_mwe <- plot_community_index(option = "exp", dat_index, experiment = "mwe"))
 ```
 Watering treatment in the McLaughlin Water Experiment generally decreased CTI (°C) and increased CPI (mm) in both (A) serpentine and (B) non-serpentine sites over all years, while drought treatments generally increased CTI (°C) and decreased CPI (mm) in (C) the serpentine site over all years. Effects were not significant in most individual years.
 
@@ -59,7 +59,7 @@ Output figures and R data files.
 ```{r, eval = F}
 save_figure(out = list(
   community_index_exp_jrgce_water = gg_community_index_exp_jrgce_water,
-  community_index_exp_mclexp = gg_community_index_exp_mclexp,
+  community_index_exp_mwe = gg_community_index_exp_mwe,
   community_index_exp_scide = gg_community_index_exp_scide,
   effect_size = gg_effect_size
 ))

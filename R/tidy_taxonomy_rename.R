@@ -35,7 +35,7 @@ tidy_taxonomy_rename <- function(path_community_tidy = "alldata/intermediate/obs
         arrange(site, year, plot, species) %>%
         write_csv(str_c(path_community_final, s, ".csv"))
     }
-    if (s %in% c("jrgce", "mclexp", "scide")) {
+    if (s %in% c("jrgce", "mwe", "scide")) {
       read_csv(list.files(path_community_tidy, pattern = s, full.names = T),
         col_types = "ciccccdc"
       ) %>%

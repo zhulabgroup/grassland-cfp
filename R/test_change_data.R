@@ -58,10 +58,10 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
       dat_exp <- dat_index %>%
         filter(site == "jrgce", year >= 1999) %>%
         mutate(trt = str_sub(treat, start = 2L, end = 2L)) %>%
-        select(trt,year, plot, value)
+        select(trt, year, plot, value)
     }
   }
-  if (exp == "mclexp") {
+  if (exp == "mwe") {
     dat_exp <- dat_index %>%
       filter(site == exp, year > 2015) %>%
       separate(treat, c("treat", "soil"), sep = 2) %>%
@@ -69,7 +69,7 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
         soil == "S" ~ "Serpentine",
         soil == "N" ~ "Non-serpentine"
       )) %>%
-      filter(soil==grp)
+      filter(soil == grp)
 
     if (trt == "Watering") {
       dat_exp <- dat_exp %>%
@@ -178,7 +178,7 @@ test_trait_change_data_exp <- function(dat_community, dat_niche, trait, exp, trt
         select(trt, subgrp, year, plot, species, abund)
     }
   }
-  if (exp == "mclexp") {
+  if (exp == "mwe") {
     dat_exp <- dat_community %>%
       filter(site == exp, year > 2015) %>%
       separate(treat, c("treat", "soil"), sep = 2) %>%

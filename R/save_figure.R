@@ -205,11 +205,11 @@ save_figure_param <- function(gg_name) {
     filename <- "fig-supp-exp-jrgce-water.png"
   }
 
-  if (gg_name == "community_index_exp_mclexp") {
+  if (gg_name == "community_index_exp_mwe") {
     type <- "supp"
     width <- 11
     height <- 8
-    filename <- "fig-supp-exp-mclexp.png"
+    filename <- "fig-supp-exp-mwe.png"
   }
 
   if (gg_name == "community_index_exp_scide") {

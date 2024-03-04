@@ -103,7 +103,8 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
     theme(
       axis.text = element_text(size = 8),
       axis.title = element_text(size = 8)
-    )
+    ) +
+    scale_y_continuous(expand = expansion(mult = .1))
 
   obs_gainloss_main_gg <-
     ggplot() +
@@ -274,7 +275,8 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
     theme(
       axis.text = element_text(size = 8),
       axis.title = element_text(size = 8)
-    )
+    ) +
+    scale_y_continuous(expand = expansion(mult = .1))
 
   exp_gainloss_main_gg <-
     ggplot() +
