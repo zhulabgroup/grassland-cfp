@@ -45,7 +45,7 @@ test_change_comb_exp <- function(dat, response = "optima", levels = c("tmp", "pp
         }
       }
     }
-    if (exp == "mclexp") {
+    if (exp == "mwe") {
       for (trt in c("Watering", "Drought")) {
         if (trt == "Watering") {
           v_grp <- c("Serpentine", "Non-serpentine")
@@ -65,7 +65,7 @@ test_change_comb_exp <- function(dat, response = "optima", levels = c("tmp", "pp
         ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
       }
     }
-    if (!exp %in% c("jrgce", "mclexp", "scide")) {
+    if (!exp %in% c("jrgce", "mwe", "scide")) {
       message(str_c("Experiment ", exp, " not recognized."))
     }
   }
@@ -74,7 +74,7 @@ test_change_comb_exp <- function(dat, response = "optima", levels = c("tmp", "pp
     mutate(exp = factor(exp,
       levels = c(
         "jrgce",
-        "mclexp",
+        "mwe",
         "scide"
       )
     )) %>%

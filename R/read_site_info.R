@@ -48,7 +48,7 @@ read_site_name <- function() {
     ucsc = "UC Santa Cruz",
     vascocaves = "Vasco Caves",
     jrgce = "Jasper Ridge\nGlobal Change Experiment",
-    mclexp = "McLaughlin Water Experiment",
+    mwe = "McLaughlin Water Experiment",
     scide = "Santa Cruz\nInternational Drought Experiment"
   )
   return(site_vec)

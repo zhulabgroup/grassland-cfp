@@ -65,7 +65,7 @@ test_index_change_data_exp <- function(dat_index, index, exp, trt, grp) {
         select(trt, subgrp, year, plot, value)
     }
   }
-  if (exp == "mclexp") {
+  if (exp == "mwe") {
     dat_exp <- dat_index %>%
       filter(site == exp, year > 2015) %>%
       separate(treat, c("treat", "soil"), sep = 2) %>%
