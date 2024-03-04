@@ -19,7 +19,7 @@ plot_community_index(
 
 \item{dat_index}{A list with calculated community indices for observations and experiments.}
 
-\item{experiment}{A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp". Options are "jrgce" for the Jasper Ridge Global Change Experiment, "mclexp" for the McLaughlin Water Experiment, and "scide" for the Santa Cruz International Drought Experiment.}
+\item{experiment}{A string indicating the specific experiment to plot for. Only valid when "option" is set to "exp". Options are "jrgce" for the Jasper Ridge Global Change Experiment, "mwe" for the McLaughlin Water Experiment, and "scide" for the Santa Cruz International Drought Experiment.}
 
 \item{treatment}{A string indicating the specific treatment in the experiment to plot for. Only valid when "option" is set to "exp" and "experiment" is set tp "jrgce". Options are "warming" or "watering".}
 
