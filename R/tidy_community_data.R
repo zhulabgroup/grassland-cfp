@@ -3,7 +3,7 @@ tidy_community_data <- function(indir = "alldata/input/community/raw/",
                                 outdir = "alldata/intermediate/observation-experiment/tidy-community/") {
   # experimental sites
   tidy_jrgce(indir) %>% write_csv(str_c(outdir, "jrgce.csv"))
-  tidy_mclexp(indir) %>% write_csv(str_c(outdir, "mclexp.csv"))
+  tidy_mwe(indir) %>% write_csv(str_c(outdir, "mwe.csv"))
   tidy_scide(indir) %>% write_csv(str_c(outdir, "scide.csv"))
 
   # observational sites
@@ -106,7 +106,7 @@ tidy_jrgce <- function(basedir) {
   return(jrgce_tbl)
 }
 
-tidy_mclexp <- function(basedir) {
+tidy_mwe <- function(basedir) {
   # read in raw data
   # note 2020 data is missing.
   excel_file <- str_c(basedir, "HarrisonExperiment/2015-2021 Water Experiment Data.xlsx")
@@ -159,7 +159,7 @@ tidy_mclexp <- function(basedir) {
     select(year, plot, species, abund) %>%
     mutate(plot = as.integer(plot))
 
-  mclexp_tbl <- plt_tbl %>%
+  mwe_tbl <- plt_tbl %>%
     mutate(
       plot = as.integer(Site),
       treat = case_when(
@@ -172,7 +172,7 @@ tidy_mclexp <- function(basedir) {
     ) %>%
     select(plot, treat) %>%
     full_join(com_long_tbl, by = "plot") %>%
-    mutate(site = "mclexp", guild = NA, abund_type = "cover") %>%
+    mutate(site = "mwe", guild = NA, abund_type = "cover") %>%
     select(site, year, plot, treat, species, guild, abund, abund_type) %>%
     filter(
       abund > 0,
@@ -180,7 +180,7 @@ tidy_mclexp <- function(basedir) {
     ) %>%
     arrange(year, plot, species)
 
-  return(mclexp_tbl)
+  return(mwe_tbl)
 }
 
 tidy_scide <- function(basedir) {

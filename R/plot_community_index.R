@@ -205,8 +205,8 @@ plot_community_index_exp <- function(exp_tbl, experiment = "jrgce", treatment = 
   if (experiment == "jrgce") {
     p <- plot_community_index_jrgce(exp_tbl, treatment)
   }
-  if (experiment == "mclexp") {
-    p <- plot_community_index_mclexp(exp_tbl)
+  if (experiment == "mwe") {
+    p <- plot_community_index_mwe(exp_tbl)
   }
   if (experiment == "scide") {
     p <- plot_community_index_scide(exp_tbl)
@@ -357,7 +357,10 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
     #   vjust = 2
     # ) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
-    scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+    scale_x_continuous(
+      expand = expansion(mult = 0, add = c(0.125, 0.125)),
+      breaks = c(change_tbl$start, change_tbl$end) %>% unique()
+    ) +
     labs(
       x = NULL, # "Year",
       y = NULL,
@@ -498,7 +501,10 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     #   vjust = 2
     # ) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
-    scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+    scale_x_continuous(
+      expand = expansion(mult = 0, add = c(0.125, 0.125)),
+      breaks = c(change_tbl$start, change_tbl$end) %>% unique()
+    ) +
     labs(
       x = NULL, # "Year",
       y = NULL,
@@ -515,9 +521,9 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
   return(exp_water_gg)
 }
 
-plot_community_index_mclexp <- function(exp_tbl) {
-  mclexp_tbl <- exp_tbl %>%
-    filter(site == "mclexp", year > 2015) %>%
+plot_community_index_mwe <- function(exp_tbl) {
+  mwe_tbl <- exp_tbl %>%
+    filter(site == "mwe", year > 2015) %>%
     separate(treat, c("treat", "soil"), sep = 2) %>%
     select(site, year, plot, treat, soil, tmp_com_mean, ppt_com_mean) %>%
     pivot_longer(cols = tmp_com_mean:ppt_com_mean, names_to = "com_idx_name", values_to = "com_idx_value") %>%
@@ -526,25 +532,25 @@ plot_community_index_mclexp <- function(exp_tbl) {
       labels = c("CTI", "CPI")
     ))
 
-  mclexp_gg <-
-    plot_mclexp(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") +
-    plot_mclexp(mclexp_tbl, l_tag = "B", trt_tag = "Watering", s_tag = "Non-serpentine soil") +
-    plot_mclexp(mclexp_tbl, l_tag = "C", trt_tag = "Drought", s_tag = "Serpentine soil") +
+  mwe_gg <-
+    plot_mwe(mwe_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") +
+    plot_mwe(mwe_tbl, l_tag = "B", trt_tag = "Watering", s_tag = "Non-serpentine soil") +
+    plot_mwe(mwe_tbl, l_tag = "C", trt_tag = "Drought", s_tag = "Serpentine soil") +
     plot_layout(design = "
   ABC
 ")
 
-  return(mclexp_gg)
+  return(mwe_gg)
 }
 
-plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") {
+plot_mwe <- function(mwe_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") {
   # filter data by treatment tag
   if (trt_tag == "Watering") {
-    mclexp_tbl <- filter(mclexp_tbl, treat %in% c("_X", "WX"))
+    mwe_tbl <- filter(mwe_tbl, treat %in% c("_X", "WX"))
     box_col <- "blue"
     bg_col <- "#F0F8FF"
   } else if (trt_tag == "Drought") {
-    mclexp_tbl <- filter(mclexp_tbl, treat %in% c("X_", "XD"))
+    mwe_tbl <- filter(mwe_tbl, treat %in% c("X_", "XD"))
     box_col <- "brown"
     bg_col <- "#FFFFE0"
   } else {
@@ -553,14 +559,14 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
 
   # filter data by soil tag
   if (s_tag == "Serpentine soil") {
-    mclexp_tbl <- filter(mclexp_tbl, soil == "S")
+    mwe_tbl <- filter(mwe_tbl, soil == "S")
   } else if (s_tag == "Non-serpentine soil") {
-    mclexp_tbl <- filter(mclexp_tbl, soil == "N")
+    mwe_tbl <- filter(mwe_tbl, soil == "N")
   } else {
     stop("Unknown soil tag")
   }
 
-  change_tbl <- mclexp_tbl %>%
+  change_tbl <- mwe_tbl %>%
     rename(
       trt = treat,
       value = com_idx_value,
@@ -581,11 +587,11 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
       com_idx_name == "CDI" ~ "mm",
     )) %>%
     mutate(
-      start = mclexp_tbl %>% pull(year) %>% min(),
-      end = mclexp_tbl %>% pull(year) %>% max()
+      start = mwe_tbl %>% pull(year) %>% min(),
+      end = mwe_tbl %>% pull(year) %>% max()
     ) %>%
     left_join(
-      mclexp_tbl %>%
+      mwe_tbl %>%
         group_by(com_idx_name) %>%
         summarise(max = max(com_idx_value)),
       by = "com_idx_name"
@@ -595,7 +601,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
       com_idx_name == "CPI" ~ max + 20
     ))
 
-  # change_tbl_year <- mclexp_tbl %>%
+  # change_tbl_year <- mwe_tbl %>%
   #   mutate(grp = year) %>%
   #   rename(
   #     trt = treat,
@@ -611,7 +617,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
   #   mutate(delta = estimate %>% signif(3)) %>%
   #   mutate(sig = if_else(str_detect(sig, "\\*"), sig, "ns")) %>%
   #   left_join(
-  #     mclexp_tbl %>%
+  #     mwe_tbl %>%
   #       group_by(com_idx_name) %>%
   #       summarise(max = max(com_idx_value)),
   #     by = "com_idx_name"
@@ -622,7 +628,7 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
   #   ))
 
   p <-
-    ggplot(mclexp_tbl) +
+    ggplot(mwe_tbl) +
     geom_boxplot( # treatment effects
       aes(x = year, y = com_idx_value, col = treat, group = interaction(treat, year))
     ) +
@@ -657,7 +663,10 @@ plot_mclexp <- function(mclexp_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "
     #   vjust = 2
     # ) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
-    scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+    scale_x_continuous(
+      expand = expansion(mult = 0, add = c(0.125, 0.125)),
+      breaks = c(change_tbl$start, change_tbl$end) %>% unique()
+    ) +
     labs(
       x = NULL, # "Year",
       y = NULL,
@@ -810,7 +819,10 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     #   vjust = 2
     # ) +
     scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
-    scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+    scale_x_continuous(
+      expand = expansion(mult = 0, add = c(0.125, 0.125)),
+      breaks = c(change_tbl$start, change_tbl$end) %>% unique()
+    ) +
     labs(
       x = NULL, # "Year",
       y = NULL,

@@ -179,7 +179,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     nest() %>%
     rowwise() %>%
     mutate(summary = test_index_change_model(dat_model = data, option = "exp") %>%
-      test_change_summ(dat_model = data, option = "exp")) %>%
+      test_change_summ()) %>%
     unnest(summary) %>%
     select(-data) %>%
     mutate(delta = estimate %>% signif(3)) %>%
@@ -238,8 +238,8 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     geom_text(
       data = change_tbl,
       aes(
-        label = sig, #str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf#,
+        label = sig, # str_c("delta", " == ", delta),
+        x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
       parse = F,
@@ -247,7 +247,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
     ) +
     geom_segment(
       data = change_tbl,
-      aes(x = start, xend = end, y = max, yend = max      )
+      aes(x = start, xend = end, y = max, yend = max)
     ) +
     # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
@@ -263,7 +263,10 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       breaks = c(0, 0.5, 1),
       expand = expansion(mult = 0.05)
     ) + # expand padding to show significance tests
-    scale_x_continuous(expand = expansion(mult = 0, add = c(0.125, 0.125))) +
+    scale_x_continuous(
+      expand = expansion(mult = 0, add = c(0.125, 0.125)),
+      breaks = c(change_tbl$start, change_tbl$end) %>% unique()
+    ) +
     labs(
       x = NULL, # "Year",
       y = NULL,

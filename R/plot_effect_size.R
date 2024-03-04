@@ -2,15 +2,15 @@
 plot_effect_size <- function(df_index_change_exp) {
   df <- df_index_change_exp %>%
     mutate(factor = factor(trt,
-                           levels = c("Warming", "Watering", "Drought"),
-                           labels = c("temperature", "precipitation", "precipitation")
+      levels = c("Warming", "Watering", "Drought"),
+      labels = c("temperature", "precipitation", "precipitation")
     )) %>%
     mutate(direction = factor(trt,
-                              levels = c("Warming", "Watering", "Drought"),
-                              labels = c("increased", "increased", "decreased")
+      levels = c("Warming", "Watering", "Drought"),
+      labels = c("Increased", "Increased", "Decreased")
     )) %>%
     arrange(factor, direction) %>%
-    mutate(manipulation = str_c(direction, factor, sep = "\n")) %>%
+    mutate(manipulation = str_c(direction, factor, sep = " ")) %>%
     mutate(manipulation = factor(manipulation, levels = (.) %>% pull(manipulation) %>% unique())) %>%
     mutate(exp = exp %>% toupper()) %>%
     arrange(exp, grp) %>%
@@ -33,9 +33,11 @@ plot_effect_size <- function(df_index_change_exp) {
       col = NA
     ) +
     geom_rect( # warming phrases
-      data = data.frame(start = c(0.5,1.5,2.5) ,
-                        end = c(1.5,2.5,3.5),
-                        tag = c("warming","water","drought")),
+      data = data.frame(
+        start = c(0.5, 1.5, 2.5),
+        end = c(1.5, 2.5, 3.5),
+        tag = c("warming", "water", "drought")
+      ),
       aes(xmin = start, xmax = end, fill = tag),
       ymin = -Inf, ymax = Inf, alpha = 1,
       show.legend = F
@@ -75,10 +77,11 @@ plot_effect_size <- function(df_index_change_exp) {
       min.segment.length = 0,
       max.overlaps = Inf,
       label.padding = unit(.25, "lines"),
-      label.size = NA#,
-      # show.legend = FALSE
+      label.size = NA,
+      show.legend = FALSE
     ) +
     scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    scale_x_discrete(expand = expansion(add = c(0, 0))) +
     facet_wrap(. ~ index,
       ncol = 1,
       scales = "free_y",

@@ -46,19 +46,19 @@ test_change_comb_exp <- function(dat, response = "index", levels = c("cti", "cpi
   for (exp in ls_exp) {
     if (exp == "jrgce") {
       for (trt in c("Warming", "Watering")) {
-          if (trt == "Warming") {
-            v_grp <- c("Phase I", "Phase II", "Phase III")
-            for (grp in v_grp) {
-              ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-            }
+        if (trt == "Warming") {
+          v_grp <- c("Phase I", "Phase II", "Phase III")
+          for (grp in v_grp) {
+            ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
           }
-          if (trt == "Watering") {
-            grp <- ""
-        ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
-          }
+        }
+        if (trt == "Watering") {
+          grp <- ""
+          ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+        }
       }
     }
-    if (exp == "mclexp") {
+    if (exp == "mwe") {
       for (trt in c("Watering", "Drought")) {
         if (trt == "Watering") {
           v_grp <- c("Serpentine", "Non-serpentine")
@@ -68,17 +68,17 @@ test_change_comb_exp <- function(dat, response = "index", levels = c("cti", "cpi
         }
         if (trt == "Drought") {
           grp <- "Serpentine"
-        ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+          ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
         }
       }
     }
     if (exp == "scide") {
       trt <- "Drought"
       for (grp in c("Arboretum", "Marshall Field", "Younger Lagoon")) {
-      ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
+        ls_df_change_exp_comb[[str_c(exp, " ", trt, " ", grp)]] <- data.frame(exp, trt, grp)
       }
     }
-    if (!exp %in% c("jrgce", "mclexp", "scide")) {
+    if (!exp %in% c("jrgce", "mwe", "scide")) {
       message(str_c("Experiment ", exp, " not recognized."))
     }
   }
@@ -87,21 +87,23 @@ test_change_comb_exp <- function(dat, response = "index", levels = c("cti", "cpi
     mutate(exp = factor(exp,
       levels = c(
         "jrgce",
-        "mclexp",
+        "mwe",
         "scide"
       )
     )) %>%
     mutate(response = factor(response, levels = levels)) %>%
     mutate(trt = factor(trt, levels = c("Warming", "Watering", "Drought"))) %>%
-    mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "","Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
+    mutate(grp = factor(grp, levels = c("Phase I", "Phase II", "Phase III", "", "Serpentine", "Non-serpentine", "Arboretum", "Marshall Field", "Younger Lagoon"))) %>%
     select(exp, trt, grp, response, everything()) %>%
     arrange(exp, trt, grp, response) %>%
     rowwise() %>%
     mutate(grouping = list(tibble(exp, trt, grp))) %>%
-    mutate(n_comparison = case_when(exp=="jrgce"&trt=="Warming"~3,
-                               exp =="mclexp"&trt=="Watering"~2,
-                               exp =="scide"&trt=="Drought"~3,
-                               TRUE~1)) %>%
+    mutate(n_comparison = case_when(
+      exp == "jrgce" & trt == "Warming" ~ 3,
+      exp == "mwe" & trt == "Watering" ~ 2,
+      exp == "scide" & trt == "Drought" ~ 3,
+      TRUE ~ 1
+    )) %>%
     select(response, grouping, n_comparison)
 
   colnames(df_change_exp) <- c(response, "grouping", "n_comparison")
