@@ -2,6 +2,7 @@
 calc_climate_change_site <- function(dat_clim_site) {
   df_cc_site_all <- dat_clim_site %>%
     select(site, year, tmp, ppt) %>%
+    mutate(year = year - 1980) %>%
     pivot_longer(tmp:ppt, names_to = "clim_var", values_to = "clim_val") %>%
     mutate(clim_var = factor(clim_var,
       levels = c("tmp", "ppt")
