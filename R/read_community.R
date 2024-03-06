@@ -13,7 +13,7 @@ read_community <- function(version = c("final", "tidy")) {
     str_c(indir, ., ".csv") %>%
     map_df(~ read_csv(., col_types = "cicccdc"))
 
-  exp_tbl <- c("jrgce", "mclexp", "scide") %>%
+  exp_tbl <- c("jrgce", "mwe", "scide") %>%
     str_c(indir, ., ".csv") %>%
     map_df(~ read_csv(., col_types = "ciccccdc"))
 
