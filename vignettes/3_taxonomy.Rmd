@@ -46,6 +46,7 @@ Rename species.
 ```{r, eval = F}
 path_community <- tidy_taxonomy_rename()
 dat_community <- read_community(version = "final")
+usethis::use_data(dat_community, overwrite = T)
 ```
 
 ```{r}
@@ -59,10 +60,3 @@ read_csv("alldata/input/community/species/consolidation.csv") %>%
   head(20) %>%
   knitr::kable()
 ```
-
-Output figures and R data files.
-
-```{r, eval = F}
-save_rda(out = list(dat_community))
-```
-
