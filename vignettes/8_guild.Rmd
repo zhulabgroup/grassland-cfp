@@ -29,12 +29,28 @@ theme_set(ggthemes::theme_few())
 
 In the main analysis, we characterized community composition in the climate space. Previous studies often use species guilds, such as examining changes in grass and forb dominance, and have yielded inconsistent observations and experimental results. For comparison, we examined community compositional shifts characterized by species guilds. We used three common classifications for species guilds: their origin (native vs. non-native), life history (annual vs. perennial), or functional groups (grass vs. forb).
 
+## Summarizing percentages of guilds
+
+```{r}
+dat_guild <- tidy_guild(dat_community, niche = F)
+dat_guild %>% 
+  filter(!str_detect(species, "DUMMY")) %>% 
+  group_by(group, guild) %>% 
+  summarise(n = n())
+
+dat_guild_niche <- tidy_guild(dat_community, dat_niche, niche = T)
+dat_guild_niche %>% 
+  filter(!str_detect(species, "DUMMY")) %>% 
+  group_by(group, guild) %>% 
+  summarise(n = n(), occ_n = sum(occ_n))
+```
+
 ## Compare species niches by guild
 
 We first compared the climate niches of species of different guilds using permutational multivariate analysis of variance (PERMANOVA).
 
 ```{r}
-dat_guild_niche <- calc_guild_niche(dat_community, dat_niche)
+dat_guild_niche <- tidy_guild(dat_community, dat_niche)
 gg_guild_niche <- plot_guild_niche(dat_guild_niche = dat_guild_niche)
 gg_guild_niche
 res_guild_niche <- test_guild_niche(dat_guild_niche = dat_guild_niche)
@@ -43,6 +59,20 @@ res_guild_niche
 Comparison of species climate niches of different species guilds in terms of (A) origin, (B) life history, and (C) functional group. Red Gaussian ellipses show the 95% confidence interval of the climate niche of each species guild. The climate niches are not significantly different when comparing species of different origins or species of different functional groups (permutational multivariate analysis of variance, PERMANOVA, p > 0.05) but were significantly different when comparing species with different life histories (p d 0.001), with annual species associated with hotter and drier locations compared to perennial species.
 
 ## Analyze community shift with guild
+
+```{r}
+dat_community$obs %>%
+  mutate(
+    native = str_sub(guild, 1, 1)
+  ) %>%
+  select(-guild) %>%
+  group_by(abbr = site) %>%
+  summarise(
+    native_perc = sum(abund * (native == "N")) / sum(abund)
+  ) %>%
+  ungroup() %>% 
+  mutate(nonnative_perc = 1 - native_perc) 
+```
 
 Similar to the analysis of changes in CTI and CPI, we then examined the relative abundance of species of specific guilds at the 12 observational sites and the JRGCE warming experiment, by fitting linear regressions with the percentages of natives, annuals, and grasses as response variables and year as the predictor.
 
