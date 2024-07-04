@@ -5,15 +5,6 @@
 *.docx
 *.html
 
-# Bookdown files
-*.rds
-.Rproj.user
-.Rhistory
-.RData
-_book
-_bookdown_files
-rsconnect
-
 # History files
 .Rhistory
 .Rapp.history
