@@ -1,6 +1,8 @@
 # ESA talk
 
-ESA Meeting, Organized Oral Session: What is Model Complexity? Defining Complexity Across Systems in Ecology, Tuesday, August 6 10:00 AM – 11:30 AM PDT.
+ESA Meeting 2024, Tuesday, August 6 10:00 AM – 11:30 AM PDT.
+
+Organized Oral Session: What is Model Complexity? Defining Complexity Across Systems in Ecology.
 
 ## Plan
 
