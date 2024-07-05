@@ -9,7 +9,7 @@ if (!file.exists("turbo")) {
     Linux = {
       R.utils::createLink(link = "turbo", "/nfs/turbo/seas-zhukai")
     },
-    Windows = { # Windows setups needs to have admin access
+    Windows = { # Windows setup needs to have admin access
       R.utils::createLink(link = "turbo", "Z:\\")
     }
   )
