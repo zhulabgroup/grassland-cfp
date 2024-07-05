@@ -4,8 +4,7 @@ theme_set(ggthemes::theme_few())
 
 # estimate tree temp niche ------------------------------------------------
 # read tree occurrences
-tree_occ <- .path$tree_niche %>%
-  str_c("occurrences.csv") %>%
+tree_occ <- .path$laughlin_mcgill %>%
   read_csv(col_types = "icdddddf")
 
 # BIO1 = Annual Mean Temperature
