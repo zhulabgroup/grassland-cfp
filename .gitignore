@@ -1,3 +1,6 @@
+# Project-specifc files
+/turbo
+
 # Mac files
 .DS_Store
 
