@@ -19,7 +19,9 @@ if (!file.exists("turbo")) {
 .path <- list(
   fia_db = "turbo/datasets/vegetation/FIA/FIADB/2024-04-15/SQLite_FIADB_ENTIRE.db",
   fia_rds = "turbo/proj-wildfire-trait/FIA/",
-  laughlin_mcgill = "turbo/proj-grassland-cfp/input/biogeography/laughlin-mcgill/occurrences.csv"
+  laughlin_mcgill = "turbo/proj-grassland-cfp/input/biogeography/laughlin-mcgill/occurrences.csv",
+  clim = "turbo/datasets/climate/CHELSA/climatology/bio1.tif",
+  boundary = "turbo/datasets/boundary/US/"
 )
 
 # check if path exists
