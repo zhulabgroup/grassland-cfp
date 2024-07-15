@@ -91,7 +91,7 @@ fia_sf <- fia_tbl %>%
 fia_p <- ggplot() +
   geom_sf(data = maps::map("state", plot = F, fill = T) %>%
     st_as_sf(), fill = NA, col = "gray") +
-  stat_summary_hex(data = fia_tbl, aes(hex_lon, hex_lat, z = value), col = NA, fun = mean, alpha = 1, binwidth = c(1, 1)) +
+  stat_summary_hex(data = fia_tbl, aes(hex_lon, hex_lat, z = value), col = NA, fun = mean, alpha = 0.8, binwidth = c(1, 1)) +
   scale_fill_continuous(type = "viridis") +
   # geom_hex(data = fia_tbl, aes(hex_lon, hex_lat, fill = ), alpha = .5, binwidth = c(1, 1)) +
   labs(
