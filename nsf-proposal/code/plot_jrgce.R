@@ -23,6 +23,16 @@ jrgce_tbl <- inner_join(jrgce_cti, jrgce_npp, by = c("year", "plot")) %>%
   gather(key = "var", value = "value", -year, -treat, -plot) %>%
   mutate(var = factor(var, levels = c("cti", "anpp")))
 
+jrgce_tbl_ambient <- jrgce_tbl %>%
+  filter(treat == "_") %>%
+  group_by(var, year) %>%
+  summarise(ambient = mean(value))
+
+jrgce_tbl_diff <- jrgce_tbl %>%
+  filter(treat == "T") %>%
+  left_join(jrgce_tbl_ambient, by = c("var", "year")) %>%
+  mutate(value = value - ambient)
+
 warm_tbl <- tribble(
   ~tag, ~phase, ~start, ~end, ~startyear,
   1, "Phase I", -Inf, 2002, 1999,
@@ -31,7 +41,14 @@ warm_tbl <- tribble(
 )
 
 jrgce_p <-
-  ggplot(jrgce_tbl) +
+  ggplot(jrgce_tbl_diff %>%
+    mutate(label = factor(var,
+      levels = c("cti", "anpp"),
+      labels = c(
+        expression(Delta ~ "CTI (" * degree * "C)"),
+        expression(Delta ~ "ANPP (g m"^-2 * " y"^-1 * ")")
+      )
+    ))) +
   ggthemes::theme_few() +
   geom_rect( # warming phases
     data = warm_tbl,
@@ -41,17 +58,14 @@ jrgce_p <-
   ) +
   scale_fill_gradient(low = "antiquewhite", high = "orange") +
   geom_boxplot( # treatment effects
-    aes(x = year, y = value, col = treat, group = interaction(treat, year))
+    aes(x = year, y = value, group = year)
   ) +
-  scale_color_manual(values = c("black", "red")) +
+  # scale_color_manual(values = c("black", "red")) +
   facet_wrap(
-    ~var,
+    ~label,
     ncol = 1, scales = "free_y",
     strip.position = "left",
-    labeller = labeller(var = c(
-      cti = "CTI",
-      anpp = "ANPP"
-    ))
+    labeller = label_parsed
   ) +
   scale_y_continuous(expand = expansion(mult = .1)) +
   scale_x_continuous(
@@ -69,12 +83,19 @@ jrgce_p <-
         var = factor("cti",
           levels = c("cti", "anpp")
         )
-      ),
+      ) %>%
+      mutate(label = factor(var,
+        levels = c("cti", "anpp"),
+        labels = c(
+          expression(Delta ~ "CTI (" * degree * "C)"),
+          expression(Delta ~ "ANPP (g m"^-2 * " y"^-1 * ")")
+        )
+      )),
     aes(
       label = phase,
       x = startyear - 0.25,
     ),
-    y = 17,
+    y = 1.5,
     hjust = 0,
   ) +
   coord_cartesian(clip = "off") +
@@ -83,12 +104,13 @@ jrgce_p <-
     strip.placement = "outside",
     legend.position = "none",
     plot.margin = unit(c(2, 1, 1, 1), "lines")
-  )
+  ) +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red")
 
 ggsave(
   plot = jrgce_p,
-  filename = "nsf-proposal/figures/jrgce.png",
-  width = 10,
+  filename = "nsf-proposal/figures/jrgce.pdf",
+  width = 6,
   height = 6.18,
-  device = png, type = "cairo"
+  device = pdf
 )

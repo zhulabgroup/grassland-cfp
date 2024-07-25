@@ -1,5 +1,6 @@
 source("_setup.R")
 library(sf)
+library(patchwork)
 theme_set(ggthemes::theme_few())
 
 # estimate tree temp niche ------------------------------------------------
@@ -88,30 +89,50 @@ fia_tbl <- niche_sum %>%
 fia_sf <- fia_tbl %>%
   st_as_sf(coords = c("hex_lon", "hex_lat"), crs = 4326)
 
-fia_p <- ggplot() +
-  geom_sf(data = maps::map("state", plot = F, fill = T) %>%
-    st_as_sf(), fill = NA, col = "gray") +
-  stat_summary_hex(data = fia_tbl, aes(hex_lon, hex_lat, z = value), col = NA, fun = mean, alpha = 0.8, binwidth = c(1, 1)) +
-  scale_fill_continuous(type = "viridis") +
-  # geom_hex(data = fia_tbl, aes(hex_lon, hex_lat, fill = ), alpha = .5, binwidth = c(1, 1)) +
-  labs(
-    x = "Longitude", y = "Latitude",
-    fill = NULL
-  ) +
-  facet_wrap(. ~ var,
-    nrow = 2,
-    labeller = labeller(var = c(
-      cti =  "Community temperature index (CTI, °C)",
-      mat = "Mean annual temperature (MAT, °C)",
-      dis = "Disequilibrium (MAT - CTI, °C)"
-    ))
-  )
+ls_fia_p <- vector(mode = "list")
+for (varoi in c("mat", "cti", "dis")) {
+  p <- ggplot() +
+    geom_sf(data = maps::map("state", plot = F, fill = T) %>%
+      st_as_sf(), fill = NA, col = "gray") +
+    stat_summary_hex(data = fia_tbl %>% filter(var == varoi), aes(hex_lon, hex_lat, z = value), col = NA, fun = mean, alpha = 0.8, binwidth = c(1, 1)) +
+    labs(
+      x = "Longitude", y = "Latitude",
+      fill = NULL
+    ) +
+    facet_wrap(. ~ var,
+      nrow = 1, ncol = 1,
+      labeller = labeller(var = c(
+        cti =  "Community temperature index (CTI, °C)",
+        mat = "Mean annual temperature (MAT, °C)",
+        dis = "Disequilibrium (MAT - CTI, °C)"
+      ))
+    ) +
+    theme(legend.position = "bottom")
 
+  if (varoi != "dis") {
+    p <- p + scale_fill_continuous(type = "viridis", limits = c(-5, 25))
+  } else {
+    p <- p + scale_fill_gradient2(
+      low = "blue",
+      mid = "white",
+      high = "red",
+      midpoint = 0,
+      limits = c(-10, 15)
+    )
+  }
+  ls_fia_p[[varoi]] <- p
+}
+
+
+fia_p <- ls_fia_p[[1]] + ls_fia_p[[2]] + ls_fia_p[[3]] +
+  plot_layout(design = "
+              AB
+              C#")
 
 ggsave(
   plot = fia_p,
-  filename = "nsf-proposal/figures/fia.png",
+  filename = "nsf-proposal/figures/fia.pdf",
   width = 8,
-  height = 8,
-  device = png, type = "cairo"
+  height = 7,
+  device = pdf
 )

@@ -29,10 +29,3 @@ aggregate_hexagon <- function(fia_tree, cellsize = 1) {
 
   return(fia_tree_hex)
 }
-
-
-
-
-fia_cti %>%
-  group_by(hexagon) %>%
-  summarise(n = n())
