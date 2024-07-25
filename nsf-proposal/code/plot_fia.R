@@ -113,9 +113,9 @@ for (varoi in c("mat", "cti", "dis")) {
     p <- p + scale_fill_continuous(type = "viridis", limits = c(-5, 25))
   } else {
     p <- p + scale_fill_gradient2(
-      low = "blue",
+      low = "#01665e",
       mid = "white",
-      high = "red",
+      high = "#8c510a",
       midpoint = 0,
       limits = c(-10, 15)
     )

@@ -33,6 +33,15 @@ jrgce_tbl_diff <- jrgce_tbl %>%
   left_join(jrgce_tbl_ambient, by = c("var", "year")) %>%
   mutate(value = value - ambient)
 
+jrgce_tbl_diff_summ <- jrgce_tbl_diff %>%
+  group_by(year, treat, var) %>%
+  summarise(
+    median = median(value),
+    lower = quantile(value, 0.025),
+    upper = quantile(value, 0.975)
+  ) %>%
+  ungroup()
+
 warm_tbl <- tribble(
   ~tag, ~phase, ~start, ~end, ~startyear,
   1, "Phase I", -Inf, 2002, 1999,
@@ -41,14 +50,20 @@ warm_tbl <- tribble(
 )
 
 jrgce_p <-
-  ggplot(jrgce_tbl_diff %>%
+  ggplot(jrgce_tbl_diff_summ %>%
+    mutate(phase = case_when(
+      year < 2003 ~ "Phase I",
+      year < 2010 ~ "Phase II",
+      TRUE ~ "Phase III"
+    )) %>%
     mutate(label = factor(var,
       levels = c("cti", "anpp"),
       labels = c(
         expression(Delta ~ "CTI (" * degree * "C)"),
         expression(Delta ~ "ANPP (g m"^-2 * " y"^-1 * ")")
       )
-    ))) +
+    )) %>%
+    filter(var == "cti")) +
   ggthemes::theme_few() +
   geom_rect( # warming phases
     data = warm_tbl,
@@ -57,8 +72,16 @@ jrgce_p <-
     show.legend = F
   ) +
   scale_fill_gradient(low = "antiquewhite", high = "orange") +
-  geom_boxplot( # treatment effects
-    aes(x = year, y = value, group = year)
+  geom_line(
+    aes(x = year, y = median, group = phase)
+  ) +
+  geom_point(
+    aes(x = year, y = median),
+    size = 2
+  ) +
+  geom_errorbar(
+    aes(x = year, ymin = lower, ymax = upper),
+    width = 0
   ) +
   # scale_color_manual(values = c("black", "red")) +
   facet_wrap(
@@ -67,9 +90,9 @@ jrgce_p <-
     strip.position = "left",
     labeller = label_parsed
   ) +
-  scale_y_continuous(expand = expansion(mult = .1)) +
+  # scale_y_continuous(expand = expansion(mult = .1)) +
   scale_x_continuous(
-    expand = expansion(mult = 0, add = c(0.125, 0.125)),
+    # expand = expansion(mult = 0, add = c(0.125, 0.125)),
     breaks = c(warm_tbl$start, warm_tbl$end, 1999, 2014) %>% unique() %>% .[abs(.) != Inf]
   ) +
   labs(
@@ -90,12 +113,13 @@ jrgce_p <-
           expression(Delta ~ "CTI (" * degree * "C)"),
           expression(Delta ~ "ANPP (g m"^-2 * " y"^-1 * ")")
         )
-      )),
+      )) %>%
+      filter(var == "cti"),
     aes(
       label = phase,
       x = startyear - 0.25,
     ),
-    y = 1.5,
+    y = 1.2,
     hjust = 0,
   ) +
   coord_cartesian(clip = "off") +
@@ -111,6 +135,6 @@ ggsave(
   plot = jrgce_p,
   filename = "nsf-proposal/figures/jrgce.pdf",
   width = 6,
-  height = 6.18,
+  height = 4,
   device = pdf
 )
