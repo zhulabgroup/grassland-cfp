@@ -32,6 +32,9 @@ plot_bioclim <- function(dat_trait_bioclim, var) {
       lower = list(
         continuous = "hexbin",
         combo = "facethist", discrete = "facetbar", na = "na"
+      ),
+      upper = list(
+        continuous = "corrlabel"
       )
     ) +
     scale_fill_viridis_c() +
@@ -49,4 +52,29 @@ ggally_hexbin <- function(data, mapping, ...) {
     geom_hex(...)
 
   return(p)
+}
+
+#' @export
+ggally_corrlabel <- function(data, mapping, ...) {
+  # Extract the data
+  x <- GGally::eval_data_col(data, mapping$x)
+  y <- GGally::eval_data_col(data, mapping$y)
+
+  # Calculate correlation and p-value
+  cor_test <- cor.test(x, y)
+  r_value <- cor_test$estimate
+  p_value <- cor_test$p.value
+
+  # Format the p-value using tidy_p_value or similar
+  p_value_label <- tidy_p_value(p_value)
+
+  # Create the label text
+  label1 <- paste0("italic(R) == ", round(r_value, 3))
+  label2 <- p_value_label
+
+  # Return as a plot
+  ggplot() +
+    geom_text(aes(x = 0, y = 0.25, label = label1), parse = T, col = "black", ...) +
+    geom_text(aes(x = 0, y = -0.25, label = label2), parse = T, col = "black", ...) +
+    ylim(-1, 1)
 }

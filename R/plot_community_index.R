@@ -23,13 +23,6 @@ plot_community_index_obs <- function(obs_tbl, layout = "surround", nrow = NULL, 
       labels = c("CTI", "CPI", "CDI")
     ))
 
-  samp_size_tbl <- obs_tbl %>%
-    group_by(site) %>%
-    summarize(
-      n_plot = n_distinct(plot),
-      n_year = n_distinct(year)
-    )
-
   # apply plotting function, make individual panels, combine
   if (!"cwd_com_mean" %in% colnames(obs_tbl)) {
     if (layout == "surround") {
@@ -122,6 +115,15 @@ plot_community_index_obs <- function(obs_tbl, layout = "surround", nrow = NULL, 
 
 plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
+
+  samp_size_tbl <- tbl %>%
+    filter(site == site_name) %>%
+    summarize(
+      n_plot = n_distinct(plot),
+      n_year = n_distinct(year),
+      n = n_distinct(plot, year)
+    )
+
   site_lab <- plot_site_name(site_name, with_letter = T)
 
   site_tbl <- tbl %>%
@@ -150,16 +152,17 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    # geom_text(
-    #   data = . %>% distinct(com_idx_name, .keep_all = T),
-    #   aes(
-    #     label = paste("beta", " == ", beta),
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   x = -Inf, y = Inf,
-    #   vjust = 1.5, hjust = -0.2
-    # ) +
+    geom_text(
+      data = . %>% distinct(com_idx_name, .keep_all = T) %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label # ,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      x = -Inf, y = Inf,
+      vjust = 1.5, hjust = -0.2
+    ) +
     # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~com_idx_name,
       ncol = 1, scales = "free_y",
@@ -170,15 +173,27 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
         CDI = cdi_lab
       ))
     ) +
+    scale_y_continuous(expand = expansion(mult = .25)) + # expand padding to show significance tests
     expand_limits(x = range(tbl$year)) +
     labs(
       x = yr_lab, y = NULL,
-      title = site_lab
+      # title = expression(
+      #   paste(
+      #     .(site_lab), "\n",
+      #     "(", italic(n[p]), " = ", .(samp_size_tbl$n_plot), ", ",
+      #     italic(n[t]), " = ", .(samp_size_tbl$n_year), ", ",
+      #     italic("n"), " = ", .(samp_size_tbl$n), ")"
+      #   ))
+      title = site_lab,
+      subtitle = bquote(
+        "(" * italic(n[p]) * " = " * .(samp_size_tbl$n_plot) * ", " * italic(n[t]) * " = " * .(samp_size_tbl$n_year) * ", " * italic("n") * " = " * .(samp_size_tbl$n) * ")"
+      )
     ) +
     theme(
       strip.background = element_blank(),
       strip.placement = "outside",
-      plot.title = element_text(size = 11)
+      plot.title = element_text(size = 11, hjust = 0),
+      plot.subtitle = element_text(size = 11, hjust = 0)
     ) +
     guides(alpha = "none")
 
@@ -341,22 +356,23 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       aes(x = start, xend = end, y = max, yend = max)
     ) +
     geom_text(
-      data = change_tbl,
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
       aes(
-        label = sig, # str_c("delta", " == ", delta),
+        label = p_value_label,
         x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
-      parse = F,
+      parse = T,
       vjust = 1.5
     ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
     #   data = change_tbl_year,
     #   aes(x = grp, y = Inf, label = sig),
     #   vjust = 2
     # ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(
       expand = expansion(mult = 0, add = c(0.125, 0.125)),
       breaks = c(change_tbl$start, change_tbl$end) %>% unique()
@@ -378,7 +394,7 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
         label = phase,
         x = startyear - 0.25, # y = cti_max
       ),
-      y = 17, # manually label phase text
+      y = 17.2, # manually label phase text
       # parse = TRUE,
       hjust = 0,
     ) +
@@ -403,6 +419,10 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
       levels = c("tmp_com_mean", "ppt_com_mean"),
       labels = c("CTI", "CPI")
     ))
+
+  # samp_size_tbl <- jrgce_tbl %>%
+  #   group_by (treat_P) %>%
+  #   summarize(n_plot = n_distinct(plot))
 
   change_tbl <- jrgce_tbl %>%
     rename(
@@ -481,13 +501,14 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
       ))
     ) +
     geom_text(
-      data = change_tbl,
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
       aes(
-        label = sig, # str_c("delta", " == ", delta),
+        label = p_value_label,
         x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
-      parse = F,
+      parse = T,
       vjust = 1.5
     ) +
     geom_segment(
@@ -500,7 +521,7 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
     #   aes(x = grp, y = Inf, label = sig),
     #   vjust = 2
     # ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(
       expand = expansion(mult = 0, add = c(0.125, 0.125)),
       breaks = c(change_tbl$start, change_tbl$end) %>% unique()
@@ -531,6 +552,10 @@ plot_community_index_mwe <- function(exp_tbl) {
       levels = c("tmp_com_mean", "ppt_com_mean"),
       labels = c("CTI", "CPI")
     ))
+
+  # samp_size_tbl <- mwe_tbl %>%
+  #   group_by (soil, treat) %>%
+  #   summarize(n_plot = n_distinct(plot))
 
   mwe_gg <-
     plot_mwe(mwe_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpentine soil") +
@@ -643,13 +668,14 @@ plot_mwe <- function(mwe_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpen
       ))
     ) +
     geom_text(
-      data = change_tbl,
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
       aes(
-        label = sig, # str_c("delta", " == ", delta),
+        label = p_value_label,
         x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
-      parse = F,
+      parse = T,
       vjust = 1.5
     ) +
     geom_segment(
@@ -662,7 +688,7 @@ plot_mwe <- function(mwe_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpen
     #   aes(x = grp, y = Inf, label = sig),
     #   vjust = 2
     # ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(
       expand = expansion(mult = 0, add = c(0.125, 0.125)),
       breaks = c(change_tbl$start, change_tbl$end) %>% unique()
@@ -692,6 +718,10 @@ plot_community_index_scide <- function(exp_tbl) {
       levels = c("tmp_com_mean", "ppt_com_mean"),
       labels = c("CTI", "CPI")
     ))
+
+  # samp_size_tbl <- scide_tbl %>%
+  #   group_by (site, treat) %>%
+  #   summarize(n_plot = n_distinct(plot))
 
   scide_gg <-
     plot_scide(scide_tbl, l_tag = "A", site_tag = "Arboretum") +
@@ -799,13 +829,14 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
       ))
     ) +
     geom_text(
-      data = change_tbl,
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
       aes(
-        label = sig, # str_c("delta", " == ", delta),
+        label = p_value_label,
         x = (start + end) / 2, y = Inf # ,
         # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
-      parse = F,
+      parse = T,
       vjust = 1.5
     ) +
     geom_segment(
@@ -818,7 +849,7 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
     #   aes(x = grp, y = Inf, label = sig),
     #   vjust = 2
     # ) +
-    scale_y_continuous(expand = expansion(mult = .1)) + # expand padding to show significance tests
+    scale_y_continuous(expand = expansion(mult = .15)) + # expand padding to show significance tests
     scale_x_continuous(
       expand = expansion(mult = 0, add = c(0.125, 0.125)),
       breaks = c(change_tbl$start, change_tbl$end) %>% unique()

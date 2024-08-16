@@ -74,6 +74,20 @@ gg_species_change <- plot_species_gainloss(dat_niche = dat_niche, dat_gainloss =
 gg_species_change$combined
 ```
 
+Sample size in observations:
+```{r}
+dat_gainloss$obs %>%
+  group_by(change) %>%
+  summarise(n = n())
+```
+
+Sample size in experiments:
+```{r}
+dat_gainloss$exp %>%
+  group_by(change) %>%
+  summarise(n = n())
+```
+
 ```{r, eval = F}
 gg_species_change_obs_2row <- plot_species_gainloss_obs(obs_tbl = dat_gainloss$obs, dat_niche, nrow = 2)
 path_animate_gainloss <- plot_species_gainloss_animate(dat_community, dat_gainloss, dat_niche)
@@ -130,11 +144,11 @@ save_figure(out = list(
   species_change = gg_species_change$combined,
   species_change_obs = gg_species_change$obs$circle_detail,
   species_change_exp = gg_species_change$exp$circle_detail,
-  gainloss_elkhorn1 = gg_gainloss_elkhorn1,
-  gainloss_elkhorn2 = gg_gainloss_elkhorn2,
-  gainloss_elkhorn3 = gg_gainloss_elkhorn3,
-  gainloss_elkhorn4 = gg_gainloss_elkhorn4,
-  gainloss_elkhorn5 = gg_gainloss_elkhorn5,
+  # gainloss_elkhorn1 = gg_gainloss_elkhorn1,
+  # gainloss_elkhorn2 = gg_gainloss_elkhorn2,
+  # gainloss_elkhorn3 = gg_gainloss_elkhorn3,
+  # gainloss_elkhorn4 = gg_gainloss_elkhorn4,
+  # gainloss_elkhorn5 = gg_gainloss_elkhorn5,
   species_change_obs_2row = gg_species_change_obs_2row$circle,
   species_change_obs_2row_name = gg_species_change_obs_2row$circle_detail,
   species_change_exp_small = gg_species_change$exp$circle,
@@ -147,6 +161,22 @@ save_figure(out = list(
   community_shift_pt2 = gg_community_shift$obs + plot_annotation(tag_levels = list("C")),
   community_shift_pt3 = gg_community_shift$exp + plot_annotation(tag_levels = list("D"))
 ))
+
+ggsave(
+  plot = gg_species_change$combined,
+  filename = "alldata/output/figures/main/fig-main-gainloss.pdf",
+  width = 11,
+  height = 11.5,
+  device = pdf
+)
+
+ggsave(
+  plot = gg_community_shift$combined,
+  filename = "alldata/output/figures/main/fig-main-shift.pdf",
+  width = 9,
+  height = 9 * 1.618,
+  device = pdf
+)
 
 save_table(out = list(
   gainloss = dat_gainloss %>% tidy_table_gainloss()

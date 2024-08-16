@@ -11,7 +11,9 @@ plot_niche_stat <- function(dat_niche, var) {
     ) %>%
     GGally::ggpairs(
       lower = list(continuous = GGally::wrap("points", alpha = 0.2)),
-      # title = "Species temperature niche (°C)",
+      upper = list(
+        continuous = "corrlabel"
+      ),
       columnLabels = c("Mean (°C)", "Median (°C)", "Lower limit (5%, °C)", "Upper limit (95%, °C)"),
       switch = "both"
     ) +

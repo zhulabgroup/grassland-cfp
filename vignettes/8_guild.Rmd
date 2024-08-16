@@ -33,15 +33,15 @@ In the main analysis, we characterized community composition in the climate spac
 
 ```{r}
 dat_guild <- tidy_guild(dat_community, niche = F)
-dat_guild %>% 
-  filter(!str_detect(species, "DUMMY")) %>% 
-  group_by(group, guild) %>% 
+dat_guild %>%
+  filter(!str_detect(species, "DUMMY")) %>%
+  group_by(group, guild) %>%
   summarise(n = n())
 
 dat_guild_niche <- tidy_guild(dat_community, dat_niche, niche = T)
-dat_guild_niche %>% 
-  filter(!str_detect(species, "DUMMY")) %>% 
-  group_by(group, guild) %>% 
+dat_guild_niche %>%
+  filter(!str_detect(species, "DUMMY")) %>%
+  group_by(group, guild) %>%
   summarise(n = n(), occ_n = sum(occ_n))
 ```
 
@@ -70,8 +70,8 @@ dat_community$obs %>%
   summarise(
     native_perc = sum(abund * (native == "N")) / sum(abund)
   ) %>%
-  ungroup() %>% 
-  mutate(nonnative_perc = 1 - native_perc) 
+  ungroup() %>%
+  mutate(nonnative_perc = 1 - native_perc)
 ```
 
 Similar to the analysis of changes in CTI and CPI, we then examined the relative abundance of species of specific guilds at the 12 observational sites and the JRGCE warming experiment, by fitting linear regressions with the percentages of natives, annuals, and grasses as response variables and year as the predictor.

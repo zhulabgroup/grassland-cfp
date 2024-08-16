@@ -25,7 +25,7 @@ plot_niche_subset_var <- function(dat_niche, dat_niche_subset, var, type = "thin
     geom_point(alpha = .5) +
     geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
     ggpubr::stat_cor(
-      aes(label = paste(after_stat(r.label), after_stat(p.label), sep = "*`,`~")),
+      aes(label = paste(after_stat(r.label), after_stat(p.value) %>% sapply(tidy_p_value), sep = "*`,`~")),
       p.accuracy = 0.05,
       color = "red"
     ) +

@@ -19,7 +19,7 @@ plot_guild_percentage_obs <- function(dat_community_obs) {
       grass = str_sub(guild, 3, 3)
     ) %>%
     select(-guild) %>%
-    group_by(abbr = site, year, plot) %>%
+    group_by(site, year, plot) %>%
     summarise(
       native_perc = sum(abund * (native == "N")) / sum(abund),
       annual_perc = sum(abund * (annual == "A")) / sum(abund),
@@ -60,11 +60,20 @@ plot_guild_percentage_obs <- function(dat_community_obs) {
 plot_guild_site <- function(data, site_name,
                             native_lab = "", annual_lab = "", grass_lab = "", yr_lab = NULL, yr_axis = FALSE) {
   # prepare site data
+
+  samp_size_tbl <- data %>%
+    filter(site == site_name) %>%
+    summarize(
+      n_plot = n_distinct(plot),
+      n_year = n_distinct(year),
+      n = n_distinct(plot, year)
+    )
+
   site_lab <- plot_site_name(site_name, with_letter = T)
 
   site_tbl <- data %>%
-    filter(abbr == site_name) %>%
-    select(abbr, year, plot, native_perc, annual_perc, grass_perc) %>%
+    filter(site == site_name) %>%
+    select(site, year, plot, native_perc, annual_perc, grass_perc) %>%
     pivot_longer(native_perc:grass_perc, names_to = "group", values_to = "value") %>%
     mutate(group = factor(group,
       levels = c("native_perc", "annual_perc", "grass_perc")
@@ -98,17 +107,18 @@ plot_guild_site <- function(data, site_name,
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
-    # geom_text(
-    #   data = . %>% distinct(group, .keep_all = T),
-    #   aes(
-    #     label = paste("beta", " == ", beta),
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
-    #   ),
-    #   parse = T,
-    #   x = -Inf, y = Inf,
-    #   vjust = 1.5, hjust = -0.2
-    # ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    geom_text(
+      data = . %>% distinct(group, .keep_all = T) %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label # ,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      x = -Inf, y = Inf,
+      vjust = 1.5, hjust = -0.2
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~group,
       ncol = 1, scales = "free_y",
       strip.position = "left",
@@ -119,17 +129,22 @@ plot_guild_site <- function(data, site_name,
       labels = function(x) {
         trans <- x * 100
       },
-      limits = c(0, 1)
+      limits = c(0, 1.4),
+      # expand = expansion(mult = .05) # expand padding to show significance tests
     ) +
     labs(
+      x = yr_lab, y = NULL,
       title = site_lab,
-      x = yr_lab, y = NULL
+      subtitle = bquote(
+        "(" * italic(n[p]) * " = " * .(samp_size_tbl$n_plot) * ", " * italic(n[t]) * " = " * .(samp_size_tbl$n_year) * ", " * italic("n") * " = " * .(samp_size_tbl$n) * ")"
+      )
     ) +
     theme(
       legend.position = "none",
       strip.background = element_blank(),
       strip.placement = "outside",
-      plot.title = element_text(size = 11)
+      plot.title = element_text(size = 11, hjust = 0),
+      plot.subtitle = element_text(size = 11, hjust = 0)
     ) +
     guides(alpha = "none")
 
@@ -236,20 +251,21 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       ))
     ) +
     geom_text(
-      data = change_tbl,
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
       aes(
-        label = sig, # str_c("delta", " == ", delta),
-        x = (start + end) / 2, y = Inf # ,
-        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+        label = p_value_label,
+        x = (start + end) / 2, y = Inf,
+        alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
-      parse = F,
+      parse = T,
       vjust = 1.5
     ) +
     geom_segment(
       data = change_tbl,
       aes(x = start, xend = end, y = max, yend = max)
     ) +
-    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
     #   data = change_tbl_year,
     #   aes(x = grp, y = Inf, label = sig),

@@ -92,8 +92,8 @@ df_cc_site %>%
 df_summ_site_cc <- summ_change(df_change = df_cc_site, option = "obs")
 df_summ_site_cc
 
-gg_site_cc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail)
-gg_site_cc
+(gg_site_cc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail))
+
 gg_site_cc_landsc <- plot_site_climate_change(dat_clim_site = dat_clim_site, dat_avail = df_data_avail, layout = "landsc", nrow = 2)
 ```
 

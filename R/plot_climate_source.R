@@ -14,7 +14,7 @@ plot_climate_source <- function(dat_trait_chelsa, dat_trait_prism, dat_trait_ter
     viridis::scale_fill_viridis() +
     geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
     ggpubr::stat_cor(
-      aes(label = str_c(after_stat(r.label), after_stat(p.label), sep = "*`,`~")),
+      aes(label = str_c(after_stat(r.label), after_stat(p.value) %>% sapply(tidy_p_value), sep = "*`,`~")),
       p.accuracy = 0.05,
       color = "red"
     ) +
@@ -47,7 +47,7 @@ plot_climate_source <- function(dat_trait_chelsa, dat_trait_prism, dat_trait_ter
     viridis::scale_fill_viridis() +
     geom_smooth(method = "lm", formula = y ~ x - 1, se = FALSE, color = "red", lty = "dashed") +
     ggpubr::stat_cor(
-      aes(label = str_c(after_stat(r.label), after_stat(p.label), sep = "*`,`~")),
+      aes(label = str_c(after_stat(r.label), after_stat(p.value) %>% sapply(tidy_p_value), sep = "*`,`~")),
       p.accuracy = 0.05,
       color = "red"
     ) +

@@ -79,10 +79,18 @@ plot_site_cc <- function(data, dat_avail, site_name,
     )) %>%
     group_by(clim_var) %>%
     nest() %>%
-    mutate(
-      p_val = map(data, ~ lm(clim_val ~ year, data = .)) %>%
-        map_dbl(~ broom::glance(.) %>% pull(p.value))
+    mutate( # lm and p value
+      map(data, ~ lm(clim_val ~ year, data = .)) %>%
+        map_df(~ broom::tidy(.) %>%
+          filter(term != "(Intercept)") %>%
+          select(
+            beta = estimate,
+            p.value
+          ))
     ) %>%
+    mutate(sig = gtools::stars.pval(p.value)) %>%
+    mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns")) %>%
+    mutate(beta = beta %>% signif(3)) %>%
     unnest(cols = data)
 
   # plot
@@ -101,20 +109,29 @@ plot_site_cc <- function(data, dat_avail, site_name,
       color = "gray", shape = 20
     ) +
     geom_smooth(
-      aes(x = year, y = clim_val, linetype = ifelse(p_val <= 0.05, "sig", "ns")),
+      aes(x = year, y = clim_val, linetype = ifelse(p.value <= 0.05, "sig", "ns")),
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
     scale_linetype_manual(values = c("sig" = "solid", "ns" = "dashed")) +
-    # ggpubr::stat_cor(aes(label = ..p.label..),
-    #   p.accuracy = 0.05,
-    #   color = "red"
-    # ) +
+    geom_text(
+      data = . %>% distinct(clim_var, .keep_all = T) %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label # ,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+      ),
+      parse = T,
+      x = -Inf, y = Inf,
+      vjust = 1.5, hjust = -0.2
+    ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(~clim_var,
       ncol = 1, scales = "free_y",
       strip.position = "left",
       labeller = labeller(clim_var = c(tmp = tmp_lab, ppt = ppt_lab))
     ) +
+    scale_y_continuous(expand = expansion(mult = .25)) + # expand padding to show significance tests
     expand_limits(x = c(min(data$year) - 1, max(data$year + 1))) +
     labs(
       title = site_lab,

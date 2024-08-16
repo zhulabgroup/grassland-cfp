@@ -175,4 +175,20 @@ save_figure(out = list(
   community_index_obs_landsc_3row = gg_community_index_obs_landsc_3row,
   community_index_elkhorn = gg_community_index_elkhorn
 ))
+
+ggsave(
+  plot = gg_community_index_obs,
+  filename = "alldata/output/figures/main/fig-main-obs.pdf",
+  width = 11,
+  height = 11 * 1.5,
+  device = pdf
+)
+
+ggsave(
+  plot = gg_community_index_exp,
+  filename = "alldata/output/figures/main/fig-main-exp.pdf",
+  width = 10,
+  height = 6.18,
+  device = pdf
+)
 ```
