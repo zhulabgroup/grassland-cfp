@@ -2,7 +2,7 @@
 plot_rank_abundance <- function(dat_rank, df_evenness_summ) {
   out <- list(
     obs = plot_rank_abundance_obs(dat_rank_obs = dat_rank$obs, df_evenness_summ_obs = df_evenness_summ$obs),
-    exp = plot_rank_abundance_exp(dat_rank_exp = dat_rank$exp)
+    exp = plot_rank_abundance_exp(dat_rank_exp = dat_rank$exp, df_evenness_summ_exp = df_evenness_summ$exp)
   )
 
   return(out)
@@ -12,13 +12,16 @@ plot_rank_abundance <- function(dat_rank, df_evenness_summ) {
 plot_rank_abundance_obs <- function(dat_rank_obs, df_evenness_summ_obs) {
   obs_rank_gg <- ggplot(dat_rank_obs) +
     geom_line(aes(x = rank, y = median, col = year, group = year), alpha = 1) +
-    # geom_ribbon(aes(x = rank, ymin = lower, ymax = upper, fill = year, group = year), alpha = 0.25) +
+    geom_ribbon(aes(x = rank, ymin = lower, ymax = upper, fill = year, group = year), alpha = 0.25) +
     # geom_text(
-    #   data = df_evenness_summ_obs,
+    #   data = df_evenness_summ_obs %>%
+    #     rowwise() %>%
+    #     mutate(p_value_label = tidy_p_value(p.value, sig)),
     #   aes(
-    #     label = str_c("beta[J]", " == ", estimate %>% signif(3)),
-    #     x = Inf, y = Inf,
-    #     alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #     label = p_value_label,
+    #     # label = str_c("beta[J]", " == ", estimate %>% signif(3)),
+    #     x = Inf, y = Inf# ,
+    #     # alpha = ifelse(p.value <= 0.05, "sig", "ns")
     #   ),
     #   parse = T,
     #   vjust = 1.5,
@@ -52,10 +55,25 @@ plot_rank_abundance_obs <- function(dat_rank_obs, df_evenness_summ_obs) {
 }
 
 #' @export
-plot_rank_abundance_exp <- function(dat_rank_exp) {
+plot_rank_abundance_exp <- function(dat_rank_exp, df_evenness_summ_exp) {
   exp_rank_gg <- ggplot(dat_rank_exp) +
     geom_line(aes(x = rank, y = median, col = treat_T, group = treat_T), alpha = 1) +
     geom_ribbon(aes(x = rank, ymin = lower, ymax = upper, fill = treat_T, group = treat_T), alpha = 0.25) +
+    # geom_text(
+    #   data = df_evenness_summ_exp %>%
+    #     rowwise() %>%
+    #     mutate(p_value_label = tidy_p_value(p.value, sig)),
+    #   aes(
+    #     label = p_value_label,
+    #     # label = str_c("beta[J]", " == ", estimate %>% signif(3)),
+    #     x = Inf, y = Inf# ,
+    #     # alpha = ifelse(p.value <= 0.05, "sig", "ns")
+    #   ),
+    #   parse = T,
+    #   vjust = 1.5,
+    #   hjust = 1.2
+    # ) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     facet_wrap(. ~ site) +
     facet_wrap(. ~ phaseyear,
       scales = "free",

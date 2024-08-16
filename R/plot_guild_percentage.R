@@ -255,8 +255,8 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
         mutate(p_value_label = tidy_p_value(p.value, sig)),
       aes(
         label = p_value_label,
-        x = (start + end) / 2, y = Inf,
-        alpha = ifelse(p.value <= 0.05, "sig", "ns")
+        x = (start + end) / 2, y = Inf # ,
+        # alpha = ifelse(p.value <= 0.05, "sig", "ns")
       ),
       parse = T,
       vjust = 1.5
@@ -265,7 +265,7 @@ plot_guild_percentage_jrgce_warming <- function(dat_community_exp) {
       data = change_tbl,
       aes(x = start, xend = end, y = max, yend = max)
     ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
+    # scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     # geom_text(
     #   data = change_tbl_year,
     #   aes(x = grp, y = Inf, label = sig),
