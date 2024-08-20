@@ -134,17 +134,17 @@ plot_guild_site <- function(data, site_name,
     ) +
     labs(
       x = yr_lab, y = NULL,
-      title = site_lab,
-      subtitle = bquote(
-        "(" * italic(n[p]) * " = " * .(samp_size_tbl$n_plot) * ", " * italic(n[t]) * " = " * .(samp_size_tbl$n_year) * ", " * italic("n") * " = " * .(samp_size_tbl$n) * ")"
-      )
+      title = site_lab # ,
+      # subtitle = bquote(
+      #   "(" * italic(n[p]) * " = " * .(samp_size_tbl$n_plot) * ", " * italic(n[t]) * " = " * .(samp_size_tbl$n_year) * ", " * italic("n") * " = " * .(samp_size_tbl$n) * ")"
+      # )
     ) +
     theme(
       legend.position = "none",
       strip.background = element_blank(),
       strip.placement = "outside",
-      plot.title = element_text(size = 11, hjust = 0),
-      plot.subtitle = element_text(size = 11, hjust = 0)
+      plot.title = element_text(size = 11, hjust = 0) # ,
+      # plot.subtitle = element_text(size = 11, hjust = 0)
     ) +
     guides(alpha = "none")
 

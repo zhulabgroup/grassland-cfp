@@ -16,8 +16,8 @@ tidy_p_value <- function(p.value, sig = NULL) {
     }
   }
   if (p.value < 0.0001) {
-    return(paste0("italic(p) < '0.0001' ('", sig, "')"))
+    return(str_c("'", sig, " ' (italic(p) < '0.0001')"))
   } else {
-    return(paste0("italic(p) == '", p.value %>% round(4) %>% format(scientific = F), "' ('", sig, "')"))
+    return(str_c("'", sig, " ' (italic(p) == '", p.value %>% round(4) %>% format(scientific = F), "')"))
   }
 }

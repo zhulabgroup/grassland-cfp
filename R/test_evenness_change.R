@@ -21,7 +21,7 @@ test_evenness_change_obs <- function(dat_evenness_obs) {
           select(estimate, std.error, p.value) %>%
           # mutate(across(everything(), signif, 4)) %>%
           mutate(sig = gtools::stars.pval(p.value)) %>%
-          mutate(sig = ifelse (sig != " " & sig!=".", sig, "ns"))
+          mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns"))
       )
     ) %>%
     unnest(cols = lm) %>%
@@ -46,7 +46,7 @@ test_evenness_change_exp <- function(dat_evenness_exp) {
     )) %>%
     select(phase, year, p.value = p) %>%
     mutate(sig = gtools::stars.pval(p.value)) %>%
-    mutate(sig = ifelse (sig != " " & sig!=".", sig, "ns"))
+    mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns"))
 
   return(df)
 }

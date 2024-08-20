@@ -22,8 +22,12 @@ summ_data_avail <- function(dat_community, type, subset = NULL) {
   if (type == "short") {
     df_data_avail <- df_data_avail %>%
       group_by(site, sitename) %>%
-      summarise(nyear = unique(year) %>% length()) %>%
-      arrange(nyear)
+      summarise(
+        nplot = max(count),
+        nyear = unique(year) %>% length(),
+        n = sum(count)
+      ) %>%
+      arrange(site)
   }
 
   if (!is.null(subset)) {
