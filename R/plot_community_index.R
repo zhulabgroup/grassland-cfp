@@ -168,6 +168,15 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
       method = "lm", formula = y ~ x, se = FALSE,
       color = "red"
     ) +
+    geom_text(
+      data = . %>%
+        distinct(com_idx_name, .keep_all = T) %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(label = p_value_label),
+      parse = T,
+      x = -Inf, y = Inf,
+      vjust = 1.5, hjust = -0.2
+    ) +
     facet_wrap(~com_idx_name,
       ncol = 1, scales = "free_y",
       strip.position = "left",
@@ -186,8 +195,7 @@ plot_cwm <- function(tbl, site_name, cti_lab = "", cpi_lab = "", cdi_lab = "", y
       strip.background = element_blank(),
       strip.placement = "outside",
       plot.title = element_text(size = 11)
-    ) +
-    guides(alpha = "none")
+    )
 
   # remove yr axis text
   if (yr_axis) {
@@ -318,12 +326,15 @@ plot_community_index_jrgce_warming <- function(exp_tbl) {
       aes(x = start, xend = end, y = max, yend = max)
     ) +
     geom_text(
-      data = change_tbl,
-      aes(label = sig, x = (start + end) / 2, y = Inf),
-      parse = F,
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label,
+        x = (start + end) / 2, y = Inf
+      ),
+      parse = T,
       vjust = 1.5
     ) +
-    scale_alpha_manual(values = c("ns" = 0.5, "sig" = 1)) +
     scale_y_continuous(expand = expansion(mult = .1)) +
     scale_x_continuous(
       expand = expansion(mult = 0, add = c(0.125, 0.125)),
@@ -422,15 +433,19 @@ plot_community_index_jrgce_watering <- function(exp_tbl) {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(label = sig, x = (start + end) / 2, y = Inf),
-      parse = F,
-      vjust = 1.5
-    ) +
     geom_segment(
       data = change_tbl,
       aes(x = start, xend = end, y = max, yend = max)
+    ) +
+    geom_text(
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label,
+        x = (start + end) / 2, y = Inf
+      ),
+      parse = T,
+      vjust = 1.5
     ) +
     scale_y_continuous(expand = expansion(mult = .1)) +
     scale_x_continuous(
@@ -547,15 +562,19 @@ plot_mwe <- function(mwe_tbl, l_tag = "A", trt_tag = "Watering", s_tag = "Serpen
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(label = sig, x = (start + end) / 2, y = Inf),
-      parse = F,
-      vjust = 1.5
-    ) +
     geom_segment(
       data = change_tbl,
       aes(x = start, xend = end, y = max, yend = max)
+    ) +
+    geom_text(
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label,
+        x = (start + end) / 2, y = Inf
+      ),
+      parse = T,
+      vjust = 1.5
     ) +
     scale_y_continuous(expand = expansion(mult = .1)) +
     scale_x_continuous(
@@ -667,15 +686,19 @@ plot_scide <- function(scide_tbl, l_tag = "A", site_tag = "Arboretum") {
         CPI = "Community Precipitation Index\n(CPI, mm)"
       ))
     ) +
-    geom_text(
-      data = change_tbl,
-      aes(label = sig, x = (start + end) / 2, y = Inf),
-      parse = F,
-      vjust = 1.5
-    ) +
     geom_segment(
       data = change_tbl,
       aes(x = start, xend = end, y = max, yend = max)
+    ) +
+    geom_text(
+      data = change_tbl %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        label = p_value_label,
+        x = (start + end) / 2, y = Inf
+      ),
+      parse = T,
+      vjust = 1.5
     ) +
     scale_y_continuous(expand = expansion(mult = .1)) +
     scale_x_continuous(

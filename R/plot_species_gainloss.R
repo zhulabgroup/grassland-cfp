@@ -59,6 +59,67 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
       levels = c("tmp", "ppt")
     ))
 
+  ls_df_wilcox_test <- list()
+  for (var in obs_gainloss_tbl_long$variable %>% unique()) {
+    obs_gainloss_tbl_long_sub <- obs_gainloss_tbl_long %>%
+      filter(variable == var)
+
+    max <- obs_gainloss_tbl_long_sub %>%
+      summarize(max = max(value, na.rm = T)) %>%
+      pull(max)
+
+    range <- obs_gainloss_tbl_long_sub %>%
+      summarize(range = max(value, na.rm = T) - min(value, na.rm = T)) %>%
+      pull(range)
+
+    increase <- obs_gainloss_tbl_long_sub %>%
+      filter(change == "increase") %>%
+      drop_na(value) %>%
+      pull(value)
+    decrease <- obs_gainloss_tbl_long_sub %>%
+      filter(change == "decrease") %>%
+      drop_na(value) %>%
+      pull(value)
+    nochange <- obs_gainloss_tbl_long_sub %>%
+      filter(change == "no clear change") %>%
+      drop_na(value) %>%
+      pull(value)
+
+    df1 <- data.frame(
+      x = "Increase", xend = "Decrease",
+      xmid = 1.5,
+      y = max + range * 0.1,
+      ytext = max + range * 0.15,
+      p.value = wilcox.test(increase, decrease)$p.value
+    )
+
+    df2 <- data.frame(
+      x = "Increase", xend = "No change",
+      xmid = 2,
+      y = max + range * 0.25,
+      ytext = max + range * 0.3,
+      p.value = wilcox.test(increase, nochange)$p.value
+    )
+
+    df3 <- data.frame(
+      x = "Decrease", xend = "No change",
+      xmid = 2.5,
+      y = max + range * 0.4,
+      ytext = max + range * 0.45,
+      p.value = wilcox.test(decrease, nochange)$p.value
+    )
+
+    ls_df_wilcox_test[[var]] <- bind_rows(df1, df2, df3) %>%
+      mutate(sig = p.value %>% gtools::stars.pval()) %>%
+      mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns")) %>%
+      mutate(variable = var)
+  }
+  df_wilcox_test <- bind_rows(ls_df_wilcox_test) %>%
+    mutate(variable = factor(variable,
+      levels = c("tmp", "ppt")
+    )) %>%
+    select(variable, everything())
+
   obs_gainloss_summ_gg <-
     ggpubr::ggboxplot(
       data = obs_gainloss_tbl_long %>%
@@ -73,13 +134,27 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
       y = "value"
     ) +
     scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
-    ggpubr::stat_compare_means(
-      method = "wilcox.test",
-      label = "p.signif",
-      hide.ns = FALSE,
-      comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
+    geom_text(
+      data = df_wilcox_test %>%
+        rowwise() %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        x = xmid,
+        y = ytext,
+        label = p_value_label
+      ),
+      parse = T,
       size = 3
-    ) + # Add pairwise comparisons p-value
+    ) +
+    geom_segment(
+      data = df_wilcox_test,
+      aes(
+        x = x,
+        xend = xend,
+        y = y,
+        yend = y
+      )
+    ) +
     facet_wrap(. ~ variable,
       ncol = 1,
       scales = "free_y",
@@ -228,6 +303,67 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
       levels = c("tmp", "ppt")
     ))
 
+  ls_df_wilcox_test <- list()
+  for (var in exp_gainloss_tbl_long$variable %>% unique()) {
+    exp_gainloss_tbl_long_sub <- exp_gainloss_tbl_long %>%
+      filter(variable == var)
+
+    max <- exp_gainloss_tbl_long_sub %>%
+      summarize(max = max(value, na.rm = T)) %>%
+      pull(max)
+
+    range <- exp_gainloss_tbl_long_sub %>%
+      summarize(range = max(value, na.rm = T) - min(value, na.rm = T)) %>%
+      pull(range)
+
+    increase <- exp_gainloss_tbl_long_sub %>%
+      filter(change == "increase") %>%
+      drop_na(value) %>%
+      pull(value)
+    decrease <- exp_gainloss_tbl_long_sub %>%
+      filter(change == "decrease") %>%
+      drop_na(value) %>%
+      pull(value)
+    nochange <- exp_gainloss_tbl_long_sub %>%
+      filter(change == "no clear change") %>%
+      drop_na(value) %>%
+      pull(value)
+
+    df1 <- data.frame(
+      x = "Increase", xend = "Decrease",
+      xmid = 1.5,
+      y = max + range * 0.1,
+      ytext = max + range * 0.15,
+      p.value = wilcox.test(increase, decrease)$p.value
+    )
+
+    df2 <- data.frame(
+      x = "Increase", xend = "No change",
+      xmid = 2,
+      y = max + range * 0.25,
+      ytext = max + range * 0.3,
+      p.value = wilcox.test(increase, nochange)$p.value
+    )
+
+    df3 <- data.frame(
+      x = "Decrease", xend = "No change",
+      xmid = 2.5,
+      y = max + range * 0.4,
+      ytext = max + range * 0.45,
+      p.value = wilcox.test(decrease, nochange)$p.value
+    )
+
+    ls_df_wilcox_test[[var]] <- bind_rows(df1, df2, df3) %>%
+      mutate(sig = p.value %>% gtools::stars.pval()) %>%
+      mutate(sig = ifelse(sig != " " & sig != ".", sig, "ns")) %>%
+      mutate(variable = var)
+  }
+  df_wilcox_test <- bind_rows(ls_df_wilcox_test) %>%
+    mutate(variable = factor(variable,
+      levels = c("tmp", "ppt")
+    )) %>%
+    select(variable, everything())
+
   exp_gainloss_summ_gg <-
     ggpubr::ggboxplot(
       data = exp_gainloss_tbl_long %>%
@@ -242,13 +378,27 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
       y = "value"
     ) +
     scale_color_manual(values = c(Increase = "dark green", `No change` = "lightgray", Decrease = "dark orange")) +
-    ggpubr::stat_compare_means(
-      method = "wilcox.test",
-      label = "p.signif",
-      hide.ns = FALSE,
-      comparisons = list(c("Increase", "Decrease"), c("Increase", "No change"), c("Decrease", "No change")),
+    geom_text(
+      data = df_wilcox_test %>%
+        rowwise() %>%
+        mutate(p_value_label = tidy_p_value(p.value, sig)),
+      aes(
+        x = xmid,
+        y = ytext,
+        label = p_value_label
+      ),
+      parse = T,
       size = 3
-    ) + # Add pairwise comparisons p-value
+    ) +
+    geom_segment(
+      data = df_wilcox_test,
+      aes(
+        x = x,
+        xend = xend,
+        y = y,
+        yend = y
+      )
+    ) +
     facet_wrap(. ~ variable,
       ncol = 1,
       scales = "free_y",
