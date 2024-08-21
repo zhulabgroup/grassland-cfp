@@ -144,7 +144,7 @@ plot_species_gainloss_obs <- function(obs_tbl, dat_niche, onesite = NULL, nrow =
         label = p_value_label
       ),
       parse = T,
-      size = 3.5
+      size = 3
     ) +
     geom_segment(
       data = df_wilcox_test,
@@ -390,7 +390,7 @@ plot_species_gainloss_exp <- function(exp_tbl, dat_niche) {
         label = p_value_label
       ),
       parse = T,
-      size = 3.5
+      size = 3
     ) +
     geom_segment(
       data = df_wilcox_test,
