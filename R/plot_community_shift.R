@@ -1,5 +1,5 @@
 #' @export
-plot_community_shift <- function(dat_shift, dat_niche) {
+plot_community_shift <- function(dat_shift, dat_niche, short = F) {
   p_obs <- plot_community_shift_obs(obs_tbl = dat_shift$obs)
   p_exp <- plot_community_shift_exp(exp_tbl = dat_shift$exp)
   p_compare <- plot_community_shift_compare(dat_shift)
@@ -8,9 +8,10 @@ plot_community_shift <- function(dat_shift, dat_niche) {
   p_compare_rect <- plot_add_rect(p_compare, p_exp, col = "orange", x_adj = 0.025, y_adj = 0.05, label = "D")
   p_niche_rect <- plot_add_rect(p_niche, p_compare, col = "black", x_adj = 0.1, y_adj = 0.05, label = "B")
 
-  p_combined <- p_niche_rect + p_compare_rect + p_obs + p_exp +
-    plot_annotation(tag_levels = "A") +
-    plot_layout(design = "
+  if (!short) {
+    p_combined <- p_niche_rect + p_compare_rect + p_obs + p_exp +
+      plot_annotation(tag_levels = "A") +
+      plot_layout(design = "
   AABB
   AABB
   CCCC
@@ -18,13 +19,29 @@ plot_community_shift <- function(dat_shift, dat_niche) {
   DDDD
   ")
 
-  out <- list(
-    obs = p_obs,
-    exp = p_exp,
-    compare = p_compare,
-    niche = p_niche,
-    combined = p_combined
-  )
+    out <- list(
+      obs = p_obs,
+      exp = p_exp,
+      compare = p_compare,
+      niche = p_niche,
+      combined = p_combined
+    )
+  } else {
+    p_combined <- p_niche_rect + p_compare +
+      plot_annotation(tag_levels = "A") +
+      plot_layout(design = "
+  AABB
+  AABB
+  ")
+
+    out <- list(
+      compare = p_compare,
+      niche = p_niche,
+      combined = p_combined
+    )
+  }
+
+
 
   return(out)
 }
@@ -176,7 +193,7 @@ plot_community_shift_compare <- function(dat_shift) {
     ylab("Community Precipitation Index (CPI, mm)") +
     theme(
       legend.title = element_blank(),
-      legend.position = c(.2, .2),
+      legend.position.inside = c(.2, .2),
       legend.text = element_text(size = rel(0.8))
     )
 
@@ -213,7 +230,7 @@ plot_community_in_niche_space <- function(dat_shift, dat_niche) {
     labs(x = "Mean annual temperature (°C)", y = "Annual precipitation (mm)") +
     theme(
       legend.title = element_blank(),
-      legend.position = c(.2, .2),
+      legend.position.inside = c(.2, .2),
       legend.text = element_text(size = rel(0.8))
     )
 

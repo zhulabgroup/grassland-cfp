@@ -130,6 +130,19 @@ gg_community_shift$combined
 ```
 Due to the high correlation of species temperature and precipitation niches, CTI and CPI shifts at the community level appear highly coupled.
 
+```{r, eval = F}
+gg_community_shift <- plot_community_shift(dat_shift, dat_niche, short = T)
+gg_community_shift$combined
+
+ggsave(
+  plot = gg_community_shift$combined,
+  filename = "alldata/output/figures/main/fig-main-shift-short.pdf",
+  width = 9,
+  height = 4.5,
+  device = pdf
+)
+```
+
 ```{r}
 df_summ_shift_coupling <- summ_shift_coupling(dat_shift)
 df_summ_shift_coupling
