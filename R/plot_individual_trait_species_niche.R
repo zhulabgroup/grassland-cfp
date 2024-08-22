@@ -1,6 +1,10 @@
 #' @export
-plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, dat_niche, outfile = "alldata/output/figures/species-climate-niche.pdf") {
-  sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+plot_individual_trait_species_niche_ind_sp_all <- function(dat_occ, dat_trait, dat_niche, sf_cfp = NULL, outpath = "alldata/output/figures/") {
+  outfile <- str_c(outpath, "species-climate-niche.pdf")
+
+  if (is.null(sf_cfp)) {
+    sf_cfp <- read_cfp(path_cfp = system.file("extdata", "cfp", package = "grassland"))
+  }
 
   sp_vec <- dat_niche %>%
     filter(!is.na(occ_n)) %>% # no dummy species
