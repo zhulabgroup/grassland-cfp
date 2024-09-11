@@ -23,7 +23,7 @@ plot_species_niche <- function(dat_niche,
     geom_point(data = niche_tbl %>% filter(species_type == "other")) +
     geom_point(data = niche_tbl %>% filter(species_type %in% c("cool", "warm"))) +
     geom_label(
-      data = niche_tbl %>% filter(species_type =="cool"),
+      data = niche_tbl %>% filter(species_type == "cool"),
       fill = NA,
       fontface = "italic",
       label.padding = unit(.5, "lines"),
@@ -32,7 +32,7 @@ plot_species_niche <- function(dat_niche,
       hjust = 0.75
     ) +
     geom_label(
-      data = niche_tbl %>% filter(species_type =="warm"),
+      data = niche_tbl %>% filter(species_type == "warm"),
       fill = NA,
       fontface = "italic",
       label.padding = unit(.5, "lines"),

@@ -111,12 +111,14 @@ plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_nich
   # combine panels
   niche_gg <- occ_geog_gg + ind_trait_gg + sp_niche_gg +
     plot_annotation(tag_levels = "A") +
-    plot_layout(design = "
+    plot_layout(
+      design = "
   AB
   AC
   ",
-                widths = c(1.5,1),
-                heights = c(1,1))
+      widths = c(1.5, 1),
+      heights = c(1, 1)
+    )
 
 
   out <- list(
