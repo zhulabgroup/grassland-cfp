@@ -18,8 +18,8 @@ save_figure <- function(out, dir = "alldata/output/figures/") {
 save_figure_param <- function(gg_name) {
   if (gg_name == "niche") {
     type <- "main"
-    width <- 8
-    height <- 8 * 1.618
+    width <- 10
+    height <- 8
     filename <- "fig-main-niche.png"
   }
 

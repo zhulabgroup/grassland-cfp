@@ -112,12 +112,12 @@ plot_individual_trait_species_niche_all <- function(dat_occ, dat_trait, dat_nich
   niche_gg <- occ_geog_gg + ind_trait_gg + sp_niche_gg +
     plot_annotation(tag_levels = "A") +
     plot_layout(design = "
-  AABB
-  AABB
-  CCCC
-  CCCC
-  CCCC
-  ")
+  AB
+  AC
+  ",
+                widths = c(1.5,1),
+                heights = c(1,1))
+
 
   out <- list(
     occ_geo = occ_geog_gg,

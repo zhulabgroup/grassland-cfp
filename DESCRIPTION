@@ -34,7 +34,8 @@ Imports:
     viridis,
     parallel,
     doSNOW,
-    gganimate
+    gganimate,
+    ggrastr
 Remotes:
     git::https://github.com/ropensci/rnaturalearthhires.git
 Suggests: 

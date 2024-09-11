@@ -131,13 +131,8 @@ Plot all species climate niches.
 path_gg_trait <- plot_individual_trait_species_niche_ind_sp_all(dat_occ, dat_trait, dat_niche)
 ```
 
-```{r, eval = F}
-gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 1)
-gg_niche$sp_niche
-```
-
 ```{r}
-gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 0)
+gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 1)
 gg_niche$sp_niche
 ```
 
@@ -269,8 +264,8 @@ save_figure(out = list(
 ggsave(
   plot = gg_niche$combined,
   filename = "alldata/output/figures/main/fig-main-niche.pdf",
-  width = 8,
-  height = 8 * 1.618,
+  width = 10,
+  height = 8,
   device = pdf
 )
 
