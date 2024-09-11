@@ -39,12 +39,22 @@ plot_species_niche <- function(dat_niche,
     geom_point(data = niche_tbl %>% filter(species_type == "other")) +
     geom_point(data = niche_tbl %>% filter(species_type %in% c("cool", "warm"))) +
     geom_label(
-      data = niche_tbl %>% filter(species_type %in% c("cool", "warm")),
+      data = niche_tbl %>% filter(species_type == "cool"),
       fill = NA,
       fontface = "italic",
       label.padding = unit(.5, "lines"),
       label.size = 0,
-      vjust = "outward", hjust = "outward"
+      vjust = "bottom",
+      hjust = 0.75
+    ) +
+    geom_label(
+      data = niche_tbl %>% filter(species_type == "warm"),
+      fill = NA,
+      fontface = "italic",
+      label.padding = unit(.5, "lines"),
+      label.size = 0,
+      vjust = "top",
+      hjust = 0.25
     ) +
     scale_color_manual(values = c(cool = "blue", other = gray(.75), warm = "red")) +
     labs(
@@ -52,5 +62,6 @@ plot_species_niche <- function(dat_niche,
       y = "Annual precipitation (mm)"
     ) +
     guides(color = "none")
+
   return(sp_niche_gg)
 }

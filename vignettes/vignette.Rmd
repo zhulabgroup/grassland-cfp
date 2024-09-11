@@ -50,18 +50,16 @@ dat_niche <- calc_species_niche(dat_trait, add_dummy = T)
 ```
 
 Plot the niche of an individual species.
-```{r, fig.cap="__Figure 1.__ Example species _Danthonia californica_ distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (_n_) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions, as well as a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution.", fig.width = 8, fig.height=8 * .618}
+```{r, fig.cap="__Figure 1.__ Example species _Danthonia californica_ distributions in geographical space and climate space. The left shows GBIF occurrence records in the CFP. The right panel shows the number of GBIF records (_n_) and their distribution in reference to mean annual temperature and precipitation from CHELSA data. The scatters are summarized by axis rugs for marginal distributions, as well as a Gaussian data ellipse at the 95% confidence interval and a centroid cross (median) for the joint distribution.", fig.width = 8, fig.height = 8 * .618}
 gg_individual_trait_species_niche_cool <- plot_individual_trait_species_niche_ind_sp(dat_occ, dat_trait, sp = "Danthonia californica")
 gg_individual_trait_species_niche_cool
 ```
 
-Plot the niche of all species.
-```{r, fig.cap="__Figure 2.__ Grassland species occur along geographic and climatic gradients to estimate niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data , highlighting two example species _Danthonia californica_ in the north (blue points) and _Stipa pulchra_ in the south (red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data, highlighting the two example species (blue and red). (C) Estimated climate optima from the medians of temperature and precipitation for each species, highlighting the two species (blue and red).", fig.width= 8, fig.height= 8 * 1.618}
-gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 0)
+Plot the niche of all species. (This step might take long.)
+```{r, fig.cap="__Figure 2.__ Grassland species occur along geographic and climatic gradients to estimate niches. (A) Occurrence of grassland species in the California Floristic Province, retrieved from the GBIF data , highlighting two example species _Danthonia californica_ in the north (blue points) and _Stipa pulchra_ in the south (red points). (B) Species occurrence in climate space of mean annual temperature (°C) and annual precipitation (mm), retrieved from the CHELSA data, highlighting the two example species (blue and red). (C) Estimated climate optima from the medians of temperature and precipitation for each species, highlighting the two species (blue and red).", fig.width = 10, fig.height= 8}
+gg_niche <- plot_individual_trait_species_niche_all(dat_occ, dat_trait, dat_niche, frac = 1)
 gg_niche$combined
 ```
-
-If you would like to display the occurrence of all species in our dataset, not just the two example species, simply change the "frac" argument to 1. Note that the figure will take very long to render.
 
 ## Observational and experimental evidence of community shifts
 Calculate CTI CPI in observations and experiments.
